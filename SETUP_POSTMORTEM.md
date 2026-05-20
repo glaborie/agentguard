@@ -1,4 +1,4 @@
-# Setup Post-Mortem: Langfuse RAG POC Docker Stack
+# Setup Post-Mortem: AgentGuard Docker Stack
 
 ## Overview
 

@@ -17,7 +17,7 @@ Check all containers are running:
 docker compose ps
 ```
 
-You should see 9 services up. Key ones to confirm:
+You should see 11 services up. Key ones to confirm:
 
 ```bash
 # LiteLLM — needs auth header, should return healthy/unhealthy model list (not "No connected db")

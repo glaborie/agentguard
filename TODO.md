@@ -11,3 +11,4 @@
 ## Next
 
 - [ ] Implement an agentic application
+- [ ] Containers need to have use the right timezone

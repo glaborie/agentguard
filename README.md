@@ -14,34 +14,31 @@ The application answers questions about Langfuse's own documentation (a meta twi
                           |  (app/main.py)   |
                           +--------+---------+
                                    |
-                          +--------v---------+
-                          |   RAG Chain       |
-                          |  (LangChain LCEL) |
-                          +----+--------+----+
-                               |        |
-                  +------------+        +------------+
-                  |                                  |
-         +--------v--------+              +----------v---------+
-         |    Retriever     |              |     LLM (Chat)     |
-         |   (Qdrant)       |              |   via LiteLLM      |
-         +---------+--------+              +----------+---------+
-                   |                                  |
-         +---------v--------+              +----------v---------+
-         |  Embeddings       |              | Ollama (local)     |
-         |  nomic-embed-text |              | OpenRouter (cloud) |
-         +------------------+              +--------------------+
-                                                     
+                     +-------------+-------------+
+                     |                           |
+            +--------v---------+       +---------v--------+
+            |   RAG Chain       |       |   ReAct Agent    |
+            |  (LangChain LCEL) |       |   (LangGraph)    |
+            +----+--------+----+       +---+---------+----+
+                 |        |                |         |
+    +------------+    +---+          +-----+    +----+------+
+    |                 |              |          |           |
+  +-v-------+  +------v-----+  +----v---+  +--v-------+ +-v---------+
+  |Retriever|  | LLM (Chat) |  |search_ |  |list_     | |score_     |
+  |(Qdrant) |  | via LiteLLM|  |docs    |  |traces    | |response   |
+  +---------+  +------------+  +--------+  +----------+ +-----------+
+
          All LLM calls route through LiteLLM proxy (port 4000)
          All calls are traced via Langfuse CallbackHandler
 
    +-------------------------------------------------------------------+
-   |                    Docker Compose Stack                            |
+   |                Docker Compose Stack (11 services)                  |
    |                                                                    |
    |  langfuse-web (:3000)     langfuse-worker (:3030)                 |
    |  postgres (:5432)         clickhouse (:8123/:9000)                |
    |  redis (:6300->6379)      minio (:9090->9000, :9091->9001)       |
    |  ollama (:11434)          litellm (:4000)                         |
-   |  qdrant (:6333/:6334)                                             |
+   |  qdrant (:6333/:6334)     portainer (:9443)   dozzle (:8080)     |
    +-------------------------------------------------------------------+
 ```
 
@@ -66,7 +63,7 @@ The application answers questions about Langfuse's own documentation (a meta twi
 - **Docker** with Compose v2
 - **NVIDIA GPU** + drivers (for Ollama GPU acceleration; CPU-only works but is slow)
 - **Python 3.11+**
-- ~8 GB RAM for the full stack
+- ~15 GB RAM allocated to Docker (services have explicit CPU/memory limits)
 
 ## Quick Start
 
@@ -110,23 +107,31 @@ Scrapes the Langfuse Academy pages and stores embeddings in Qdrant:
 python -m app.main ingest
 ```
 
-### 6. Ask a question
+### 6. Ask a question (simple RAG)
 
 ```bash
 python -m app.main query "What is the AI Engineering Loop?"
 ```
 
-### 7. Interactive chat
+### 7. Ask with the ReAct agent
+
+The agent has tools for doc search, trace inspection, quality scoring, and dataset review:
 
 ```bash
-python -m app.main chat --session my-session --user demo-user
+python -m app.main agent "How is my RAG system performing?"
 ```
 
-### 8. View traces in Langfuse
+### 8. Interactive agent chat
+
+```bash
+python -m app.main agent-chat --session my-session
+```
+
+### 9. View traces in Langfuse
 
 Open [http://localhost:3000](http://localhost:3000) and log in with:
 - **Email:** admin@local.dev
-- **Password:** admin
+- **Password:** admin123456
 
 Every query and chat message is automatically traced with full LLM call details, retrieval context, and latency.
 
@@ -148,6 +153,36 @@ Switch models per query:
 python -m app.main query "What is tracing?" --model mistral
 ```
 
+## ReAct Agent
+
+Beyond simple RAG, AgentGuard includes a LangGraph ReAct agent that reasons about which tools to use:
+
+| Tool | What it does |
+|---|---|
+| `search_docs` | Search the Qdrant knowledge base |
+| `list_traces` | List recent Langfuse traces (ID, latency, input/output preview) |
+| `get_trace_detail` | Drill into a specific trace with full observation tree |
+| `score_response` | Run code-based evaluators on any text |
+| `get_dataset_summary` | List datasets or inspect dataset items |
+
+The agent can answer complex questions that require multiple tool calls — e.g., "How is my RAG system performing?" triggers trace inspection, detail drill-down, and quality scoring.
+
+```bash
+python -m app.main agent "What were my slowest queries?"
+python -m app.main agent-chat --session demo
+```
+
+## Guardrails
+
+Two custom guardrails run on every LiteLLM request by default, defined in `guardrails/custom_guardrails.py`:
+
+| Guardrail | Mode | What it does |
+|---|---|---|
+| **Prompt injection** | pre_call | Blocks 12 regex patterns (jailbreak, ignore instructions, DAN, role hijacking, system prompt exfiltration, etc.) before the request reaches the LLM |
+| **PII masking** | post_call | Redacts email addresses, SSNs, credit card numbers, and phone numbers from LLM responses |
+
+Both are registered in `litellm_config.yaml` with `default_on: true` — no per-request opt-in needed.
+
 ## Evaluation
 
 ### Code-based evaluators (`app/eval/evaluators.py`)
@@ -161,9 +196,27 @@ python -m app.main query "What is tracing?" --model mistral
 
 Binary scoring on three criteria: **relevance**, **faithfulness**, and **completeness**.
 
+### DeepEval metrics (`app/eval/deepeval_metrics.py`)
+
+LLM-judged evaluation using [DeepEval](https://github.com/confident-ai/deepeval), routing judge calls through LiteLLM:
+
+| Metric | What it measures |
+|---|---|
+| `FaithfulnessMetric` | Is the answer grounded in retrieved context? |
+| `AnswerRelevancyMetric` | Does the answer address the question? |
+| `ContextualRelevancyMetric` | Are the retrieved chunks relevant? |
+| `HallucinationMetric` | Does the answer contain fabricated info? |
+
+Run against a Langfuse dataset — scores are pushed back to Langfuse automatically:
+
+```bash
+python -m app.main evaluate --dataset rag-eval-v1
+python -m app.main evaluate --dataset rag-eval-v1 --metrics faithfulness,hallucination
+```
+
 ### Experiment runner (`app/eval/experiments.py`)
 
-Compare multiple models against a Langfuse dataset:
+Compare multiple models against a Langfuse dataset with code-based evaluators:
 
 ```python
 from app.eval.experiments import run_experiment, print_results
@@ -175,6 +228,16 @@ results = run_experiment(
 )
 print_results(results)
 ```
+
+## Testing
+
+```bash
+pytest -m "not integration"   # 135 unit tests, no Docker needed (~9s)
+pytest -m integration          # 17 integration tests, Docker stack required
+pytest -v                      # Full suite
+```
+
+Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, and ingestion. Integration tests verify service health, guardrail HTTP behavior, agent end-to-end, and RAG pipeline. Integration tests auto-skip when the Docker stack isn't running.
 
 ## Project Structure
 
@@ -188,17 +251,27 @@ print_results(results)
 ├── app/
 │   ├── config.py             # Pydantic settings from .env
 │   ├── tracing.py            # Langfuse CallbackHandler factory
-│   ├── main.py               # CLI entry point (ingest/query/chat)
+│   ├── main.py               # CLI entry point (ingest/query/chat/agent/evaluate)
 │   ├── rag/
 │   │   ├── ingest.py         # Document loading, chunking, embedding
 │   │   └── chain.py          # LCEL retrieval-augmented generation chain
+│   ├── agent/
+│   │   ├── tools.py          # 5 agent tools (search, traces, scoring, datasets)
+│   │   ├── graph.py          # LangGraph ReAct agent (StateGraph + ToolNode)
+│   │   └── prompts.py        # Agent system prompt
 │   └── eval/
 │       ├── evaluators.py     # Code-based + LLM-as-judge evaluators
-│       └── experiments.py    # Multi-model experiment runner
+│       ├── experiments.py    # Multi-model experiment runner
+│       ├── deepeval_metrics.py  # LiteLLM model wrapper + DeepEval metric factories
+│       └── deepeval_runner.py   # Evaluation runner with Langfuse score push
 ├── guardrails/
 │   └── custom_guardrails.py  # Prompt injection + PII masking guards
 └── tests/
-    ├── test_guardrails.py    # 32 tests: injection detection, PII masking
+    ├── test_agent_tools.py   # 22 tests: all 5 tool functions
+    ├── test_agent_graph.py   # 13 tests: graph structure, routing, prompts
+    ├── test_deepeval_metrics.py # 14 tests: LiteLLM model, metric factories
+    ├── test_agent_integration.py # 5 tests: agent e2e (requires Docker)
+    ├── test_guardrails.py    # 43 tests: injection detection, PII masking
     ├── test_evaluators.py    # 16 tests: all code-based evaluators
     ├── test_config.py        # 3 tests: settings defaults + overrides
     ├── test_chain.py         # 9 tests: format_docs, prompt, e2e query

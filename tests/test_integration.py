@@ -20,7 +20,7 @@ class TestServiceHealth:
         assert resp.status_code == 200
 
     def test_qdrant_reachable(self):
-        resp = requests.get(f"{settings.qdrant_url}/health", timeout=5)
+        resp = requests.get(f"{settings.qdrant_url}/healthz", timeout=5)
         assert resp.status_code == 200
 
     def test_langfuse_reachable(self):

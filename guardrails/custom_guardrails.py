@@ -21,6 +21,7 @@ INJECTION_PATTERNS = [
     r"you are now (?:a |an )?",
     r"pretend (?:to be|you(?:'re| are))",
     r"new (?:instructions|rules|persona|role)\s*:",
+    r"(?:give|show|reveal|print|display|output|repeat|tell)\b.*\b(?:system\s*prompt|instructions|rules)",
     r"system\s*(?:prompt|message)\s*(?:override|update)",
     r"jailbreak",
     r"do anything now",

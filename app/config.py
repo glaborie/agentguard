@@ -22,5 +22,8 @@ class Settings(BaseSettings):
     # OpenRouter (optional)
     openrouter_api_key: str = ""
 
+    # DeepEval (optional — override judge model for evaluation metrics)
+    deepeval_model: str = ""
+
 
 settings = Settings()
