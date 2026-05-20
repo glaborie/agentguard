@@ -263,6 +263,8 @@ services:
     depends_on:
       ollama:
         condition: service_healthy
+      postgres:
+        condition: service_healthy
     ports:
       - "4000:4000"
     volumes:
@@ -270,6 +272,7 @@ services:
       - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/litellm
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
       UI_USERNAME: ${UI_USERNAME:-admin}
       UI_PASSWORD: ${UI_PASSWORD:-litellm123456}
