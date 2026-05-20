@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest *)",
+      "mcp__ccd_session__mark_chapter"
+    ]
+  }
+}
