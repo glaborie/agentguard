@@ -1,0 +1,46 @@
+model_list:
+  # ── Local models via Ollama ──────────────────────────────────────
+  - model_name: llama3
+    litellm_params:
+      model: ollama/llama3.2
+      api_base: http://ollama:11434
+
+  - model_name: mistral
+    litellm_params:
+      model: ollama/mistral
+      api_base: http://ollama:11434
+
+  - model_name: nomic-embed-text
+    litellm_params:
+      model: ollama/nomic-embed-text
+      api_base: http://ollama:11434
+
+  # ── Cloud models via OpenRouter ──────────────────────────────────
+  - model_name: openrouter-llama3
+    litellm_params:
+      model: openrouter/meta-llama/llama-3.1-8b-instruct
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  - model_name: openrouter-mistral
+    litellm_params:
+      model: openrouter/mistralai/mistral-7b-instruct
+      api_key: os.environ/OPENROUTER_API_KEY
+
+litellm_settings:
+  drop_params: true
+
+guardrails:
+  - guardrail_name: "prompt-injection"
+    litellm_params:
+      guardrail: custom_guardrails.PromptInjectionGuard
+      mode: "pre_call"
+      default_on: true
+
+  - guardrail_name: "pii-masking"
+    litellm_params:
+      guardrail: custom_guardrails.PIIMaskingGuard
+      mode: "post_call"
+      default_on: true
+
+general_settings:
+  master_key: sk-litellm-dev-key
