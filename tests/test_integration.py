@@ -49,7 +49,7 @@ class TestLiteLLMGuardrails:
             self._url,
             headers=self._headers,
             json={
-                "model": "llama3",
+                "model": "openrouter-gemini-flash",
                 "messages": [
                     {
                         "role": "user",
@@ -66,7 +66,7 @@ class TestLiteLLMGuardrails:
             self._url,
             headers=self._headers,
             json={
-                "model": "llama3",
+                "model": "openrouter-gemini-flash",
                 "messages": [
                     {"role": "user", "content": "What is 2+2?"}
                 ],

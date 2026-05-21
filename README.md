@@ -86,10 +86,9 @@ Wait for all services to be healthy:
 docker compose ps
 ```
 
-### 3. Pull Ollama models
+### 3. Pull Ollama embedding model
 
 ```bash
-docker compose exec ollama ollama pull llama3.2
 docker compose exec ollama ollama pull nomic-embed-text
 ```
 
@@ -141,16 +140,14 @@ All LLM requests go through the LiteLLM proxy, which provides a unified OpenAI-c
 
 | Model name | Backend | Notes |
 |---|---|---|
-| `llama3` | Ollama (llama3.2) | Default chat model |
-| `mistral` | Ollama (mistral) | Alternative local model |
-| `nomic-embed-text` | Ollama | Embedding model |
-| `openrouter-gemini-flash` | OpenRouter → Gemini 2.5 Flash Lite | Fast cloud fallback (needs API key) |
-| `openrouter-mistral` | OpenRouter → Mistral 7B Instruct | Cloud fallback (needs API key) |
+| `nomic-embed-text` | Ollama (local) | Embedding only — the only model served locally |
+| `openrouter-gemini-flash` | OpenRouter → Gemini 2.5 Flash Lite | Default chat model (needs API key) |
+| `openrouter-mistral` | OpenRouter → Mistral 7B Instruct | Alternative cloud model (needs API key) |
 
 Switch models per query:
 
 ```bash
-python -m app.main query "What is tracing?" --model mistral
+python -m app.main query "What is tracing?" --model openrouter-mistral
 ```
 
 ## ReAct Agent
@@ -223,7 +220,7 @@ from app.eval.experiments import run_experiment, print_results
 
 results = run_experiment(
     dataset_name="rag-eval-v1",
-    models=["llama3", "mistral"],
+    models=["openrouter-gemini-flash", "openrouter-mistral"],
     experiment_name="model-comparison-001",
 )
 print_results(results)

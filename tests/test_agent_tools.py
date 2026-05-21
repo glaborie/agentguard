@@ -31,7 +31,7 @@ def _make_trace(trace_id="abc123def456", input_val="What is tracing?", output_va
     )
 
 
-def _make_observation(name="ChatOpenAI", obs_type="generation", latency=0.8, model="llama3", usage=None):
+def _make_observation(name="ChatOpenAI", obs_type="generation", latency=0.8, model="openrouter-gemini-flash", usage=None):
     return SimpleNamespace(
         name=name,
         type=obs_type,
@@ -151,7 +151,7 @@ class TestGetTraceDetail:
         assert "accuracy" in result
         assert "0.9" in result
         assert "ChatOpenAI" in result
-        assert "llama3" in result
+        assert "openrouter-gemini-flash" in result
         assert "100 in / 50 out" in result
 
     @patch("app.agent.tools.get_langfuse_client")

@@ -7,7 +7,7 @@ loading from a Docker virtual disk on Windows can take 2–3 minutes.
 
 Environment variables:
   OLLAMA_URL     Base URL of the Ollama service (default: http://localhost:11434)
-  OLLAMA_MODELS  Comma-separated model names to warm up (default: llama3.2,nomic-embed-text)
+  OLLAMA_MODELS  Comma-separated model names to warm up (default: nomic-embed-text)
 """
 
 import os
@@ -17,7 +17,7 @@ import time
 import requests
 
 BASE_URL = os.getenv("OLLAMA_URL", "http://localhost:11434").rstrip("/")
-MODELS = [m.strip() for m in os.getenv("OLLAMA_MODELS", "llama3.2,nomic-embed-text").split(",") if m.strip()]
+MODELS = [m.strip() for m in os.getenv("OLLAMA_MODELS", "nomic-embed-text").split(",") if m.strip()]
 LOAD_TIMEOUT = int(os.getenv("OLLAMA_WARMUP_TIMEOUT", "300"))
 
 

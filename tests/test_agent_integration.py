@@ -14,7 +14,7 @@ class TestAgentEndToEnd:
         assert len(answer) > 20
 
     def test_agent_with_model_override(self):
-        answer = run_agent("What is the AI engineering loop?", model="llama3")
+        answer = run_agent("What is the AI engineering loop?", model="openrouter-gemini-flash")
         assert isinstance(answer, str)
         assert len(answer) > 20
 

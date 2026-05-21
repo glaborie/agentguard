@@ -19,6 +19,12 @@ def run_deepeval_evaluation(
         metric_names: Which metrics to run (None = all).
         model: Override model for both generation and judge.
     """
+    from app.config import settings
+
+    # Default to deepeval_model for both generation and judge so the evaluate
+    # command doesn't fall back to the local Ollama default.
+    model = model or settings.deepeval_model or settings.default_model
+
     client = get_langfuse_client()
     dataset = client.get_dataset(dataset_name)
     metrics = get_metrics(names=metric_names, model=model)

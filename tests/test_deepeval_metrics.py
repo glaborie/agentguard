@@ -28,23 +28,23 @@ class TestLiteLLMModel:
     @patch("app.eval.deepeval_metrics.settings")
     def test_default_model_name(self, mock_settings):
         mock_settings.deepeval_model = ""
-        mock_settings.default_model = "llama3"
+        mock_settings.default_model = "openrouter-gemini-flash"
         mock_settings.litellm_base_url = "http://localhost:4000"
         model = LiteLLMModel()
-        assert model.get_model_name() == "llama3"
+        assert model.get_model_name() == "openrouter-gemini-flash"
 
     def test_custom_model_name(self):
-        model = LiteLLMModel("mistral")
-        assert model.get_model_name() == "mistral"
+        model = LiteLLMModel("openrouter-mistral")
+        assert model.get_model_name() == "openrouter-mistral"
 
     @patch("app.eval.deepeval_metrics.settings")
     def test_uses_deepeval_model_setting(self, mock_settings):
-        mock_settings.deepeval_model = "openrouter-llama3"
-        mock_settings.default_model = "llama3"
+        mock_settings.deepeval_model = "openrouter-gemini-flash"
+        mock_settings.default_model = "openrouter-gemini-flash"
         mock_settings.litellm_base_url = "http://localhost:4000"
         mock_settings.litellm_master_key = "sk-test"
         model = LiteLLMModel()
-        assert model.get_model_name() == "openrouter-llama3"
+        assert model.get_model_name() == "openrouter-gemini-flash"
 
     def test_load_model_returns_llm(self):
         model = LiteLLMModel()
@@ -74,7 +74,7 @@ class TestMetricFactories:
         assert metric.threshold == 0.8
 
     def test_metric_uses_litellm_model(self):
-        metric = get_faithfulness_metric(model="mistral")
+        metric = get_faithfulness_metric(model="openrouter-mistral")
         assert isinstance(metric.model, LiteLLMModel)
 
 
@@ -92,5 +92,5 @@ class TestGetMetrics:
         assert len(metrics) == 1
 
     def test_model_override(self):
-        metrics = get_metrics(names=["faithfulness"], model="mistral")
-        assert metrics[0].model.get_model_name() == "mistral"
+        metrics = get_metrics(names=["faithfulness"], model="openrouter-mistral")
+        assert metrics[0].model.get_model_name() == "openrouter-mistral"

@@ -14,7 +14,7 @@ until ollama list > /dev/null 2>&1; do
 done
 echo "Ollama ready."
 
-IFS=',' read -ra MODELS <<< "${OLLAMA_WARMUP_MODELS:-llama3.2,nomic-embed-text}"
+IFS=',' read -ra MODELS <<< "${OLLAMA_WARMUP_MODELS:-nomic-embed-text}"
 for MODEL in "${MODELS[@]}"; do
   MODEL="${MODEL// /}"  # trim whitespace
   echo "Pre-loading ${MODEL} ..."
