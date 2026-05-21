@@ -9,6 +9,7 @@ import re
 from typing import Optional
 
 from litellm._logging import verbose_proxy_logger
+from litellm.exceptions import BadRequestError
 from litellm.integrations.custom_guardrail import CustomGuardrail
 
 
@@ -56,8 +57,10 @@ class PromptInjectionGuard(CustomGuardrail):
                     verbose_proxy_logger.warning(
                         "Prompt injection blocked: '%s'", match.group()
                     )
-                    raise ValueError(
-                        "Request blocked: potential prompt injection detected."
+                    raise BadRequestError(
+                        message="Request blocked: potential prompt injection detected.",
+                        model=data.get("model", ""),
+                        llm_provider="custom_guardrail",
                     )
         return data
 

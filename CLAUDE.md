@@ -25,7 +25,7 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 ## Key files
 
 - `docker-compose.yml` - 11 services. Uses YAML anchors for DRY logging/resource config. Langfuse v3 needs postgres + clickhouse + redis + minio. Ollama has GPU reservation (4 CPU, 8 GB mem). All services on a custom `langfuse` bridge network. Redis host port is 6300 (not 6379) due to Windows port conflicts.
-- `litellm_config.yaml` - Model routing + guardrail registration. Ollama models use `http://ollama:11434` (Docker internal). OpenRouter models use env var for API key. Two guardrails (`prompt-injection`, `pii-masking`) are `default_on: true`.
+- `litellm_config.yaml` - Model routing + guardrail registration. Ollama models use `http://ollama:11434` (Docker internal). OpenRouter models use `model: openai/<provider>/<model-id>` + `api_base: https://openrouter.ai/api/v1` (the `openai/` prefix routes to OpenAI-compatible provider, which strips it and sends the bare model ID to OpenRouter — works for any model regardless of whether LiteLLM has it in its registry). Two guardrails (`prompt-injection`, `pii-masking`) are `default_on: true`.
 - `guardrails/custom_guardrails.py` - LiteLLM custom guardrails. `PromptInjectionGuard` (pre_call, 12 regex patterns) blocks injection attempts including role hijacking, jailbreaks, and system prompt exfiltration. `PIIMaskingGuard` (post_call) redacts email, SSN, credit card, and phone from responses. Mounted into LiteLLM container at `/app/custom_guardrails.py`.
 - `app/config.py` - Single source of truth for all settings.
 - `app/tracing.py` - Langfuse client singleton + `CallbackHandler` factory. `get_langfuse_client()` returns the singleton; `get_langfuse_handler()` returns a handler that looks up the client by public_key.
@@ -85,7 +85,7 @@ Integration tests auto-skip if the Docker stack is unreachable (checks `localhos
 ### Guardrails
 
 Two LiteLLM custom guardrails run on every request by default:
-- **Prompt injection** (pre_call): blocks 12 regex patterns (jailbreak, ignore instructions, DAN, system prompt exfiltration, etc.). The DAN pattern uses `(?-i:DAN)\b` for case-sensitive matching to avoid false-positiving on the name "Dan". The system prompt pattern catches `give/show/reveal/print/display/output/repeat/tell ... system prompt/instructions/rules`.
+- **Prompt injection** (pre_call): blocks 12 regex patterns (jailbreak, ignore instructions, DAN, system prompt exfiltration, etc.). The DAN pattern uses `(?-i:DAN)\b` for case-sensitive matching to avoid false-positiving on the name "Dan". The system prompt pattern catches `give/show/reveal/print/display/output/repeat/tell ... system prompt/instructions/rules`. Raises `litellm.exceptions.BadRequestError` so LiteLLM returns HTTP 400 — not a plain `ValueError` (which maps to 500 and is indistinguishable from a model error).
 - **PII masking** (post_call): redacts email, SSN, credit card, phone from LLM responses using regex.
 
 Guardrails config: the `guardrails:` key in `litellm_config.yaml` is **top-level** — do not nest it under `litellm_settings:`. The module name in `guardrail:` must match the mounted filename (`custom_guardrails`, not `custom_guardrail`).

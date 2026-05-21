@@ -144,8 +144,8 @@ All LLM requests go through the LiteLLM proxy, which provides a unified OpenAI-c
 | `llama3` | Ollama (llama3.2) | Default chat model |
 | `mistral` | Ollama (mistral) | Alternative local model |
 | `nomic-embed-text` | Ollama | Embedding model |
-| `openrouter-llama3` | OpenRouter | Cloud fallback (needs API key) |
-| `openrouter-mistral` | OpenRouter | Cloud fallback (needs API key) |
+| `openrouter-gemini-flash` | OpenRouter → Gemini 2.5 Flash Lite | Fast cloud fallback (needs API key) |
+| `openrouter-mistral` | OpenRouter → Mistral 7B Instruct | Cloud fallback (needs API key) |
 
 Switch models per query:
 
@@ -178,7 +178,7 @@ Two custom guardrails run on every LiteLLM request by default, defined in `guard
 
 | Guardrail | Mode | What it does |
 |---|---|---|
-| **Prompt injection** | pre_call | Blocks 12 regex patterns (jailbreak, ignore instructions, DAN, role hijacking, system prompt exfiltration, etc.) before the request reaches the LLM |
+| **Prompt injection** | pre_call | Blocks 12 regex patterns (jailbreak, ignore instructions, DAN, role hijacking, system prompt exfiltration, etc.) before the request reaches the LLM. Returns HTTP 400. |
 | **PII masking** | post_call | Redacts email addresses, SSNs, credit card numbers, and phone numbers from LLM responses |
 
 Both are registered in `litellm_config.yaml` with `default_on: true` — no per-request opt-in needed.
