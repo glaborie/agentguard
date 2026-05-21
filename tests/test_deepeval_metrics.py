@@ -25,7 +25,11 @@ from app.eval.deepeval_metrics import (
 
 
 class TestLiteLLMModel:
-    def test_default_model_name(self):
+    @patch("app.eval.deepeval_metrics.settings")
+    def test_default_model_name(self, mock_settings):
+        mock_settings.deepeval_model = ""
+        mock_settings.default_model = "llama3"
+        mock_settings.litellm_base_url = "http://localhost:4000"
         model = LiteLLMModel()
         assert model.get_model_name() == "llama3"
 

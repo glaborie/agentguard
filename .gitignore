@@ -9,3 +9,4 @@ build/
 data/docs/*.md
 data/docs/*.html
 .pytest_cache/
+Agentic_Plan.md

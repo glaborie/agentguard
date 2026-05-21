@@ -14,18 +14,22 @@ model_list:
       model: ollama/nomic-embed-text
       api_base: http://ollama:11434
 
-  - model_name: openrouter-llama3
+  - model_name: openrouter-gemini-flash
     litellm_params:
-      model: openrouter/meta-llama/llama-3.1-8b-instruct
+      model: openai/google/gemini-2.5-flash-lite
+      api_base: https://openrouter.ai/api/v1
       api_key: os.environ/OPENROUTER_API_KEY
 
   - model_name: openrouter-mistral
     litellm_params:
-      model: openrouter/mistralai/mistral-7b-instruct
+      model: openai/mistralai/mistral-7b-instruct
+      api_base: https://openrouter.ai/api/v1
       api_key: os.environ/OPENROUTER_API_KEY
 
 litellm_settings:
   drop_params: true
+  success_callback: ["langfuse"]
+  failure_callback: ["langfuse"]
 
 guardrails:
   - guardrail_name: "prompt-injection"
