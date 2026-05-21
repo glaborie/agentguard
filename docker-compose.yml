@@ -8,8 +8,10 @@ x-deploy-limits: &deploy-limits
   resources:
     limits:
       cpus: "1"
+      memory: 1g
     reservations:
       cpus: "0.5"
+      memory: 512m
 
 x-deploy-clickhouse: &deploy-clickhouse
   resources:
@@ -33,22 +35,23 @@ x-deploy-ollama: &deploy-ollama
   resources:
     limits:
       cpus: "4"
-      memory: 8g
+      memory: 12g
     reservations:
       cpus: "2"
-      memory: 4g
+      memory: 10g
       devices:
         - driver: nvidia
           count: all
           capabilities: [gpu]
 
 services:
-  # ── Langfuse Observability Platform (v3) ──────────────────────────
   langfuse-web:
     image: docker.io/langfuse/langfuse:3
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
+    pull_policy: if_not_present
+    env_file: .env
     depends_on: &langfuse-deps
       postgres:
         condition: service_healthy
@@ -67,45 +70,31 @@ services:
       retries: 10
       start_period: 30s
     environment: &langfuse-env
+      TZ: Europe/Berlin
       NEXTAUTH_URL: http://localhost:3000
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-changeme-nextauth-secret}
-      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/postgres?idle_timeout=60&connect_timeout=10
-      SALT: ${SALT:-changeme-salt-value}
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-0000000000000000000000000000000000000000000000000000000000000000}
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres?idle_timeout=60&connect_timeout=10
       TELEMETRY_ENABLED: "false"
       LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
-      # ClickHouse
       CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
       CLICKHOUSE_URL: http://clickhouse:8123
       CLICKHOUSE_USER: clickhouse
-      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-clickhouse}
       CLICKHOUSE_CLUSTER_ENABLED: "false"
-      # S3 / MinIO — event uploads
       LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
       LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
-      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minio}
-      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-miniosecret}
       LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio:9000
       LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
       LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
-      # S3 / MinIO — media uploads
       LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
       LANGFUSE_S3_MEDIA_UPLOAD_REGION: auto
-      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minio}
-      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-miniosecret}
       LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio:9000
       LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
       LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
-      # S3 / MinIO — batch export (disabled)
       LANGFUSE_S3_BATCH_EXPORT_ENABLED: "false"
       LANGFUSE_USE_AZURE_BLOB: "false"
       LANGFUSE_USE_OCI_NATIVE_OBJECT_STORAGE: "false"
-      # Redis
       REDIS_HOST: redis
       REDIS_PORT: "6379"
-      REDIS_AUTH: ${REDIS_PASSWORD:-redissecret}
       REDIS_TLS_ENABLED: "false"
-      # Auto-provision org, project, and user for dev convenience
       LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-my-org}
       LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-My Org}
       LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-my-project}
@@ -123,9 +112,12 @@ services:
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
+    pull_policy: if_not_present
+    env_file: .env
     depends_on: *langfuse-deps
     environment:
       <<: *langfuse-env
+      REDIS_SOCKET_TIMEOUT_MS: "0"
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://$(hostname -i):3030/api/health"]
       interval: 10s
@@ -135,12 +127,12 @@ services:
     networks:
       - langfuse
 
-  # ── Langfuse Dependencies ────────────────────────────────────────
   postgres:
     image: docker.io/postgres:17-alpine
     restart: always
     logging: *default-logging
     deploy: *deploy-postgres
+    pull_policy: if_not_present
     command: >
       postgres
       -c tcp_keepalives_idle=60
@@ -151,12 +143,12 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    env_file: .env
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: postgres
-      TZ: UTC
-      PGTZ: UTC
+      TZ: Europe/Berlin
+      PGTZ: Europe/Berlin
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
@@ -174,11 +166,13 @@ services:
     restart: always
     logging: *default-logging
     deploy: *deploy-clickhouse
+    pull_policy: if_not_present
     user: "101:101"
+    env_file: .env
     environment:
+      TZ: Europe/Berlin
       CLICKHOUSE_DB: default
       CLICKHOUSE_USER: clickhouse
-      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD:-clickhouse}
     ports:
       - "127.0.0.1:8123:8123"
       - "127.0.0.1:9000:9000"
@@ -195,26 +189,28 @@ services:
       - langfuse
 
   minio:
-    image: cgr.dev/chainguard/minio:latest
+    image: quay.io/minio/minio:latest
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
-    entrypoint: sh
-    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    pull_policy: if_not_present
+    env_file: .env
+    command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-miniosecret}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      TZ: Europe/Berlin
     ports:
-      - "9090:9000"
+      - "127.0.0.1:9090:9000"
       - "127.0.0.1:9091:9001"
     volumes:
       - minio_data:/data
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
-      interval: 1s
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 1s
+      start_period: 10s
     networks:
       - langfuse
 
@@ -223,29 +219,36 @@ services:
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
+    pull_policy: if_not_present
+    env_file: .env
     command: >
-      --requirepass ${REDIS_PASSWORD:-redissecret}
+      --requirepass ${REDIS_PASSWORD}
       --maxmemory-policy noeviction
       --appendonly yes
       --appendfsync everysec
+      --tcp-keepalive 60
+      --timeout 300
+    environment:
+      TZ: Europe/Berlin
     ports:
-      - "6300:6379"
+      - "127.0.0.1:6300:6379"
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redissecret}", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
       interval: 3s
       timeout: 10s
       retries: 10
     networks:
       - langfuse
 
-  # ── LLM Infrastructure ───────────────────────────────────────────
   ollama:
     image: ollama/ollama:latest
     restart: always
     logging: *default-logging
     deploy: *deploy-ollama
+    pull_policy: if_not_present
+    env_file: .env
     ports:
       - "11434:11434"
     volumes:
@@ -253,8 +256,9 @@ services:
       - ./scripts/ollama_entrypoint.sh:/ollama_entrypoint.sh:ro
     entrypoint: ["/bin/bash", "/ollama_entrypoint.sh"]
     environment:
+      TZ: Europe/Berlin
       OLLAMA_KEEP_ALIVE: "24h"
-      OLLAMA_WARMUP_MODELS: ${OLLAMA_WARMUP_MODELS:-llama3.2,nomic-embed-text}
+      OLLAMA_WARMUP_MODELS: ""
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 10s
@@ -269,9 +273,9 @@ services:
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
+    pull_policy: if_not_present
+    env_file: .env
     depends_on:
-      ollama:
-        condition: service_healthy
       postgres:
         condition: service_healthy
     ports:
@@ -281,13 +285,8 @@ services:
       - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     environment:
-      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/litellm
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
-      UI_USERNAME: ${UI_USERNAME:-admin}
-      UI_PASSWORD: ${UI_PASSWORD:-litellm123456}
-      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-pk-lf-dev}
-      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-sk-lf-dev}
       LANGFUSE_HOST: http://langfuse-web:3000
+      TZ: Europe/Berlin
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
       interval: 60s
@@ -299,7 +298,8 @@ services:
 
   litellm-init:
     image: python:3.11-slim
-    restart: "no"
+    restart: on-failure
+    env_file: .env
     depends_on:
       litellm:
         condition: service_healthy
@@ -309,22 +309,25 @@ services:
       sh -c "pip install requests -q && python /init_litellm.py"
     environment:
       LITELLM_URL: http://litellm:4000
-      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
-      LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY:-}
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
+      LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
+      TZ: Europe/Berlin
     networks:
       - langfuse
 
-  # ── Container Observability ───────────────────────────────────────
   portainer:
     image: portainer/portainer-ce:lts
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
+    pull_policy: if_not_present
     ports:
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
+    environment:
+      TZ: Europe/Berlin
     networks:
       - langfuse
 
@@ -333,28 +336,32 @@ services:
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
+    pull_policy: if_not_present
     ports:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       DOZZLE_NO_ANALYTICS: "true"
+      TZ: Europe/Berlin
     networks:
       - langfuse
 
-  # ── Vector Store ─────────────────────────────────────────────────
   qdrant:
     image: qdrant/qdrant:latest
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
+    pull_policy: if_not_present
     ports:
-      - "6333:6333"
+      - "127.0.0.1:6333:6333"
       - "127.0.0.1:6334:6334"
     volumes:
       - qdrant_data:/qdrant/storage
+    environment:
+      TZ: Europe/Berlin
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:6333/health || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:6333/health || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 5

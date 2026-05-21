@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     # LiteLLM proxy
     litellm_base_url: str = "http://localhost:4000"
     litellm_master_key: str = "sk-litellm-dev-key"
-    default_model: str = "llama3"
+    default_model: str = "openrouter-gemini-flash"
     embedding_model: str = "nomic-embed-text"
 
     # Qdrant
@@ -22,8 +22,8 @@ class Settings(BaseSettings):
     # OpenRouter (optional)
     openrouter_api_key: str = ""
 
-    # DeepEval (optional — override judge model for evaluation metrics)
-    deepeval_model: str = ""
+    # DeepEval judge model — defaults to Gemini Flash via OpenRouter for stable evaluation
+    deepeval_model: str = "openrouter-gemini-flash"
 
 
 settings = Settings()

@@ -62,7 +62,7 @@ class TestChainIntegration:
     def test_query_with_model_override(self):
         from app.rag.chain import query
 
-        result = query("What is the AI engineering loop?", model="llama3")
+        result = query("What is the AI engineering loop?", model="openrouter-gemini-flash")
         assert isinstance(result, str)
         assert len(result) > 20
 

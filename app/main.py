@@ -117,6 +117,12 @@ def cmd_evaluate(args):
     )
 
 
+def cmd_seed_dataset(args):
+    from scripts.seed_dataset import main as seed_main
+
+    seed_main()
+
+
 def main():
     parser = argparse.ArgumentParser(description="AgentGuard CLI")
     sub = parser.add_subparsers(dest="command")
@@ -156,6 +162,9 @@ def main():
     p_eval.add_argument("--metrics", default=None, help="Comma-separated metric names (default: all)")
     p_eval.add_argument("--model", default=None, help="LLM model for judge metrics")
 
+    # seed-dataset
+    sub.add_parser("seed-dataset", help="Create the rag-eval-v1 dataset in Langfuse")
+
     args = parser.parse_args()
     if not args.command:
         parser.print_help()
@@ -168,6 +177,7 @@ def main():
         "agent": cmd_agent,
         "agent-chat": cmd_agent_chat,
         "evaluate": cmd_evaluate,
+        "seed-dataset": cmd_seed_dataset,
     }
     commands[args.command](args)
 

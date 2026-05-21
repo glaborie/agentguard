@@ -56,8 +56,8 @@ class TestGraphStructure:
         llm.bind_tools.return_value = llm
         mock_llm.return_value = llm
 
-        build_agent(model="mistral")
-        mock_llm.assert_called_once_with("mistral")
+        build_agent(model="openrouter-mistral")
+        mock_llm.assert_called_once_with("openrouter-mistral")
 
 
 class TestShouldContinue:
