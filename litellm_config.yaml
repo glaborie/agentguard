@@ -14,7 +14,7 @@ model_list:
 
   - model_name: openrouter-mistral
     litellm_params:
-      model: openai/mistralai/mistral-7b-instruct
+      model: openai/mistralai/mistral-nemo
       api_base: https://openrouter.ai/api/v1
       api_key: os.environ/OPENROUTER_API_KEY
 

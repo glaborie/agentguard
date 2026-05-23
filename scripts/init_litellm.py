@@ -6,6 +6,7 @@ LiteLLM UI. Safe to run on every `docker compose up` — skips anything that
 already exists.
 
 Resources managed:
+  - Models:    nomic-embed-text, openrouter-gemini-flash, openrouter-mistral (DB-registered so UI shows them)
   - Budget:    SampleBudget ($10 max, 600 TPM, 4 RPM, rolling 7-day window)
   - Team:      DevSecOps (access to all models)
   - Key:       AdminKey  (access to all team models)
@@ -34,6 +35,35 @@ HEADERS = {"Authorization": f"Bearer {MASTER_KEY}", "Content-Type": "application
 
 
 # ── Desired state ──────────────────────────────────────────────────────────────
+
+# Models are registered in the DB so they appear in the LiteLLM UI.
+# Without DB registration they are API-accessible (from litellm_config.yaml)
+# but invisible in the UI's Models tab.
+MODELS = [
+    {
+        "model_name": "nomic-embed-text",
+        "litellm_params": {
+            "model": "ollama/nomic-embed-text",
+            "api_base": "http://ollama:11434",
+        },
+    },
+    {
+        "model_name": "openrouter-gemini-flash",
+        "litellm_params": {
+            "model": "openai/google/gemini-2.5-flash-lite",
+            "api_base": "https://openrouter.ai/api/v1",
+            "api_key": os.environ.get("OPENROUTER_API_KEY", "os.environ/OPENROUTER_API_KEY"),
+        },
+    },
+    {
+        "model_name": "openrouter-mistral",
+        "litellm_params": {
+            "model": "openai/mistralai/mistral-nemo",
+            "api_base": "https://openrouter.ai/api/v1",
+            "api_key": os.environ.get("OPENROUTER_API_KEY", "os.environ/OPENROUTER_API_KEY"),
+        },
+    },
+]
 
 BUDGET = {
     "budget_id": "SampleBudget",
@@ -107,6 +137,36 @@ def post(path: str, payload: dict) -> dict:
 
 # ── Provisioning ───────────────────────────────────────────────────────────────
 
+def ensure_models() -> None:
+    try:
+        existing = get("/v2/model/info")
+        db_models = {
+            m["model_name"]: m
+            for m in existing.get("data", [])
+            if m.get("model_info", {}).get("db_model", False)
+        }
+    except Exception:
+        db_models = {}
+
+    for model in MODELS:
+        name = model["model_name"]
+        desired_backend = model["litellm_params"]["model"]
+
+        if name in db_models:
+            current_backend = db_models[name].get("litellm_params", {}).get("model", "")
+            if current_backend == desired_backend:
+                print(f"  model '{name}' already in DB — skipping")
+                continue
+            # Backend changed — delete stale entry so we can recreate it.
+            model_id = db_models[name].get("model_info", {}).get("id")
+            if model_id:
+                post("/model/delete", {"id": model_id})
+            print(f"  model '{name}' updated ({current_backend} → {desired_backend})")
+
+        post("/model/new", model)
+        print(f"  model '{name}' registered in DB")
+
+
 def ensure_budget() -> None:
     existing = get("/budget/list")
     ids = {b["budget_id"] for b in existing}
@@ -136,8 +196,11 @@ def ensure_guardrail(guardrail: dict) -> None:
         if g.get("guardrail_name") == name and g.get("guardrail_definition_location") == "db":
             print(f"  guardrail '{name}' already exists — skipping")
             return
-    post("/guardrails/register", guardrail)
-    print(f"  guardrail '{name}' created")
+    try:
+        post("/guardrails/register", guardrail)
+        print(f"  guardrail '{name}' created")
+    except requests.exceptions.HTTPError as exc:
+        print(f"  WARNING: guardrail '{name}' registration failed ({exc}) — skipping", file=sys.stderr)
 
 
 def ensure_key() -> None:
@@ -158,6 +221,7 @@ def ensure_key() -> None:
 def main() -> None:
     wait_for_litellm()
     print("Provisioning LiteLLM resources ...")
+    ensure_models()
     ensure_budget()
     ensure_team()
     ensure_key()

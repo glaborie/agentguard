@@ -79,6 +79,39 @@ class TestLiteLLMGuardrails:
         assert len(data["choices"]) > 0
 
 
+class TestRagApi:
+    """Verify the RAG API wrapper (app/api.py) is reachable and well-formed."""
+
+    _base = "http://localhost:8001"
+
+    def test_health(self):
+        resp = requests.get(f"{self._base}/health", timeout=5)
+        assert resp.status_code == 200
+        assert resp.json().get("status") == "ok"
+
+    def test_models_lists_expected_models(self):
+        resp = requests.get(f"{self._base}/v1/models", timeout=5)
+        assert resp.status_code == 200
+        ids = {m["id"] for m in resp.json()["data"]}
+        assert "agentguard-rag" in ids
+        assert "agentguard-rag-mistral" in ids
+
+    def test_chat_completion_returns_answer(self):
+        resp = requests.post(
+            f"{self._base}/v1/chat/completions",
+            json={
+                "model": "agentguard-rag",
+                "messages": [{"role": "user", "content": "What is tracing in Langfuse?"}],
+            },
+            timeout=60,
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "choices" in data
+        content = data["choices"][0]["message"]["content"]
+        assert len(content) > 20
+
+
 class TestEndToEndRAG:
     def test_ingest_and_query(self):
         from app.rag.chain import query
