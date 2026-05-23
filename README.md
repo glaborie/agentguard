@@ -32,13 +32,14 @@ The application answers questions about Langfuse's own documentation (a meta twi
          All calls are traced via Langfuse CallbackHandler
 
    +-------------------------------------------------------------------+
-   |          Docker Compose Stack (12 services + 2 init)               |
+   |          Docker Compose Stack (14 services + 2 init)               |
    |                                                                    |
    |  langfuse-web (:3000)     langfuse-worker (:3030)                 |
    |  postgres (:5432)         clickhouse (:8123/:9000)                |
    |  redis (:6300->6379)      minio (:9090->9000, :9091->9001)       |
    |  ollama (:11434)          litellm (:4000)                         |
    |  qdrant (:6333/:6334)     portainer (:9443)   dozzle (:8080)     |
+   |  rag-api (:8001)          openwebui (:3001)                       |
    +-------------------------------------------------------------------+
 ```
 
@@ -57,6 +58,8 @@ The application answers questions about Langfuse's own documentation (a meta twi
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector database |
 | **portainer** | 9443 (HTTPS) | Container management UI |
 | **dozzle** | 8080 | Real-time log viewer |
+| **rag-api** | 8001 | FastAPI OpenAI-compatible wrapper around the RAG chain |
+| **openwebui** | 3001 | Chat UI — connects to `rag-api`, every message triggers full RAG pipeline |
 | **minio-init** | — | Creates `langfuse` bucket on first boot (runs once) |
 | **litellm-init** | — | Seeds LiteLLM config (runs once) |
 
@@ -128,7 +131,11 @@ python -m app.main agent "How is my RAG system performing?"
 python -m app.main agent-chat --session my-session
 ```
 
-### 9. View traces in Langfuse
+### 9. Chat via Open WebUI
+
+Open [http://localhost:3001](http://localhost:3001), create an admin account on first visit, then select **agentguard-rag** from the model dropdown. Every message you send goes through the full RAG pipeline — embedding, Qdrant retrieval, LLM generation — and is traced in Langfuse.
+
+### 10. View traces in Langfuse
 
 Open [http://localhost:3000](http://localhost:3000) and log in with:
 - **Email:** admin@local.dev
@@ -144,7 +151,7 @@ All LLM requests go through the LiteLLM proxy, which provides a unified OpenAI-c
 |---|---|---|
 | `nomic-embed-text` | Ollama (local) | Embedding only — the only model served locally |
 | `openrouter-gemini-flash` | OpenRouter → Gemini 2.5 Flash Lite | Default chat model (needs API key) |
-| `openrouter-mistral` | OpenRouter → Mistral 7B Instruct | Alternative cloud model (needs API key) |
+| `openrouter-mistral` | OpenRouter → Mistral Nemo | Alternative cloud model (needs API key) |
 
 Switch models per query:
 
@@ -181,6 +188,21 @@ Two custom guardrails run on every LiteLLM request by default, defined in `guard
 | **PII masking** | post_call | Redacts email addresses, SSNs, credit card numbers, and phone numbers from LLM responses |
 
 Both are registered in `litellm_config.yaml` with `default_on: true` — no per-request opt-in needed.
+
+## Open WebUI
+
+AgentGuard ships with [Open WebUI](https://github.com/open-webui/open-webui) as a chat interface at **http://localhost:3001**. It connects to `rag-api` (`app/api.py`) — a thin FastAPI wrapper that exposes the RAG chain as an OpenAI-compatible API.
+
+| Virtual model | Backing LiteLLM model | Notes |
+|---|---|---|
+| `agentguard-rag` | `openrouter-gemini-flash` | Default |
+| `agentguard-rag-mistral` | `openrouter-mistral` | Alternative |
+
+Every message sent via Open WebUI triggers the full RAG pipeline: query embedding → Qdrant similarity search → LLM generation. The trace appears in Langfuse within seconds. To confirm embeddings are firing:
+
+```bash
+docker compose logs litellm --tail 20 | grep embeddings
+```
 
 ## Evaluation
 
@@ -232,17 +254,17 @@ print_results(results)
 
 ```bash
 pytest -m "not integration"   # 135 unit tests, no Docker needed (~9s)
-pytest -m integration          # 17 integration tests, Docker stack required
+pytest -m integration          # 18 integration tests, Docker stack required
 pytest -v                      # Full suite
 ```
 
-Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, and ingestion. Integration tests verify service health, guardrail HTTP behavior, agent end-to-end, and RAG pipeline. Integration tests auto-skip when the Docker stack isn't running.
+Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, and ingestion. Integration tests verify service health, guardrail HTTP behavior, RAG API health, agent end-to-end, and RAG pipeline. Integration tests auto-skip when the Docker stack isn't running.
 
 ## Project Structure
 
 ```
 .
-├── docker-compose.yml        # 12-service stack + 2 init containers
+├── docker-compose.yml        # 14-service stack + 2 init containers
 ├── litellm_config.yaml       # LiteLLM model routing + guardrails config
 ├── requirements.txt          # Python dependencies
 ├── pyproject.toml            # pytest configuration
@@ -265,6 +287,8 @@ Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrail
 │       └── deepeval_runner.py   # Evaluation runner with Langfuse score push
 ├── guardrails/
 │   └── custom_guardrails.py  # Prompt injection + PII masking guards
+├── app/
+│   └── api.py                # FastAPI OpenAI-compatible RAG API (for Open WebUI)
 └── tests/
     ├── test_agent_tools.py   # 22 tests: all 5 tool functions
     ├── test_agent_graph.py   # 13 tests: graph structure, routing, prompts
@@ -275,7 +299,7 @@ Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrail
     ├── test_config.py        # 3 tests: settings defaults + overrides
     ├── test_chain.py         # 9 tests: format_docs, prompt, e2e query
     ├── test_ingest.py        # 10 tests: chunking, loading, scraping
-    └── test_integration.py   # 7 tests: service health, guardrails, RAG
+    └── test_integration.py   # 8 tests: service health, RAG API, guardrails, RAG
 ```
 
 ## The AI Engineering Loop

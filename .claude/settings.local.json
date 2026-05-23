@@ -34,7 +34,8 @@
       "Bash(docker exec *)",
       "Bash(python -m app.main query \"What are the five phases of the AI Engineering Loop?\")",
       "Bash(pytest -m \"not integration\")",
-      "Bash(python -c \"import litellm; print\\(litellm.__file__\\)\")"
+      "Bash(python -c \"import litellm; print\\(litellm.__file__\\)\")",
+      "Bash(git pull *)"
     ]
   }
 }

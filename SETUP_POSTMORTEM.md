@@ -276,6 +276,73 @@ qdrant (no upstream deps)
 
 LiteLLM depends on Ollama with `service_started` (not `service_healthy`) because Ollama has no built-in healthcheck and starts accepting connections before models are loaded.
 
+### 12. Open WebUI — Three Startup Blockers
+
+**12a. `STORE_MODEL_IN_DB` not set**
+
+**Symptom:** `init_litellm.py` fails with:
+```json
+{"error": "Set 'STORE_MODEL_IN_DB=True' in your env to enable this feature."}
+```
+
+**Root cause:** LiteLLM's `/model/new` endpoint (used to register models in the DB so they appear in the UI) is gated behind this env var even though the DB is already connected.
+
+**Fix:** Add `STORE_MODEL_IN_DB: "True"` to the `litellm` environment block in docker-compose.
+
+**Lesson:** LiteLLM separates "DB connected" (for key/spend tracking) from "models stored in DB" (for UI management). Both must be explicitly enabled.
+
+---
+
+**12b. Open WebUI downloads 30 HuggingFace files on startup**
+
+**Symptom:** Container starts but `curl http://localhost:3001` returns `Connection reset by peer`. Logs show:
+```
+Fetching 30 files:   0%|          | 0/30 [00:00<?, ?it/s]
+WARNING: You are sending unauthenticated requests to the HF Hub.
+```
+
+**Root cause:** Open WebUI downloads sentence-transformer embedding models from HuggingFace on first boot for its built-in RAG. The web server doesn't start until the download completes. Unauthenticated HF requests are rate-limited, making this take many minutes.
+
+**Fix:** Set `RAG_EMBEDDING_ENGINE: "openai"` to tell Open WebUI to use an external embedding API instead of a local model. Point it at LiteLLM:
+```yaml
+RAG_EMBEDDING_ENGINE: "openai"
+RAG_OPENAI_API_BASE_URL: "http://litellm:4000/v1"
+RAG_OPENAI_API_KEY: sk-litellm-dev-key
+RAG_EMBEDDING_MODEL: "nomic-embed-text"
+```
+
+**Lesson:** Any Open WebUI deployment that doesn't need its built-in RAG should set `RAG_EMBEDDING_ENGINE=openai` immediately. The HF download is silent until you watch the logs.
+
+---
+
+**12c. Windows bind mount path breaks Open WebUI**
+
+**Symptom:** Container stays unhealthy even after setting the embedding engine.
+
+**Root cause:** A volume mount `- /root/.cache/huggingface:/root/.cache/huggingface` was added to cache HF downloads. On Windows, Docker interprets `/root/...` as a Windows path which doesn't exist, causing the container to fail silently.
+
+**Fix:** Remove the bind mount entirely. Open WebUI's data volume (`openwebui_data:/app/backend/data`) handles persistence. HF model downloads are irrelevant once `RAG_EMBEDDING_ENGINE=openai` is set.
+
+**Lesson:** Never use absolute Linux paths as Docker bind-mount sources on Windows. Use named volumes instead.
+
+---
+
+**12d. Streaming response truncated (`TransferEncodingError`)**
+
+**Symptom:** Open WebUI shows no response and logs:
+```
+Error processing chat payload: Response payload is not completed:
+<TransferEncodingError: 400, message='Not enough data to satisfy transfer length header.'>
+```
+
+**Root cause:** The RAG API's `_stream_rag` generator was not wrapped in try/except. If the LangChain chain raised an exception mid-stream (e.g., Qdrant collection not found), the generator terminated without sending the `data: [DONE]` sentinel, leaving the chunked HTTP response incomplete.
+
+**Fix:** Wrap `chain.astream()` in try/except, catch the error as a content chunk, then always send the closing `finish_reason: stop` and `[DONE]` frames.
+
+**Lesson:** Any async SSE generator must guarantee it always sends `[DONE]` regardless of upstream errors. An incomplete chunked response is indistinguishable from a network drop from the client's perspective.
+
+---
+
 ## Final Working Configuration Summary
 
 | Component | Key Setting | Why |
@@ -291,6 +358,10 @@ LiteLLM depends on Ollama with `service_started` (not `service_healthy`) because
 | MinIO S3 credentials | `LANGFUSE_S3_*_ACCESS_KEY_ID/SECRET_ACCESS_KEY` | AWS SDK needs explicit creds in Docker |
 | MinIO bucket | `minio-init` container creates `langfuse` bucket | MinIO starts empty, Langfuse expects bucket |
 | Redis auth | `--requirepass` + `REDIS_AUTH` in Langfuse env | `env_file` leaks `REDIS_PASSWORD` to all containers |
+| LiteLLM model DB | `STORE_MODEL_IN_DB=True` | Required for `/model/new` and UI model list |
+| Open WebUI embeddings | `RAG_EMBEDDING_ENGINE=openai` pointing at LiteLLM | Prevents 30-file HF download that blocks startup |
+| Open WebUI volumes | Named volumes only, no Linux bind mounts | `/root/...` paths break on Windows Docker Desktop |
+| RAG API streaming | try/except around `chain.astream()` | Ensures `[DONE]` is always sent; incomplete stream = client error |
 
 ## Time Spent
 

@@ -312,6 +312,7 @@ services:
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
       LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
+      STORE_MODEL_IN_DB: "True"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
       interval: 60s
@@ -337,6 +338,76 @@ services:
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
       LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
       TZ: Europe/Berlin
+    networks:
+      - langfuse
+
+  rag-api:
+    image: python:3.11-slim
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - pip_cache:/root/.cache/pip
+    command: >
+      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
+             uvicorn app.api:app --host 0.0.0.0 --port 8001"
+    env_file: .env
+    environment:
+      LITELLM_BASE_URL: http://litellm:4000
+      QDRANT_URL: http://qdrant:6333
+      LANGFUSE_BASE_URL: http://langfuse-web:3000
+      TZ: Europe/Berlin
+    ports:
+      - "8001:8001"
+    depends_on:
+      litellm:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health', timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 120s
+    networks:
+      - langfuse
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    ports:
+      - "3001:8080"
+    volumes:
+      - openwebui_data:/app/backend/data
+    environment:
+      ENABLE_OLLAMA_API: "false"
+      OPENAI_API_BASE_URLS: "http://rag-api:8001/v1"
+      OPENAI_API_KEYS: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-agentguard-secret-key}
+      DEFAULT_MODELS: "agentguard-rag"
+      # Prevent Open WebUI downloading sentence-transformer models from HF on startup.
+      # We use our own RAG chain, so point its embedding engine at LiteLLM instead.
+      RAG_EMBEDDING_ENGINE: "openai"
+      RAG_OPENAI_API_BASE_URL: "http://litellm:4000/v1"
+      RAG_OPENAI_API_KEY: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
+      RAG_EMBEDDING_MODEL: "nomic-embed-text"
+      TZ: Europe/Berlin
+    depends_on:
+      rag-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
     networks:
       - langfuse
 
@@ -403,6 +474,8 @@ volumes:
   ollama_data:
   qdrant_data:
   portainer_data:
+  pip_cache:
+  openwebui_data:
 
 networks:
   langfuse:
