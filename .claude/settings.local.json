@@ -20,7 +20,21 @@
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('error', d.get\\('choices',[{}]\\)[0].get\\('message',{}\\).get\\('content',''\\)[:200]\\)\\)\")",
       "Bash(curl -s -H \"Authorization: Bearer sk-litellm-dev-key\" http://localhost:4000/key/list)",
       "Bash(python3 -m json.tool)",
-      "Bash(.venv/Scripts/python.exe scripts/init_litellm.py)"
+      "Bash(.venv/Scripts/python.exe scripts/init_litellm.py)",
+      "Bash(docker run *)",
+      "Bash(curl -s -H \"Authorization: Bearer sk-litellm-dev-key\" \"http://localhost:4000/v1/models\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(m['id']\\) for m in d.get\\('data',[]\\)]\")",
+      "Bash(curl -s \"http://localhost:4000/health/readiness\")",
+      "Bash(python -m app.main evaluate --dataset rag-eval-v1)",
+      "Bash(curl -sf \"http://localhost:3000/api/public/health\")",
+      "Bash(curl -s \"http://localhost:3000/api/public/health\")",
+      "Bash(curl -s -u \"pk-lf-dev:sk-lf-dev\" \"http://localhost:3000/api/public/datasets/rag-eval-v1\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Dataset items:', len\\(d.get\\('items',[]\\)\\)\\)\")",
+      "Bash(curl -s http://localhost:3000/api/public/health)",
+      "Bash(docker exec *)",
+      "Bash(python -m app.main query \"What are the five phases of the AI Engineering Loop?\")",
+      "Bash(pytest -m \"not integration\")",
+      "Bash(python -c \"import litellm; print\\(litellm.__file__\\)\")"
     ]
   }
 }

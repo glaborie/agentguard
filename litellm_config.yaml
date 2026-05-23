@@ -37,7 +37,7 @@ guardrails:
 
 general_settings:
   master_key: sk-litellm-dev-key
-
-auth:
-  api_keys:
-    - sk-litellm-dev-key
+  public_routes:
+    - "/model_group/info"
+    - "/health/liveliness"
+    - "/health/readiness"

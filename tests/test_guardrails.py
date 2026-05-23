@@ -32,8 +32,20 @@ _mock_custom_guardrail.CustomGuardrail = _FakeCustomGuardrail
 _mock_integrations.custom_guardrail = _mock_custom_guardrail
 _mock_litellm.integrations = _mock_integrations
 
+_mock_exceptions = ModuleType("litellm.exceptions")
+
+
+class _FakeBadRequestError(ValueError):
+    def __init__(self, message="", *args, **kwargs):
+        super().__init__(message)
+
+
+_mock_exceptions.BadRequestError = _FakeBadRequestError
+_mock_litellm.exceptions = _mock_exceptions
+
 sys.modules["litellm"] = _mock_litellm
 sys.modules["litellm._logging"] = _mock_logging
+sys.modules["litellm.exceptions"] = _mock_exceptions
 sys.modules["litellm.integrations"] = _mock_integrations
 sys.modules["litellm.integrations.custom_guardrail"] = _mock_custom_guardrail
 

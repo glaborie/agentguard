@@ -189,6 +189,65 @@ handler = CallbackHandler(public_key=settings.langfuse_public_key)
 
 ---
 
+### 9. MinIO S3 Credentials Not Passed to Langfuse
+
+**Symptom:** Python SDK reported `Transient error Internal Server Error encountered while exporting span batch`. Langfuse-web logs showed `Failed to upload JSON to S3` and `Could not load credentials from any providers`.
+
+**Root cause:** The docker-compose configured `LANGFUSE_S3_EVENT_UPLOAD_BUCKET`, `_ENDPOINT`, `_REGION`, etc., but omitted the access key credentials (`_ACCESS_KEY_ID` and `_SECRET_ACCESS_KEY`). Without explicit credentials, the AWS SDK inside Langfuse tried instance metadata, environment credentials chain, and config files — all of which fail in a Docker container with no AWS setup.
+
+**Fix:** Add the MinIO credentials to the Langfuse environment block, referencing the same `.env` vars used by the MinIO container:
+
+```yaml
+LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+```
+
+**Lesson:** When configuring S3-compatible storage for Langfuse, the access key and secret are required alongside bucket/endpoint/region. The Langfuse docs show all six env vars together, but it's easy to miss the credentials when copying from examples that assume IAM roles.
+
+---
+
+### 10. MinIO Bucket Not Created on First Boot
+
+**Symptom:** Even with correct credentials, Langfuse S3 uploads failed because the `langfuse` bucket didn't exist.
+
+**Root cause:** MinIO starts with zero buckets. The Langfuse S3 config references a `langfuse` bucket, but nothing creates it.
+
+**Fix:** Added a `minio-init` container that runs after MinIO is healthy and creates the bucket:
+
+```yaml
+minio-init:
+  image: quay.io/minio/mc:latest
+  restart: on-failure
+  depends_on:
+    minio:
+      condition: service_healthy
+  entrypoint: >
+    /bin/sh -c "
+    mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
+    mc mb --ignore-existing local/langfuse;
+    "
+```
+
+**Lesson:** Always pair MinIO with a bucket init step. The `--ignore-existing` flag makes it idempotent across restarts.
+
+---
+
+### 11. Redis Password Mismatch
+
+**Symptom:** Langfuse worker logs spammed `ERR AUTH <password> called without any password configured for the default user`.
+
+**Root cause:** The `.env` file set `REDIS_PASSWORD=redissecret`, which got loaded into the Langfuse containers via `env_file:`. The Langfuse SDK tried to authenticate with this password, but the Redis container was started without `--requirepass` and had no password configured.
+
+**Fix:** Two changes:
+1. Configure Redis to require the password: `--requirepass ${REDIS_PASSWORD:-redissecret}` in the Redis command.
+2. Add `REDIS_AUTH: ${REDIS_PASSWORD:-redissecret}` to the Langfuse environment block (the env var Langfuse uses for Redis authentication).
+
+**Lesson:** When using `env_file:` in docker-compose, any `REDIS_PASSWORD` variable gets injected into all containers that reference that file. If a service SDK auto-detects and uses that variable for auth, the actual Redis server must be configured to expect it. Either remove the variable from `.env` or configure Redis to match.
+
+---
+
 ## Startup Order Dependencies
 
 The correct dependency chain for this stack:
@@ -205,8 +264,9 @@ clickhouse (healthcheck: wget /ping)
 redis (healthcheck: redis-cli ping)
   └── langfuse-web, langfuse-worker
 
-minio (healthcheck: mc ready local)
-  └── langfuse-web, langfuse-worker
+minio (healthcheck: curl /minio/health/live)
+  ├── langfuse-web, langfuse-worker
+  └── minio-init (creates langfuse bucket, runs once)
 
 ollama (no healthcheck, slow to start)
   └── litellm (condition: service_started, not service_healthy)
@@ -228,6 +288,9 @@ LiteLLM depends on Ollama with `service_started` (not `service_healthy`) because
 | Langfuse SDK | `langfuse.langchain.CallbackHandler` | v4 module path |
 | Langfuse client | Module-level singleton | Handler looks up by public_key |
 | Ollama models | Manual pull after first boot | No auto-pull in Docker image |
+| MinIO S3 credentials | `LANGFUSE_S3_*_ACCESS_KEY_ID/SECRET_ACCESS_KEY` | AWS SDK needs explicit creds in Docker |
+| MinIO bucket | `minio-init` container creates `langfuse` bucket | MinIO starts empty, Langfuse expects bucket |
+| Redis auth | `--requirepass` + `REDIS_AUTH` in Langfuse env | `env_file` leaks `REDIS_PASSWORD` to all containers |
 
 ## Time Spent
 

@@ -1,0 +1,29 @@
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml
+      - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    environment:
+      LANGFUSE_HOST: http://langfuse-web:3000
+      TZ: Europe/Berlin
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
+      LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/litellm
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
+      interval: 60s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+    networks:
+      - langfuse

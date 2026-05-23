@@ -32,7 +32,7 @@ The application answers questions about Langfuse's own documentation (a meta twi
          All calls are traced via Langfuse CallbackHandler
 
    +-------------------------------------------------------------------+
-   |                Docker Compose Stack (11 services)                  |
+   |          Docker Compose Stack (12 services + 2 init)               |
    |                                                                    |
    |  langfuse-web (:3000)     langfuse-worker (:3030)                 |
    |  postgres (:5432)         clickhouse (:8123/:9000)                |
@@ -57,6 +57,8 @@ The application answers questions about Langfuse's own documentation (a meta twi
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector database |
 | **portainer** | 9443 (HTTPS) | Container management UI |
 | **dozzle** | 8080 | Real-time log viewer |
+| **minio-init** | — | Creates `langfuse` bucket on first boot (runs once) |
+| **litellm-init** | — | Seeds LiteLLM config (runs once) |
 
 ## Prerequisites
 
@@ -240,7 +242,7 @@ Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrail
 
 ```
 .
-├── docker-compose.yml        # 11-service stack definition
+├── docker-compose.yml        # 12-service stack + 2 init containers
 ├── litellm_config.yaml       # LiteLLM model routing + guardrails config
 ├── requirements.txt          # Python dependencies
 ├── pyproject.toml            # pytest configuration

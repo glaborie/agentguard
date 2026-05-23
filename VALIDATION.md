@@ -17,7 +17,7 @@ Check all containers are running:
 docker compose ps
 ```
 
-You should see 11 services up. Key ones to confirm:
+You should see 12 services up (plus 2 init containers that exit after running). Key ones to confirm:
 
 ```bash
 # LiteLLM — needs auth header, should return healthy/unhealthy model list (not "No connected db")
@@ -291,3 +291,6 @@ pytest -v --tb=short --durations=10
 | Guardrails not triggering | `default_on` not set | Verify `litellm_config.yaml` has `default_on: true` under each guardrail, then restart LiteLLM |
 | Injection guard returns 500 instead of 400 | Guard raises `ValueError` instead of `BadRequestError` | Check `guardrails/custom_guardrails.py` raises `litellm.exceptions.BadRequestError`; restart LiteLLM after fixing |
 | PII not being masked | PII format not matched | The regex guard catches standard formats only (xxx-xx-xxxx, user@domain.com, etc.) — non-standard formats pass through |
+| `Transient error Internal Server Error encountered while exporting span batch` | MinIO S3 credentials missing from Langfuse config | Add `LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID` / `SECRET_ACCESS_KEY` (and media equivalents) to the Langfuse environment in docker-compose, referencing `MINIO_ROOT_USER` / `MINIO_ROOT_PASSWORD` |
+| `Failed to upload JSON to S3` / `Could not load credentials from any providers` | Same as above — Langfuse can't auth to MinIO | See fix above; also verify the `langfuse` bucket exists in MinIO (`minio-init` container creates it) |
+| `ERR AUTH <password> called without any password configured` in Redis/Langfuse worker logs | `.env` sets `REDIS_PASSWORD` which gets loaded into Langfuse via `env_file`, but Redis itself has no password | Add `--requirepass` to Redis command in docker-compose, and set `REDIS_AUTH` in the Langfuse environment block |
