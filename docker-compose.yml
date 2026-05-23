@@ -72,7 +72,7 @@ services:
     environment: &langfuse-env
       TZ: Europe/Berlin
       NEXTAUTH_URL: http://localhost:3000
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres?idle_timeout=60&connect_timeout=10
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
       TELEMETRY_ENABLED: "false"
       LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
       CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
@@ -84,16 +84,21 @@ services:
       LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio:9000
       LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
       LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
       LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
       LANGFUSE_S3_MEDIA_UPLOAD_REGION: auto
       LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio:9000
       LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
       LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
+      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
       LANGFUSE_S3_BATCH_EXPORT_ENABLED: "false"
       LANGFUSE_USE_AZURE_BLOB: "false"
       LANGFUSE_USE_OCI_NATIVE_OBJECT_STORAGE: "false"
       REDIS_HOST: redis
       REDIS_PORT: "6379"
+      REDIS_AUTH: ${REDIS_PASSWORD:-redissecret}
       REDIS_TLS_ENABLED: "false"
       LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-my-org}
       LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-My Org}
@@ -214,6 +219,23 @@ services:
     networks:
       - langfuse
 
+  minio-init:
+    image: quay.io/minio/mc:latest
+    restart: on-failure
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
+      mc mb --ignore-existing local/langfuse;
+      "
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    networks:
+      - langfuse
+
   redis:
     image: docker.io/redis:7-alpine
     restart: always
@@ -222,12 +244,12 @@ services:
     pull_policy: if_not_present
     env_file: .env
     command: >
-      --requirepass ${REDIS_PASSWORD}
       --maxmemory-policy noeviction
       --appendonly yes
       --appendfsync everysec
       --tcp-keepalive 60
       --timeout 300
+      --requirepass ${REDIS_PASSWORD:-redissecret}
     environment:
       TZ: Europe/Berlin
     ports:
@@ -235,7 +257,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 3s
       timeout: 10s
       retries: 10
@@ -274,7 +296,6 @@ services:
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
-    env_file: .env
     depends_on:
       postgres:
         condition: service_healthy
@@ -284,9 +305,13 @@ services:
       - ./litellm_config.yaml:/app/config.yaml
       - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py
     command: ["--config", "/app/config.yaml", "--port", "4000"]
+    env_file: .env
     environment:
       LANGFUSE_HOST: http://langfuse-web:3000
       TZ: Europe/Berlin
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
+      LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
       interval: 60s
