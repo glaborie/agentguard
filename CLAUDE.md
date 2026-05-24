@@ -22,6 +22,8 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 
 **Langfuse auto-provisioning.** The docker-compose uses `LANGFUSE_INIT_*` env vars to create a default org, project, and API keys on first boot. No manual setup needed - keys `pk-lf-dev` / `sk-lf-dev` work immediately.
 
+**Langfuse Prompt Management.** The RAG system prompt is stored in the Langfuse Prompt Registry (name: `rag-system-prompt`, type: chat). `app/rag/chain.py` fetches it at runtime via `langfuse.get_prompt()` with a 60 s cache and an in-process fallback (`LANGFUSE_PROMPT_MESSAGES`) if Langfuse is unreachable. Seed the prompt once with `python -m scripts.seed_langfuse_prompt`; push a new version after editing with `--force`. This lets you iterate on the prompt via the Langfuse UI without redeploying code — edit, save, the next request picks it up within 60 s.
+
 ## Key files
 
 - `docker-compose.yml` - 12 services + 2 init containers. Uses YAML anchors for DRY logging/resource config. Langfuse v3 needs postgres + clickhouse + redis + minio. Ollama has GPU reservation (4 CPU, 8 GB mem). All services on a custom `langfuse` bridge network. Redis host port is 6300 (not 6379) due to Windows port conflicts. Redis requires a password (`REDIS_PASSWORD` from `.env`); Langfuse authenticates via `REDIS_AUTH`. MinIO credentials are passed to Langfuse via `LANGFUSE_S3_*_ACCESS_KEY_ID` / `SECRET_ACCESS_KEY` env vars. A `minio-init` container auto-creates the `langfuse` bucket on first boot.
@@ -50,6 +52,10 @@ python -m app.main chat                # Interactive RAG chat
 python -m app.main agent "question"    # ReAct agent with tools
 python -m app.main agent-chat          # Interactive agent chat with memory
 python -m app.main evaluate --dataset name  # Run DeepEval metrics
+
+# One-time setup (after first docker compose up):
+python -m scripts.seed_langfuse_prompt        # Register RAG system prompt in Langfuse
+python -m scripts.seed_langfuse_prompt --force # Push a new version (after editing)
 ```
 
 ### Adding a new model

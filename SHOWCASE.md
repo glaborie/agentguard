@@ -7,6 +7,12 @@ Prompts to run from Open WebUI ([http://localhost:3001](http://localhost:3001)) 
 - Have Langfuse open in another tab ([http://localhost:3000](http://localhost:3000) → Traces) to watch traces appear in real time
 - Have a terminal ready: `docker compose logs -f litellm | grep -E "POST|embeddings"` to watch embedding calls
 
+**Prerequisites (one-time setup):**
+```bash
+python -m app.main ingest                 # populate Qdrant
+python -m scripts.seed_langfuse_prompt    # register RAG system prompt in Langfuse
+```
+
 ---
 
 ## Part 1 — RAG
@@ -219,6 +225,87 @@ My customer's email is bob@acme.io and their phone number is (800) 867-5309. Can
 
 ---
 
+## Part 3 — Prompt Management
+
+These steps demonstrate Langfuse's Prompt Registry: versioned prompts edited in the UI and picked up by the running system without a code redeploy.
+
+**Before you start:** Open [http://localhost:3000](http://localhost:3000) → **Prompts** in the left nav. You should see `rag-system-prompt` with label `production`.
+
+---
+
+### 3.1 Baseline — Confirm Current Behaviour
+
+Send any RAG query in Open WebUI to establish a baseline:
+
+**Prompt:**
+```
+What is the difference between a trace and an observation in Langfuse?
+```
+
+**Expected:** A grounded answer referencing Langfuse concepts. Note the tone — factual, neutral.
+
+**What to look for in Langfuse:** In the trace, expand the `ChatOpenAI` observation and check the system message — it should match the `rag-system-prompt` content stored in Langfuse.
+
+---
+
+### 3.2 Edit the Prompt in the UI
+
+1. In Langfuse → **Prompts** → click `rag-system-prompt`
+2. Click **+ New version** (or edit the current version)
+3. In the system message, append a sentence after the existing instructions — for example:
+
+   > Always end your answer with a one-sentence summary prefixed with **TL;DR:**.
+
+4. Save and set the new version's label to **production** (this promotes it; the old version loses the label)
+
+**No code restart needed.** The chain's `get_prompt()` call has a 60 s cache TTL — wait one minute, then send the next query.
+
+---
+
+### 3.3 Verify the New Version Is Live
+
+After ~60 seconds, send the same query again:
+
+**Prompt:**
+```
+What is the difference between a trace and an observation in Langfuse?
+```
+
+**Expected:** The answer now ends with a `TL;DR:` summary line — confirming the new prompt version was picked up at runtime.
+
+**What to look for in Langfuse:** The new trace's `ChatOpenAI` system message should show your updated prompt text. The Prompts page shows version 2 is now tagged `production`.
+
+---
+
+### 3.4 Rollback
+
+If the new prompt degrades quality:
+
+1. In Langfuse → **Prompts** → `rag-system-prompt` → click version 1
+2. Set its label back to **production**
+
+Within 60 s the chain reverts to the original prompt — no deployment, no restart.
+
+---
+
+### 3.5 Fallback Safety Check
+
+Stop the Langfuse web container temporarily:
+
+```bash
+docker compose stop langfuse-web
+```
+
+Send a query from Open WebUI. **Expected:** The RAG chain still responds normally — it falls back to the hardcoded `LANGFUSE_PROMPT_MESSAGES` in `app/rag/chain.py`.
+
+Bring Langfuse back:
+
+```bash
+docker compose start langfuse-web
+```
+
+---
+
 ## Verification Checklist
 
 | Scenario | Pass condition |
@@ -231,5 +318,10 @@ My customer's email is bob@acme.io and their phone number is (800) 867-5309. Can
 | 2.5 | Normal answer returned; no false positive block |
 | 2.6 | Redaction tokens appear; raw PII absent from response |
 | 2.7 | Model refuses to answer (context-grounding, not a PII masking test) |
+| 3.1 | Baseline answer is factual; system message in trace matches Langfuse prompt |
+| 3.2 | New version saved in Langfuse UI; label promoted to `production` |
+| 3.3 | Response includes `TL;DR:` line after ~60 s; trace shows updated system message |
+| 3.4 | Rollback to v1 restores original behaviour within 60 s |
+| 3.5 | Chain responds normally with Langfuse stopped (fallback active) |
 | All RAG | `POST /v1/embeddings` visible in LiteLLM logs for every query |
 | All RAG | Trace visible in Langfuse with Retriever + ChatOpenAI spans |
