@@ -8,6 +8,7 @@ from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 
 from app.config import settings
+from app.tracing import get_langfuse_client
 
 RAG_SYSTEM_PROMPT = """\
 You are a helpful assistant that answers questions about Langfuse \
@@ -17,6 +18,16 @@ If the context doesn't contain enough information, say so honestly.
 Context:
 {context}
 """
+
+# Langfuse Prompt Registry fallback (mustache syntax) — mirrors RAG_SYSTEM_PROMPT.
+# Used when Langfuse is unreachable and as the seed value for scripts/seed_langfuse_prompt.py.
+LANGFUSE_PROMPT_MESSAGES = [
+    {
+        "role": "system",
+        "content": RAG_SYSTEM_PROMPT.replace("{context}", "{{context}}"),
+    },
+    {"role": "user", "content": "{{question}}"},
+]
 
 
 def get_llm(model: str | None = None, temperature: float = 0.0) -> ChatOpenAI:
@@ -50,14 +61,24 @@ def format_docs(docs) -> str:
     )
 
 
+def _get_prompt_template() -> ChatPromptTemplate:
+    """Fetch the RAG system prompt from Langfuse Prompt Registry.
+
+    Falls back to LANGFUSE_PROMPT_MESSAGES if Langfuse is unreachable.
+    Langfuse caches the prompt for 60 s so this adds no per-request latency.
+    """
+    lf_prompt = get_langfuse_client().get_prompt(
+        "rag-system-prompt",
+        type="chat",
+        fallback=LANGFUSE_PROMPT_MESSAGES,
+    )
+    return ChatPromptTemplate.from_messages(lf_prompt.get_langchain_prompt())
+
+
 def build_rag_chain(model: str | None = None, k: int = 4):
     retriever = get_retriever(k=k)
     llm = get_llm(model=model)
-
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", RAG_SYSTEM_PROMPT),
-        ("human", "{question}"),
-    ])
+    prompt = _get_prompt_template()
 
     chain = (
         {

@@ -35,7 +35,12 @@
       "Bash(python -m app.main query \"What are the five phases of the AI Engineering Loop?\")",
       "Bash(pytest -m \"not integration\")",
       "Bash(python -c \"import litellm; print\\(litellm.__file__\\)\")",
-      "Bash(git pull *)"
+      "Bash(git pull *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4000/health/liveliness)",
+      "Bash(curl -s http://localhost:4000/v1/models -H \"Authorization: Bearer sk-litellm-dev-key\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([m['id'] for m in d['data']]\\)\")",
+      "Bash(curl -s -X POST http://localhost:8001/v1/chat/completions -H 'Content-Type: application/json' -d '{\"model\":\"agentguard-rag\",\"messages\":[{\"role\":\"user\",\"content\":\"What is the AI Engineering Loop?\"}],\"stream\":false}')",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['choices'][0]['message']['content'][:300]\\)\")"
     ]
   }
 }
