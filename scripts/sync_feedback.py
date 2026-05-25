@@ -71,7 +71,11 @@ def _get_rated_messages(base_url: str, token: str) -> list[dict]:
             timeout=15,
         )
         r2.raise_for_status()
-        messages = r2.json().get("chat", {}).get("messages", [])
+        chat = r2.json().get("chat", {})
+        # history.messages (dict) has the full annotation (reason, comment, details.rating).
+        # chat.messages (list) only carries rating + tags — use history when available.
+        history = chat.get("history", {}).get("messages", {})
+        messages = list(history.values()) if history else chat.get("messages", [])
         msg_map = {m["id"]: m for m in messages if "id" in m}
 
         for msg in messages:
