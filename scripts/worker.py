@@ -23,6 +23,7 @@ load_dotenv()
 
 import scripts.online_eval_worker as eval_worker
 import scripts.sync_feedback as feedback_worker
+import scripts.build_dataset as dataset_builder
 from scripts.seed_score_configs import seed as seed_score_configs
 
 logging.basicConfig(
@@ -55,6 +56,16 @@ def _feedback_loop(interval: int, config_ids: dict) -> None:
         _stop.wait(interval)
 
 
+def _dataset_loop(interval: int) -> None:
+    logger.info("dataset-builder started (interval: %ds)", interval)
+    while not _stop.is_set():
+        try:
+            dataset_builder.run_once()
+        except Exception as exc:
+            logger.error("dataset-builder error: %s", exc)
+        _stop.wait(interval)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="AgentGuard background worker")
     parser.add_argument("--eval-interval", type=int, default=60, metavar="S",
@@ -63,6 +74,8 @@ def main() -> None:
                         help="Feedback sync poll interval in seconds (default: 120)")
     parser.add_argument("--limit", type=int, default=100, metavar="N",
                         help="Traces to fetch per eval pass (default: 100)")
+    parser.add_argument("--dataset-interval", type=int, default=300, metavar="S",
+                        help="Dataset builder poll interval in seconds (default: 300)")
     args = parser.parse_args()
 
     logger.info("Seeding score configs...")
@@ -79,6 +92,12 @@ def main() -> None:
             target=_feedback_loop,
             args=(args.feedback_interval, config_ids),
             name="feedback-worker",
+            daemon=True,
+        ),
+        threading.Thread(
+            target=_dataset_loop,
+            args=(args.dataset_interval,),
+            name="dataset-builder",
             daemon=True,
         ),
     ]

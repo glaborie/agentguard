@@ -552,6 +552,80 @@ In Langfuse → **Scores** (left nav) → filter by `name = online_has_citation`
 
 ---
 
+## Part 7 — Automated Dataset Building
+
+This demonstrates the complete human-in-the-loop flywheel: user ratings in Open WebUI automatically build a labeled gold dataset in Langfuse that can be used for experiments and regression testing — no manual curation step.
+
+**How it works:**
+`scripts/build_dataset.py` queries Langfuse for all `user_feedback=1.0` scores, fetches each linked trace to extract the question and answer, and upserts them as items in the `rag-golden-set` dataset. `source_trace_id` links each item back to its origin trace. The combined worker (`agentguard-worker`) runs this automatically every 5 minutes.
+
+---
+
+### 7.1 Rate Some Responses
+
+Rate at least 2–3 responses with thumbs-up in Open WebUI (if you haven't already from Part 4). The `agentguard-worker` will sync the feedback scores to Langfuse within 120s and add them to the dataset within 300s.
+
+---
+
+### 7.2 Run the Dataset Builder Manually
+
+```bash
+python -m scripts.build_dataset --dry-run   # preview — shows what would be added
+python -m scripts.build_dataset             # write items to rag-golden-set
+```
+
+**Expected output:**
+```
+2026-05-25 16:47:27 INFO Found 22 positively rated trace(s).
+2026-05-25 16:47:34 INFO Created dataset 'rag-golden-set'
+2026-05-25 16:47:40 INFO Added trace=9bb9350f2cf2  q=What is Langfuse?...
+2026-05-25 16:47:40 INFO Added trace=fcbd83edfe58  q=*   What is the AI Engineering Loop?...
+...
+2026-05-25 16:47:48 INFO Done. 22 item(s) added to dataset 'rag-golden-set' this pass.
+```
+
+Second run immediately after shows `No new traces to add` — state in `.build_dataset_state.json` prevents duplicates.
+
+---
+
+### 7.3 Verify in Langfuse UI
+
+1. In Langfuse → **Datasets** (left nav) → click `rag-golden-set`
+2. Each item shows:
+   - **Input:** `{"question": "..."}`
+   - **Expected output:** `{"answer": "..."}`
+   - **Source trace:** link back to the original `RunnableSequence` trace
+
+**What this demonstrates:** Human thumbs-up votes are now a first-class data signal — they automatically populate a labeled dataset that can be used as the `--dataset` argument for `app.main evaluate` or passed to `app/eval/experiments.py` for model comparison.
+
+---
+
+### 7.4 Use the Dataset for Evaluation
+
+Run DeepEval metrics against the gold set:
+
+```bash
+python -m app.main evaluate --dataset rag-golden-set
+```
+
+**Expected:** Faithfulness, answer relevancy, and contextual relevancy scores are pushed back to Langfuse as a dataset run. The dataset now has both human signal (thumbs-up) and LLM-judge signal on the same items.
+
+---
+
+### 7.5 Automatic Growth
+
+The combined worker logs dataset-builder activity every 5 minutes:
+
+```
+2026-05-25 16:48:13 INFO dataset-builder started (interval: 300s)
+2026-05-25 16:48:13 INFO Found 22 positively rated trace(s).
+2026-05-25 16:48:13 INFO No new traces to add to dataset 'rag-golden-set'.
+```
+
+Rate a new response in Open WebUI — within ~7 minutes (2 min feedback sync + 5 min dataset build) it appears as a new dataset item automatically.
+
+---
+
 ## Verification Checklist
 
 | Scenario | Pass condition |
@@ -582,3 +656,7 @@ In Langfuse → **Scores** (left nav) → filter by `name = online_has_citation`
 | 6.3 | New query appears in worker output within one poll interval |
 | 6.4 | `--reset` re-scores all traces; second `--once` run shows 0 new traces |
 | 6.5 | Scores dashboard shows `online_*` entries filterable by name |
+| 7.2 | `build_dataset` output lists trace IDs and questions; `rag-golden-set` created |
+| 7.3 | Langfuse Datasets → `rag-golden-set` shows items with input/expected_output/source trace |
+| 7.4 | `evaluate --dataset rag-golden-set` runs without error; dataset run visible in Langfuse |
+| 7.5 | Worker log shows `dataset-builder started (interval: 300s)`; new thumbs-up appears in dataset within ~7 min |

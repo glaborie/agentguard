@@ -122,7 +122,6 @@ services:
     depends_on: *langfuse-deps
     environment:
       <<: *langfuse-env
-      REDIS_SOCKET_TIMEOUT_MS: "600000"
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://$(hostname -i):3030/api/health"]
       interval: 10s

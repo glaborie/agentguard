@@ -56,7 +56,7 @@ def _owui_token(base_url: str, email: str, password: str) -> str:
     r = httpx.post(
         f"{base_url}/api/v1/auths/signin",
         json={"email": email, "password": password},
-        timeout=10,
+        timeout=60,
     )
     r.raise_for_status()
     token = r.json().get("token")
@@ -68,7 +68,7 @@ def _owui_token(base_url: str, email: str, password: str) -> str:
 def _get_rated_messages(base_url: str, token: str) -> list[dict]:
     """Return list of rated assistant message dicts from all chats."""
     headers = {"Authorization": f"Bearer {token}"}
-    r = httpx.get(f"{base_url}/api/v1/chats/", headers=headers, timeout=15)
+    r = httpx.get(f"{base_url}/api/v1/chats/", headers=headers, timeout=60)
     r.raise_for_status()
     chats = r.json()
 
@@ -78,7 +78,7 @@ def _get_rated_messages(base_url: str, token: str) -> list[dict]:
         r2 = httpx.get(
             f"{base_url}/api/v1/chats/{chat_id}",
             headers=headers,
-            timeout=15,
+            timeout=60,
         )
         r2.raise_for_status()
         chat = r2.json().get("chat", {})
@@ -224,7 +224,7 @@ def _post_score(
         f"{settings.langfuse_base_url}/api/public/scores",
         json=payload,
         headers={"Authorization": f"Basic {_AUTH}", "Content-Type": "application/json"},
-        timeout=10,
+        timeout=60,
     )
     resp.raise_for_status()
 
@@ -252,6 +252,7 @@ def run_once(apply: bool = True, reset: bool = False, config_ids: dict[str, str]
         public_key=settings.langfuse_public_key,
         secret_key=settings.langfuse_secret_key,
         base_url=settings.langfuse_base_url,
+        timeout=60,
     )
 
     try:

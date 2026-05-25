@@ -104,7 +104,7 @@ def _score_trace(trace, config_ids: dict[str, str]) -> dict[str, float]:
             f"{settings.langfuse_base_url}/api/public/scores",
             json=payload,
             headers={"Authorization": f"Basic {_AUTH}", "Content-Type": "application/json"},
-            timeout=10,
+            timeout=60,
         )
         resp.raise_for_status()
         scores[name] = value
