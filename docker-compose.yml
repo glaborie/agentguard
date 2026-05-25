@@ -431,6 +431,7 @@ services:
       LITELLM_BASE_URL: http://litellm:4000
       QDRANT_URL: http://qdrant:6333
       OPENWEBUI_BASE_URL: http://openwebui:8080
+      PYTHONUNBUFFERED: "1"
       TZ: Europe/Berlin
     depends_on:
       langfuse-web:
