@@ -374,6 +374,49 @@ In Langfuse → **Scores** (left nav) → filter by `name = user_feedback`.
 
 ---
 
+## Part 5 — Session Linking (Open WebUI Chat → Langfuse Session)
+
+Every Open WebUI chat has a UUID that appears in its share URL. The RAG API captures this UUID from the `chat-id` request header and stamps it as `session_id` on every Langfuse trace, so all turns of a conversation are grouped under one Langfuse Session.
+
+---
+
+### 5.1 Send a Multi-Turn Chat
+
+1. In Open WebUI, start a **new chat** with **agentguard-rag**.
+2. Send at least two questions in the same conversation, e.g.:
+   - "What is a trace in Langfuse?"
+   - "How does that relate to a session?"
+3. Click the **Share** button (chain icon) to get the share URL, e.g. `http://localhost:3001/s/ae6daad4-...`
+
+---
+
+### 5.2 Navigate to the Langfuse Session
+
+Take the UUID from the share URL and open:
+
+```
+http://localhost:3000/project/my-project/sessions/<chat-uuid>
+```
+
+**Expected:** The Langfuse Sessions view shows both turns of the conversation as separate traces grouped under the same session ID.
+
+**What to look for:**
+- The session contains one `RunnableSequence` trace per user message.
+- Each trace shows the full RAG span tree (Retriever → ChatOpenAI).
+- The session ID in Langfuse matches the chat UUID from the Open WebUI share URL exactly.
+
+---
+
+### 5.3 Verify via CLI
+
+```bash
+langfuse api sessions get <chat-uuid> --env .env
+```
+
+**Expected output:** JSON with `"id": "<chat-uuid>"` and a `"traces"` array containing one entry per turn.
+
+---
+
 ## Verification Checklist
 
 | Scenario | Pass condition |
@@ -397,3 +440,4 @@ In Langfuse → **Scores** (left nav) → filter by `name = user_feedback`.
 | 4.4 | Scores dashboard shows `user_feedback` entries over time |
 | All RAG | `POST /v1/embeddings` visible in LiteLLM logs for every query |
 | All RAG | Trace visible in Langfuse with Retriever + ChatOpenAI spans |
+| 5.1–5.3 | Langfuse session `<chat-uuid>` contains one trace per turn; CLI confirms `"traces"` array |

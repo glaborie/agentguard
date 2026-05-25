@@ -46,7 +46,7 @@ x-deploy-ollama: &deploy-ollama
 
 services:
   langfuse-web:
-    image: docker.io/langfuse/langfuse:3
+    image: docker.io/langfuse/langfuse:3.174.1
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -113,7 +113,7 @@ services:
       - langfuse
 
   langfuse-worker:
-    image: docker.io/langfuse/langfuse-worker:3
+    image: docker.io/langfuse/langfuse-worker:3.174.1
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -167,7 +167,7 @@ services:
       - langfuse
 
   clickhouse:
-    image: docker.io/clickhouse/clickhouse-server:latest
+    image: docker.io/clickhouse/clickhouse-server:26.4
     restart: always
     logging: *default-logging
     deploy: *deploy-clickhouse
@@ -194,7 +194,7 @@ services:
       - langfuse
 
   minio:
-    image: quay.io/minio/minio:latest
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -220,7 +220,7 @@ services:
       - langfuse
 
   minio-init:
-    image: quay.io/minio/mc:latest
+    image: quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z
     restart: on-failure
     depends_on:
       minio:
@@ -265,7 +265,7 @@ services:
       - langfuse
 
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.20.7
     restart: always
     logging: *default-logging
     deploy: *deploy-ollama
@@ -291,7 +291,7 @@ services:
       - langfuse
 
   litellm:
-    image: ghcr.io/berriai/litellm:main-latest
+    image: ghcr.io/berriai/litellm:main-v1.82.6
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -333,7 +333,7 @@ services:
     volumes:
       - ./scripts/init_litellm.py:/init_litellm.py:ro
     command: >
-      sh -c "pip install requests -q && python /init_litellm.py"
+      sh -c "pip install requests psycopg2-binary -q && python /init_litellm.py"
     environment:
       LITELLM_URL: http://litellm:4000
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
@@ -378,7 +378,7 @@ services:
       - langfuse
 
   openwebui:
-    image: ghcr.io/open-webui/open-webui:main
+    image: ghcr.io/open-webui/open-webui@sha256:74093dadc9c6aabc23987a74fd8c2fb8d995b1a5b22e83b0036fb9d6af590e8c
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -413,7 +413,7 @@ services:
       - langfuse
 
   portainer:
-    image: portainer/portainer-ce:lts
+    image: portainer/portainer-ce@sha256:8d2f5c9fbc5b8490fb3a12efadbad74978e22991911e1db611d8a45871775112
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -429,7 +429,7 @@ services:
       - langfuse
 
   dozzle:
-    image: amir20/dozzle:latest
+    image: amir20/dozzle:v10.6.0
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -445,7 +445,7 @@ services:
       - langfuse
 
   qdrant:
-    image: qdrant/qdrant:latest
+    image: qdrant/qdrant:v1.18.0
     restart: always
     logging: *default-logging
     deploy: *deploy-limits

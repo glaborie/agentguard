@@ -20,6 +20,7 @@ import httpx
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from langfuse import propagate_attributes
 from pydantic import BaseModel
 
 from app.config import settings
@@ -93,15 +94,19 @@ def list_models():
 
 
 @app.post("/v1/chat/completions")
-async def chat_completions(request: ChatRequest):
-    user_messages = [m for m in request.messages if m.role == "user"]
+async def chat_completions(body: ChatRequest, request: Request):
+    user_messages = [m for m in body.messages if m.role == "user"]
     if not user_messages:
         raise HTTPException(status_code=400, detail="No user message found")
 
     query = user_messages[-1].content
-    litellm_model = _MODELS.get(request.model, "openrouter-gemini-flash")
+    litellm_model = _MODELS.get(body.model, "openrouter-gemini-flash")
 
-    if request.model in _DIRECT_MODELS:
+    # Open WebUI sends the chat UUID in the "chat-id" header.  Stamping it as
+    # session_id groups all turns of a conversation under one Langfuse session.
+    chat_id: Optional[str] = request.headers.get("chat-id")
+
+    if body.model in _DIRECT_MODELS:
         # ── Direct LiteLLM path (no RAG context) ─────────────────────────────
         # Guardrails (injection guard + PII masking) still apply because the
         # call goes through the LiteLLM proxy.
@@ -111,7 +116,7 @@ async def chat_completions(request: ChatRequest):
                     f"{settings.litellm_base_url}/v1/chat/completions",
                     json={
                         "model": litellm_model,
-                        "messages": [m.model_dump() for m in request.messages],
+                        "messages": [m.model_dump() for m in body.messages],
                     },
                     headers={"Authorization": f"Bearer {settings.litellm_master_key}"},
                 )
@@ -135,7 +140,8 @@ async def chat_completions(request: ChatRequest):
         # masking hook sees the complete response before we stream it back.
         chain = build_rag_chain(model=litellm_model)
         try:
-            result = chain.invoke(query, config={"callbacks": callbacks})
+            with propagate_attributes(session_id=chat_id):
+                result = chain.invoke(query, config={"callbacks": callbacks})
         except Exception as e:
             result = f"[Error: {e}]"
 
@@ -144,9 +150,9 @@ async def chat_completions(request: ChatRequest):
         trace_id = handler.last_trace_id
         completion_id = trace_id if trace_id else f"chatcmpl-{uuid.uuid4().hex[:8]}"
 
-    if request.stream:
+    if body.stream:
         return StreamingResponse(
-            _stream_from_result(result, completion_id, request.model),
+            _stream_from_result(result, completion_id, body.model),
             media_type="text/event-stream",
         )
 
@@ -154,7 +160,7 @@ async def chat_completions(request: ChatRequest):
         "id": completion_id,
         "object": "chat.completion",
         "created": int(time.time()),
-        "model": request.model,
+        "model": body.model,
         "choices": [
             {
                 "index": 0,
