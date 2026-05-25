@@ -13,7 +13,7 @@ _langfuse = Langfuse(
 
 
 def get_langfuse_handler(**kwargs) -> CallbackHandler:
-    return CallbackHandler(public_key=settings.langfuse_public_key)
+    return CallbackHandler(public_key=settings.langfuse_public_key, **kwargs)
 
 
 def get_langfuse_client() -> Langfuse:
