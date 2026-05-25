@@ -123,6 +123,19 @@ def cmd_seed_dataset(args):
     seed_main()
 
 
+def cmd_online_eval(args):
+    from scripts.online_eval_worker import run_once, main as worker_main
+    import sys
+
+    sys.argv = ["online-eval"]
+    if args.once:
+        sys.argv.append("--once")
+    if args.reset:
+        sys.argv.append("--reset")
+    sys.argv += ["--interval", str(args.interval), "--limit", str(args.limit)]
+    worker_main()
+
+
 def main():
     parser = argparse.ArgumentParser(description="AgentGuard CLI")
     sub = parser.add_subparsers(dest="command")
@@ -165,6 +178,13 @@ def main():
     # seed-dataset
     sub.add_parser("seed-dataset", help="Create the rag-eval-v1 dataset in Langfuse")
 
+    # online-eval
+    p_oe = sub.add_parser("online-eval", help="Continuous eval worker: score new RAG traces automatically")
+    p_oe.add_argument("--once", action="store_true", help="Run one pass and exit")
+    p_oe.add_argument("--reset", action="store_true", help="Clear state and re-score all recent traces")
+    p_oe.add_argument("--interval", type=int, default=30, help="Poll interval in seconds (default: 30)")
+    p_oe.add_argument("--limit", type=int, default=50, help="Traces to fetch per poll (default: 50)")
+
     args = parser.parse_args()
     if not args.command:
         parser.print_help()
@@ -178,6 +198,7 @@ def main():
         "agent-chat": cmd_agent_chat,
         "evaluate": cmd_evaluate,
         "seed-dataset": cmd_seed_dataset,
+        "online-eval": cmd_online_eval,
     }
     commands[args.command](args)
 
