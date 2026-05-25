@@ -62,6 +62,7 @@ class ChatRequest(BaseModel):
     stream: bool = False
     temperature: Optional[float] = None
     max_tokens: Optional[int] = None
+    chat_id: Optional[str] = None  # injected by Open WebUI Langfuse Session Linker filter
 
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
@@ -102,9 +103,10 @@ async def chat_completions(body: ChatRequest, request: Request):
     query = user_messages[-1].content
     litellm_model = _MODELS.get(body.model, "openrouter-gemini-flash")
 
-    # Open WebUI sends the chat UUID in the "chat-id" header.  Stamping it as
-    # session_id groups all turns of a conversation under one Langfuse session.
-    chat_id: Optional[str] = request.headers.get("chat-id")
+    # Open WebUI sends the chat UUID either in the "chat-id" header (older builds)
+    # or via the Langfuse Session Linker filter function which injects it into the
+    # request body as chat_id.  Either source stamps it as Langfuse session_id.
+    chat_id: Optional[str] = request.headers.get("chat-id") or body.chat_id
 
     if body.model in _DIRECT_MODELS:
         # ── Direct LiteLLM path (no RAG context) ─────────────────────────────

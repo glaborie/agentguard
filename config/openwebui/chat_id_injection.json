@@ -1,0 +1,20 @@
+{
+    "id":  "chat_id_injection",
+    "user_id":  "2719538e-2ad0-44a4-925d-30a82c4bb3c1",
+    "name":  "chat_id_injection",
+    "type":  "filter",
+    "content":  "\"\"\"\ntitle: Langfuse Session Linker\ndescription: Injects the Open WebUI chat ID into the request body so the RAG API stamps it as a Langfuse session_id, grouping all turns of a conversation under one Langfuse Session.\nauthor: AgentGuard\nversion: 0.1.0\n\"\"\"\n\nfrom pydantic import BaseModel\n\n\nclass Filter:\n    class Valves(BaseModel):\n        pass\n\n    def __init__(self):\n        self.valves = self.Valves()\n\n    def inlet(self, body: dict, __metadata__: dict = {}) -\u003e dict:\n        chat_id = __metadata__.get(\"chat_id\")\n        if chat_id:\n            body[\"chat_id\"] = chat_id\n        return body\n\n    def outlet(self, body: dict) -\u003e dict:\n        return body\n",
+    "meta":  {
+                 "description":  "chat_id_injection",
+                 "manifest":  {
+                                  "title":  "Langfuse Session Linker",
+                                  "description":  "Injects the Open WebUI chat ID into the request body so the RAG API stamps it as a Langfuse session_id, grouping all turns of a conversation under one Langfuse Session.",
+                                  "author":  "AgentGuard",
+                                  "version":  "0.1.0"
+                              }
+             },
+    "is_active":  true,
+    "is_global":  true,
+    "updated_at":  1779702273,
+    "created_at":  1779701998
+}

@@ -376,34 +376,59 @@ In Langfuse → **Scores** (left nav) → filter by `name = user_feedback`.
 
 ## Part 5 — Session Linking (Open WebUI Chat → Langfuse Session)
 
-Every Open WebUI chat has a UUID that appears in its share URL. The RAG API captures this UUID from the `chat-id` request header and stamps it as `session_id` on every Langfuse trace, so all turns of a conversation are grouped under one Langfuse Session.
+Every Open WebUI chat has a UUID that appears in its URL. The RAG API stamps it as `session_id` on every Langfuse trace, so all turns of a conversation are grouped under one Langfuse Session. This is wired up via an Open WebUI **Filter Function** that injects the chat UUID into each request.
+
+**How it works:**
+Open WebUI Filter Functions intercept every request. The `inlet` method receives `__metadata__` containing `chat_id` (the current conversation UUID) and injects it into the request body. The RAG API reads `body.chat_id` and calls `propagate_attributes(session_id=chat_id)` before invoking the chain.
+
+---
+
+### 5.0 One-Time Setup — Install the Filter Function
+
+This step is required once after first `docker compose up`. Without it, session linking is inactive.
+
+**Option A — Import from file (faster):**
+
+1. Open [http://localhost:3001](http://localhost:3001) → **Admin Panel** (top-right avatar) → **Functions**
+2. Click the **import** icon (arrow-into-box, top-right of the Functions list)
+3. Select `config/openwebui/chat_id_injection.json` from this repo
+4. The function imports as already-active (`is_global: true`, `is_active: true`) — no further configuration needed
+
+**Option B — Create manually:**
+
+1. Open [http://localhost:3001](http://localhost:3001) → **Admin Panel** → **Functions**
+2. Click **+** to create a new function
+3. Replace the editor contents with the contents of `scripts/openwebui_langfuse_filter.py` and click **Save**
+4. Toggle the function **on** (blue) in the Functions list — this enables it globally for all models
+
+In either case, verify the function appears with a blue (active) toggle before proceeding.
 
 ---
 
 ### 5.1 Send a Multi-Turn Chat
 
-1. In Open WebUI, start a **new chat** with **agentguard-rag**.
-2. Send at least two questions in the same conversation, e.g.:
+1. In Open WebUI, start a **new chat** with **agentguard-rag**
+2. Note the UUID from the browser URL bar: `http://localhost:3001/c/<chat-uuid>`
+3. Send at least two questions in the same conversation, e.g.:
    - "What is a trace in Langfuse?"
    - "How does that relate to a session?"
-3. Click the **Share** button (chain icon) to get the share URL, e.g. `http://localhost:3001/s/ae6daad4-...`
 
 ---
 
 ### 5.2 Navigate to the Langfuse Session
 
-Take the UUID from the share URL and open:
+Open the Langfuse Sessions view using the same UUID from the chat URL:
 
 ```
 http://localhost:3000/project/my-project/sessions/<chat-uuid>
 ```
 
-**Expected:** The Langfuse Sessions view shows both turns of the conversation as separate traces grouped under the same session ID.
+**Expected:** Both turns appear as separate traces grouped under the same session ID.
 
 **What to look for:**
 - The session contains one `RunnableSequence` trace per user message.
 - Each trace shows the full RAG span tree (Retriever → ChatOpenAI).
-- The session ID in Langfuse matches the chat UUID from the Open WebUI share URL exactly.
+- The session ID in Langfuse exactly matches the UUID from the Open WebUI chat URL.
 
 ---
 
@@ -414,6 +439,116 @@ langfuse api sessions get <chat-uuid> --env .env
 ```
 
 **Expected output:** JSON with `"id": "<chat-uuid>"` and a `"traces"` array containing one entry per turn.
+
+---
+
+## Part 6 — Online (Continuous) Evaluation
+
+This demonstrates the "continuous eval" pattern: a background worker watches Langfuse for new RAG traces and scores every production query automatically — no manual batch runs needed. Scores appear in Langfuse alongside human feedback and DeepEval metrics.
+
+**What gets scored:**  
+Every `RunnableSequence` trace (user RAG queries via `agentguard-rag` / `agentguard-rag-mistral`). Open WebUI internal system calls ("Generate title", "Suggest follow-ups") are filtered out.
+
+**Evaluators (code-based, no LLM):**
+| Score name | What it checks |
+|---|---|
+| `online_has_citation` | Response references a source (`according to`, `based on`, etc.) |
+| `online_within_length` | Response is ≤ 500 words |
+| `online_no_hallucination_markers` | No hedging phrases (`I think`, `probably`, `I'm not sure`) |
+
+---
+
+### 6.0 One-Time Setup — Register Score Configs
+
+Langfuse requires score configs to be registered before scores appear in the UI dashboards and trace score tabs.
+
+```bash
+python -m scripts.seed_score_configs
+```
+
+**Expected output:**
+```
+Seeding Langfuse score configs...
+  created  online_has_citation (BOOLEAN)
+  created  online_within_length (BOOLEAN)
+  created  online_no_hallucination_markers (BOOLEAN)
+  created  user_feedback (BOOLEAN)
+
+Done: 4 created, 0 skipped.
+```
+
+The worker also calls this automatically at startup, so scores are self-provisioned. Re-running is safe — existing configs are skipped.
+
+Verify in Langfuse: **Settings** → **Scores** — all four names should appear there.
+
+---
+
+### 6.1 Run a Single Pass
+
+```bash
+python -m scripts.online_eval_worker --once
+```
+
+**Expected output:**
+```
+2026-05-25 12:10:45 INFO Evaluating 4 new trace(s)...
+2026-05-25 12:10:45 INFO [06ff468] 2/3 checks passed | what is langfuse useful for
+2026-05-25 12:10:45 INFO [46d4a59] 2/3 checks passed | How does Langfuse differentiate...
+2026-05-25 12:10:47 INFO Done. 4 trace(s) evaluated this pass.
+```
+
+The worker fetches the 50 most recent traces, filters to unseen user queries, and scores each one. State is saved to `.online_eval_state.json` — already-evaluated traces are skipped on subsequent runs.
+
+---
+
+### 6.2 Verify Scores in Langfuse
+
+1. In Langfuse → **Traces** → open any recently evaluated trace
+2. Click the **Scores** tab
+
+**Expected:** Three `online_*` scores visible alongside any `user_feedback` scores:
+- `online_has_citation = 1` (pass) or `0` (fail)
+- `online_within_length = 1`
+- `online_no_hallucination_markers = 1`
+
+**What this demonstrates:** Human signal (`user_feedback`) and automated signal (`online_*`) coexist in the same Langfuse scoring system — one view to track all quality dimensions.
+
+---
+
+### 6.3 Run Continuously
+
+```bash
+python -m scripts.online_eval_worker
+```
+
+Polls every 30 seconds by default. New queries from Open WebUI are scored within one poll cycle. The process runs until interrupted with `Ctrl+C`.
+
+```bash
+python -m scripts.online_eval_worker --interval 10   # faster for demo
+```
+
+Send a new query from Open WebUI in another window, then watch the worker pick it up within 10 seconds.
+
+---
+
+### 6.4 Re-Score All Traces (Reset)
+
+```bash
+python -m scripts.online_eval_worker --once --reset
+```
+
+Clears `.online_eval_state.json` and re-scores all traces visible in the recent window. Useful after changing evaluator logic.
+
+---
+
+### 6.5 Scores Dashboard
+
+In Langfuse → **Scores** (left nav) → filter by `name = online_has_citation`.
+
+**What to look for:**
+- Score distribution over time — what fraction of responses cite sources?
+- Correlate low-scoring traces with specific queries or sessions.
+- Compare alongside `user_feedback` to see if users rate responses lower when citations are missing.
 
 ---
 
@@ -440,4 +575,10 @@ langfuse api sessions get <chat-uuid> --env .env
 | 4.4 | Scores dashboard shows `user_feedback` entries over time |
 | All RAG | `POST /v1/embeddings` visible in LiteLLM logs for every query |
 | All RAG | Trace visible in Langfuse with Retriever + ChatOpenAI spans |
-| 5.1–5.3 | Langfuse session `<chat-uuid>` contains one trace per turn; CLI confirms `"traces"` array |
+| 5.0 | Filter function "Langfuse Session Linker" visible in Admin → Functions and toggled on |
+| 5.1–5.3 | UUID in `http://localhost:3001/c/<uuid>` opens matching session at `http://localhost:3000/…/sessions/<uuid>`; CLI confirms `"traces"` array |
+| 6.1 | Worker output shows trace IDs with pass/fail counts; no `### Task:` system calls in output |
+| 6.2 | Trace Scores tab shows `online_has_citation`, `online_within_length`, `online_no_hallucination_markers` |
+| 6.3 | New query appears in worker output within one poll interval |
+| 6.4 | `--reset` re-scores all traces; second `--once` run shows 0 new traces |
+| 6.5 | Scores dashboard shows `online_*` entries filterable by name |
