@@ -3,14 +3,14 @@
     "user_id":  "2719538e-2ad0-44a4-925d-30a82c4bb3c1",
     "name":  "chat_id_injection",
     "type":  "filter",
-    "content":  "\"\"\"\ntitle: Langfuse Session Linker\ndescription: Injects the Open WebUI chat ID into the request body so the RAG API stamps it as a Langfuse session_id, grouping all turns of a conversation under one Langfuse Session.\nauthor: AgentGuard\nversion: 0.1.0\n\"\"\"\n\nfrom pydantic import BaseModel\n\n\nclass Filter:\n    class Valves(BaseModel):\n        pass\n\n    def __init__(self):\n        self.valves = self.Valves()\n\n    def inlet(self, body: dict, __metadata__: dict = {}) -\u003e dict:\n        chat_id = __metadata__.get(\"chat_id\")\n        if chat_id:\n            body[\"chat_id\"] = chat_id\n        return body\n\n    def outlet(self, body: dict) -\u003e dict:\n        return body\n",
+    "content":  "\"\"\"\ntitle: Langfuse Session Linker\ndescription: Injects Open WebUI context (chat_id, message_id, user_id, user_name) into the request body so the RAG API can stamp them as Langfuse session_id, user_id, and trace metadata.\nauthor: AgentGuard\nversion: 0.2.0\n\"\"\"\nfrom pydantic import BaseModel\n\n\nclass Filter:\n    class Valves(BaseModel):\n        pass\n\n    def __init__(self):\n        self.valves = self.Valves()\n\n    def inlet(\n        self,\n        body: dict,\n        __metadata__: dict = {},\n        __user__: dict = {},\n    ) -> dict:\n        if chat_id := __metadata__.get(\"chat_id\"):\n            body[\"chat_id\"] = chat_id\n        if message_id := __metadata__.get(\"message_id\"):\n            body[\"message_id\"] = message_id\n        if user_id := __user__.get(\"id\"):\n            body[\"user_id\"] = user_id\n        if user_name := __user__.get(\"name\"):\n            body[\"user_name\"] = user_name\n        return body\n\n    def outlet(self, body: dict) -> dict:\n        return body\n",
     "meta":  {
                  "description":  "chat_id_injection",
                  "manifest":  {
                                   "title":  "Langfuse Session Linker",
-                                  "description":  "Injects the Open WebUI chat ID into the request body so the RAG API stamps it as a Langfuse session_id, grouping all turns of a conversation under one Langfuse Session.",
+                                  "description":  "Injects Open WebUI context (chat_id, message_id, user_id, user_name) into the request body so the RAG API can stamp them as Langfuse session_id, user_id, and trace metadata.",
                                   "author":  "AgentGuard",
-                                  "version":  "0.1.0"
+                                  "version":  "0.2.0"
                               }
              },
     "is_active":  true,
