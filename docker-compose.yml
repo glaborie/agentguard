@@ -248,7 +248,7 @@ services:
       --appendonly yes
       --appendfsync everysec
       --tcp-keepalive 60
-      --timeout 300
+      --timeout 0
       --requirepass ${REDIS_PASSWORD:-redissecret}
     environment:
       TZ: Europe/Berlin
