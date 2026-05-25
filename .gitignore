@@ -12,3 +12,4 @@ data/docs/*.html
 Agentic_Plan.md
 PLAN.md
 .sync_feedback_state.json
+.online_eval_state.json
