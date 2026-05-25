@@ -62,7 +62,11 @@ class ChatRequest(BaseModel):
     stream: bool = False
     temperature: Optional[float] = None
     max_tokens: Optional[int] = None
-    chat_id: Optional[str] = None  # injected by Open WebUI Langfuse Session Linker filter
+    # injected by Open WebUI Langfuse Session Linker filter (v0.2+)
+    chat_id: Optional[str] = None
+    message_id: Optional[str] = None
+    user_id: Optional[str] = None
+    user_name: Optional[str] = None
 
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
@@ -107,6 +111,11 @@ async def chat_completions(body: ChatRequest, request: Request):
     # or via the Langfuse Session Linker filter function which injects it into the
     # request body as chat_id.  Either source stamps it as Langfuse session_id.
     chat_id: Optional[str] = request.headers.get("chat-id") or body.chat_id
+    trace_metadata: dict = {"owui_model": body.model}
+    if body.message_id:
+        trace_metadata["message_id"] = body.message_id
+    if body.user_name:
+        trace_metadata["user_name"] = body.user_name
 
     if body.model in _DIRECT_MODELS:
         # ── Direct LiteLLM path (no RAG context) ─────────────────────────────
@@ -142,7 +151,11 @@ async def chat_completions(body: ChatRequest, request: Request):
         # masking hook sees the complete response before we stream it back.
         chain = build_rag_chain(model=litellm_model)
         try:
-            with propagate_attributes(session_id=chat_id):
+            with propagate_attributes(
+                session_id=chat_id,
+                user_id=body.user_id,
+                metadata=trace_metadata,
+            ):
                 result = chain.invoke(query, config={"callbacks": callbacks})
         except Exception as e:
             result = f"[Error: {e}]"
