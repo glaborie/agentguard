@@ -1,9 +1,15 @@
 """
-Sync Open WebUI thumbs-up/down ratings to Langfuse as user_feedback scores.
+Sync Open WebUI ratings to Langfuse as user_feedback scores.
 
-Open WebUI stores ratings internally (annotation.rating on each message).
-This script polls the Open WebUI API, finds rated assistant messages, then
-correlates each one to a Langfuse trace via timestamp + question-text matching.
+Open WebUI stores ratings in annotation.rating on each assistant message.
+Correlation to Langfuse traces uses the message_id injected by the
+Langfuse Session Linker filter (metadata.message_id on each trace).
+Falls back to question-text + timestamp matching for older traces that
+predate the filter.
+
+Scores written per rated message:
+  user_feedback        BOOLEAN  1.0 (thumbs-up) or 0.0 (thumbs-down)
+  user_feedback_rating NUMERIC  1–10 from annotation.details.rating (if present)
 
 Usage:
     python -m scripts.sync_feedback              # dry-run (print, no scoring)
@@ -15,7 +21,6 @@ State is persisted in .sync_feedback_state.json (list of already-synced message 
 
 import argparse
 import json
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,7 +30,7 @@ from langfuse import Langfuse
 from app.config import settings
 
 STATE_FILE = Path(".sync_feedback_state.json")
-TRACE_FETCH_LIMIT = 200  # how many recent traces to load for matching
+TRACE_FETCH_LIMIT = 200
 
 
 # ── Open WebUI helpers ────────────────────────────────────────────────────────
@@ -44,7 +49,7 @@ def _owui_token(base_url: str, email: str, password: str) -> str:
 
 
 def _get_rated_messages(base_url: str, token: str) -> list[dict]:
-    """Return list of (question, answer, rating, timestamp_utc) dicts."""
+    """Return list of rated assistant message dicts from all chats."""
     headers = {"Authorization": f"Bearer {token}"}
     r = httpx.get(f"{base_url}/api/v1/chats/", headers=headers, timeout=15)
     r.raise_for_status()
@@ -60,8 +65,6 @@ def _get_rated_messages(base_url: str, token: str) -> list[dict]:
         )
         r2.raise_for_status()
         messages = r2.json().get("chat", {}).get("messages", [])
-
-        # Build id → message map for parent lookup
         msg_map = {m["id"]: m for m in messages if "id" in m}
 
         for msg in messages:
@@ -72,34 +75,30 @@ def _get_rated_messages(base_url: str, token: str) -> list[dict]:
             if rating is None:
                 continue
 
-            # Get the user question from the parent message
-            parent_id = msg.get("parentId")
-            parent = msg_map.get(parent_id, {})
-            question = parent.get("content", "")
-
-            results.append(
-                {
-                    "message_id": msg["id"],
-                    "question": question,
-                    "answer": msg.get("content", ""),
-                    "rating": int(rating),
-                    "timestamp": int(msg.get("timestamp", 0)),
-                }
-            )
+            parent = msg_map.get(msg.get("parentId"), {})
+            results.append({
+                "message_id": msg["id"],
+                "question": parent.get("content", ""),
+                "answer": msg.get("content", ""),
+                "rating": int(rating),
+                "numeric_rating": (annotation.get("details") or {}).get("rating"),
+                "tags": annotation.get("tags") or [],
+                "reason": annotation.get("reason") or "",
+                "comment": annotation.get("comment") or "",
+                "timestamp": int(msg.get("timestamp", 0)),
+            })
     return results
 
 
-# ── Langfuse helpers ──────────────────────────────────────────────────────────
+# ── Langfuse trace index ──────────────────────────────────────────────────────
 
-def _build_trace_index(lf: Langfuse) -> dict[str, list[tuple[str, int]]]:
-    """Return {normalised_question: [(trace_id, trace_ts_unix), ...]} for recent RAG traces.
-
-    Fetches RunnableSequence traces and skips Open WebUI's internal auto-tasks
-    (title/tag/suggestion generation) which have inputs starting with '### Task:'.
-    The Langfuse fromTimestamp filter is unreliable in this version, so we pull a
-    recent batch and match by input text + closest timestamp.
+def _build_trace_index(lf: Langfuse) -> tuple[dict[str, str], dict[str, list[tuple[str, int]]]]:
+    """Build two indices from recent RunnableSequence traces:
+      - by_message_id: {message_id → trace_id}  (exact, from filter metadata)
+      - by_question:   {normalised_question → [(trace_id, unix_ts), ...]}  (fallback)
     """
-    index: dict[str, list[tuple[str, int]]] = {}
+    by_message_id: dict[str, str] = {}
+    by_question: dict[str, list[tuple[str, int]]] = {}
     page = 1
     fetched = 0
 
@@ -110,7 +109,6 @@ def _build_trace_index(lf: Langfuse) -> dict[str, list[tuple[str, int]]]:
         except Exception as exc:
             print(f"  [warn] Langfuse trace list page {page} failed: {exc}")
             break
-
         if not traces:
             break
 
@@ -119,67 +117,69 @@ def _build_trace_index(lf: Langfuse) -> dict[str, list[tuple[str, int]]]:
             if not inp:
                 continue
             inp_str = inp if isinstance(inp, str) else json.dumps(inp)
-            # Skip Open WebUI internal auto-tasks
             if inp_str.lstrip().startswith("### Task:"):
                 continue
-            # Normalise: strip leading markdown bullets / whitespace
-            q_norm = inp_str.lstrip("* \t\n").lower()
-            if not q_norm:
-                continue
-            # Parse trace timestamp to unix int
-            ts = trace.timestamp
-            if ts is None:
-                trace_unix = 0
-            elif hasattr(ts, "timestamp"):
-                trace_unix = int(ts.timestamp())
-            else:
-                try:
-                    from datetime import datetime as dt
-                    trace_unix = int(dt.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp())
-                except Exception:
-                    trace_unix = 0
 
-            index.setdefault(q_norm, []).append((trace.id, trace_unix))
+            # Direct correlation via injected message_id
+            meta = trace.metadata or {}
+            if mid := meta.get("message_id"):
+                by_message_id[mid] = trace.id
+
+            # Fallback: text index
+            q_norm = inp_str.lstrip("* \t\n").lower()
+            if q_norm:
+                ts = trace.timestamp
+                if ts is None:
+                    trace_unix = 0
+                elif hasattr(ts, "timestamp"):
+                    trace_unix = int(ts.timestamp())
+                else:
+                    try:
+                        from datetime import datetime as dt
+                        trace_unix = int(dt.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp())
+                    except Exception:
+                        trace_unix = 0
+                by_question.setdefault(q_norm, []).append((trace.id, trace_unix))
 
         fetched += len(traces)
         if len(traces) < 50:
             break
         page += 1
 
-    return index
+    return by_message_id, by_question
 
 
-def _find_trace(index: dict[str, list[tuple[str, int]]], question: str, ow_ts: int) -> str | None:
-    """Find the trace whose question matches and whose timestamp is closest to ow_ts.
+def _find_trace(
+    by_message_id: dict[str, str],
+    by_question: dict[str, list[tuple[str, int]]],
+    item: dict,
+) -> tuple[str | None, str]:
+    """Return (trace_id, method) where method is 'message_id' or 'text_match'."""
+    # Primary: exact message_id match
+    if tid := by_message_id.get(item["message_id"]):
+        return tid, "message_id"
 
-    The Langfuse server may run with a UTC offset (e.g. UTC+2 on Windows Docker),
-    so we check candidate offsets of -3h to +3h when looking for the closest match.
-    """
-    q_norm = question.lstrip("* \t\n").lower()
-
-    # Find candidate list (exact then partial)
-    candidates = index.get(q_norm)
+    # Fallback: question-text + timestamp (for pre-filter traces)
+    q_norm = item["question"].lstrip("* \t\n").lower()
+    candidates = by_question.get(q_norm)
     if not candidates:
-        for key, cands in index.items():
+        for key, cands in by_question.items():
             if q_norm[:80] in key or key[:80] in q_norm:
                 candidates = cands
                 break
-
     if not candidates:
-        return None
-
+        return None, "no_match"
     if len(candidates) == 1:
-        return candidates[0][0]
+        return candidates[0][0], "text_match"
 
-    # Multiple traces for same question: pick the one closest to ow_ts
-    # Try UTC offsets from -3h to +3h in 30-min steps
+    ow_ts = item["timestamp"]
     best_id, best_diff = candidates[0][0], float("inf")
     for offset in range(-10800, 10801, 1800):
         for tid, trace_unix in candidates:
             diff = abs((trace_unix + offset) - ow_ts)
             if diff < best_diff:
                 best_diff, best_id = diff, tid
-    return best_id
+    return best_id, "text_match"
 
 
 # ── State helpers ─────────────────────────────────────────────────────────────
@@ -220,11 +220,11 @@ def main() -> None:
     print(f"Found {len(rated)} rated message(s).")
 
     print("Building Langfuse trace index...")
-    trace_index = _build_trace_index(lf)
-    print(f"Indexed {len(trace_index)} RAG trace(s).")
+    by_message_id, by_question = _build_trace_index(lf)
+    print(f"  {len(by_message_id)} trace(s) indexed by message_id (direct)")
+    print(f"  {len(by_question)} trace(s) indexed by question text (fallback)")
 
     seen = set() if args.reset else _load_seen()
-    new_seen: set[str] = set()
     synced = 0
 
     for item in rated:
@@ -232,20 +232,29 @@ def main() -> None:
         if msg_id in seen:
             continue
 
-        ts = item["timestamp"]
-        human_time = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+        human_time = datetime.fromtimestamp(item["timestamp"], tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
         score_value = 1.0 if item["rating"] > 0 else 0.0
         label = "POSITIVE" if score_value == 1.0 else "NEGATIVE"
 
         print(f"\n[{human_time}] {label}  q={item['question'][:60]!r}")
 
-        trace_id = _find_trace(trace_index, item["question"], item["timestamp"])
+        trace_id, method = _find_trace(by_message_id, by_question, item)
         if not trace_id:
-            print("  -> no matching Langfuse trace found (outside time window or untraced query)")
-            new_seen.add(msg_id)
+            print("  -> no matching Langfuse trace found")
+            seen.add(msg_id)
             continue
 
-        print(f"  -> trace {trace_id}")
+        print(f"  -> trace {trace_id}  [{method}]")
+
+        # Build comment from rich annotation fields
+        comment_parts = []
+        if item["reason"]:
+            comment_parts.append(item["reason"])
+        if item["tags"]:
+            comment_parts.append("tags: " + ", ".join(item["tags"]))
+        if item["comment"]:
+            comment_parts.append(item["comment"])
+        comment = " | ".join(comment_parts) or None
 
         if args.apply:
             try:
@@ -254,19 +263,28 @@ def main() -> None:
                     name="user_feedback",
                     value=score_value,
                     data_type="BOOLEAN",
-                    comment=f"from Open WebUI rating ({item['rating']:+d})",
+                    comment=comment,
                 )
-                print("  -> scored OK")
+                if item["numeric_rating"] is not None:
+                    lf.create_score(
+                        trace_id=trace_id,
+                        name="user_feedback_rating",
+                        value=float(item["numeric_rating"]),
+                        data_type="NUMERIC",
+                        comment=comment,
+                    )
+                print(f"  -> scored OK (numeric_rating={item['numeric_rating']})")
                 synced += 1
             except Exception as exc:
                 print(f"  -> scoring failed: {exc}")
         else:
-            print("  -> (dry-run, use --apply to write)")
+            print(f"  -> (dry-run) would write user_feedback={score_value}"
+                  + (f", user_feedback_rating={item['numeric_rating']}" if item["numeric_rating"] is not None else "")
+                  + (f", comment={comment!r}" if comment else ""))
             synced += 1
 
-        new_seen.add(msg_id)
+        seen.add(msg_id)
 
-    seen.update(new_seen)
     _save_seen(seen)
 
     if not args.apply:
