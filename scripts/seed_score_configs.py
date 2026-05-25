@@ -30,6 +30,8 @@ SCORE_CONFIGS = [
     # Human feedback — synced from Open WebUI thumbs-up/down
     ("user_feedback", ScoreConfigDataType.BOOLEAN,
      "Thumbs-up (1) or thumbs-down (0) from Open WebUI, synced by scripts/sync_feedback.py"),
+    ("user_feedback_rating", ScoreConfigDataType.NUMERIC,
+     "1–10 numeric rating from Open WebUI annotation.details.rating, synced by scripts/sync_feedback.py"),
 ]
 
 
