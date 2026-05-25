@@ -216,11 +216,59 @@ def ensure_key() -> None:
     print(f"  key '{KEY['key_alias']}' created: {result.get('key', '(not returned)')}")
 
 
+# ── Schema patches ─────────────────────────────────────────────────────────────
+
+# Columns added by newer LiteLLM image versions that may be missing when using
+# a pre-existing volume with an older schema.  Each entry is (table, column, type).
+_MISSING_COLUMNS = [
+    ("LiteLLM_MCPServerTable", "source_url",       "TEXT"),
+    ("LiteLLM_MCPServerTable", "approval_status",   "TEXT DEFAULT 'approved'"),
+    ("LiteLLM_MCPServerTable", "submitted_by",      "TEXT"),
+    ("LiteLLM_MCPServerTable", "submitted_at",      "TIMESTAMP(3)"),
+    ("LiteLLM_MCPServerTable", "reviewed_at",       "TIMESTAMP(3)"),
+    ("LiteLLM_MCPServerTable", "review_notes",      "TEXT"),
+]
+
+
+def apply_schema_patches() -> None:
+    """Add any columns that the current LiteLLM image expects but Prisma didn't create.
+
+    Uses the same DATABASE_URL that LiteLLM uses so it works inside the Docker
+    network without extra configuration.
+    """
+    db_url = os.getenv(
+        "DATABASE_URL",
+        "postgresql://postgres:postgres@postgres:5432/litellm",
+    )
+    try:
+        import psycopg2  # type: ignore
+    except ImportError:
+        print("  [schema] psycopg2 not available — skipping schema patches", file=sys.stderr)
+        return
+
+    try:
+        conn = psycopg2.connect(db_url)
+        conn.autocommit = True
+        cur = conn.cursor()
+        for table, column, col_type in _MISSING_COLUMNS:
+            cur.execute(
+                f'ALTER TABLE "{table}" ADD COLUMN IF NOT EXISTS "{column}" {col_type};'
+            )
+        cur.close()
+        conn.close()
+        print("  schema patches applied (missing columns added idempotently)")
+    except Exception as exc:
+        # Non-fatal: LiteLLM works fine even if some columns are temporarily missing;
+        # the error just pollutes postgres logs every 30 s.
+        print(f"  [schema] patch failed: {exc}", file=sys.stderr)
+
+
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     wait_for_litellm()
     print("Provisioning LiteLLM resources ...")
+    apply_schema_patches()
     ensure_models()
     ensure_budget()
     ensure_team()
