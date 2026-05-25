@@ -20,6 +20,7 @@ State is persisted in .sync_feedback_state.json (list of already-synced message 
 """
 
 import argparse
+import base64
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,6 +29,12 @@ import httpx
 from langfuse import Langfuse
 
 from app.config import settings
+
+# Pre-compute Basic auth header for direct REST score ingestion.
+# /api/public/scores stores configId correctly; the SDK batch endpoint ignores it.
+_AUTH = base64.b64encode(
+    f"{settings.langfuse_public_key}:{settings.langfuse_secret_key}".encode()
+).decode()
 
 STATE_FILE = Path(".sync_feedback_state.json")
 TRACE_FETCH_LIMIT = 200
@@ -182,6 +189,35 @@ def _find_trace(
     return best_id, "text_match"
 
 
+# ── Score posting ─────────────────────────────────────────────────────────────
+
+def _post_score(
+    trace_id: str,
+    name: str,
+    value: float,
+    data_type: str,
+    comment: str | None,
+    config_ids: dict[str, str],
+) -> None:
+    payload: dict = {
+        "traceId": trace_id,
+        "name": name,
+        "value": value,
+        "dataType": data_type,
+    }
+    if config_ids.get(name):
+        payload["configId"] = config_ids[name]
+    if comment:
+        payload["comment"] = comment
+    resp = httpx.post(
+        f"{settings.langfuse_base_url}/api/public/scores",
+        json=payload,
+        headers={"Authorization": f"Basic {_AUTH}", "Content-Type": "application/json"},
+        timeout=10,
+    )
+    resp.raise_for_status()
+
+
 # ── State helpers ─────────────────────────────────────────────────────────────
 
 def _load_seen() -> set[str]:
@@ -211,6 +247,9 @@ def main() -> None:
         secret_key=settings.langfuse_secret_key,
         base_url=settings.langfuse_base_url,
     )
+
+    from scripts.seed_score_configs import seed as seed_score_configs
+    config_ids = seed_score_configs()
 
     print("Authenticating with Open WebUI...")
     token = _owui_token(owui_base, owui_email, owui_password)
@@ -258,21 +297,9 @@ def main() -> None:
 
         if args.apply:
             try:
-                lf.create_score(
-                    trace_id=trace_id,
-                    name="user_feedback",
-                    value=score_value,
-                    data_type="BOOLEAN",
-                    comment=comment,
-                )
+                _post_score(trace_id, "user_feedback", score_value, "BOOLEAN", comment, config_ids)
                 if item["numeric_rating"] is not None:
-                    lf.create_score(
-                        trace_id=trace_id,
-                        name="user_feedback_rating",
-                        value=float(item["numeric_rating"]),
-                        data_type="NUMERIC",
-                        comment=comment,
-                    )
+                    _post_score(trace_id, "user_feedback_rating", float(item["numeric_rating"]), "NUMERIC", comment, config_ids)
                 print(f"  -> scored OK (numeric_rating={item['numeric_rating']})")
                 synced += 1
             except Exception as exc:
