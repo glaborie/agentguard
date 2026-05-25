@@ -10,3 +10,5 @@ data/docs/*.md
 data/docs/*.html
 .pytest_cache/
 Agentic_Plan.md
+PLAN.md
+.sync_feedback_state.json

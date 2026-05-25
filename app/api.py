@@ -2,24 +2,31 @@
 
 Exposes /v1/models and /v1/chat/completions so Open WebUI (or any
 OpenAI-compatible client) can use the RAG pipeline without knowing about
-Qdrant or embeddings.  Two virtual models are exposed:
+Qdrant or embeddings.  Three virtual models are exposed:
 
-  agentguard-rag         → openrouter-gemini-flash (default)
-  agentguard-rag-mistral → openrouter-mistral
+  agentguard-rag         → openrouter-gemini-flash via RAG chain (default)
+  agentguard-rag-mistral → openrouter-mistral via RAG chain
+  agentguard-direct      → openrouter-gemini-flash via LiteLLM directly
+                           (no RAG context; useful for guardrail demos)
 """
 
 import json
+import logging
 import time
 import uuid
 from typing import AsyncGenerator, Optional
 
-from fastapi import FastAPI, HTTPException
+import httpx
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
+from app.config import settings
 from app.rag.chain import build_rag_chain
-from app.tracing import get_langfuse_handler
+from app.tracing import get_langfuse_client, get_langfuse_handler
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AgentGuard RAG API")
 
@@ -33,7 +40,12 @@ app.add_middleware(
 _MODELS = {
     "agentguard-rag": "openrouter-gemini-flash",
     "agentguard-rag-mistral": "openrouter-mistral",
+    "agentguard-direct": "openrouter-gemini-flash",
 }
+
+# Models that bypass the RAG chain and call LiteLLM directly.
+# PII masking and injection guard still apply (they live in LiteLLM).
+_DIRECT_MODELS = {"agentguard-direct"}
 
 
 # ── Request / response schemas ────────────────────────────────────────────────
@@ -60,6 +72,11 @@ def health():
 
 @app.get("/v1/models")
 def list_models():
+    descriptions = {
+        "agentguard-rag": "RAG over Langfuse Academy docs (Gemini Flash)",
+        "agentguard-rag-mistral": "RAG over Langfuse Academy docs (Mistral)",
+        "agentguard-direct": "Direct LLM — no RAG context, guardrails only",
+    }
     return {
         "object": "list",
         "data": [
@@ -68,6 +85,7 @@ def list_models():
                 "object": "model",
                 "created": int(time.time()),
                 "owned_by": "agentguard",
+                "description": descriptions.get(model_id, ""),
             }
             for model_id in _MODELS
         ],
@@ -82,17 +100,49 @@ async def chat_completions(request: ChatRequest):
 
     query = user_messages[-1].content
     litellm_model = _MODELS.get(request.model, "openrouter-gemini-flash")
-    callbacks = [get_langfuse_handler()]
-    completion_id = f"chatcmpl-{uuid.uuid4().hex[:8]}"
 
-    # Always use invoke (non-streaming to LiteLLM) so the post-call PII masking
-    # hook sees the complete response. The masked result is then streamed to the
-    # client in SSE format if requested.
-    chain = build_rag_chain(model=litellm_model)
-    try:
-        result = chain.invoke(query, config={"callbacks": callbacks})
-    except Exception as e:
-        result = f"[Error: {e}]"
+    if request.model in _DIRECT_MODELS:
+        # ── Direct LiteLLM path (no RAG context) ─────────────────────────────
+        # Guardrails (injection guard + PII masking) still apply because the
+        # call goes through the LiteLLM proxy.
+        try:
+            async with httpx.AsyncClient(timeout=120) as client:
+                resp = await client.post(
+                    f"{settings.litellm_base_url}/v1/chat/completions",
+                    json={
+                        "model": litellm_model,
+                        "messages": [m.model_dump() for m in request.messages],
+                    },
+                    headers={"Authorization": f"Bearer {settings.litellm_master_key}"},
+                )
+            resp.raise_for_status()
+            result = resp.json()["choices"][0]["message"]["content"]
+        except httpx.HTTPStatusError as e:
+            try:
+                detail = e.response.json()
+            except Exception:
+                detail = e.response.text
+            result = f"[Error: {detail}]"
+        except Exception as e:
+            result = f"[Error: {e}]"
+        completion_id = f"chatcmpl-{uuid.uuid4().hex[:8]}"
+    else:
+        # ── RAG chain path ────────────────────────────────────────────────────
+        handler = get_langfuse_handler()
+        callbacks = [handler]
+
+        # Always use invoke (non-streaming to LiteLLM) so the post-call PII
+        # masking hook sees the complete response before we stream it back.
+        chain = build_rag_chain(model=litellm_model)
+        try:
+            result = chain.invoke(query, config={"callbacks": callbacks})
+        except Exception as e:
+            result = f"[Error: {e}]"
+
+        # Use the Langfuse trace ID as the completion ID so Open WebUI stores
+        # it as the message ID for feedback correlation.
+        trace_id = handler.last_trace_id
+        completion_id = trace_id if trace_id else f"chatcmpl-{uuid.uuid4().hex[:8]}"
 
     if request.stream:
         return StreamingResponse(
@@ -114,6 +164,56 @@ async def chat_completions(request: ChatRequest):
         ],
         "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
     }
+
+
+# ── Open WebUI feedback webhook ───────────────────────────────────────────────
+
+@app.post("/webhook")
+async def webhook(request: Request):
+    """Receive Open WebUI thumbs-up/down and push a score to Langfuse.
+
+    Open WebUI sends feedback events to the webhook URL configured in
+    Admin Panel → Settings → General → Webhook URL.
+
+    Expected payload (Open WebUI ≥ 0.3):
+      {"type": "feedback", "data": {"message_id": "<uuid>", "rating": 1|-1, ...}}
+    """
+    try:
+        payload = await request.json()
+    except Exception:
+        return {"ok": False, "error": "invalid JSON"}
+
+    logger.info("webhook payload: %s", payload)
+
+    # Extract message_id and rating — tolerate minor format variations.
+    data = payload.get("data", payload)
+    message_id: Optional[str] = (
+        data.get("message_id") or data.get("id") or payload.get("message_id")
+    )
+    raw_rating = data.get("rating") or data.get("feedback", {}).get("rating")
+
+    if not message_id or raw_rating is None:
+        logger.warning("webhook: missing message_id or rating — payload=%s", payload)
+        return {"ok": False, "error": "missing message_id or rating"}
+
+    # Map thumbs up (1) → 1.0, thumbs down (-1) → 0.0
+    score_value = 1.0 if int(raw_rating) > 0 else 0.0
+    comment = data.get("comment") or data.get("feedback", {}).get("comment") or ""
+
+    try:
+        get_langfuse_client().create_score(
+            trace_id=message_id,
+            name="user_feedback",
+            value=score_value,
+            comment=comment or None,
+            data_type="BOOLEAN",
+        )
+        logger.info("scored trace %s: user_feedback=%.1f", message_id, score_value)
+    except Exception as exc:
+        logger.error("failed to score trace %s: %s", message_id, exc)
+        return {"ok": False, "error": str(exc)}
+
+    return {"ok": True, "trace_id": message_id, "score": score_value}
 
 
 # ── Streaming helper ──────────────────────────────────────────────────────────

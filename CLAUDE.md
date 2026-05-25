@@ -22,6 +22,8 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 
 **Langfuse auto-provisioning.** The docker-compose uses `LANGFUSE_INIT_*` env vars to create a default org, project, and API keys on first boot. No manual setup needed - keys `pk-lf-dev` / `sk-lf-dev` work immediately.
 
+**Human feedback loop.** Open WebUI stores thumbs-up/down in `annotation.rating` on each message internally — it does NOT fire the external webhook URL for in-chat ratings. `scripts/sync_feedback.py` polls the Open WebUI API, finds rated messages, and correlates each to a Langfuse trace by question-text matching (`RunnableSequence` traces with input = the user question). Multiple traces for the same question are disambiguated by timestamp proximity (brute-force UTC offset search ±3h to handle the container clock being UTC+local instead of UTC). Scores are written with `langfuse.create_score(trace_id=..., name="user_feedback", data_type="BOOLEAN")`. Run `python -m scripts.sync_feedback --apply` after rating messages. State (already-synced IDs) is persisted in `.sync_feedback_state.json`. The `POST /webhook` endpoint in `app/api.py` remains as a direct-call fallback (e.g. for future real-time integrations that do send webhooks) — the response `id` is still set to `handler.last_trace_id` so webhook-based correlation works for any client that does respect the completion ID.
+
 **Langfuse Prompt Management.** The RAG system prompt is stored in the Langfuse Prompt Registry (name: `rag-system-prompt`, type: chat). `app/rag/chain.py` fetches it at runtime via `langfuse.get_prompt()` with a 60 s cache and an in-process fallback (`LANGFUSE_PROMPT_MESSAGES`) if Langfuse is unreachable. Seed the prompt once with `python -m scripts.seed_langfuse_prompt`; push a new version after editing with `--force`. This lets you iterate on the prompt via the Langfuse UI without redeploying code — edit, save, the next request picks it up within 60 s.
 
 ## Key files
@@ -33,6 +35,7 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 - `app/tracing.py` - Langfuse client singleton + `CallbackHandler` factory. `get_langfuse_client()` returns the singleton; `get_langfuse_handler()` returns a handler that looks up the client by public_key.
 - `app/rag/ingest.py` - Scrapes Langfuse Academy URLs, chunks with `RecursiveCharacterTextSplitter`, embeds via LiteLLM, stores in Qdrant. Detects embedding dimension automatically.
 - `app/rag/chain.py` - LCEL chain. `query()` is the main entry point.
+- `app/api.py` - OpenAI-compatible FastAPI wrapper. Three virtual models: `agentguard-rag` / `agentguard-rag-mistral` route through the RAG chain; `agentguard-direct` bypasses RAG and calls LiteLLM directly (no context-only constraint — useful for guardrail demos). All three go through LiteLLM so injection guard and PII masking apply everywhere.
 - `app/agent/tools.py` - Five `@tool` functions: `search_docs`, `list_traces`, `get_trace_detail`, `score_response`, `get_dataset_summary`. Each reuses existing infrastructure (retriever, Langfuse client, evaluators).
 - `app/agent/graph.py` - LangGraph ReAct agent. `build_agent(model, checkpointer)` returns a compiled graph. `run_agent(question, ...)` is the main entry point.
 - `app/agent/prompts.py` - Agent system prompt.
