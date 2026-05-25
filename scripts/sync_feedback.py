@@ -13,8 +13,9 @@ Scores written per rated message:
 
 Usage:
     python -m scripts.sync_feedback              # dry-run (print, no scoring)
-    python -m scripts.sync_feedback --apply      # write scores to Langfuse
-    python -m scripts.sync_feedback --apply --reset  # re-sync all (ignore seen cache)
+    python -m scripts.sync_feedback --apply      # single pass, write scores
+    python -m scripts.sync_feedback --apply --interval 120  # continuous daemon
+    python -m scripts.sync_feedback --apply --reset         # re-sync all
 
 State is persisted in .sync_feedback_state.json (list of already-synced message IDs).
 """
@@ -22,6 +23,8 @@ State is persisted in .sync_feedback_state.json (list of already-synced message 
 import argparse
 import base64
 import json
+import logging
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -29,6 +32,13 @@ import httpx
 from langfuse import Langfuse
 
 from app.config import settings
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+logger = logging.getLogger(__name__)
 
 # Pre-compute Basic auth header for direct REST score ingestion.
 # /api/public/scores stores configId correctly; the SDK batch endpoint ignores it.
@@ -76,6 +86,7 @@ def _get_rated_messages(base_url: str, token: str) -> list[dict]:
         # chat.messages (list) only carries rating + tags — use history when available.
         history = chat.get("history", {}).get("messages", {})
         messages = list(history.values()) if history else chat.get("messages", [])
+
         msg_map = {m["id"]: m for m in messages if "id" in m}
 
         for msg in messages:
@@ -118,7 +129,7 @@ def _build_trace_index(lf: Langfuse) -> tuple[dict[str, str], dict[str, list[tup
             resp = lf.api.trace.list(name="RunnableSequence", limit=50, page=page)
             traces = resp.data if hasattr(resp, "data") else []
         except Exception as exc:
-            print(f"  [warn] Langfuse trace list page {page} failed: {exc}")
+            logger.warning("Langfuse trace list page %d failed: %s", page, exc)
             break
         if not traces:
             break
@@ -131,12 +142,10 @@ def _build_trace_index(lf: Langfuse) -> tuple[dict[str, str], dict[str, list[tup
             if inp_str.lstrip().startswith("### Task:"):
                 continue
 
-            # Direct correlation via injected message_id
             meta = trace.metadata or {}
             if mid := meta.get("message_id"):
                 by_message_id[mid] = trace.id
 
-            # Fallback: text index
             q_norm = inp_str.lstrip("* \t\n").lower()
             if q_norm:
                 ts = trace.timestamp
@@ -166,11 +175,9 @@ def _find_trace(
     item: dict,
 ) -> tuple[str | None, str]:
     """Return (trace_id, method) where method is 'message_id' or 'text_match'."""
-    # Primary: exact message_id match
     if tid := by_message_id.get(item["message_id"]):
         return tid, "message_id"
 
-    # Fallback: question-text + timestamp (for pre-filter traces)
     q_norm = item["question"].lstrip("* \t\n").lower()
     candidates = by_question.get(q_norm)
     if not candidates:
@@ -234,40 +241,38 @@ def _save_seen(seen: set[str]) -> None:
     STATE_FILE.write_text(json.dumps(sorted(seen)))
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+# ── Core pass ────────────────────────────────────────────────────────────────
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--apply", action="store_true", help="Write scores to Langfuse")
-    parser.add_argument("--reset", action="store_true", help="Ignore seen cache, re-sync all")
-    args = parser.parse_args()
+def run_once(apply: bool = True, reset: bool = False, config_ids: dict[str, str] | None = None) -> int:
+    """Fetch rated messages from Open WebUI and sync unseen ones to Langfuse.
 
-    owui_base = getattr(settings, "openwebui_base_url", "http://localhost:3001")
-    owui_email = getattr(settings, "openwebui_email", "glaborie@gmail.com")
-    owui_password = getattr(settings, "openwebui_password", "admin")
-
+    Returns the number of scores written this pass.
+    """
     lf = Langfuse(
         public_key=settings.langfuse_public_key,
         secret_key=settings.langfuse_secret_key,
         base_url=settings.langfuse_base_url,
     )
 
-    from scripts.seed_score_configs import seed as seed_score_configs
-    config_ids = seed_score_configs()
+    try:
+        token = _owui_token(settings.openwebui_base_url, settings.openwebui_email, settings.openwebui_password)
+    except Exception as exc:
+        logger.error("Open WebUI auth failed: %s", exc)
+        return 0
 
-    print("Authenticating with Open WebUI...")
-    token = _owui_token(owui_base, owui_email, owui_password)
+    try:
+        rated = _get_rated_messages(settings.openwebui_base_url, token)
+    except Exception as exc:
+        logger.error("Failed to fetch rated messages: %s", exc)
+        return 0
 
-    print("Fetching rated messages...")
-    rated = _get_rated_messages(owui_base, token)
-    print(f"Found {len(rated)} rated message(s).")
+    if not rated:
+        logger.info("No rated messages found.")
+        return 0
 
-    print("Building Langfuse trace index...")
     by_message_id, by_question = _build_trace_index(lf)
-    print(f"  {len(by_message_id)} trace(s) indexed by message_id (direct)")
-    print(f"  {len(by_question)} trace(s) indexed by question text (fallback)")
 
-    seen = set() if args.reset else _load_seen()
+    seen = set() if reset else _load_seen()
     synced = 0
 
     for item in rated:
@@ -275,53 +280,72 @@ def main() -> None:
         if msg_id in seen:
             continue
 
-        human_time = datetime.fromtimestamp(item["timestamp"], tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
         score_value = 1.0 if item["rating"] > 0 else 0.0
         label = "POSITIVE" if score_value == 1.0 else "NEGATIVE"
 
-        print(f"\n[{human_time}] {label}  q={item['question'][:60]!r}")
-
         trace_id, method = _find_trace(by_message_id, by_question, item)
         if not trace_id:
-            print("  -> no matching Langfuse trace found")
+            logger.warning("[%s] no matching trace — skipping", msg_id[:8])
             seen.add(msg_id)
             continue
 
-        print(f"  -> trace {trace_id}  [{method}]")
-
-        # Build comment from rich annotation fields
-        comment_parts = []
-        if item["reason"]:
-            comment_parts.append(item["reason"])
-        if item["tags"]:
-            comment_parts.append("tags: " + ", ".join(item["tags"]))
-        if item["comment"]:
-            comment_parts.append(item["comment"])
+        comment_parts = [p for p in [item["reason"], ", ".join(item["tags"]), item["comment"]] if p]
         comment = " | ".join(comment_parts) or None
 
-        if args.apply:
+        if apply:
             try:
-                _post_score(trace_id, "user_feedback", score_value, "BOOLEAN", comment, config_ids)
+                _post_score(trace_id, "user_feedback", score_value, "BOOLEAN", comment, config_ids or {})
                 if item["numeric_rating"] is not None:
-                    _post_score(trace_id, "user_feedback_rating", float(item["numeric_rating"]), "NUMERIC", comment, config_ids)
-                print(f"  -> scored OK (numeric_rating={item['numeric_rating']})")
+                    _post_score(trace_id, "user_feedback_rating", float(item["numeric_rating"]), "NUMERIC", comment, config_ids or {})
+                logger.info(
+                    "[%s] %s  trace=%s  [%s]  rating=%s  comment=%s",
+                    msg_id[:8], label, trace_id[:12], method,
+                    item["numeric_rating"], comment,
+                )
                 synced += 1
             except Exception as exc:
-                print(f"  -> scoring failed: {exc}")
+                logger.error("[%s] scoring failed: %s", msg_id[:8], exc)
         else:
-            print(f"  -> (dry-run) would write user_feedback={score_value}"
-                  + (f", user_feedback_rating={item['numeric_rating']}" if item["numeric_rating"] is not None else "")
-                  + (f", comment={comment!r}" if comment else ""))
+            logger.info(
+                "[%s] %s  trace=%s  [%s]  (dry-run)",
+                msg_id[:8], label, trace_id[:12], method,
+            )
             synced += 1
 
         seen.add(msg_id)
 
     _save_seen(seen)
+    logger.info("Done. %d feedback score(s) written this pass.", synced)
+    return synced
 
-    if not args.apply:
-        print(f"\nDry-run: {synced} score(s) would be written. Re-run with --apply.")
-    else:
-        print(f"\nDone: {synced} score(s) written to Langfuse.")
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Sync Open WebUI feedback to Langfuse")
+    parser.add_argument("--apply", action="store_true", help="Write scores (default: dry-run)")
+    parser.add_argument("--reset", action="store_true", help="Ignore seen cache, re-sync all")
+    parser.add_argument("--once", action="store_true", help="Single pass and exit")
+    parser.add_argument("--interval", type=int, default=None, metavar="SECONDS",
+                        help="Poll continuously every N seconds (implies --apply)")
+    args = parser.parse_args()
+
+    from scripts.seed_score_configs import seed as seed_score_configs
+    config_ids = seed_score_configs()
+
+    apply = args.apply or (args.interval is not None)
+
+    if args.interval is None or args.once:
+        run_once(apply=apply, reset=args.reset, config_ids=config_ids)
+        return
+
+    logger.info("Feedback sync worker started (interval: %ds).", args.interval)
+    while True:
+        try:
+            run_once(apply=True, config_ids=config_ids)
+        except Exception as exc:
+            logger.error("Poll error: %s", exc)
+        time.sleep(args.interval)
 
 
 if __name__ == "__main__":

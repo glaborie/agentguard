@@ -412,6 +412,34 @@ services:
     networks:
       - langfuse
 
+  agentguard-worker:
+    image: python:3.11-slim
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - pip_cache:/root/.cache/pip
+    command: >
+      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
+             python -m scripts.worker"
+    env_file: .env
+    environment:
+      LANGFUSE_BASE_URL: http://langfuse-web:3000
+      LITELLM_BASE_URL: http://litellm:4000
+      QDRANT_URL: http://qdrant:6333
+      OPENWEBUI_BASE_URL: http://openwebui:8080
+      TZ: Europe/Berlin
+    depends_on:
+      langfuse-web:
+        condition: service_healthy
+      openwebui:
+        condition: service_healthy
+    networks:
+      - langfuse
+
   portainer:
     image: portainer/portainer-ce@sha256:8d2f5c9fbc5b8490fb3a12efadbad74978e22991911e1db611d8a45871775112
     restart: always
