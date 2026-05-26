@@ -21,7 +21,6 @@ State is persisted in .sync_feedback_state.json (list of already-synced message 
 """
 
 import argparse
-import base64
 import json
 import logging
 import time
@@ -32,6 +31,7 @@ import httpx
 from langfuse import Langfuse
 
 from app.config import settings
+from scripts.utils import HTTP_TIMEOUT, TRACE_PAGE_SIZE, langfuse_basic_auth, load_state, save_state
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,11 +40,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Pre-compute Basic auth header for direct REST score ingestion.
 # /api/public/scores stores configId correctly; the SDK batch endpoint ignores it.
-_AUTH = base64.b64encode(
-    f"{settings.langfuse_public_key}:{settings.langfuse_secret_key}".encode()
-).decode()
+_AUTH = langfuse_basic_auth()
 
 STATE_FILE = Path(".sync_feedback_state.json")
 TRACE_FETCH_LIMIT = 200
@@ -56,7 +53,7 @@ def _owui_token(base_url: str, email: str, password: str) -> str:
     r = httpx.post(
         f"{base_url}/api/v1/auths/signin",
         json={"email": email, "password": password},
-        timeout=60,
+        timeout=HTTP_TIMEOUT,
     )
     r.raise_for_status()
     token = r.json().get("token")
@@ -68,7 +65,7 @@ def _owui_token(base_url: str, email: str, password: str) -> str:
 def _get_rated_messages(base_url: str, token: str) -> list[dict]:
     """Return list of rated assistant message dicts from all chats."""
     headers = {"Authorization": f"Bearer {token}"}
-    r = httpx.get(f"{base_url}/api/v1/chats/", headers=headers, timeout=60)
+    r = httpx.get(f"{base_url}/api/v1/chats/", headers=headers, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
     chats = r.json()
 
@@ -78,7 +75,7 @@ def _get_rated_messages(base_url: str, token: str) -> list[dict]:
         r2 = httpx.get(
             f"{base_url}/api/v1/chats/{chat_id}",
             headers=headers,
-            timeout=60,
+            timeout=HTTP_TIMEOUT,
         )
         r2.raise_for_status()
         chat = r2.json().get("chat", {})
@@ -114,6 +111,18 @@ def _get_rated_messages(base_url: str, token: str) -> list[dict]:
 
 # ── Langfuse trace index ──────────────────────────────────────────────────────
 
+def _to_unix(ts) -> int:
+    """Convert a Langfuse trace timestamp to a Unix epoch integer."""
+    if ts is None:
+        return 0
+    if hasattr(ts, "timestamp"):
+        return int(ts.timestamp())
+    try:
+        return int(datetime.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp())
+    except (ValueError, TypeError):
+        return 0
+
+
 def _build_trace_index(lf: Langfuse) -> tuple[dict[str, str], dict[str, list[tuple[str, int]]]]:
     """Build two indices from recent RunnableSequence traces:
       - by_message_id: {message_id → trace_id}  (exact, from filter metadata)
@@ -126,7 +135,7 @@ def _build_trace_index(lf: Langfuse) -> tuple[dict[str, str], dict[str, list[tup
 
     while fetched < TRACE_FETCH_LIMIT:
         try:
-            resp = lf.api.trace.list(name="RunnableSequence", limit=50, page=page)
+            resp = lf.api.trace.list(name="RunnableSequence", limit=TRACE_PAGE_SIZE, page=page)
             traces = resp.data if hasattr(resp, "data") else []
         except Exception as exc:
             logger.warning("Langfuse trace list page %d failed: %s", page, exc)
@@ -148,21 +157,10 @@ def _build_trace_index(lf: Langfuse) -> tuple[dict[str, str], dict[str, list[tup
 
             q_norm = inp_str.lstrip("* \t\n").lower()
             if q_norm:
-                ts = trace.timestamp
-                if ts is None:
-                    trace_unix = 0
-                elif hasattr(ts, "timestamp"):
-                    trace_unix = int(ts.timestamp())
-                else:
-                    try:
-                        from datetime import datetime as dt
-                        trace_unix = int(dt.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp())
-                    except Exception:
-                        trace_unix = 0
-                by_question.setdefault(q_norm, []).append((trace.id, trace_unix))
+                by_question.setdefault(q_norm, []).append((trace.id, _to_unix(trace.timestamp)))
 
         fetched += len(traces)
-        if len(traces) < 50:
+        if len(traces) < TRACE_PAGE_SIZE:
             break
         page += 1
 
@@ -224,7 +222,7 @@ def _post_score(
         f"{settings.langfuse_base_url}/api/public/scores",
         json=payload,
         headers={"Authorization": f"Basic {_AUTH}", "Content-Type": "application/json"},
-        timeout=60,
+        timeout=HTTP_TIMEOUT,
     )
     resp.raise_for_status()
 
@@ -232,13 +230,11 @@ def _post_score(
 # ── State helpers ─────────────────────────────────────────────────────────────
 
 def _load_seen() -> set[str]:
-    if STATE_FILE.exists():
-        return set(json.loads(STATE_FILE.read_text()))
-    return set()
+    return load_state(STATE_FILE)
 
 
 def _save_seen(seen: set[str]) -> None:
-    STATE_FILE.write_text(json.dumps(sorted(seen)))
+    save_state(STATE_FILE, seen)
 
 
 # ── Core pass ────────────────────────────────────────────────────────────────
@@ -252,19 +248,25 @@ def run_once(apply: bool = True, reset: bool = False, config_ids: dict[str, str]
         public_key=settings.langfuse_public_key,
         secret_key=settings.langfuse_secret_key,
         base_url=settings.langfuse_base_url,
-        timeout=60,
+        timeout=HTTP_TIMEOUT,
     )
 
     try:
         token = _owui_token(settings.openwebui_base_url, settings.openwebui_email, settings.openwebui_password)
-    except Exception as exc:
-        logger.error("Open WebUI auth failed: %s", exc)
+    except httpx.HTTPStatusError as exc:
+        logger.error("Open WebUI auth failed (HTTP %s): %s", exc.response.status_code, exc)
+        return 0
+    except httpx.RequestError as exc:
+        logger.error("Open WebUI unreachable during auth: %s", exc)
         return 0
 
     try:
         rated = _get_rated_messages(settings.openwebui_base_url, token)
-    except Exception as exc:
-        logger.error("Failed to fetch rated messages: %s", exc)
+    except httpx.HTTPStatusError as exc:
+        logger.error("Failed to fetch rated messages (HTTP %s): %s", exc.response.status_code, exc)
+        return 0
+    except httpx.RequestError as exc:
+        logger.error("Open WebUI unreachable while fetching messages: %s", exc)
         return 0
 
     if not rated:

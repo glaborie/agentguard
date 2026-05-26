@@ -290,7 +290,7 @@ services:
       - langfuse
 
   litellm:
-    image: ghcr.io/berriai/litellm:main-v1.82.6
+    image: ghcr.io/berriai/litellm:main-v1.82.3
     restart: always
     logging: *default-logging
     deploy: *deploy-limits

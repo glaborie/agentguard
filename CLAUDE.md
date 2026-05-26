@@ -51,6 +51,8 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 - `app/eval/experiments.py` - Iterates dataset items x models, runs each through the RAG chain, applies code-based evaluators, returns `ExperimentResult` list.
 - `scripts/build_dataset.py` - Builds the `rag-golden-set` Langfuse dataset from positively rated traces. Queries `user_feedback=1.0` scores, fetches each linked trace, upserts `{question, answer}` items with `source_trace_id`. `run_once()` is called by the worker every 5 minutes. State in `.build_dataset_state.json`.
 - `scripts/worker.py` - Combined background daemon. Runs three pollers in threads: `eval-worker` (60s), `feedback-worker` (120s), `dataset-builder` (300s). Seeds score configs on startup. Launched automatically by the `agentguard-worker` Docker service.
+- `scripts/utils.py` - Shared utilities for scripts: `langfuse_basic_auth()`, `load_state()`/`save_state()` (corrupt-safe JSON state files), `HTTP_TIMEOUT`, `TRACE_PAGE_SIZE`, `SCORE_PAGE_SIZE`.
+- `app/utils.py` - Shared app-layer utilities: `truncate(text, max_len)`, `extract_trace_output(trace)` (normalises None/str/dict trace output to plain string).
 
 ## How to work with this codebase
 

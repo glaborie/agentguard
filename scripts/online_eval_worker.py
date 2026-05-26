@@ -14,7 +14,6 @@ Usage:
 """
 
 import argparse
-import base64
 import json
 import logging
 import time
@@ -26,6 +25,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from app.config import settings
+from app.utils import extract_trace_output, truncate
+from scripts.utils import HTTP_TIMEOUT, langfuse_basic_auth, load_state, save_state
 from app.eval.evaluators import (
     contains_no_hallucination_markers,
     has_source_citation,
@@ -34,10 +35,7 @@ from app.eval.evaluators import (
 from app.tracing import get_langfuse_client
 from scripts.seed_score_configs import seed as seed_score_configs
 
-# Pre-compute Basic auth header for direct REST score ingestion.
-_AUTH = base64.b64encode(
-    f"{settings.langfuse_public_key}:{settings.langfuse_secret_key}".encode()
-).decode()
+_AUTH = langfuse_basic_auth()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -62,30 +60,12 @@ EVALUATORS = {
 }
 
 
-def load_state() -> set[str]:
-    if STATE_FILE.exists():
-        return set(json.loads(STATE_FILE.read_text()))
-    return set()
 
-
-def save_state(seen: set[str]) -> None:
-    STATE_FILE.write_text(json.dumps(sorted(seen)))
-
-
-def _extract_output(trace) -> str | None:
-    raw = trace.output
-    if raw is None:
-        return None
-    if isinstance(raw, str):
-        return raw
-    if isinstance(raw, dict):
-        return raw.get("output") or raw.get("text") or str(raw)
-    return str(raw)
 
 
 def _score_trace(trace, config_ids: dict[str, str]) -> dict[str, float]:
     """Evaluate a trace and POST scores directly to the Langfuse ingestion API."""
-    output = _extract_output(trace)
+    output = extract_trace_output(trace)
     if not output:
         return {}
 
@@ -104,7 +84,7 @@ def _score_trace(trace, config_ids: dict[str, str]) -> dict[str, float]:
             f"{settings.langfuse_base_url}/api/public/scores",
             json=payload,
             headers={"Authorization": f"Basic {_AUTH}", "Content-Type": "application/json"},
-            timeout=60,
+            timeout=HTTP_TIMEOUT,
         )
         resp.raise_for_status()
         scores[name] = value
@@ -117,7 +97,7 @@ def run_once(limit: int = 50, config_ids: dict[str, str] | None = None) -> int:
 
     Returns the number of traces evaluated this pass.
     """
-    seen = load_state()
+    seen = load_state(STATE_FILE)
 
     response = get_langfuse_client().api.trace.list(limit=limit)
     traces = response.data or []
@@ -142,7 +122,7 @@ def run_once(limit: int = 50, config_ids: dict[str, str] | None = None) -> int:
             scores = _score_trace(trace, config_ids or {})
             if scores:
                 passed = sum(1 for v in scores.values() if v == 1.0)
-                input_preview = str(trace.input or "")[:70]
+                input_preview = truncate(str(trace.input or ""), 70)
                 logger.info(
                     "[%s] %d/%d checks passed | %s",
                     trace.id[:12],
@@ -158,7 +138,7 @@ def run_once(limit: int = 50, config_ids: dict[str, str] | None = None) -> int:
         finally:
             seen.add(trace.id)
 
-    save_state(seen)
+    save_state(STATE_FILE, seen)
     logger.info("Done. %d trace(s) evaluated this pass.", evaluated)
     return evaluated
 

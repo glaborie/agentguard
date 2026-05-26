@@ -3,6 +3,7 @@
 import argparse
 import sys
 import uuid
+from argparse import Namespace
 
 from dotenv import load_dotenv
 
@@ -13,12 +14,12 @@ from app.rag.ingest import ingest
 from app.tracing import get_langfuse_client, get_langfuse_handler
 
 
-def cmd_ingest(args):
+def cmd_ingest(args: Namespace) -> None:
     ingest(chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap)
     print("Done.")
 
 
-def cmd_query(args):
+def cmd_query(args: Namespace) -> None:
     handler = get_langfuse_handler()
     answer = query(
         question=args.question,
@@ -30,7 +31,7 @@ def cmd_query(args):
     langfuse.flush()
 
 
-def cmd_chat(args):
+def cmd_chat(args: Namespace) -> None:
     handler = get_langfuse_handler()
     print("Langfuse RAG Chat (type 'quit' to exit)\n")
     while True:
@@ -49,7 +50,7 @@ def cmd_chat(args):
     print("Goodbye.")
 
 
-def cmd_agent(args):
+def cmd_agent(args: Namespace) -> None:
     from app.agent.graph import run_agent
 
     handler = get_langfuse_handler()
@@ -67,7 +68,7 @@ def cmd_agent(args):
     langfuse.flush()
 
 
-def cmd_agent_chat(args):
+def cmd_agent_chat(args: Namespace) -> None:
     from langgraph.checkpoint.memory import MemorySaver
 
     from app.agent.graph import build_agent
@@ -106,7 +107,7 @@ def cmd_agent_chat(args):
     print("Goodbye.")
 
 
-def cmd_evaluate(args):
+def cmd_evaluate(args: Namespace) -> None:
     from app.eval.deepeval_runner import run_deepeval_evaluation
 
     metrics = args.metrics.split(",") if args.metrics else None
@@ -117,13 +118,13 @@ def cmd_evaluate(args):
     )
 
 
-def cmd_seed_dataset(args):
+def cmd_seed_dataset(args: Namespace) -> None:
     from scripts.seed_dataset import main as seed_main
 
     seed_main()
 
 
-def cmd_online_eval(args):
+def cmd_online_eval(args: Namespace) -> None:
     from scripts.online_eval_worker import run_once, main as worker_main
     import sys
 
@@ -136,7 +137,7 @@ def cmd_online_eval(args):
     worker_main()
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="AgentGuard CLI")
     sub = parser.add_subparsers(dest="command")
 

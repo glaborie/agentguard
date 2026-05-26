@@ -27,8 +27,8 @@ class Settings(BaseSettings):
 
     # Open WebUI — used by sync_feedback worker
     openwebui_base_url: str = "http://localhost:3001"
-    openwebui_email: str = "glaborie@gmail.com"
-    openwebui_password: str = "admin"
+    openwebui_email: str = ""
+    openwebui_password: str = ""
 
 
 settings = Settings()
