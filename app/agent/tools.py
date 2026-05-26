@@ -12,6 +12,7 @@ from app.eval.evaluators import (
 )
 from app.rag.chain import format_docs, get_retriever
 from app.tracing import get_langfuse_client
+from app.utils import truncate as _truncate
 
 
 @tool
@@ -180,12 +181,6 @@ def get_dataset_summary(dataset_name: str = "") -> str:
     if len(items) > 10:
         lines.append(f"  ... and {len(items) - 10} more items")
     return "\n".join(lines)
-
-
-def _truncate(text: str, max_len: int) -> str:
-    if len(text) <= max_len:
-        return text
-    return text[:max_len - 3] + "..."
 
 
 ALL_TOOLS = [search_docs, list_traces, get_trace_detail, score_response, get_dataset_summary]

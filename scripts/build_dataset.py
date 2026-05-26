@@ -24,6 +24,8 @@ import json
 import logging
 from pathlib import Path
 
+import httpx
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,6 +34,7 @@ from langfuse.api.commons.types.score_data_type import ScoreDataType
 
 from app.config import settings
 from app.tracing import get_langfuse_client
+from scripts.utils import SCORE_PAGE_SIZE, load_state, save_state
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,13 +49,11 @@ SCORE_FETCH_LIMIT = 500
 
 
 def _load_seen() -> set[str]:
-    if STATE_FILE.exists():
-        return set(json.loads(STATE_FILE.read_text()))
-    return set()
+    return load_state(STATE_FILE)
 
 
 def _save_seen(seen: set[str]) -> None:
-    STATE_FILE.write_text(json.dumps(sorted(seen)))
+    save_state(STATE_FILE, seen)
 
 
 def _ensure_dataset(lf, name: str) -> None:
@@ -111,19 +112,22 @@ def run_once(
                 name="user_feedback",
                 value=1.0,
                 data_type=ScoreDataType.BOOLEAN,
-                limit=100,
+                limit=SCORE_PAGE_SIZE,
                 page=page,
             )
             scores = resp.data or []
+        except httpx.HTTPStatusError as exc:
+            logger.error("Langfuse returned HTTP %s fetching scores (page %d): %s", exc.response.status_code, page, exc)
+            break
         except Exception as exc:
-            logger.error("Failed to fetch scores (page %d): %s", page, exc)
+            logger.error("Unexpected error fetching scores (page %d): %s", page, exc)
             break
 
         for s in scores:
             if s.trace_id:
                 positive_trace_ids.add(s.trace_id)
 
-        if len(scores) < 100:
+        if len(scores) < SCORE_PAGE_SIZE:
             break
         page += 1
 

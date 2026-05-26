@@ -10,6 +10,7 @@ Qdrant or embeddings.  Three virtual models are exposed:
                            (no RAG context; useful for guardrail demos)
 """
 
+import asyncio
 import json
 import logging
 import time
@@ -17,7 +18,7 @@ import uuid
 from typing import AsyncGenerator, Optional
 
 import httpx
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from langfuse import propagate_attributes
@@ -71,9 +72,36 @@ class ChatRequest(BaseModel):
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 
+_HEALTH_TIMEOUT = 5.0
+
+
+async def _probe(name: str, url: str, headers: dict | None = None) -> tuple[str, dict]:
+    try:
+        async with httpx.AsyncClient(timeout=_HEALTH_TIMEOUT) as client:
+            r = await client.get(url, headers=headers or {})
+            r.raise_for_status()
+        return name, {"status": "ok"}
+    except httpx.TimeoutException:
+        return name, {"status": "error", "error": "timeout"}
+    except httpx.HTTPStatusError as e:
+        return name, {"status": "error", "error": f"HTTP {e.response.status_code}"}
+    except Exception as e:
+        return name, {"status": "error", "error": str(e)}
+
+
 @app.get("/health")
-def health():
-    return {"status": "ok"}
+async def health(response: Response):
+    results = await asyncio.gather(
+        _probe("litellm", f"{settings.litellm_base_url}/health/liveliness",
+               {"Authorization": f"Bearer {settings.litellm_master_key}"}),
+        _probe("langfuse", f"{settings.langfuse_base_url}/api/public/health"),
+        _probe("qdrant", f"{settings.qdrant_url}/healthz"),
+    )
+    checks = dict(results)
+    all_ok = all(v["status"] == "ok" for v in checks.values())
+    if not all_ok:
+        response.status_code = 503
+    return {"status": "ok" if all_ok else "degraded", "checks": checks}
 
 
 @app.get("/v1/models")
@@ -100,6 +128,8 @@ def list_models():
 
 @app.post("/v1/chat/completions")
 async def chat_completions(body: ChatRequest, request: Request):
+    request_id = uuid.uuid4().hex[:12]
+
     user_messages = [m for m in body.messages if m.role == "user"]
     if not user_messages:
         raise HTTPException(status_code=400, detail="No user message found")
@@ -138,9 +168,17 @@ async def chat_completions(body: ChatRequest, request: Request):
                 detail = e.response.json()
             except Exception:
                 detail = e.response.text
-            result = f"[Error: {detail}]"
+            logger.error("[%s] LiteLLM HTTP error: %s", request_id, detail)
+            result = f"[Error: {detail}] (request_id={request_id})"
+        except httpx.TimeoutException as e:
+            logger.error("[%s] LiteLLM request timed out: %s", request_id, e)
+            result = f"[Error: upstream timeout] (request_id={request_id})"
+        except httpx.RequestError as e:
+            logger.error("[%s] LiteLLM unreachable: %s", request_id, e)
+            result = f"[Error: upstream unavailable] (request_id={request_id})"
         except Exception as e:
-            result = f"[Error: {e}]"
+            logger.error("[%s] Unexpected error on direct path: %s", request_id, e)
+            result = f"[Error: {e}] (request_id={request_id})"
         completion_id = f"chatcmpl-{uuid.uuid4().hex[:8]}"
     else:
         # ── RAG chain path ────────────────────────────────────────────────────
@@ -157,8 +195,15 @@ async def chat_completions(body: ChatRequest, request: Request):
                 metadata=trace_metadata,
             ):
                 result = chain.invoke(query, config={"callbacks": callbacks})
+        except httpx.TimeoutException as e:
+            logger.error("[%s] RAG chain timed out calling LiteLLM: %s", request_id, e)
+            result = f"[Error: upstream timeout] (request_id={request_id})"
+        except httpx.RequestError as e:
+            logger.error("[%s] RAG chain could not reach LiteLLM: %s", request_id, e)
+            result = f"[Error: upstream unavailable] (request_id={request_id})"
         except Exception as e:
-            result = f"[Error: {e}]"
+            logger.error("[%s] RAG chain error: %s", request_id, e)
+            result = f"[Error: {e}] (request_id={request_id})"
 
         # Use the Langfuse trace ID as the completion ID so Open WebUI stores
         # it as the message ID for feedback correlation.
