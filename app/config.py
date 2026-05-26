@@ -30,5 +30,9 @@ class Settings(BaseSettings):
     openwebui_email: str = ""
     openwebui_password: str = ""
 
+    # OpenTelemetry
+    otel_enabled: bool = True
+    otel_endpoint: str = "http://localhost:4318/v1/traces"
+
 
 settings = Settings()

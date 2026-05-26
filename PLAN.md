@@ -14,6 +14,8 @@ Bigger but architecturally interesting
 
 [x] Online evaluation — A background worker that watches Langfuse for new traces and runs your code-based evaluators automatically on every production query, not just in batch eval runs. Shows the "continuous eval" pattern.
 
+[x] OpenTelemetry pipeline — OTel Collector as central hub fan-out to Jaeger (general traces) and Langfuse (LLM-specific OTel ingestion). FastAPI + httpx auto-instrumented. OTel trace IDs cross-linked into Langfuse metadata. Complements existing Langfuse SDK tracing — both run in parallel.
+
 [ ] Reranker step — Add a cross-encoder reranker (e.g. cross-encoder/ms-marco-MiniLM) between Qdrant retrieval and LLM generation to re-sort the top-k chunks by relevance. Demonstrable improvement on ambiguous queries, shows the retrieval augmentation can be improved independently of the LLM.
 
 My recommendation: Prompt Management is the highest-ROI pick for a portfolio piece — it's a named Langfuse feature, takes ~30 lines of code, and makes the system prompt editable/versioned from the UI. Semantic caching is a 10-minute win that makes demos snappier. Start there.

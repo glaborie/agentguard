@@ -15,6 +15,7 @@ import json
 import logging
 import time
 import uuid
+from contextlib import asynccontextmanager
 from typing import AsyncGenerator, Optional
 
 import httpx
@@ -22,15 +23,24 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from langfuse import propagate_attributes
+from opentelemetry import trace as otel_trace
 from pydantic import BaseModel
 
 from app.config import settings
 from app.rag.chain import build_rag_chain
+from app.telemetry import get_otel_trace_id, init_telemetry
 from app.tracing import get_langfuse_client, get_langfuse_handler
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="AgentGuard RAG API")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_telemetry(app)
+    yield
+
+
+app = FastAPI(title="AgentGuard RAG API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -146,6 +156,20 @@ async def chat_completions(body: ChatRequest, request: Request):
         trace_metadata["message_id"] = body.message_id
     if body.user_name:
         trace_metadata["user_name"] = body.user_name
+
+    # Annotate the active OTel span with request-level attributes so Jaeger
+    # shows model, RAG mode, and session alongside the HTTP trace.
+    span = otel_trace.get_current_span()
+    span.set_attribute("app.model", body.model)
+    span.set_attribute("app.is_rag", body.model not in _DIRECT_MODELS)
+    if chat_id:
+        span.set_attribute("app.chat_id", chat_id)
+
+    # Cross-link OTel trace into Langfuse metadata so both systems are
+    # navigable from the same trace record.
+    otel_tid = get_otel_trace_id()
+    if otel_tid:
+        trace_metadata["otel_trace_id"] = otel_tid
 
     if body.model in _DIRECT_MODELS:
         # ── Direct LiteLLM path (no RAG context) ─────────────────────────────
