@@ -1,4 +1,3 @@
-import logging
 from argparse import Namespace
 
 
@@ -16,7 +15,6 @@ def register(sub) -> None:
 def cmd_experiment(args: Namespace) -> None:
     from app.eval.service import experiment, show_experiment_table
 
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     models = [m.strip() for m in args.models.split(",")]
     metric_names = [m.strip() for m in args.metrics.split(",")] if args.metrics else None
 
