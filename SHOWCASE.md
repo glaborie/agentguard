@@ -717,6 +717,222 @@ Each batch export logs a line when spans are received and forwarded. A healthy e
 
 ---
 
+## Part 9 — Multi-Model Experiments
+
+This demonstrates the **Experiment** phase of the AI Engineering Loop: run the same labeled dataset through multiple LLM backends in one command, score every response with DeepEval, push results to Langfuse, and read a comparison table showing which model wins on each metric.
+
+**How it works:**
+`app/eval/experiments.py` iterates every item in a Langfuse dataset, retrieves context once per question (shared across models for a fair comparison), generates an answer with each model in turn, evaluates with DeepEval (faithfulness, answer relevancy, contextual relevancy), and pushes scores back to Langfuse as a named dataset run per model.
+
+**Prerequisites:** A populated `rag-golden-set` dataset (Part 7) and a running Docker stack.
+
+---
+
+### 9.1 Quick Validation Run (`--limit`)
+
+Before committing to a full dataset run, validate the pipeline with 3 items:
+
+```bash
+python -m app.main experiment \
+  --dataset rag-golden-set \
+  --models openrouter-gemini-flash,openrouter-mistral \
+  --limit 3
+```
+
+**Expected output (abbreviated):**
+```
+Dataset : rag-golden-set
+Models  : ['openrouter-gemini-flash', 'openrouter-mistral']
+Metrics : all (faithfulness, answer_relevancy, contextual_relevancy, hallucination)
+Judge   : default (deepeval_model setting)
+
+==============================================================
+  Experiment  : rag-golden-set
+  Run at      : 2026-05-27 11:14
+  Evaluations : 6  (3 items x 2 models)
+  ------------------------------------------------------------
+  Metric                  gemini-flash/...   mistral/...
+  ------------------------------------------------------------
+  FaithfulnessMetric              0.85              0.78
+  AnswerRelevancyMetric           0.91              0.87
+  ContextualRelevancyMetric       0.79              0.74
+  HallucinationMetric             0.92              0.88
+  ------------------------------------------------------------
+  AVERAGE                         0.87              0.83
+  ------------------------------------------------------------
+  Langfuse dataset runs:
+    experiment-openrouter-gemini-flash-20260527-1114
+    experiment-openrouter-mistral-20260527-1114
+==============================================================
+```
+
+The table shows per-model averages for every metric. The `--limit 3` flag caps the run to 3 dataset items — useful for smoke-testing without burning credits on the full set.
+
+---
+
+### 9.2 Full Dataset Run
+
+```bash
+python -m app.main experiment \
+  --dataset rag-golden-set \
+  --models openrouter-gemini-flash,openrouter-mistral
+```
+
+Same as above without `--limit` — runs all items in the dataset.
+
+---
+
+### 9.3 Custom Metrics and Judge Model
+
+Run only specific DeepEval metrics and use a different judge:
+
+```bash
+python -m app.main experiment \
+  --dataset rag-golden-set \
+  --models openrouter-gemini-flash,openrouter-mistral \
+  --metrics faithfulness,answer_relevancy \
+  --judge-model openrouter-mistral \
+  --run-prefix "sprint-42"
+```
+
+`--run-prefix` controls the Langfuse run name prefix — useful for labeling experiments by sprint, feature, or date. Default is `experiment`.
+
+---
+
+### 9.4 Verify in Langfuse — Datasets → Runs Tab
+
+1. In Langfuse → **Datasets** → click `rag-golden-set`
+2. Click the **Runs** tab
+
+**Expected:**
+- Two runs appear, one per model, named `experiment-<model>-<timestamp>`
+- Each run row shows the average DeepEval scores for that model
+- Clicking a run opens its detail view: every dataset item linked to the trace that answered it
+
+**What to look for:**
+- The run detail shows `deepeval_faithfulnessmetric`, `deepeval_answerrelevancymetric`, `deepeval_contextualrelevancymetric` scores on each trace
+- Click any trace link to jump to the full RAG span tree in Langfuse Traces — you can see exactly what was retrieved and what the LLM was sent for that answer
+
+---
+
+### 9.5 Compare Runs in the Langfuse UI
+
+Langfuse displays all runs for a dataset side-by-side on the Runs tab, showing average scores per run. This is the canonical view for "which model performs better on this dataset."
+
+**What to look for:**
+- The run with higher average scores is the better-performing model on this dataset
+- Score variance across items shows which model is more consistent
+- Runs from different experiments (different `--run-prefix` values) are all visible in the same tab, making it easy to compare across sprints
+
+---
+
+### 9.6 Trace-Level Score Inspection
+
+Click any item in a run to open the linked trace. In the trace **Scores** tab:
+
+**Expected scores present on each trace:**
+| Score name | Source |
+|---|---|
+| `deepeval_faithfulnessmetric` | DeepEval (LLM-judged) |
+| `deepeval_answerrelevancymetric` | DeepEval (LLM-judged) |
+| `deepeval_contextualrelevancymetric` | DeepEval (LLM-judged) |
+| `online_has_citation` | Online eval worker (code-based) |
+| `online_within_length` | Online eval worker (code-based) |
+| `user_feedback` | Human rating (sync script) |
+
+All three scoring layers — human, code-based, and LLM-judged — coexist on the same trace in a unified view.
+
+---
+
+## Part 10 — Retrieval Quality Logging
+
+This demonstrates surfacing Qdrant similarity scores as observable signals — in Langfuse trace metadata and as OTel span attributes in Jaeger. Scores were previously computed and silently discarded; now they flow into both observability systems automatically with every RAG query.
+
+**How it works:**
+`ScoredRetriever` (in `app/rag/chain.py`) replaces the default `VectorStoreRetriever`. It calls `similarity_search_with_score()` instead of `similarity_search()`, injects `retrieval_score` into each `doc.metadata`, and sets four OTel attributes on the active span. The formatted context sent to the LLM includes the score next to each source label.
+
+---
+
+### 10.1 Send Two Contrasting Queries
+
+From Open WebUI with **agentguard-rag**:
+
+**Query A — specific:**
+```
+What is a trace in Langfuse?
+```
+
+**Query B — vague:**
+```
+Suggest something to do with Langfuse
+```
+
+---
+
+### 10.2 Compare Retrieval Scores in Langfuse
+
+For each query: Langfuse → Traces → open the trace → expand the **ScoredRetriever** observation → click any document's **metadata** row to expand it.
+
+**Expected:**
+- `retrieval_score` appears on each retrieved chunk
+- Query A scores: **~0.70–0.75** (specific question → tight embedding match)
+- Query B scores: **~0.44–0.48** (vague question → broad, weak match)
+
+The score distribution explains ContextualRelevancyMetric results from experiments: vague queries retrieve poorly-matched context regardless of which LLM answers them.
+
+**In the LLM prompt** (visible in the `ChatOpenAI` observation's system message):
+```
+[Source: https://langfuse.com/academy/tracing | Score: 0.7106]
+...chunk text...
+```
+The LLM sees retrieval confidence directly in the context.
+
+---
+
+### 10.3 Verify OTel Span Attributes in Jaeger
+
+1. Open Jaeger: [http://localhost:16686](http://localhost:16686)
+2. Search: service `agentguard`, lookback 1h
+3. Click a `RunnableSequence` trace (RAG query traces — not the GET health checks)
+4. Expand the `ScoredRetriever` span
+
+**Expected span attributes:**
+```
+retrieval.chunk_count  = 4
+retrieval.min_score    = 0.6829
+retrieval.max_score    = 0.7392
+retrieval.avg_score    = 0.7028
+```
+
+**Note:** The attributes land on the `ScoredRetriever` span (not the root HTTP span) because the Langfuse SDK's OTel spans are the active context inside the retriever. This is actually better — score and retrieval latency sit on the same span.
+
+---
+
+### 10.4 Search by Score Range in Jaeger
+
+Jaeger supports tag-based search. To find all low-quality retrievals:
+
+1. Jaeger → Search → service `agentguard`
+2. Tags field: `retrieval.avg_score` (Jaeger filters spans with this key present)
+3. Extend lookback to match your query history
+
+All `ScoredRetriever` spans appear — click any to see the score distribution alongside the retrieval latency.
+
+---
+
+### 10.5 The Diagnostic Loop
+
+With scores now visible, the root-cause path for a bad answer is:
+
+1. Langfuse → filter traces by `user_feedback = 0`
+2. Open a low-rated trace → `ScoredRetriever` observation → low `retrieval_score` values (e.g. 0.40–0.45)
+3. Cross-check: same trace → `ChatOpenAI` input → the low-score chunks appear verbatim in the context
+4. Jaeger → same trace → `ScoredRetriever` span duration → was retrieval also slow?
+
+Low score + poor answer + thumbs-down = retrieval tuning opportunity (chunk size, `k`, embedding model), not a prompt problem.
+
+---
+
 ## Verification Checklist
 
 | Scenario | Pass condition |
@@ -754,3 +970,13 @@ Each batch export logs a line when spans are received and forwarded. A healthy e
 | 8.1 | Jaeger at `:16686` shows `agentguard` service; trace appears after each chat message |
 | 8.2 | Waterfall shows `POST /v1/embeddings`, Qdrant span, and LLM generation span nested under root HTTP span |
 | 8.3 | `otel_trace_id` in Langfuse trace metadata navigates to the matching Jaeger trace |
+| 9.1 | `--limit 3` run completes; comparison table printed; 6 evaluations (3 items × 2 models) |
+| 9.2 | Full run completes without errors; run names printed at bottom of table |
+| 9.3 | `--run-prefix sprint-42` run names appear as `sprint-42-<model>-<timestamp>` in table and Langfuse |
+| 9.4 | Langfuse Datasets → `rag-golden-set` → Runs tab shows one run per model with average scores |
+| 9.5 | Run detail view shows every dataset item linked to its generation trace |
+| 9.6 | Trace Scores tab shows `deepeval_*`, `online_*`, and `user_feedback` scores coexisting on one trace |
+| 10.1–10.2 | Specific query scores ~0.70+; vague query scores ~0.44–0.48; `retrieval_score` visible in ScoredRetriever metadata per chunk |
+| 10.3 | Jaeger `ScoredRetriever` span has `retrieval.avg_score`, `retrieval.min_score`, `retrieval.max_score`, `retrieval.chunk_count` attributes |
+| 10.4 | Jaeger tag search for `retrieval.avg_score` returns ScoredRetriever spans |
+| 10.5 | Low `user_feedback=0` trace → low retrieval scores → identifiable as retrieval problem, not model problem |
