@@ -1,10 +1,17 @@
 """RAG chain: retrieve context from Qdrant, generate answer via LiteLLM."""
 
+from typing import Any
+
+from langchain_core.callbacks import CallbackManagerForRetrieverRun
+from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
+from opentelemetry import trace as otel_trace
+from pydantic import ConfigDict
 from qdrant_client import QdrantClient
 
 from app.config import settings
@@ -30,6 +37,35 @@ LANGFUSE_PROMPT_MESSAGES = [
 ]
 
 
+class ScoredRetriever(BaseRetriever):
+    """Retriever that surfaces Qdrant similarity scores as doc metadata and OTel span attributes."""
+
+    vector_store: Any
+    k: int = 6
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    def _get_relevant_documents(
+        self, query: str, *, run_manager: CallbackManagerForRetrieverRun
+    ) -> list[Document]:
+        results = self.vector_store.similarity_search_with_score(query, k=self.k)
+
+        docs: list[Document] = []
+        scores: list[float] = []
+        for doc, score in results:
+            doc.metadata["retrieval_score"] = round(float(score), 4)
+            docs.append(doc)
+            scores.append(float(score))
+
+        span = otel_trace.get_current_span()
+        if span.is_recording() and scores:
+            span.set_attribute("retrieval.chunk_count", len(scores))
+            span.set_attribute("retrieval.min_score", round(min(scores), 4))
+            span.set_attribute("retrieval.max_score", round(max(scores), 4))
+            span.set_attribute("retrieval.avg_score", round(sum(scores) / len(scores), 4))
+
+        return docs
+
+
 def get_llm(model: str | None = None, temperature: float = 0.0) -> ChatOpenAI:
     return ChatOpenAI(
         model=model or settings.default_model,
@@ -39,7 +75,7 @@ def get_llm(model: str | None = None, temperature: float = 0.0) -> ChatOpenAI:
     )
 
 
-def get_retriever(k: int = 6) -> QdrantVectorStore:
+def get_retriever(k: int = 6) -> ScoredRetriever:
     embeddings = OpenAIEmbeddings(
         model=settings.embedding_model,
         openai_api_base=f"{settings.litellm_base_url}/v1",
@@ -51,12 +87,12 @@ def get_retriever(k: int = 6) -> QdrantVectorStore:
         collection_name=settings.qdrant_collection,
         embedding=embeddings,
     )
-    return vector_store.as_retriever(search_kwargs={"k": k})
+    return ScoredRetriever(vector_store=vector_store, k=k)
 
 
 def format_docs(docs) -> str:
     return "\n\n---\n\n".join(
-        f"[Source: {doc.metadata.get('source', 'unknown')}]\n{doc.page_content}"
+        f"[Source: {doc.metadata.get('source', 'unknown')} | Score: {doc.metadata.get('retrieval_score', 'n/a')}]\n{doc.page_content}"
         for doc in docs
     )
 

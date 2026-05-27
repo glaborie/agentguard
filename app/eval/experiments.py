@@ -29,6 +29,7 @@ def run_experiment(
     run_prefix: str = "experiment",
     metric_names: list[str] | None = None,
     judge_model: str | None = None,
+    limit: int | None = None,
 ) -> tuple[list[ItemResult], dict[str, str]]:
     """Run every model against every dataset item and push results to Langfuse.
 
@@ -46,6 +47,7 @@ def run_experiment(
 
     client = get_langfuse_client()
     dataset = client.get_dataset(dataset_name)
+    items = dataset.items[:limit] if limit else dataset.items
     retriever = get_retriever(k=6)
 
     run_names = {
@@ -54,10 +56,10 @@ def run_experiment(
     }
 
     results: list[ItemResult] = []
-    total = len(dataset.items) * len(models)
+    total = len(items) * len(models)
     done = 0
 
-    for item in dataset.items:
+    for item in items:
         question = (
             item.input.get("question", str(item.input))
             if isinstance(item.input, dict)
@@ -86,6 +88,7 @@ def run_experiment(
                 actual_output=output,
                 expected_output=expected,
                 retrieval_context=retrieval_context,
+                context=retrieval_context,
             )
 
             item_scores: dict[str, float] = {}
@@ -168,13 +171,13 @@ def print_comparison_table(
     }
     label_w = max((len(m) for m in metric_names), default=10) + 2
     col_w = max(max(len(d) for d in display_names.values()) + 2, 10)
-    sep = "─" * (label_w + col_w * len(models) + 2)
+    sep = "-" * (label_w + col_w * len(models) + 2)
 
     n_items = len(results) // max(len(models), 1)
-    print(f"\n{'═' * (len(sep) + 2)}")
+    print(f"\n{'=' * (len(sep) + 2)}")
     print(f"  Experiment  : {dataset_name}")
     print(f"  Run at      : {datetime.now().strftime('%Y-%m-%d %H:%M')}")
-    print(f"  Evaluations : {len(results)}  ({n_items} items × {len(models)} models)")
+    print(f"  Evaluations : {len(results)}  ({n_items} items x {len(models)} models)")
     print(f"  {sep}")
 
     header = f"  {'Metric':<{label_w}}"
@@ -202,4 +205,4 @@ def print_comparison_table(
     print("  Langfuse dataset runs:")
     for m, run_name in run_names.items():
         print(f"    {run_name}")
-    print(f"{'═' * (len(sep) + 2)}\n")
+    print(f"{'=' * (len(sep) + 2)}\n")

@@ -1,6 +1,7 @@
 """CLI entry point for the RAG application."""
 
 import argparse
+import logging
 import sys
 import uuid
 from argparse import Namespace
@@ -137,6 +138,7 @@ def cmd_experiment(args: Namespace) -> None:
         run_prefix=args.run_prefix,
         metric_names=metric_names,
         judge_model=args.judge_model,
+        limit=args.limit,
     )
 
     print_comparison_table(results, run_names, args.dataset)
@@ -207,6 +209,7 @@ def main() -> None:
     p_exp.add_argument("--metrics", default=None, help="Comma-separated DeepEval metric names (default: all)")
     p_exp.add_argument("--judge-model", default=None, help="Model for DeepEval judge (default: deepeval_model setting)")
     p_exp.add_argument("--run-prefix", default="experiment", help="Prefix for Langfuse run names (default: experiment)")
+    p_exp.add_argument("--limit", type=int, default=None, help="Max dataset items to evaluate (default: all)")
 
     # seed-dataset
     sub.add_parser("seed-dataset", help="Create the rag-eval-v1 dataset in Langfuse")
