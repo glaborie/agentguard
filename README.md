@@ -77,34 +77,41 @@ When you change a prompt, model, retriever, or tool, AgentGuard can run those go
    +-------------------------------------------------------------------+
 ```
 
-## Services
+## Platform Components
 
-| Service | Port(s) | Purpose |
+AgentGuard runs as a self-hosted stack that combines observability, retrieval, model routing, UI, and evaluation into one environment for operating AI applications safely.
+
+| Component | Port(s) | Role in the platform |
 |---|---|---|
-| **langfuse-web** | 3000 | Langfuse UI and API |
-| **langfuse-worker** | 3030 (local only) | Background trace/event processing |
-| **postgres** | 5432 (local only) | Langfuse relational database |
-| **clickhouse** | 8123, 9000 (local only) | Langfuse analytics storage |
-| **redis** | 6300 (host) -> 6379 (container) | Langfuse cache/queue |
-| **minio** | 9090 (API), 9091 (console, local only) | S3-compatible blob storage |
-| **ollama** | 11434 | Local LLM serving (GPU) |
-| **litellm** | 4000 | OpenAI-compatible LLM proxy |
-| **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector database |
-| **portainer** | 9443 (HTTPS) | Container management UI |
-| **dozzle** | 8080 | Real-time log viewer |
-| **rag-api** | 8001 | FastAPI OpenAI-compatible wrapper around the RAG chain (`app/api/`) |
-| **openwebui** | 3001 | Chat UI — connects to `rag-api`, every message triggers full RAG pipeline |
-| **minio-init** | — | Creates `langfuse` bucket on first boot (runs once) |
-| **litellm-init** | — | Seeds LiteLLM config (runs once) |
+| **langfuse-web** | 3000 | Observability UI and API for traces, scores, and datasets |
+| **langfuse-worker** | 3030 (local only) | Background processing for trace and event ingestion |
+| **postgres** | 5432 (local only) | Relational storage for Langfuse and supporting services |
+| **clickhouse** | 8123, 9000 (local only) | Analytics store for high-volume observability data |
+| **redis** | 6300 (host) -> 6379 (container) | Cache and queue backend |
+| **minio** | 9090 (API), 9091 (console, local only) | S3-compatible object storage |
+| **ollama** | 11434 | Local model runtime for embeddings |
+| **litellm** | 4000 | OpenAI-compatible model gateway and guardrail enforcement layer |
+| **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector store for retrieval |
+| **rag-api** | 8001 | OpenAI-compatible API surface for the RAG application |
+| **openwebui** | 3001 | End-user chat interface for interacting with the application |
+| **portainer** | 9443 | Container administration UI |
+| **dozzle** | 8080 | Real-time container log viewer |
+| **minio-init** | — | One-time initialization of object storage buckets |
+| **litellm-init** | — | One-time initialization of LiteLLM configuration |
 
 ## Prerequisites
 
+To run AgentGuard locally, you need:
+
 - **Docker** with Compose v2
-- **NVIDIA GPU** + drivers (for Ollama GPU acceleration; CPU-only works but is slow)
 - **Python 3.11+**
-- ~15 GB RAM allocated to Docker (services have explicit CPU/memory limits)
+- **~15 GB RAM** allocated to Docker
+- **NVIDIA GPU + drivers** if you want Ollama GPU acceleration  
+  (CPU-only works, but will be slower)
 
 ## Quick Start
+
+The fastest way to experience AgentGuard is:
 
 ### 1. Clone and configure
 
@@ -113,19 +120,19 @@ cp .env.example .env
 # Edit .env if you want to change passwords or add an OpenRouter API key
 ```
 
-### 2. Start the Docker stack
+### 2. Start the platform
 
 ```bash
 docker compose up -d
 ```
 
-Wait for all services to be healthy:
+Check that services are healthy:
 
 ```bash
 docker compose ps
 ```
 
-### 3. Pull Ollama embedding model
+### 3. Pull the embedding model
 
 ```bash
 docker compose exec ollama ollama pull nomic-embed-text
@@ -137,45 +144,48 @@ docker compose exec ollama ollama pull nomic-embed-text
 pip install -r requirements.txt
 ```
 
-### 5. Ingest documents
+### 5. Ingest the knowledge base
 
-Scrapes the Langfuse Academy pages and stores embeddings in Qdrant:
+This step scrapes the Langfuse Academy pages and indexes them in Qdrant for retrieval.
 
 ```bash
 python -m app.main ingest
 ```
 
-### 6. Ask a question (simple RAG)
+### 6. Test the RAG path
 
 ```bash
 python -m app.main query "What is the AI Engineering Loop?"
 ```
 
-### 7. Ask with the ReAct agent
+### 7. Test the agentic path
 
-The agent has tools for doc search, trace inspection, quality scoring, and dataset review:
+The agent can combine document search, trace inspection, response scoring, and dataset inspection.
 
 ```bash
 python -m app.main agent "How is my RAG system performing?"
 ```
 
-### 8. Interactive agent chat
+### 8. Start an interactive agent session
 
 ```bash
 python -m app.main agent-chat --session my-session
 ```
 
-### 9. Chat via Open WebUI
+### 9. Use the web chat UI
 
-Open [http://localhost:3001](http://localhost:3001), create an admin account on first visit, then select **agentguard-rag** from the model dropdown. Every message you send goes through the full RAG pipeline: query embedding → Qdrant retrieval → LLM generation.
+Open [http://localhost:3001](http://localhost:3001), create an admin account on first visit, then select **agentguard-rag** from the model dropdown.
 
-### 10. View traces in Langfuse
+Every message you send goes through the full application stack, including retrieval, model routing, tracing, and guardrails.
 
-Open [http://localhost:3000](http://localhost:3000) and log in with:
+### 10. Inspect traces and scores
+
+Open [http://localhost:3000](http://localhost:3000) and sign in with:
+
 - **Email:** admin@local.dev
 - **Password:** admin123456
 
-Every query and chat message is automatically traced with full LLM call details, retrieval context, and latency.
+You should now see traces with request inputs, outputs, retrieval context, latency, and evaluation data.
 
 ## LLM Routing
 
