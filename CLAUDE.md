@@ -52,6 +52,7 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 - `app/eval/deepeval_runner.py` - `run_deepeval_evaluation()` fetches a Langfuse dataset, runs the RAG chain, evaluates with DeepEval, pushes scores to Langfuse.
 - `app/eval/experiments.py` - Multi-model experiment runner. `run_experiment(dataset, models)` runs every model against every dataset item, scores with DeepEval, pushes scores to Langfuse, and links each trace to a named dataset run via `client.api.dataset_run_items.create()`. `print_comparison_table()` prints a per-model average score table using ASCII box chars (Unicode box-drawing chars fail on Windows cp1252). `LLMTestCase` passes `context=retrieval_context` (required by `HallucinationMetric`) in addition to `retrieval_context`. CLI: `python -m app.main experiment --dataset rag-golden-set --models m1,m2 --limit N`.
 - `scripts/build_dataset.py` - Builds the `rag-golden-set` Langfuse dataset from positively rated traces. Queries `user_feedback=1.0` scores, fetches each linked trace, upserts `{question, answer}` items with `source_trace_id`. `run_once()` is called by the worker every 5 minutes. State in `.build_dataset_state.json`.
+- `scripts/regression_gate.py` - Automated quality gate for the golden dataset. Runs every dataset item through the RAG chain, evaluates with DeepEval, and exits non-zero if any metric average falls outside its threshold. Exit codes: 0=all pass, 1=metric failure, 2=runtime error. Default thresholds: `FaithfulnessMetric≥0.80`, `AnswerRelevancyMetric≥0.70`, `ContextualRelevancyMetric≥0.30`, `HallucinationMetric≤0.30`. `HallucinationMetric` is lower-is-better — threshold is a maximum, not a minimum. Override thresholds via `--thresholds '{"FaithfulnessMetric":0.85}'`. Pushes per-item scores to Langfuse and links each trace to a named dataset run (same as the experiment runner). CLI: `python -m app.main regression-gate --dataset rag-golden-set --limit 5`. Also callable directly: `python -m scripts.regression_gate --limit 5`.
 - `scripts/worker.py` - Combined background daemon. Runs three pollers in threads: `eval-worker` (60s), `feedback-worker` (120s), `dataset-builder` (300s). Seeds score configs on startup. Launched automatically by the `agentguard-worker` Docker service.
 - `scripts/utils.py` - Shared utilities for scripts: `langfuse_basic_auth()`, `load_state()`/`save_state()` (corrupt-safe JSON state files), `HTTP_TIMEOUT`, `TRACE_PAGE_SIZE`, `SCORE_PAGE_SIZE`.
 - `app/utils.py` - Shared app-layer utilities: `truncate(text, max_len)`, `extract_trace_output(trace)` (normalises None/str/dict trace output to plain string).
@@ -70,6 +71,8 @@ python -m app.main agent "question"    # ReAct agent with tools
 python -m app.main agent-chat          # Interactive agent chat with memory
 python -m app.main evaluate --dataset name  # Run DeepEval metrics (single model)
 python -m app.main experiment --dataset rag-golden-set --models openrouter-gemini-flash,openrouter-mistral  # Multi-model comparison
+python -m app.main regression-gate --dataset rag-golden-set      # Run quality gate (exit 0=pass, 1=fail)
+python -m app.main regression-gate --limit 5                     # Quick smoke-test (5 items)
 
 # One-time setup (after first docker compose up):
 python -m scripts.seed_langfuse_prompt        # Register RAG system prompt in Langfuse
