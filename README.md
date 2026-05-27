@@ -71,21 +71,13 @@ flowchart TD
         PROTECT[Business Protection<br/>Prompt Injection Blocking<br/>PII Masking]
     end
 
-    subgraph Ops["Observability + Evaluation"]
-        LF[Langfuse Tracing]
+    subgraph Telemetry["Observability + Telemetry"]
+        LF[Langfuse]
+        OTEL[OpenTelemetry SDK]
+        COLLECTOR[otel-collector]
+        JAEGER[Jaeger]
         EVAL[Golden Dataset Evaluation<br/>Release Confidence]
     end
-
-    RAG --> Q
-    RAG --> LLM
-    AGENT --> TOOLS
-    AGENT --> LLM
-
-    LLM --> PROTECT
-    RAG --> LF
-    AGENT --> LF
-    LLM --> LF
-    EVAL --> LF
 
     subgraph Infra["Infrastructure"]
         OLLAMA[Ollama<br/>Local LLM + Embeddings]
@@ -95,7 +87,24 @@ flowchart TD
         MINIO[MinIO]
     end
 
+    RAG --> Q
+    RAG --> LLM
+    AGENT --> TOOLS
+    AGENT --> LLM
+
+    LLM --> PROTECT
     LLM --> OLLAMA
+
+    RAG --> LF
+    AGENT --> LF
+    LLM --> LF
+    EVAL --> LF
+
+    API --> OTEL
+    OTEL --> COLLECTOR
+    COLLECTOR --> JAEGER
+    COLLECTOR --> LF
+
     LF --> PG
     LF --> CH
     LF --> REDIS
@@ -340,7 +349,7 @@ Unit tests cover agent tools, graph structure, DeepEval metric wiring, protectio
 
 ```
 .
-├── docker-compose.yml        # 14-service stack + 2 init containers
+├── docker-compose.yml        # 14 services + 2 init containers
 ├── litellm_config.yaml       # LiteLLM model routing + guardrails config
 ├── requirements.txt          # Python dependencies
 ├── pyproject.toml            # pytest configuration
@@ -407,7 +416,7 @@ Unit tests cover agent tools, graph structure, DeepEval metric wiring, protectio
     ├── test_chain.py            # 9 tests: format_docs, prompt, e2e query
     ├── test_ingest.py           # 10 tests: chunking, loading, scraping
     ├── test_cli.py              # 21 tests: parser recognition, dispatch wiring
-    ├── testServices.py         # 35 tests: service error mapping + flow logic
+    ├── test_services.py         # 35 tests: service error mapping + flow logic
     ├── test_api_routes.py       # 16 tests: route handlers (skipped without fastapi)
     ├── test_agent_integration.py # 5 tests: agent e2e (requires Docker)
     └── test_integration.py      # 8 tests: service health, RAG API, guardrails
