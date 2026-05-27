@@ -1,10 +1,44 @@
 # AgentGuard
 
-**The QA layer for agentic AI that everybody loves to ignore.**
+**AgentGuard is a self-hosted control layer for preventing costly incidents in AI applications.**
 
-A self-hosted RAG application with full observability, guardrails, and evaluation built in — implementing the complete [AI Engineering Loop](https://langfuse.com/academy/ai-engineering-loop): Trace, Monitor, Build Datasets, Experiment, and Evaluate.
+It supports both **RAG** and **agentic** applications by helping teams detect, evaluate, and block failures before they reach users.
 
-The application answers questions about Langfuse's own documentation (a meta twist) and uses Langfuse to observe itself doing it.
+When an AI assistant hallucinates a discount, misstates company policy, leaks sensitive data, or regresses after a prompt, model, retrieval, or tool change, the result is not just a bad answer — it is a business incident.
+
+## Problem
+
+LLM applications — whether RAG assistants or agentic systems — can create customer-facing incidents by hallucinating offers, exposing PII, giving unsafe answers, taking incorrect actions, or silently regressing after system changes.
+
+## Target User
+
+AI engineers, platform teams, and technical product owners responsible for operating RAG or agentic AI applications where failures carry business, compliance, or reputational risk.
+
+## Success Metric
+
+The percentage of AI incidents detected or prevented before they become customer-visible.
+
+## How AgentGuard helps
+
+AgentGuard combines four control mechanisms for AI applications:
+
+- **Observability** — trace requests, retrieval steps, tool usage, model behavior, latency, and failure modes
+- **Guardrails** — block prompt injection and reduce unsafe or non-compliant behavior
+- **PII protection** — detect and redact sensitive data in model outputs
+- **Golden dataset evaluation** — test critical business scenarios against a curated set of known-good examples before and after changes
+
+## What is a golden dataset?
+
+A golden dataset is a curated collection of representative prompts and expected answers that defines what correct behavior looks like for your AI application.
+
+It works like a regression suite for an LLM system. For example, you can include high-risk scenarios such as:
+- pricing and discount questions
+- refund and policy questions
+- compliance-sensitive prompts
+- sensitive data handling
+- known production failure cases
+
+When you change a prompt, model, retriever, or tool, AgentGuard can run those golden examples again to detect regressions before the change becomes customer-visible.
 
 ## Architecture
 
@@ -133,7 +167,7 @@ python -m app.main agent-chat --session my-session
 
 ### 9. Chat via Open WebUI
 
-Open [http://localhost:3001](http://localhost:3001), create an admin account on first visit, then select **agentguard-rag** from the model dropdown. Every message you send goes through the full RAG pipeline — embedding, Qdrant retrieval, LLM generation — and is traced in Langfuse.
+Open [http://localhost:3001](http://localhost:3001), create an admin account on first visit, then select **agentguard-rag** from the model dropdown. Every message you send goes through the full RAG pipeline: query embedding → Qdrant retrieval → LLM generation.
 
 ### 10. View traces in Langfuse
 
@@ -191,14 +225,14 @@ Both are registered in `litellm_config.yaml` with `default_on: true` — no per-
 
 ## Open WebUI
 
-AgentGuard ships with [Open WebUI](https://github.com/open-webui/open-webui) as a chat interface at **http://localhost:3001**. It connects to `rag-api` (`app/api/`) — a FastAPI package that exposes the RAG chain as an OpenAI-compatible API.
+AgentGuard ships with [Open WebUI](https://github.com/open-webui/open-webui) as a chat interface at **http://localhost:3001**. It connects to `rag-api` (`app/api/`) — a FastAPI package that exposes the RAG chain through an OpenAI-compatible `/v1/chat/completions` endpoint.
 
 | Virtual model | Backing LiteLLM model | Notes |
 |---|---|---|
 | `agentguard-rag` | `openrouter-gemini-flash` | Default |
 | `agentguard-rag-mistral` | `openrouter-mistral` | Alternative |
 
-Every message sent via Open WebUI triggers the full RAG pipeline: query embedding → Qdrant similarity search → LLM generation. The trace appears in Langfuse within seconds. To confirm embeddings are firing:
+Every message sent via Open WebUI triggers the full RAG pipeline: query embedding → Qdrant similarity search → LLM generation. The trace appears in Langfuse within seconds. To confirm embeddings are flowing through LiteLLM, run:
 
 ```bash
 docker compose logs litellm --tail 20 | grep embeddings
@@ -254,7 +288,7 @@ pytest -m integration          # 17 integration tests, Docker stack required
 pytest -v                      # Full suite
 ```
 
-Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, ingestion, CLI dispatch, service error mapping, and route handlers. Integration tests verify service health, guardrail HTTP behavior, RAG API health, agent end-to-end, and RAG pipeline. Integration tests auto-skip when the Docker stack isn't running.
+Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, ingestion, CLI dispatch, service error mapping, and route handlers. Integration tests cover service health, RAG API behavior, agent end-to-end runs, and guardrails.
 
 ## Project Structure
 
@@ -349,4 +383,4 @@ This project implements all five phases from the Langfuse Academy curriculum:
 
 ## Windows Notes
 
-Redis is mapped to host port **6300** instead of the default 6379 due to Windows dynamic port exclusion ranges (Hyper-V/WSL reserves port ranges that can include 6379). All container-internal ports remain at their defaults.
+Redis is mapped to host port **6300** instead of the default 6379 due to Windows dynamic port exclusion ranges (Hyper-V/WSL reserves port ranges that can include 6379). All container-internal ports remain default.
