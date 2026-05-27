@@ -6,6 +6,7 @@
 - [x] Add container observability with Portainer and Dozzle
 - [x] Add CPU and memory resource limits for all services
 - [x] Add log rotation limits
+- [x] Set the correct timezone for containers
 
 ### API and Security
 
@@ -26,13 +27,11 @@
 
 - [x] Add a sample Jupyter notebook showcasing the functionality
 
-## Next
-
 ### Agent
 
-- [ ] Implement an agentic application
-- [ ] Reduce technical debt in the agentic application
+- [x] Implement an agentic application
+- [x] Reduce technical debt in the agentic application
 
-### Infrastructure
+## Next
 
-- [ ] Set the correct timezone for containers
+_No open TODO items right now._
