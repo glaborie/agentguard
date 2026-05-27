@@ -111,6 +111,41 @@ flowchart TD
     LF --> MINIO
 ```
 
+## Message Flow
+
+The diagram below shows how a user message moves through the runtime path across the main application services.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant OpenWebUI
+    participant RAGAPI as rag-api
+    participant LiteLLM
+    participant Ollama
+    participant Qdrant
+    participant Langfuse
+
+    User->>OpenWebUI: Send message
+    OpenWebUI->>RAGAPI: OpenAI-compatible chat request
+
+    RAGAPI->>LiteLLM: Create embedding request
+    LiteLLM->>Ollama: Generate embedding
+    Ollama-->>LiteLLM: Embedding vector
+    LiteLLM-->>RAGAPI: Embedding response
+
+    RAGAPI->>Qdrant: Similarity search with embedding
+    Qdrant-->>RAGAPI: Relevant document chunks
+
+    RAGAPI->>LiteLLM: Generate answer with retrieved context
+    LiteLLM-->>RAGAPI: Final response
+
+    RAGAPI->>Langfuse: Send trace, metadata, scores, retrieval context
+    LiteLLM->>Langfuse: Log model calls and LLM metadata
+
+    RAGAPI-->>OpenWebUI: Final answer
+    OpenWebUI-->>User: Render response
+```
+
 ## Platform Components
 
 AgentGuard runs as a self-hosted stack that combines observability, retrieval, model routing, UI, evaluation, and telemetry into one environment for operating AI applications safely.
