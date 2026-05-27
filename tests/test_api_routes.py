@@ -134,7 +134,7 @@ class TestChatCompletionsRoute:
 
     def test_rag_model_returns_completion(self, client):
         chain, handler = self._mock_rag("Paris is the capital.")
-        with patch("app.api.services.rag_llm.build_rag_chain", return_value=chain), \
+        with patch("app.api.services.rag_llm.build_chain", return_value=chain), \
              patch("app.api.services.rag_llm.get_langfuse_handler", return_value=handler):
             r = client.post("/v1/chat/completions", json={
                 "model": "agentguard-rag",
@@ -147,7 +147,7 @@ class TestChatCompletionsRoute:
 
     def test_trace_id_used_as_completion_id(self, client):
         chain, handler = self._mock_rag(trace_id="lf-trace-xyz")
-        with patch("app.api.services.rag_llm.build_rag_chain", return_value=chain), \
+        with patch("app.api.services.rag_llm.build_chain", return_value=chain), \
              patch("app.api.services.rag_llm.get_langfuse_handler", return_value=handler):
             r = client.post("/v1/chat/completions", json={
                 "model": "agentguard-rag",
@@ -157,7 +157,7 @@ class TestChatCompletionsRoute:
 
     def test_streaming_returns_event_stream_content_type(self, client):
         chain, handler = self._mock_rag()
-        with patch("app.api.services.rag_llm.build_rag_chain", return_value=chain), \
+        with patch("app.api.services.rag_llm.build_chain", return_value=chain), \
              patch("app.api.services.rag_llm.get_langfuse_handler", return_value=handler):
             r = client.post("/v1/chat/completions", json={
                 "model": "agentguard-rag",

@@ -20,7 +20,7 @@ def register(sub) -> None:
 
 
 def cmd_query(args: Namespace) -> None:
-    from app.rag.chain import query
+    from app.rag.service import query
 
     handler = get_langfuse_handler()
     answer = query(question=args.question, model=args.model, callbacks=[handler])
@@ -29,7 +29,7 @@ def cmd_query(args: Namespace) -> None:
 
 
 def cmd_chat(args: Namespace) -> None:
-    from app.rag.chain import query
+    from app.rag.service import query
 
     handler = get_langfuse_handler()
     print("Langfuse RAG Chat (type 'quit' to exit)\n")
