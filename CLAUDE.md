@@ -2,9 +2,9 @@
 
 ## What this project is
 
-AgentGuard — "The QA layer for agentic AI that everybody loves to ignore."
+AgentGuard — a self-hosted control layer for preventing costly incidents in AI applications.
 
-A self-hosted RAG application with observability, guardrails, and evaluation built in. It answers questions about Langfuse documentation and uses Langfuse to observe itself doing it. Demonstrates the full AI Engineering Loop: Trace -> Monitor -> Datasets -> Experiment -> Evaluate.
+A RAG + agentic assistant over the NorthstarCRM synthetic knowledge base, with full observability, guardrails, and evaluation built in. Demonstrates how teams can detect, evaluate, and block AI failures before they reach users: hallucinated policies, PII leaks, prompt injection, and silent regressions after model or prompt changes.
 
 ## Architecture decisions
 
@@ -58,7 +58,7 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 - `app/api/services/direct_llm.py` - Direct LiteLLM call (no RAG). All httpx errors caught and returned as inline error strings.
 - `app/api/services/rag_llm.py` - RAG chain invocation via `rag_service.build_chain()`. Uses Langfuse trace ID as the completion ID for feedback correlation.
 - `app/api/services/chat_service.py` - Dispatch orchestrator: picks direct vs. RAG path, annotates OTel span, builds the OpenAI-format completion response.
-- `app/rag/ingest.py` - Scrapes Langfuse Academy URLs, chunks with `RecursiveCharacterTextSplitter`, embeds via LiteLLM, stores in Qdrant. Detects embedding dimension automatically.
+- `app/rag/ingest.py` - Loads documents from the local corpus (`mock_corpus/` by default) recursively. `.md` files load as-is; `.jsonl` files are split into one Document per line with records rendered as readable `key: value` text. Chunks with `RecursiveCharacterTextSplitter`, embeds via LiteLLM, stores in Qdrant. Detects embedding dimension automatically. No web scraping.
 - `app/rag/chain.py` - LCEL chain internals. `ScoredRetriever(BaseRetriever)` calls `similarity_search_with_score()`, injects `retrieval_score` into doc metadata, and sets four OTel span attributes. `build_rag_chain()` wires retriever → prompt → LLM → parser.
 - `app/rag/service.py` - Stable domain interface: `ingest()`, `query()`, `build_chain()`. CLI commands and the API service layer call this instead of the chain/ingest modules directly.
 - `app/agent/tools.py` - Five `@tool` functions: `search_docs`, `list_traces`, `get_trace_detail`, `score_response`, `get_dataset_summary`. Each reuses existing infrastructure (retriever, Langfuse client, evaluators).

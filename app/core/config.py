@@ -28,7 +28,7 @@ class Settings(BaseSettings):
 
     # Qdrant
     qdrant_url: str = "http://localhost:6333"
-    qdrant_collection: Annotated[str, Field(min_length=1)] = "langfuse_docs"
+    qdrant_collection: Annotated[str, Field(min_length=1)] = "northstar_crm"
 
     # OpenRouter (optional)
     openrouter_api_key: str = ""

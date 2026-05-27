@@ -1,9 +1,12 @@
-"""Document ingestion pipeline: load → chunk → embed → store in Qdrant."""
+"""Document ingestion pipeline: load → chunk → embed → store in Qdrant.
 
+Loads markdown and JSONL files from the local corpus directory (mock_corpus/ by default).
+Web scraping has been removed — the knowledge base lives entirely on disk.
+"""
+
+import json
 from pathlib import Path
 
-import requests
-from bs4 import BeautifulSoup
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
@@ -13,69 +16,71 @@ from qdrant_client.models import Distance, VectorParams
 
 from app.config import settings
 
-LANGFUSE_ACADEMY_URLS = [
-    "https://langfuse.com/academy/ai-engineering-loop",
-    "https://langfuse.com/academy/tracing",
-    "https://langfuse.com/academy/monitoring",
-    "https://langfuse.com/academy/datasets",
-    "https://langfuse.com/academy/experiments",
-    "https://langfuse.com/academy/evaluate",
-]
+# Default corpus location — relative to the project root (where `python -m app.main` is run).
+DEFAULT_CORPUS_DIR = Path("mock_corpus")
 
 
-NOISE_PATTERNS = [
-    "Was this page helpful?",
-    "Good\nBad",
-    "Support\nLast edited",
-    "→ Read more",
-    "→ Start with",
-    "Previous\nLangfuse Academy",
-]
+def _jsonl_to_text(record: dict) -> str:
+    """Render a JSONL record as human-readable text suitable for embedding."""
+    lines = []
+    for key, value in record.items():
+        if isinstance(value, list):
+            lines.append(f"{key}: {', '.join(str(v) for v in value)}")
+        elif isinstance(value, bool):
+            lines.append(f"{key}: {'yes' if value else 'no'}")
+        else:
+            lines.append(f"{key}: {value}")
+    return "\n".join(lines)
 
 
-def scrape_page(url: str) -> Document:
-    resp = requests.get(url, timeout=30)
-    resp.raise_for_status()
-    soup = BeautifulSoup(resp.text, "html.parser")
+def load_from_corpus(path: str | Path | None = None) -> list[Document]:
+    """Recursively load all .md and .jsonl files from the corpus directory.
 
-    for tag in soup(["script", "style", "nav", "footer", "header"]):
-        tag.decompose()
+    Markdown files are loaded as-is.
+    JSONL files are split into one Document per line, with each record
+    rendered as readable key: value text.
+    """
+    root = Path(path or DEFAULT_CORPUS_DIR)
+    if not root.exists():
+        raise FileNotFoundError(f"Corpus directory not found: {root.resolve()}")
 
-    main = soup.find("main") or soup.find("article") or soup.body
-    text = main.get_text(separator="\n", strip=True) if main else ""
+    docs: list[Document] = []
 
-    for noise in NOISE_PATTERNS:
-        text = text.replace(noise, "")
+    for filepath in sorted(root.rglob("*")):
+        if not filepath.is_file():
+            continue
 
-    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
-    text = "\n".join(lines)
+        rel = str(filepath.relative_to(root))
 
-    if "ai-engineering-loop" in url:
-        summary = (
-            "The five phases of the AI Engineering Loop are: "
-            "1) Trace - capture the full path of requests, "
-            "2) Monitor - track system behavior over time, "
-            "3) Build Datasets - curate examples from production traces, "
-            "4) Experiment - test prompt/model/code variants against datasets, "
-            "5) Evaluate - judge results using manual review, code checks, or LLM-as-judge.\n\n"
-        )
-        text = summary + text
+        if filepath.suffix == ".md":
+            text = filepath.read_text(encoding="utf-8").strip()
+            if text:
+                docs.append(Document(page_content=text, metadata={"source": rel}))
 
-    return Document(page_content=text, metadata={"source": url})
+        elif filepath.suffix == ".jsonl":
+            for lineno, line in enumerate(filepath.read_text(encoding="utf-8").splitlines(), 1):
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    record = json.loads(line)
+                    text = _jsonl_to_text(record)
+                    docs.append(
+                        Document(
+                            page_content=text,
+                            metadata={"source": rel, "line": lineno},
+                        )
+                    )
+                except json.JSONDecodeError:
+                    continue  # skip malformed lines silently
 
-
-def load_from_urls(urls: list[str] | None = None) -> list[Document]:
-    urls = urls or LANGFUSE_ACADEMY_URLS
-    docs = []
-    for url in urls:
-        print(f"  Scraping {url}")
-        docs.append(scrape_page(url))
     return docs
 
 
 def load_from_directory(path: str | Path) -> list[Document]:
+    """Load .md files from a single (flat) directory. Kept for backward compatibility."""
     docs = []
-    for f in Path(path).glob("*.md"):
+    for f in sorted(Path(path).glob("*.md")):
         text = f.read_text(encoding="utf-8")
         docs.append(Document(page_content=text, metadata={"source": str(f)}))
     return docs
@@ -110,17 +115,20 @@ def create_collection(client: QdrantClient, collection_name: str, vector_size: i
 
 
 def ingest(
-    urls: list[str] | None = None,
-    local_dir: str | Path | None = None,
+    corpus_dir: str | Path | None = None,
     chunk_size: int = 800,
     chunk_overlap: int = 200,
 ) -> QdrantVectorStore:
+    """Load the corpus, embed, and store in Qdrant.
+
+    Args:
+        corpus_dir: Path to the corpus directory. Defaults to mock_corpus/.
+        chunk_size: Token target per chunk.
+        chunk_overlap: Overlap between adjacent chunks.
+    """
     print("Loading documents...")
-    if local_dir:
-        docs = load_from_directory(local_dir)
-    else:
-        docs = load_from_urls(urls)
-    print(f"  Loaded {len(docs)} documents")
+    docs = load_from_corpus(corpus_dir)
+    print(f"  Loaded {len(docs)} documents from corpus")
 
     print("Chunking...")
     chunks = chunk_documents(docs, chunk_size=chunk_size, overlap=chunk_overlap)

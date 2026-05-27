@@ -13,12 +13,12 @@ from app.rag.chain import RAG_SYSTEM_PROMPT, format_docs
 class TestFormatDocs:
     def test_formats_single_doc(self):
         doc = Document(
-            page_content="Tracing captures execution paths.",
-            metadata={"source": "https://langfuse.com/academy/tracing"},
+            page_content="NorthstarCRM supports SSO on Business and Enterprise plans.",
+            metadata={"source": "02_products/feature-matrix.md"},
         )
         result = format_docs([doc])
-        assert "[Source: https://langfuse.com/academy/tracing" in result
-        assert "Tracing captures execution paths." in result
+        assert "[Source: 02_products/feature-matrix.md" in result
+        assert "NorthstarCRM supports SSO" in result
 
     def test_formats_multiple_docs_with_separator(self):
         docs = [
@@ -29,7 +29,7 @@ class TestFormatDocs:
         assert "---" in result
         assert "First chunk." in result
         assert "Second chunk." in result
-        assert "[Source: a.md" in result
+        assert "[Source: a.md" in result  # generic source label still applies
         assert "[Source: b.md" in result
 
     def test_handles_missing_source(self):
@@ -54,7 +54,7 @@ class TestChainIntegration:
     def test_query_returns_string(self):
         from app.rag.chain import query
 
-        result = query("What is tracing in Langfuse?")
+        result = query("What plans does NorthstarCRM offer?")
         assert isinstance(result, str)
         assert len(result) > 20
 
@@ -62,7 +62,7 @@ class TestChainIntegration:
     def test_query_with_model_override(self):
         from app.rag.chain import query
 
-        result = query("What is the AI engineering loop?", model="openrouter-gemini-flash")
+        result = query("What is the discount policy?", model="openrouter-gemini-flash")
         assert isinstance(result, str)
         assert len(result) > 20
 
@@ -71,6 +71,6 @@ class TestChainIntegration:
         from app.rag.chain import get_retriever
 
         retriever = get_retriever(k=2)
-        docs = retriever.invoke("What is tracing?")
+        docs = retriever.invoke("What integrations are supported?")
         assert len(docs) == 2
         assert all(hasattr(d, "page_content") for d in docs)
