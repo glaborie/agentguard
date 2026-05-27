@@ -1,8 +1,10 @@
+import time
+
 from opentelemetry import trace as otel_trace
 
-from app.api.routes.models import DIRECT_MODELS, MODELS
 from app.api.schemas import ChatRequest
 from app.api.services import direct_llm, rag_llm
+from app.api.services.models_service import DIRECT_MODELS, MODELS
 from app.core.telemetry import get_otel_trace_id
 
 
@@ -52,3 +54,20 @@ async def complete(
         trace_metadata,
         request_id,
     )
+
+
+def build_completion_response(completion_id: str, model: str, result: str) -> dict:
+    return {
+        "id": completion_id,
+        "object": "chat.completion",
+        "created": int(time.time()),
+        "model": model,
+        "choices": [
+            {
+                "index": 0,
+                "message": {"role": "assistant", "content": result},
+                "finish_reason": "stop",
+            }
+        ],
+        "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+    }
