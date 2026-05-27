@@ -41,7 +41,7 @@ def _make_observation(name="ChatOpenAI", obs_type="generation", latency=0.8, mod
     )
 
 
-def _make_doc(content="Tracing captures execution paths.", source="https://langfuse.com/academy/tracing"):
+def _make_doc(content="NorthstarCRM offers Starter, Business, and Enterprise plans.", source="02_products/plans-and-pricing.md"):
     return SimpleNamespace(
         page_content=content,
         metadata={"source": source},
@@ -57,10 +57,10 @@ class TestSearchDocs:
         mock_ret.invoke.return_value = [_make_doc(), _make_doc(content="Monitoring overview.", source="monitoring.md")]
         mock_retriever.return_value = mock_ret
 
-        result = search_docs.invoke({"query": "tracing"})
-        assert "Tracing captures" in result
+        result = search_docs.invoke({"query": "plans"})
+        assert "NorthstarCRM offers Starter" in result
         assert "Monitoring overview" in result
-        mock_ret.invoke.assert_called_once_with("tracing")
+        mock_ret.invoke.assert_called_once_with("plans")
 
     @patch("app.agent.tools.get_retriever")
     def test_no_results(self, mock_retriever):

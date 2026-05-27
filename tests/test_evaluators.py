@@ -17,7 +17,7 @@ class TestHasSourceCitation:
     @pytest.mark.parametrize(
         "text",
         [
-            "[Source: https://langfuse.com/academy/tracing] The trace captures...",
+            "[Source: 02_products/plans-and-pricing.md] The Starter plan includes...",
             "According to the Langfuse documentation, tracing is...",
             "Based on the provided context, the answer is...",
             "From the academy materials, we can see that...",

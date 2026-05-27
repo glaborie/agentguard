@@ -9,8 +9,8 @@ MODELS: dict[str, str] = {
 DIRECT_MODELS: set[str] = {"agentguard-direct"}
 
 _DESCRIPTIONS: dict[str, str] = {
-    "agentguard-rag": "RAG over Langfuse Academy docs (Gemini Flash)",
-    "agentguard-rag-mistral": "RAG over Langfuse Academy docs (Mistral)",
+    "agentguard-rag": "RAG over NorthstarCRM knowledge base (Gemini Flash)",
+    "agentguard-rag-mistral": "RAG over NorthstarCRM knowledge base (Mistral)",
     "agentguard-direct": "Direct LLM — no RAG context, guardrails only",
 }
 

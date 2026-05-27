@@ -17,10 +17,10 @@ from app.utils import truncate as _truncate
 
 @tool
 def search_docs(query: str) -> str:
-    """Search the Langfuse documentation knowledge base.
+    """Search the NorthstarCRM knowledge base.
 
-    Use this for questions about Langfuse features, the AI Engineering Loop,
-    tracing, monitoring, datasets, experiments, and evaluation.
+    Use this for questions about NorthstarCRM products, pricing, plans,
+    policies, sales processes, integrations, and support topics.
 
     Args:
         query: The search query describing what you want to find.
