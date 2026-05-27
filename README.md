@@ -42,39 +42,64 @@ When you change a prompt, model, retriever, or tool, AgentGuard can run those go
 
 ## Architecture
 
-```
-                          +------------------+
-                          |   CLI / Chat     |
-                          |  (app/cli/)      |
-                          +--------+---------+
-                                   |
-                     +-------------+-------------+
-                     |                           |
-            +--------v---------+       +---------v--------+
-            |   RAG Chain       |       |   ReAct Agent    |
-            |  (LangChain LCEL) |       |   (LangGraph)    |
-            +----+--------+----+       +---+---------+----+
-                 |        |                |         |
-    +------------+    +---+          +-----+    +----+------+
-    |                 |              |          |           |
-  +-v-------+  +------v-----+  +----v---+  +--v-------+ +-v---------+
-  |Retriever|  | LLM (Chat) |  |search_ |  |list_     | |score_     |
-  |(Qdrant) |  | via LiteLLM|  |docs    |  |traces    | |response   |
-  +---------+  +------------+  +--------+  +----------+ +-----------+
+```mermaid
+flowchart TD
+    U[User]
+    CLI[CLI / Chat]
+    WEB[Open WebUI]
+    API[rag-api]
 
-         All LLM calls route through LiteLLM proxy (port 4000)
-         All calls are traced via Langfuse CallbackHandler
+    U --> CLI
+    U --> WEB
+    WEB --> API
+    CLI --> RAG
+    CLI --> AGENT
+    API --> RAG
 
-   +-------------------------------------------------------------------+
-   |          Docker Compose Stack (14 services + 2 init)               |
-   |                                                                    |
-   |  langfuse-web (:3000)     langfuse-worker (:3030)                 |
-   |  postgres (:5432)         clickhouse (:8123/:9000)                |
-   |  redis (:6300->6379)      minio (:9090->9000, :9091->9001)       |
-   |  ollama (:11434)          litellm (:4000)                         |
-   |  qdrant (:6333/:6334)     portainer (:9443)   dozzle (:8080)     |
-   |  rag-api (:8001)          openwebui (:3001)                       |
-   +-------------------------------------------------------------------+
+    subgraph App["Application Layer"]
+        RAG[RAG Chain]
+        AGENT[Agentic Workflow]
+    end
+
+    subgraph Knowledge["Knowledge + Tools"]
+        Q[Qdrant Retriever]
+        TOOLS[Search / Trace / Scoring / Dataset Tools]
+    end
+
+    subgraph Model["Model + Protection Layer"]
+        LLM[LiteLLM Gateway]
+        PROTECT[Business Protection<br/>Prompt Injection Blocking<br/>PII Masking]
+    end
+
+    subgraph Ops["Observability + Evaluation"]
+        LF[Langfuse Tracing]
+        EVAL[Golden Dataset Evaluation<br/>Release Confidence]
+    end
+
+    RAG --> Q
+    RAG --> LLM
+    AGENT --> TOOLS
+    AGENT --> LLM
+
+    LLM --> PROTECT
+    RAG --> LF
+    AGENT --> LF
+    LLM --> LF
+    EVAL --> LF
+
+    subgraph Infra["Infrastructure"]
+        OLLAMA[Ollama]
+        PG[Postgres]
+        CH[ClickHouse]
+        REDIS[Redis]
+        MINIO[MinIO]
+    end
+
+    LLM --> OLLAMA
+    LF --> PG
+    LF --> CH
+    LF --> REDIS
+    LF --> MINIO
 ```
 
 ## Platform Components
