@@ -11,7 +11,7 @@ The application answers questions about Langfuse's own documentation (a meta twi
 ```
                           +------------------+
                           |   CLI / Chat     |
-                          |  (app/main.py)   |
+                          |  (app/cli/)      |
                           +--------+---------+
                                    |
                      +-------------+-------------+
@@ -58,7 +58,7 @@ The application answers questions about Langfuse's own documentation (a meta twi
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector database |
 | **portainer** | 9443 (HTTPS) | Container management UI |
 | **dozzle** | 8080 | Real-time log viewer |
-| **rag-api** | 8001 | FastAPI OpenAI-compatible wrapper around the RAG chain |
+| **rag-api** | 8001 | FastAPI OpenAI-compatible wrapper around the RAG chain (`app/api/`) |
 | **openwebui** | 3001 | Chat UI — connects to `rag-api`, every message triggers full RAG pipeline |
 | **minio-init** | — | Creates `langfuse` bucket on first boot (runs once) |
 | **litellm-init** | — | Seeds LiteLLM config (runs once) |
@@ -191,7 +191,7 @@ Both are registered in `litellm_config.yaml` with `default_on: true` — no per-
 
 ## Open WebUI
 
-AgentGuard ships with [Open WebUI](https://github.com/open-webui/open-webui) as a chat interface at **http://localhost:3001**. It connects to `rag-api` (`app/api.py`) — a thin FastAPI wrapper that exposes the RAG chain as an OpenAI-compatible API.
+AgentGuard ships with [Open WebUI](https://github.com/open-webui/open-webui) as a chat interface at **http://localhost:3001**. It connects to `rag-api` (`app/api/`) — a FastAPI package that exposes the RAG chain as an OpenAI-compatible API.
 
 | Virtual model | Backing LiteLLM model | Notes |
 |---|---|---|
@@ -237,28 +237,24 @@ python -m app.main evaluate --dataset rag-eval-v1 --metrics faithfulness,halluci
 
 ### Experiment runner (`app/eval/experiments.py`)
 
-Compare multiple models against a Langfuse dataset with code-based evaluators:
+Compare multiple models against a Langfuse dataset. Results are pushed to Langfuse and printed as a per-model score table:
 
-```python
-from app.eval.experiments import run_experiment, print_results
-
-results = run_experiment(
-    dataset_name="rag-eval-v1",
-    models=["openrouter-gemini-flash", "openrouter-mistral"],
-    experiment_name="model-comparison-001",
-)
-print_results(results)
+```bash
+python -m app.main experiment \
+  --dataset rag-golden-set \
+  --models openrouter-gemini-flash,openrouter-mistral \
+  --limit 10
 ```
 
 ## Testing
 
 ```bash
-pytest -m "not integration"   # 135 unit tests, no Docker needed (~9s)
-pytest -m integration          # 18 integration tests, Docker stack required
+pytest -m "not integration"   # 206 unit tests, no Docker needed (~5s)
+pytest -m integration          # 17 integration tests, Docker stack required
 pytest -v                      # Full suite
 ```
 
-Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, and ingestion. Integration tests verify service health, guardrail HTTP behavior, RAG API health, agent end-to-end, and RAG pipeline. Integration tests auto-skip when the Docker stack isn't running.
+Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, ingestion, CLI dispatch, service error mapping, and route handlers. Integration tests verify service health, guardrail HTTP behavior, RAG API health, agent end-to-end, and RAG pipeline. Integration tests auto-skip when the Docker stack isn't running.
 
 ## Project Structure
 
@@ -270,36 +266,71 @@ Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrail
 ├── pyproject.toml            # pytest configuration
 ├── .env.example              # Environment template
 ├── app/
-│   ├── config.py             # Pydantic settings from .env
-│   ├── tracing.py            # Langfuse CallbackHandler factory
-│   ├── main.py               # CLI entry point (ingest/query/chat/agent/evaluate)
+│   ├── main.py               # Bare entry point → app/cli/app.py::main()
+│   ├── core/
+│   │   ├── config.py         # Pydantic settings from .env (+ shim at app/config.py)
+│   │   ├── tracing.py        # Langfuse client singleton + CallbackHandler factory
+│   │   ├── telemetry.py      # OTel SDK bootstrap (+ shim at app/telemetry.py)
+│   │   ├── logging.py        # configure_logging() — called once by CLI main()
+│   │   └── ids.py            # request_id() / completion_id() generators
+│   ├── cli/
+│   │   ├── app.py            # Argument parser + dispatch via args.func(args)
+│   │   ├── common.py         # Shared CLI helpers (flush, etc.)
+│   │   └── commands/         # One module per command domain
+│   │       ├── ingest.py     # ingest
+│   │       ├── query.py      # query, chat
+│   │       ├── agent.py      # agent, agent-chat
+│   │       ├── evaluate.py   # evaluate, online-eval
+│   │       ├── experiment.py # experiment
+│   │       ├── dataset.py    # seed-dataset
+│   │       └── regression.py # regression-gate
+│   ├── api/
+│   │   ├── app.py            # create_app() FastAPI factory
+│   │   ├── schemas.py        # Message, ChatRequest Pydantic models
+│   │   ├── streaming.py      # SSE stream_from_result()
+│   │   ├── routes/           # Thin handlers: validate → call service → return
+│   │   │   ├── health.py
+│   │   │   ├── models.py
+│   │   │   ├── webhook.py
+│   │   │   └── chat.py
+│   │   └── services/         # Business logic, one file per concern
+│   │       ├── models_service.py   # MODELS, DIRECT_MODELS, get_model_list()
+│   │       ├── health_service.py   # _probe(), check_all()
+│   │       ├── feedback_service.py # parse_feedback(), push_score(), handle_webhook()
+│   │       ├── direct_llm.py       # Direct LiteLLM call with error mapping
+│   │       ├── rag_llm.py          # RAG chain invocation via rag_service
+│   │       └── chat_service.py     # Dispatch orchestrator + response builder
 │   ├── rag/
+│   │   ├── service.py        # Stable interface: ingest(), query(), build_chain()
 │   │   ├── ingest.py         # Document loading, chunking, embedding
-│   │   └── chain.py          # LCEL retrieval-augmented generation chain
+│   │   └── chain.py          # LCEL RAG chain + ScoredRetriever
 │   ├── agent/
+│   │   ├── service.py        # Stable interface: run(), build_chat_session(), respond()
 │   │   ├── tools.py          # 5 agent tools (search, traces, scoring, datasets)
 │   │   ├── graph.py          # LangGraph ReAct agent (StateGraph + ToolNode)
 │   │   └── prompts.py        # Agent system prompt
 │   └── eval/
+│       ├── service.py        # Stable interface: evaluate(), experiment(), regression_gate()
 │       ├── evaluators.py     # Code-based + LLM-as-judge evaluators
 │       ├── experiments.py    # Multi-model experiment runner
 │       ├── deepeval_metrics.py  # LiteLLM model wrapper + DeepEval metric factories
 │       └── deepeval_runner.py   # Evaluation runner with Langfuse score push
 ├── guardrails/
 │   └── custom_guardrails.py  # Prompt injection + PII masking guards
-├── app/
-│   └── api.py                # FastAPI OpenAI-compatible RAG API (for Open WebUI)
 └── tests/
-    ├── test_agent_tools.py   # 22 tests: all 5 tool functions
-    ├── test_agent_graph.py   # 13 tests: graph structure, routing, prompts
+    ├── test_agent_tools.py      # 22 tests: all 5 tool functions
+    ├── test_agent_graph.py      # 13 tests: graph structure, routing, prompts
     ├── test_deepeval_metrics.py # 14 tests: LiteLLM model, metric factories
+    ├── test_guardrails.py       # 43 tests: injection detection, PII masking
+    ├── test_evaluators.py       # 16 tests: all code-based evaluators
+    ├── test_config.py           # 3 tests: settings defaults + overrides
+    ├── test_chain.py            # 9 tests: format_docs, prompt, e2e query
+    ├── test_ingest.py           # 10 tests: chunking, loading, scraping
+    ├── test_cli.py              # 21 tests: parser recognition, dispatch wiring
+    ├── test_services.py         # 35 tests: service error mapping + flow logic
+    ├── test_api_routes.py       # 16 tests: route handlers (skipped without fastapi)
     ├── test_agent_integration.py # 5 tests: agent e2e (requires Docker)
-    ├── test_guardrails.py    # 43 tests: injection detection, PII masking
-    ├── test_evaluators.py    # 16 tests: all code-based evaluators
-    ├── test_config.py        # 3 tests: settings defaults + overrides
-    ├── test_chain.py         # 9 tests: format_docs, prompt, e2e query
-    ├── test_ingest.py        # 10 tests: chunking, loading, scraping
-    └── test_integration.py   # 8 tests: service health, RAG API, guardrails, RAG
+    └── test_integration.py      # 8 tests: service health, RAG API, guardrails
 ```
 
 ## The AI Engineering Loop
