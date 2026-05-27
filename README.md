@@ -88,7 +88,7 @@ flowchart TD
     EVAL --> LF
 
     subgraph Infra["Infrastructure"]
-        OLLAMA[Ollama]
+        OLLAMA[Ollama<br/>Local LLM + Embeddings]
         PG[Postgres]
         CH[ClickHouse]
         REDIS[Redis]
@@ -114,7 +114,7 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 | **clickhouse** | 8123, 9000 (local only) | Analytics store for high-volume observability data |
 | **redis** | 6300 (host) -> 6379 (container) | Cache and queue backend |
 | **minio** | 9090 (API), 9091 (console, local only) | S3-compatible object storage |
-| **ollama** | 11434 | Local model runtime for embeddings |
+| **ollama** | 11434 | Local model runtime to support local LLMs and embeddings |
 | **litellm** | 4000 | OpenAI-compatible model gateway and protection enforcement layer |
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector store for retrieval |
 | **rag-api** | 8001 | OpenAI-compatible API surface for the RAG application |
@@ -407,7 +407,7 @@ Unit tests cover agent tools, graph structure, DeepEval metric wiring, protectio
     ├── test_chain.py            # 9 tests: format_docs, prompt, e2e query
     ├── test_ingest.py           # 10 tests: chunking, loading, scraping
     ├── test_cli.py              # 21 tests: parser recognition, dispatch wiring
-    ├── test_services.py         # 35 tests: service error mapping + flow logic
+    ├── testServices.py         # 35 tests: service error mapping + flow logic
     ├── test_api_routes.py       # 16 tests: route handlers (skipped without fastapi)
     ├── test_agent_integration.py # 5 tests: agent e2e (requires Docker)
     └── test_integration.py      # 8 tests: service health, RAG API, guardrails
