@@ -23,7 +23,7 @@ The percentage of AI incidents detected or prevented before they become customer
 AgentGuard combines four control mechanisms for AI applications:
 
 - **Observability** — trace requests, retrieval steps, tool usage, model behavior, latency, and failure modes
-- **Guardrails** — block prompt injection and reduce unsafe or non-compliant behavior
+- **Business protection** — reduce unsafe behavior, policy bypass, and sensitive data exposure
 - **PII protection** — detect and redact sensitive data in model outputs
 - **Golden dataset evaluation** — test critical business scenarios against a curated set of known-good examples before and after changes
 
@@ -90,7 +90,7 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 | **redis** | 6300 (host) -> 6379 (container) | Cache and queue backend |
 | **minio** | 9090 (API), 9091 (console, local only) | S3-compatible object storage |
 | **ollama** | 11434 | Local model runtime for embeddings |
-| **litellm** | 4000 | OpenAI-compatible model gateway and guardrail enforcement layer |
+| **litellm** | 4000 | OpenAI-compatible model gateway and protection enforcement layer |
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector store for retrieval |
 | **rag-api** | 8001 | OpenAI-compatible API surface for the RAG application |
 | **openwebui** | 3001 | End-user chat interface for interacting with the application |
@@ -176,7 +176,7 @@ python -m app.main agent-chat --session my-session
 
 Open [http://localhost:3001](http://localhost:3001), create an admin account on first visit, then select **agentguard-rag** from the model dropdown.
 
-Every message you send goes through the full application stack, including retrieval, model routing, tracing, and guardrails.
+Every message you send goes through the full application stack, including retrieval, model routing, tracing, and protection layers.
 
 ### 10. Inspect traces and scores
 
@@ -222,16 +222,24 @@ python -m app.main agent "What were my slowest queries?"
 python -m app.main agent-chat --session demo
 ```
 
-## Guardrails
+## Business Protection
 
-Two custom guardrails run on every LiteLLM request by default, defined in `guardrails/custom_guardrails.py`:
+AgentGuard helps reduce the risk of customer-facing AI incidents by screening requests and responses for unsafe or non-compliant behavior.
 
-| Guardrail | Mode | What it does |
+This includes preventing common failure modes such as:
+- attempts to override system instructions
+- unsafe or misleading responses
+- accidental exposure of personally identifiable information (PII)
+- behavior that drifts away from expected policy or business rules
+
+In the current implementation, AgentGuard applies two built-in protections on LiteLLM traffic by default:
+
+| Protection | What it does | Business value |
 |---|---|---|
-| **Prompt injection** | pre_call | Blocks 12 regex patterns (jailbreak, ignore instructions, DAN, role hijacking, system prompt exfiltration, etc.) before the request reaches the LLM. Returns HTTP 400. |
-| **PII masking** | post_call | Redacts email addresses, SSNs, credit card numbers, and phone numbers from LLM responses |
+| **Prompt injection blocking** | Detects and blocks common attempts to manipulate or override the assistant’s instructions before the model responds | Reduces the risk of policy bypass, unsafe behavior, and untrusted outputs |
+| **PII masking** | Redacts email addresses, SSNs, credit card numbers, and phone numbers from model responses | Reduces the risk of exposing sensitive user or customer data |
 
-Both are registered in `litellm_config.yaml` with `default_on: true` — no per-request opt-in needed.
+Both protections are enabled by default in `litellm_config.yaml`, so they apply automatically without per-request configuration.
 
 ## Open WebUI
 
@@ -298,7 +306,7 @@ pytest -m integration          # 17 integration tests, Docker stack required
 pytest -v                      # Full suite
 ```
 
-Unit tests cover agent tools, graph structure, DeepEval metric wiring, guardrails, evaluators, config, RAG chain, ingestion, CLI dispatch, service error mapping, and route handlers. Integration tests cover service health, RAG API behavior, agent end-to-end runs, and guardrails.
+Unit tests cover agent tools, graph structure, DeepEval metric wiring, protections, evaluators, config, RAG chain, ingestion, CLI dispatch, service error mapping, and route handlers. Integration tests cover service health, RAG API behavior, agent end-to-end runs, and protections.
 
 ## Project Structure
 
