@@ -66,7 +66,7 @@ flowchart TD
         TOOLS[Search / Trace / Scoring / Dataset Tools]
     end
 
-    subgraph Model["Model + Protection Layer"]
+    subgraph Model["Model Routing + Protection"]
         LLM[LiteLLM Gateway]
         PROTECT[Business Protection<br/>Prompt Injection Blocking<br/>PII Masking]
     end
@@ -113,7 +113,7 @@ flowchart TD
 
 ## Platform Components
 
-AgentGuard runs as a self-hosted stack that combines observability, retrieval, model routing, UI, and evaluation into one environment for operating AI applications safely.
+AgentGuard runs as a self-hosted stack that combines observability, retrieval, model routing, UI, evaluation, and telemetry into one environment for operating AI applications safely.
 
 | Component | Port(s) | Role in the platform |
 |---|---|---|
@@ -128,6 +128,8 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector store for retrieval |
 | **rag-api** | 8001 | OpenAI-compatible API surface for the RAG application |
 | **openwebui** | 3001 | End-user chat interface for interacting with the application |
+| **otel-collector** | 4317, 4318, 13133 | OpenTelemetry collection and fan-out to observability backends |
+| **jaeger** | 16686 | Trace visualization UI for end-to-end OpenTelemetry traces |
 | **portainer** | 9443 | Container administration UI |
 | **dozzle** | 8080 | Real-time container log viewer |
 | **minio-init** | — | One-time initialization of object storage buckets |
@@ -221,9 +223,9 @@ Open [http://localhost:3000](http://localhost:3000) and sign in with:
 
 You should now see traces with request inputs, outputs, retrieval context, latency, and evaluation data.
 
-## LLM Routing
+## Model Routing
 
-All LLM requests go through the LiteLLM proxy, which provides a unified OpenAI-compatible API. Available models are configured in `litellm_config.yaml`:
+All model requests go through the LiteLLM proxy, which provides a unified OpenAI-compatible API. Available models are configured in `litellm_config.yaml`:
 
 | Model name | Backend | Notes |
 |---|---|---|
@@ -237,9 +239,9 @@ Switch models per query:
 python -m app.main query "What is tracing?" --model openrouter-mistral
 ```
 
-## ReAct Agent
+## Agentic Workflow
 
-Beyond simple RAG, AgentGuard includes a LangGraph ReAct agent that reasons about which tools to use:
+Beyond simple RAG, AgentGuard includes a LangGraph-powered agentic workflow that reasons about which tools to use:
 
 | Tool | What it does |
 |---|---|
@@ -335,7 +337,9 @@ python -m app.main experiment \
   --limit 10
 ```
 
-## Testing
+## Testing and Coverage
+
+AgentGuard includes broad automated test coverage across core system components, with fast unit tests for day-to-day development and integration tests for validating the full stack.
 
 ```bash
 pytest -m "not integration"   # 206 unit tests, no Docker needed (~5s)
@@ -343,7 +347,7 @@ pytest -m integration          # 17 integration tests, Docker stack required
 pytest -v                      # Full suite
 ```
 
-Unit tests cover agent tools, graph structure, DeepEval metric wiring, protections, evaluators, config, RAG chain, ingestion, CLI dispatch, service error mapping, and route handlers. Integration tests cover service health, RAG API behavior, agent end-to-end runs, and protections.
+Coverage includes agent tools, graph structure, DeepEval metric wiring, business protections, evaluators, configuration, RAG chain behavior, ingestion, CLI dispatch, service error mapping, API routes, and end-to-end integration flows.
 
 ## Project Structure
 
