@@ -1,6 +1,3 @@
-import time
-from typing import Optional
-
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 
@@ -18,11 +15,9 @@ async def chat_completions(body: ChatRequest, request: Request):
     if not user_messages:
         raise HTTPException(status_code=400, detail="No user message found")
 
-    chat_id: Optional[str] = request.headers.get("chat-id") or body.chat_id
-    req_id = request_id()
-
+    chat_id = request.headers.get("chat-id") or body.chat_id
     result, completion_id = await chat_service.complete(
-        body, user_messages[-1].content, chat_id, req_id
+        body, user_messages[-1].content, chat_id, request_id()
     )
 
     if body.stream:
@@ -31,17 +26,4 @@ async def chat_completions(body: ChatRequest, request: Request):
             media_type="text/event-stream",
         )
 
-    return {
-        "id": completion_id,
-        "object": "chat.completion",
-        "created": int(time.time()),
-        "model": body.model,
-        "choices": [
-            {
-                "index": 0,
-                "message": {"role": "assistant", "content": result},
-                "finish_reason": "stop",
-            }
-        ],
-        "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
-    }
+    return chat_service.build_completion_response(completion_id, body.model, result)

@@ -35,3 +35,18 @@ def push_score(message_id: str, score_value: float, comment: str) -> None:
         data_type="BOOLEAN",
     )
     logger.info("scored trace %s: user_feedback=%.1f", message_id, score_value)
+
+
+def handle_webhook(payload: dict) -> dict:
+    """Full webhook flow: parse → validate → score. Returns the response dict."""
+    logger.info("webhook payload: %s", payload)
+    message_id, score_value, comment = parse_feedback(payload)
+    if message_id is None:
+        logger.warning("webhook: missing message_id or rating — payload=%s", payload)
+        return {"ok": False, "error": "missing message_id or rating"}
+    try:
+        push_score(message_id, score_value, comment)
+    except Exception as exc:
+        logger.error("failed to score trace %s: %s", message_id, exc)
+        return {"ok": False, "error": str(exc)}
+    return {"ok": True, "trace_id": message_id, "score": score_value}
