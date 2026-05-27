@@ -68,12 +68,21 @@ class ScoredRetriever(BaseRetriever):
         return docs
 
 
-def get_llm(model: str | None = None, temperature: float = 0.0) -> ChatOpenAI:
+def get_llm(
+    model: str | None = None,
+    temperature: float = 0.0,
+    guardrails_enabled: bool = True,
+) -> ChatOpenAI:
+    kwargs: dict[str, object] = {}
+    if not guardrails_enabled:
+        # Disable LiteLLM guardrails for this request (benchmark / ablation use only)
+        kwargs["model_kwargs"] = {"extra_body": {"guardrails": []}}
     return ChatOpenAI(
         model=model or settings.default_model,
         base_url=f"{settings.litellm_base_url}/v1",
         api_key=settings.litellm_master_key,
         temperature=temperature,
+        **kwargs,
     )
 
 
@@ -113,9 +122,13 @@ def _get_prompt_template() -> ChatPromptTemplate:
     return ChatPromptTemplate.from_messages(lf_prompt.get_langchain_prompt())
 
 
-def build_rag_chain(model: str | None = None, k: int = 4):
+def build_rag_chain(
+    model: str | None = None,
+    k: int = 4,
+    guardrails_enabled: bool = True,
+):
     retriever = get_retriever(k=k)
-    llm = get_llm(model=model)
+    llm = get_llm(model=model, guardrails_enabled=guardrails_enabled)
     prompt = _get_prompt_template()
 
     chain = (
