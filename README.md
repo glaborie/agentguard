@@ -241,55 +241,58 @@ In the current implementation, AgentGuard applies two built-in protections on Li
 
 Both protections are enabled by default in `litellm_config.yaml`, so they apply automatically without per-request configuration.
 
-## Open WebUI
+## Release Confidence
 
-AgentGuard ships with [Open WebUI](https://github.com/open-webui/open-webui) as a chat interface at **http://localhost:3001**. It connects to `rag-api` (`app/api/`) — a FastAPI package that exposes the RAG chain through an OpenAI-compatible `/v1/chat/completions` endpoint.
+AgentGuard helps teams verify that an AI application still behaves correctly after changes to prompts, models, retrieval logic, or tools.
 
-| Virtual model | Backing LiteLLM model | Notes |
+Instead of waiting for users to discover regressions in production, teams can evaluate known high-risk scenarios in advance and track quality over time.
+
+This supports release confidence in three ways:
+
+| Capability | What it checks | Why it matters |
 |---|---|---|
-| `agentguard-rag` | `openrouter-gemini-flash` | Default |
-| `agentguard-rag-mistral` | `openrouter-mistral` | Alternative |
+| **Automated response checks** | Verifies basics such as citation presence, response length, hallucination markers, and output format | Catches simple quality failures before they become user-visible |
+| **LLM-based quality review** | Scores answers for relevance, faithfulness, and completeness | Helps assess whether responses are actually useful and grounded |
+| **Golden dataset regression testing** | Replays known-good business scenarios across prompts, models, and retrieval changes | Helps prevent silent regressions after system updates |
 
-Every message sent via Open WebUI triggers the full RAG pipeline: query embedding → Qdrant similarity search → LLM generation. The trace appears in Langfuse within seconds. To confirm embeddings are flowing through LiteLLM, run:
+### Automated response checks (`app/eval/evaluators.py`)
 
-```bash
-docker compose logs litellm --tail 20 | grep embeddings
-```
+AgentGuard includes deterministic checks for common response-quality issues:
 
-## Evaluation
+- `has_source_citation` — checks whether the response references a source
+- `is_within_length` — enforces a response length limit
+- `contains_no_hallucination_markers` — flags hedging language that may indicate weak confidence or unsupported claims
+- `is_valid_json` — validates JSON output format when structured output is expected
 
-### Code-based evaluators (`app/eval/evaluators.py`)
+### LLM-based quality review (`app/eval/evaluators.py`)
 
-- `has_source_citation` - checks if the response references a source
-- `is_within_length` - enforces word count limit
-- `contains_no_hallucination_markers` - flags hedging language
-- `is_valid_json` - validates JSON output format
+AgentGuard also supports model-based review of answer quality using three dimensions:
 
-### LLM-as-judge (`app/eval/evaluators.py`)
+- **relevance** — does the answer address the question?
+- **faithfulness** — is the answer grounded in the retrieved context?
+- **completeness** — does the answer cover what the user asked?
 
-Binary scoring on three criteria: **relevance**, **faithfulness**, and **completeness**.
+### Advanced quality metrics (`app/eval/deepeval_metrics.py`)
 
-### DeepEval metrics (`app/eval/deepeval_metrics.py`)
-
-LLM-judged evaluation using [DeepEval](https://github.com/confident-ai/deepeval), routing judge calls through LiteLLM:
+For deeper analysis, AgentGuard integrates [DeepEval](https://github.com/confident-ai/deepeval) through LiteLLM:
 
 | Metric | What it measures |
 |---|---|
 | `FaithfulnessMetric` | Is the answer grounded in retrieved context? |
 | `AnswerRelevancyMetric` | Does the answer address the question? |
 | `ContextualRelevancyMetric` | Are the retrieved chunks relevant? |
-| `HallucinationMetric` | Does the answer contain fabricated info? |
+| `HallucinationMetric` | Does the answer contain fabricated information? |
 
-Run against a Langfuse dataset — scores are pushed back to Langfuse automatically:
+Run these checks against a golden dataset and push the results back to Langfuse automatically:
 
 ```bash
 python -m app.main evaluate --dataset rag-eval-v1
 python -m app.main evaluate --dataset rag-eval-v1 --metrics faithfulness,hallucination
 ```
 
-### Experiment runner (`app/eval/experiments.py`)
+### Comparing models and configurations (`app/eval/experiments.py`)
 
-Compare multiple models against a Langfuse dataset. Results are pushed to Langfuse and printed as a per-model score table:
+AgentGuard can compare multiple models against the same golden dataset so teams can make safer rollout decisions:
 
 ```bash
 python -m app.main experiment \
