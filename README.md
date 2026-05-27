@@ -170,6 +170,20 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 | **minio-init** | — | One-time initialization of object storage buckets |
 | **litellm-init** | — | One-time initialization of LiteLLM configuration |
 
+## Why self-hosted?
+
+AgentGuard is currently designed as a self-hosted platform so teams can evaluate, observe, and protect AI applications in an environment they control.
+
+This matters especially when working with:
+- internal knowledge bases
+- sensitive prompts and responses
+- regulated or compliance-sensitive workflows
+- early-stage systems that need infrastructure-level visibility for debugging and iteration
+
+A self-hosted setup also makes it easier to inspect the full runtime path — from retrieval and model routing to tracing, scoring, and protection — without depending on a managed platform.
+
+Cloud deployment is planned next. In particular, porting the stack to **Google Cloud** is expected to be a near-term step so teams can keep the same control model while reducing operational overhead.
+
 ## Prerequisites
 
 To run AgentGuard locally, you need:
