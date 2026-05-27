@@ -9,7 +9,7 @@ def register(sub) -> None:
 
 
 def cmd_ingest(args: Namespace) -> None:
-    from app.rag.ingest import ingest
+    from app.rag.service import ingest
 
     ingest(chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap)
     print("Done.")

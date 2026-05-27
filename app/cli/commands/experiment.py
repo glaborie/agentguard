@@ -14,7 +14,7 @@ def register(sub) -> None:
 
 
 def cmd_experiment(args: Namespace) -> None:
-    from app.eval.experiments import print_comparison_table, run_experiment
+    from app.eval.service import experiment, show_experiment_table
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     models = [m.strip() for m in args.models.split(",")]
@@ -25,7 +25,7 @@ def cmd_experiment(args: Namespace) -> None:
     print(f"Metrics : {metric_names or 'all (faithfulness, answer_relevancy, contextual_relevancy, hallucination)'}")
     print(f"Judge   : {args.judge_model or 'default (deepeval_model setting)'}\n")
 
-    results, run_names = run_experiment(
+    results, run_names = experiment(
         dataset_name=args.dataset,
         models=models,
         run_prefix=args.run_prefix,
@@ -33,4 +33,4 @@ def cmd_experiment(args: Namespace) -> None:
         judge_model=args.judge_model,
         limit=args.limit,
     )
-    print_comparison_table(results, run_names, args.dataset)
+    show_experiment_table(results, run_names, args.dataset)

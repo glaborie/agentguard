@@ -18,10 +18,10 @@ def register(sub) -> None:
 
 
 def cmd_evaluate(args: Namespace) -> None:
-    from app.eval.deepeval_runner import run_deepeval_evaluation
+    from app.eval.service import evaluate
 
     metrics = args.metrics.split(",") if args.metrics else None
-    run_deepeval_evaluation(dataset_name=args.dataset, metric_names=metrics, model=args.model)
+    evaluate(dataset_name=args.dataset, metric_names=metrics, model=args.model)
 
 
 def cmd_online_eval(args: Namespace) -> None:

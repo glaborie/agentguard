@@ -18,13 +18,13 @@ def register(sub) -> None:
 
 
 def cmd_regression_gate(args: Namespace) -> None:
-    from scripts.regression_gate import run_gate
+    from app.eval.service import regression_gate
 
     metric_names = [m.strip() for m in args.metrics.split(",")] if args.metrics else None
     thresholds = json.loads(args.thresholds) if args.thresholds else None
 
     try:
-        passed = run_gate(
+        passed = regression_gate(
             dataset_name=args.dataset,
             model=args.model,
             metric_names=metric_names,

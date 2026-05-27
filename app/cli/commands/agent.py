@@ -1,4 +1,3 @@
-import uuid
 from argparse import Namespace
 
 from app.cli.common import flush
@@ -19,27 +18,22 @@ def register(sub) -> None:
 
 
 def cmd_agent(args: Namespace) -> None:
-    from app.agent.graph import run_agent
+    from app.agent.service import run
 
     handler = get_langfuse_handler()
     if args.verbose:
         print(f"[agent] Question: {args.question}")
         print(f"[agent] Model: {args.model or 'default'}\n")
-    answer = run_agent(question=args.question, model=args.model, callbacks=[handler])
+    answer = run(question=args.question, model=args.model, callbacks=[handler])
     print(f"\n{answer}")
     flush()
 
 
 def cmd_agent_chat(args: Namespace) -> None:
-    from langchain_core.messages import HumanMessage
-    from langgraph.checkpoint.memory import MemorySaver
-
-    from app.agent.graph import build_agent
+    from app.agent.service import build_chat_session, respond
 
     handler = get_langfuse_handler()
-    checkpointer = MemorySaver()
-    graph = build_agent(model=args.model, checkpointer=checkpointer)
-    thread_id = args.session or str(uuid.uuid4())
+    graph, thread_id = build_chat_session(model=args.model, session_id=args.session)
 
     print(f"AgentGuard Chat (session: {thread_id})")
     print("Type 'quit' to exit.\n")
@@ -51,12 +45,7 @@ def cmd_agent_chat(args: Namespace) -> None:
             break
         if not question or question.lower() in ("quit", "exit", "q"):
             break
-
-        result = graph.invoke(
-            {"messages": [HumanMessage(content=question)]},
-            config={"callbacks": [handler], "configurable": {"thread_id": thread_id}},
-        )
-        answer = result["messages"][-1].content
+        answer = respond(graph, thread_id, question, callbacks=[handler])
         print(f"\nAssistant: {answer}\n")
 
     flush()
