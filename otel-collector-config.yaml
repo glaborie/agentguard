@@ -1,3 +1,7 @@
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
 receivers:
   otlp:
     protocols:
@@ -28,6 +32,7 @@ exporters:
       Authorization: "${env:LANGFUSE_OTEL_AUTH}"
 
 service:
+  extensions: [health_check]
   pipelines:
     traces:
       receivers: [otlp]
