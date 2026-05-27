@@ -6,13 +6,30 @@ It supports both **RAG** and **agentic** applications by helping teams detect, e
 
 When an AI assistant hallucinates a discount, misstates company policy, leaks sensitive data, or regresses after a prompt, model, retrieval, or tool change, the result is not just a bad answer — it is a business incident.
 
+## Why this matters
+
+AI applications fail in expensive ways.
+
+A RAG assistant can hallucinate a discount or refund policy. An agent can take the wrong action. A model update can silently degrade answer quality. A prompt change can introduce unsafe behavior or expose sensitive data.
+
+These failures are not just model mistakes — they become business incidents.
+
+AgentGuard is designed to help teams detect, evaluate, and reduce those incidents before they become customer-visible.
+
 ## Problem
 
 LLM applications — whether RAG assistants or agentic systems — can create customer-facing incidents by hallucinating offers, exposing PII, giving unsafe answers, taking incorrect actions, or silently regressing after system changes.
 
-## Target User
+## Who this is for
 
-AI engineers, platform teams, and technical product owners responsible for operating RAG or agentic AI applications where failures carry business, compliance, or reputational risk.
+AgentGuard is for teams building or operating AI systems where reliability matters, including:
+
+- AI engineers building RAG or agentic applications
+- platform teams standardizing how AI applications are observed and evaluated
+- technical product owners responsible for quality, safety, and release confidence
+- teams working with sensitive knowledge, regulated workflows, or business-critical user interactions
+
+It is especially useful when failures can create financial, compliance, operational, or reputational risk.
 
 ## Success Metric
 
@@ -186,6 +203,19 @@ This matters especially when working with:
 A self-hosted setup also makes it easier to inspect the full runtime path — from retrieval and model routing to tracing, scoring, and protection — without depending on a managed platform.
 
 Cloud deployment is planned next. In particular, porting the stack to **Google Cloud** is expected to be a near-term step so teams can keep the same control model while reducing operational overhead.
+
+## Roadmap
+
+AgentGuard is currently focused on a self-hosted deployment model so teams can run observability, protection, and evaluation in an environment they control.
+
+Near-term roadmap priorities include:
+
+- **Google Cloud deployment** to make the platform easier to operate in production environments
+- **stronger release workflows** for evaluating prompt, model, and retrieval changes before rollout
+- **richer protection controls** for business-policy enforcement and sensitive-data handling
+- **improved operational visibility** across traces, scoring, caching, and agent behavior
+
+The goal is to evolve AgentGuard from a strong self-hosted reference platform into a production-ready control layer for AI applications.
 
 ## Prerequisites
 
