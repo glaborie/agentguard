@@ -88,7 +88,7 @@ services:
       retries: 10
       start_period: 30s
     environment: &langfuse-env
-      TZ: Europe/Berlin
+      TZ: UTC
       NEXTAUTH_URL: http://localhost:3000
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
       TELEMETRY_ENABLED: "false"
@@ -169,10 +169,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
-      TZ: Europe/Berlin
-      PGTZ: Europe/Berlin
+      TZ: UTC
+      PGTZ: UTC
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:5500:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -192,7 +192,7 @@ services:
     user: "101:101"
     env_file: .env
     environment:
-      TZ: Europe/Berlin
+      TZ: UTC
       CLICKHOUSE_DB: default
       CLICKHOUSE_USER: clickhouse
     ports:
@@ -221,7 +221,7 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-      TZ: Europe/Berlin
+      TZ: UTC
     ports:
       - "127.0.0.1:9090:9000"
       - "127.0.0.1:9091:9001"
@@ -268,7 +268,7 @@ services:
       --timeout 0
       --requirepass ${REDIS_PASSWORD:-redissecret}
     environment:
-      TZ: Europe/Berlin
+      TZ: UTC
     ports:
       - "127.0.0.1:6300:6379"
     volumes:
@@ -295,7 +295,7 @@ services:
       - ./scripts/ollama_entrypoint.sh:/ollama_entrypoint.sh:ro
     entrypoint: ["/bin/bash", "/ollama_entrypoint.sh"]
     environment:
-      TZ: Europe/Berlin
+      TZ: UTC
       OLLAMA_KEEP_ALIVE: "24h"
       OLLAMA_WARMUP_MODELS: ""
     healthcheck:
@@ -325,7 +325,7 @@ services:
     env_file: .env
     environment:
       LANGFUSE_HOST: http://langfuse-web:3000
-      TZ: Europe/Berlin
+      TZ: UTC
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
       LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
@@ -355,7 +355,7 @@ services:
       LITELLM_URL: http://litellm:4000
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
       LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
-      TZ: Europe/Berlin
+      TZ: UTC
     networks:
       - langfuse
 
@@ -378,7 +378,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       LANGFUSE_BASE_URL: http://langfuse-web:3000
       OTEL_ENDPOINT: http://otel-collector:4318/v1/traces
-      TZ: Europe/Berlin
+      TZ: UTC
     ports:
       - "8001:8001"
     depends_on:
@@ -417,7 +417,7 @@ services:
       RAG_OPENAI_API_BASE_URL: "http://litellm:4000/v1"
       RAG_OPENAI_API_KEY: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
       RAG_EMBEDDING_MODEL: "nomic-embed-text"
-      TZ: Europe/Berlin
+      TZ: UTC
     depends_on:
       rag-api:
         condition: service_healthy
@@ -450,7 +450,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       OPENWEBUI_BASE_URL: http://openwebui:8080
       PYTHONUNBUFFERED: "1"
-      TZ: Europe/Berlin
+      TZ: UTC
     depends_on:
       langfuse-web:
         condition: service_healthy
@@ -471,7 +471,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
     environment:
-      TZ: Europe/Berlin
+      TZ: UTC
     networks:
       - langfuse
 
@@ -487,7 +487,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       DOZZLE_NO_ANALYTICS: "true"
-      TZ: Europe/Berlin
+      TZ: UTC
     networks:
       - langfuse
 
@@ -503,7 +503,7 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     environment:
-      TZ: Europe/Berlin
+      TZ: UTC
     healthcheck:
       test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/6333' 2>/dev/null"]
       interval: 5s
@@ -521,7 +521,7 @@ services:
     pull_policy: if_not_present
     environment:
       COLLECTOR_OTLP_ENABLED: "true"
-      TZ: Europe/Berlin
+      TZ: UTC
     ports:
       - "16686:16686"
     healthcheck:
@@ -543,7 +543,7 @@ services:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
     environment:
       LANGFUSE_OTEL_AUTH: "${LANGFUSE_OTEL_AUTH:-Basic cGstbGYtZGV2OnNrLWxmLWRldg==}"
-      TZ: Europe/Berlin
+      TZ: UTC
     ports:
       - "4317:4317"
       - "4318:4318"
