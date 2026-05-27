@@ -264,7 +264,7 @@ pip install -r requirements.txt
 
 ### 5. Ingest the knowledge base
 
-This step scrapes the Langfuse Academy pages and indexes them in Qdrant for retrieval.
+This step loads the NorthstarCRM knowledge base from `mock_corpus/` and indexes it in Qdrant for retrieval.
 
 ```bash
 python -m app.main ingest
@@ -273,7 +273,7 @@ python -m app.main ingest
 ### 6. Test the RAG path
 
 ```bash
-python -m app.main query "What is the AI Engineering Loop?"
+python -m app.main query "Does the Starter plan include SAML SSO?"
 ```
 
 ### 7. Test the agentic path
@@ -419,17 +419,41 @@ python -m app.main experiment \
   --limit 10
 ```
 
+### Benchmark suite (`app/eval/benchmark.py`)
+
+AgentGuard includes a structured benchmark for evaluating RAG pipeline quality across five metrics simultaneously, with support for ablation comparisons (guardrails on vs. off vs. no retrieval).
+
+| Metric | What it measures | How it works |
+|---|---|---|
+| **Retrieval hit rate** | Did the pipeline retrieve a relevant document? | Filename or full-path match against gold docs |
+| **Factual coverage** | How much of the expected answer did the response cover? | Stop-word-filtered token overlap over expected facts |
+| **Correct escalation rate** | Did the assistant escalate when it should (and not when it shouldn't)? | 15 escalation-intent phrase patterns |
+| **Policy violation rate** | Did the response violate any NorthstarCRM sales policies? | LLM-as-judge with 7 business rules |
+| **Answer helpfulness (1–5)** | How well does the response progress the sales conversation? | LLM-as-judge scored 1–5 |
+
+Run the benchmark in different modes to measure the impact of guardrails and retrieval:
+
+```bash
+python -m app.main benchmark                              # Full pipeline (RAG + guardrails)
+python -m app.main benchmark --compare                    # All 3 modes side-by-side
+python -m app.main benchmark --limit 5 --no-llm-judge    # Fast smoke-test (code metrics only)
+python -m app.main benchmark --mode no-guardrails         # Ablation: guardrails disabled
+python -m app.main benchmark --mode direct                # Baseline: bare LLM, no retrieval
+```
+
+The benchmark covers questions from `mock_corpus/07_benchmark/`, including standard questions and harder edge cases (competitor-match requests, partial feature overlap, custom legal paper, ambiguous procurement questions).
+
 ## Testing and Coverage
 
 AgentGuard includes broad automated test coverage across core system components, with fast unit tests for day-to-day development and integration tests for validating the full stack.
 
 ```bash
-pytest -m "not integration"   # 206 unit tests, no Docker needed (~5s)
+pytest -m "not integration"   # 263 unit tests, no Docker needed (~5s)
 pytest -m integration          # 17 integration tests, Docker stack required
 pytest -v                      # Full suite
 ```
 
-Coverage includes agent tools, graph structure, DeepEval metric wiring, business protections, evaluators, configuration, RAG chain behavior, ingestion, CLI dispatch, service error mapping, API routes, and end-to-end integration flows.
+Coverage includes agent tools, graph structure, DeepEval metric wiring, business protections, evaluators, configuration, RAG chain behavior, corpus ingestion, CLI dispatch, service error mapping, API routes, benchmark metrics, and end-to-end integration flows.
 
 ## Project Structure
 
@@ -458,7 +482,8 @@ Coverage includes agent tools, graph structure, DeepEval metric wiring, business
 │   │       ├── evaluate.py   # evaluate, online-eval
 │   │       ├── experiment.py # experiment
 │   │       ├── dataset.py    # seed-dataset
-│   │       └── regression.py # regression-gate
+│   │       ├── regression.py # regression-gate
+│   │       └── benchmark.py  # benchmark
 │   ├── api/
 │   │   ├── app.py            # create_app() FastAPI factory
 │   │   ├── schemas.py        # Message, ChatRequest Pydantic models
@@ -489,7 +514,8 @@ Coverage includes agent tools, graph structure, DeepEval metric wiring, business
 │       ├── evaluators.py     # Code-based + LLM-as-judge evaluators
 │       ├── experiments.py    # Multi-model experiment runner
 │       ├── deepeval_metrics.py  # LiteLLM model wrapper + DeepEval metric factories
-│       └── deepeval_runner.py   # Evaluation runner with Langfuse score push
+│       ├── deepeval_runner.py   # Evaluation runner with Langfuse score push
+│       └── benchmark.py      # Benchmark runner: 3 modes × 5 metrics over NorthstarCRM corpus
 ├── guardrails/
 │   └── custom_guardrails.py  # Prompt injection + PII masking guards
 └── tests/
@@ -500,27 +526,28 @@ Coverage includes agent tools, graph structure, DeepEval metric wiring, business
     ├── test_evaluators.py       # 16 tests: all code-based evaluators
     ├── test_config.py           # 3 tests: settings defaults + overrides
     ├── test_chain.py            # 9 tests: format_docs, prompt, e2e query
-    ├── test_ingest.py           # 10 tests: chunking, loading, scraping
-    ├── test_cli.py              # 21 tests: parser recognition, dispatch wiring
+    ├── test_ingest.py           # 21 tests: corpus loader (md, jsonl, recursive, source path)
+    ├── test_cli.py              # 29 tests: parser recognition, dispatch, session/user flags
     ├── test_services.py         # 35 tests: service error mapping + flow logic
     ├── test_api_routes.py       # 16 tests: route handlers (skipped without fastapi)
+    ├── test_benchmark.py        # 38 tests: loaders, retrieval hit, factual coverage, escalation, _agg, CLI
     ├── test_agent_integration.py # 5 tests: agent e2e (requires Docker)
     └── test_integration.py      # 8 tests: service health, RAG API, guardrails
 ```
 
-## The AI Engineering Loop
+## The Continuous Improvement Loop
 
-This project implements all five phases from the Langfuse Academy curriculum:
+AgentGuard implements a closed-loop improvement cycle that connects production traffic back to evaluation, enabling teams to iterate on AI systems with confidence.
 
-1. **Trace** - Every LangChain call is automatically captured via the Langfuse `CallbackHandler`, recording inputs, outputs, latencies, token usage, and retrieval context.
+1. **Trace** — Every LangChain call is automatically captured via the Langfuse `CallbackHandler`, recording inputs, outputs, latencies, token usage, and retrieval context.
 
-2. **Monitor** - The Langfuse dashboard provides real-time visibility into trace volumes, latency distributions, error rates, and cost tracking.
+2. **Monitor** — The Langfuse dashboard provides real-time visibility into trace volumes, latency distributions, error rates, and cost tracking. Online evaluators run automatically on new traces.
 
-3. **Build Datasets** - Traces can be promoted to evaluation datasets directly in the Langfuse UI, creating labeled examples from real usage.
+3. **Build Datasets** — User feedback (thumbs-up/down via Open WebUI) is automatically synced and promoted into the `rag-golden-set` Langfuse dataset. Curated benchmark items live in `mock_corpus/07_benchmark/`.
 
-4. **Experiment** - The experiment runner (`app/eval/experiments.py`) systematically compares model variants against datasets, recording all results back to Langfuse.
+4. **Experiment** — The experiment runner (`app/eval/experiments.py`) systematically compares model variants against golden datasets, recording all results back to Langfuse.
 
-5. **Evaluate** - Code-based evaluators provide deterministic checks; the LLM-as-judge evaluator provides nuanced quality assessment. Both feed scores into Langfuse for tracking over time.
+5. **Evaluate** — Code-based evaluators, DeepEval metrics, and the benchmark runner provide layered quality signals. The regression gate (`app/eval/service.py::regression_gate()`) enforces pass/fail thresholds before changes go live.
 
 ## Windows Notes
 

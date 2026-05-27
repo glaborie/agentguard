@@ -46,7 +46,7 @@ A RAG + agentic assistant over the NorthstarCRM synthetic knowledge base, with f
 - `app/core/ids.py` - `request_id()` (12-char hex, for log correlation) and `completion_id()` (OpenAI-style `chatcmpl-<hex8>`).
 - `app/main.py` - Bare entry point: `from app.cli.app import main` + `if __name__ == "__main__": main()`.
 - `app/cli/app.py` - Argument parser and dispatch. `_build_parser()` calls each command module's `register(sub)`; `main()` calls `configure_logging()` then dispatches via `args.func(args)`.
-- `app/cli/commands/` - One module per command domain: `ingest.py`, `query.py`, `agent.py`, `evaluate.py`, `experiment.py`, `dataset.py`, `regression.py`. Each exposes `register(sub)` and command functions. All call through domain service wrappers.
+- `app/cli/commands/` - One module per command domain: `ingest.py`, `query.py`, `agent.py`, `evaluate.py`, `experiment.py`, `dataset.py`, `regression.py`, `benchmark.py`. Each exposes `register(sub)` and command functions. All call through domain service wrappers.
 - `app/api/__init__.py` - Lazy-loads the FastAPI `app` object via `__getattr__` so importing `app.api.services.*` does not require fastapi. `uvicorn app.api:app` still works.
 - `app/api/app.py` - `create_app()` factory: builds FastAPI app, registers CORS middleware and all routers, sets up OTel in lifespan.
 - `app/api/schemas.py` - `Message` and `ChatRequest` Pydantic models.
@@ -59,7 +59,7 @@ A RAG + agentic assistant over the NorthstarCRM synthetic knowledge base, with f
 - `app/api/services/rag_llm.py` - RAG chain invocation via `rag_service.build_chain()`. Uses Langfuse trace ID as the completion ID for feedback correlation.
 - `app/api/services/chat_service.py` - Dispatch orchestrator: picks direct vs. RAG path, annotates OTel span, builds the OpenAI-format completion response.
 - `app/rag/ingest.py` - Loads documents from the local corpus (`mock_corpus/` by default) recursively. `.md` files load as-is; `.jsonl` files are split into one Document per line with records rendered as readable `key: value` text. Chunks with `RecursiveCharacterTextSplitter`, embeds via LiteLLM, stores in Qdrant. Detects embedding dimension automatically. No web scraping.
-- `app/rag/chain.py` - LCEL chain internals. `ScoredRetriever(BaseRetriever)` calls `similarity_search_with_score()`, injects `retrieval_score` into doc metadata, and sets four OTel span attributes. `build_rag_chain()` wires retriever → prompt → LLM → parser.
+- `app/rag/chain.py` - LCEL chain internals. `ScoredRetriever(BaseRetriever)` calls `similarity_search_with_score()`, injects `retrieval_score` into doc metadata, and sets four OTel span attributes. `build_rag_chain(guardrails_enabled=True)` wires retriever → prompt → LLM → parser. Pass `guardrails_enabled=False` to disable LiteLLM guardrails for that request via `extra_body` (used by the benchmark runner for ablation comparisons).
 - `app/rag/service.py` - Stable domain interface: `ingest()`, `query()`, `build_chain()`. CLI commands and the API service layer call this instead of the chain/ingest modules directly.
 - `app/agent/tools.py` - Five `@tool` functions: `search_docs`, `list_traces`, `get_trace_detail`, `score_response`, `get_dataset_summary`. Each reuses existing infrastructure (retriever, Langfuse client, evaluators).
 - `app/agent/graph.py` - LangGraph ReAct agent. `build_agent(model, checkpointer)` returns a compiled graph. `run_agent(question, ...)` is the main entry point. Trace shape differs from the RAG chain: each reasoning iteration creates a `ChatOpenAI` observation; tool executions sit between them as `tools` → `<tool_name>` observations. A 3-tool query produces 4 `ChatOpenAI` spans and 3 `tools` nodes under a `LangGraph` root. In Jaeger, this appears as N sequential `POST /v1/chat/completions` httpx spans (one per LLM round-trip) — the count is the fingerprint of an agentic trace vs. a single-shot RAG trace.
@@ -70,6 +70,7 @@ A RAG + agentic assistant over the NorthstarCRM synthetic knowledge base, with f
 - `app/eval/deepeval_runner.py` - `run_deepeval_evaluation()` fetches a Langfuse dataset, runs the RAG chain, evaluates with DeepEval, pushes scores to Langfuse.
 - `app/eval/experiments.py` - Multi-model experiment runner. `run_experiment(dataset, models)` runs every model against every dataset item, scores with DeepEval, pushes scores to Langfuse, and links each trace to a named dataset run via `client.api.dataset_run_items.create()`. `print_comparison_table()` prints a per-model average score table using ASCII box chars (Unicode box-drawing chars fail on Windows cp1252). `LLMTestCase` passes `context=retrieval_context` (required by `HallucinationMetric`) in addition to `retrieval_context`.
 - `app/eval/service.py` - Stable domain interface: `evaluate()`, `experiment()`, `show_experiment_table()`, `regression_gate()`. CLI commands call this instead of the runner/experiment modules or scripts directly.
+- `app/eval/benchmark.py` - Benchmark runner for the NorthstarCRM knowledge base. Evaluates the RAG pipeline across five metrics: retrieval hit rate, factual coverage, policy violation rate, correct escalation rate, answer helpfulness. Supports three run modes: `full` (RAG + guardrails), `no-guardrails` (RAG, guardrails off via `extra_body`), `direct` (bare LLM, no retrieval). Loads items from `mock_corpus/07_benchmark/` (JSONL). `run_benchmark()` drives item × mode combinations; `print_results()` outputs per-question details and an aggregate comparison table. Code-based metrics: `eval_retrieval_hit` (filename or full-path match), `eval_factual_coverage` (stop-word-filtered token overlap), `eval_escalation` (15 escalation-intent phrases). LLM-as-judge metrics: `eval_policy_violation` (7 NorthstarCRM sales policies), `eval_helpfulness` (1–5 deal-progression score).
 - `scripts/build_dataset.py` - Builds the `rag-golden-set` Langfuse dataset from positively rated traces. Queries `user_feedback=1.0` scores, fetches each linked trace, upserts `{question, answer}` items with `source_trace_id`. `run_once()` is called by the worker every 5 minutes. State in `.build_dataset_state.json`.
 - `scripts/regression_gate.py` - `run_gate()` implements the quality gate logic (run dataset items through RAG, evaluate with DeepEval, check thresholds). Exit codes: 0=all pass, 1=metric failure, 2=runtime error. Default thresholds: `FaithfulnessMetric≥0.80`, `AnswerRelevancyMetric≥0.70`, `ContextualRelevancyMetric≥0.30`, `HallucinationMetric≤0.30`. `HallucinationMetric` is lower-is-better — threshold is a maximum, not a minimum. Override thresholds via `--thresholds '{"FaithfulnessMetric":0.85}'`. Called by `app/eval/service.py::regression_gate()` and also callable directly: `python -m scripts.regression_gate --limit 5`.
 - `scripts/worker.py` - Combined background daemon. Runs three pollers in threads: `eval-worker` (60s), `feedback-worker` (120s), `dataset-builder` (300s). Seeds score configs on startup. Launched automatically by the `agentguard-worker` Docker service.
@@ -91,6 +92,11 @@ python -m app.main evaluate --dataset name  # Run DeepEval metrics (single model
 python -m app.main experiment --dataset rag-golden-set --models openrouter-gemini-flash,openrouter-mistral  # Multi-model comparison
 python -m app.main regression-gate --dataset rag-golden-set      # Run quality gate (exit 0=pass, 1=fail)
 python -m app.main regression-gate --limit 5                     # Quick smoke-test (5 items)
+python -m app.main benchmark                                      # Run benchmark (full mode, all items)
+python -m app.main benchmark --compare                            # Run all 3 modes side-by-side
+python -m app.main benchmark --limit 5 --no-llm-judge            # Fast smoke-test (5 items, code metrics only)
+python -m app.main benchmark --mode no-guardrails                 # Ablation: guardrails off
+python -m app.main benchmark --mode direct                        # Baseline: bare LLM, no retrieval
 
 # One-time setup (after first docker compose up):
 python -m scripts.seed_langfuse_prompt        # Register RAG system prompt in Langfuse
@@ -128,7 +134,7 @@ Every function that calls an LLM should accept a `callbacks` parameter and pass 
 ### Tests
 
 ```bash
-pytest -m "not integration"   # 206 unit tests, no Docker needed (~5s)
+pytest -m "not integration"   # 263 unit tests, no Docker needed (~5s)
 pytest -m integration          # 17 integration tests, Docker stack must be running
 pytest -v                      # Full suite
 ```
