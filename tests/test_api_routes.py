@@ -36,24 +36,24 @@ async def _qdrant_down(name, url, headers=None):
 
 class TestHealthRoute:
     def test_all_healthy_returns_200(self, client):
-        with patch("app.api.routes.health._probe", _all_ok):
+        with patch("app.api.services.health_service._probe", _all_ok):
             r = client.get("/health")
         assert r.status_code == 200
         assert r.json()["status"] == "ok"
 
     def test_checks_all_three_services(self, client):
-        with patch("app.api.routes.health._probe", _all_ok):
+        with patch("app.api.services.health_service._probe", _all_ok):
             r = client.get("/health")
         assert set(r.json()["checks"]) == {"litellm", "langfuse", "qdrant"}
 
     def test_degraded_service_returns_503(self, client):
-        with patch("app.api.routes.health._probe", _qdrant_down):
+        with patch("app.api.services.health_service._probe", _qdrant_down):
             r = client.get("/health")
         assert r.status_code == 503
         assert r.json()["status"] == "degraded"
 
     def test_degraded_names_failing_service(self, client):
-        with patch("app.api.routes.health._probe", _qdrant_down):
+        with patch("app.api.services.health_service._probe", _qdrant_down):
             r = client.get("/health")
         assert r.json()["checks"]["qdrant"]["status"] == "error"
 
@@ -85,13 +85,13 @@ class TestWebhookRoute:
         return MagicMock()
 
     def test_thumbs_up_scores_1(self, client):
-        with patch("app.api.routes.webhook.get_langfuse_client") as m:
+        with patch("app.api.services.feedback_service.get_langfuse_client") as m:
             m.return_value = self._lf_client()
             r = client.post("/webhook", json={"message_id": "t-1", "rating": 1})
         assert r.json() == {"ok": True, "trace_id": "t-1", "score": 1.0}
 
     def test_thumbs_down_scores_0(self, client):
-        with patch("app.api.routes.webhook.get_langfuse_client") as m:
+        with patch("app.api.services.feedback_service.get_langfuse_client") as m:
             m.return_value = self._lf_client()
             r = client.post("/webhook", json={"message_id": "t-1", "rating": -1})
         assert r.json()["score"] == 0.0
@@ -105,7 +105,7 @@ class TestWebhookRoute:
         assert r.json() == {"ok": False, "error": "missing message_id or rating"}
 
     def test_nested_data_payload_parsed(self, client):
-        with patch("app.api.routes.webhook.get_langfuse_client") as m:
+        with patch("app.api.services.feedback_service.get_langfuse_client") as m:
             m.return_value = self._lf_client()
             r = client.post("/webhook", json={
                 "type": "feedback",
@@ -134,8 +134,8 @@ class TestChatCompletionsRoute:
 
     def test_rag_model_returns_completion(self, client):
         chain, handler = self._mock_rag("Paris is the capital.")
-        with patch("app.api.routes.chat.build_rag_chain", return_value=chain), \
-             patch("app.api.routes.chat.get_langfuse_handler", return_value=handler):
+        with patch("app.api.services.rag_llm.build_rag_chain", return_value=chain), \
+             patch("app.api.services.rag_llm.get_langfuse_handler", return_value=handler):
             r = client.post("/v1/chat/completions", json={
                 "model": "agentguard-rag",
                 "messages": [{"role": "user", "content": "What is the capital of France?"}],
@@ -147,8 +147,8 @@ class TestChatCompletionsRoute:
 
     def test_trace_id_used_as_completion_id(self, client):
         chain, handler = self._mock_rag(trace_id="lf-trace-xyz")
-        with patch("app.api.routes.chat.build_rag_chain", return_value=chain), \
-             patch("app.api.routes.chat.get_langfuse_handler", return_value=handler):
+        with patch("app.api.services.rag_llm.build_rag_chain", return_value=chain), \
+             patch("app.api.services.rag_llm.get_langfuse_handler", return_value=handler):
             r = client.post("/v1/chat/completions", json={
                 "model": "agentguard-rag",
                 "messages": [{"role": "user", "content": "question"}],
@@ -157,8 +157,8 @@ class TestChatCompletionsRoute:
 
     def test_streaming_returns_event_stream_content_type(self, client):
         chain, handler = self._mock_rag()
-        with patch("app.api.routes.chat.build_rag_chain", return_value=chain), \
-             patch("app.api.routes.chat.get_langfuse_handler", return_value=handler):
+        with patch("app.api.services.rag_llm.build_rag_chain", return_value=chain), \
+             patch("app.api.services.rag_llm.get_langfuse_handler", return_value=handler):
             r = client.post("/v1/chat/completions", json={
                 "model": "agentguard-rag",
                 "messages": [{"role": "user", "content": "question"}],
