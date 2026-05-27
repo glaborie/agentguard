@@ -4,6 +4,21 @@ from app.cli.common import flush
 from app.tracing import get_langfuse_handler
 
 
+def register(sub) -> None:
+    p = sub.add_parser("query", help="Ask a single question (RAG chain)")
+    p.add_argument("question", help="The question to ask")
+    p.add_argument("--model", default=None, help="LLM model name")
+    p.add_argument("--session", default=None)
+    p.add_argument("--user", default=None)
+    p.set_defaults(func=cmd_query)
+
+    p = sub.add_parser("chat", help="Interactive RAG chat session")
+    p.add_argument("--model", default=None, help="LLM model name")
+    p.add_argument("--session", default=None)
+    p.add_argument("--user", default=None)
+    p.set_defaults(func=cmd_chat)
+
+
 def cmd_query(args: Namespace) -> None:
     from app.rag.chain import query
 
