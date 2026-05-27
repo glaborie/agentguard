@@ -44,7 +44,9 @@ def list_traces(limit: int = 10) -> str:
     """
     limit = min(max(1, limit), 50)
     client = get_langfuse_client()
-    response = client.api.trace.list(limit=limit)
+    # Fetch a larger batch so filtering system calls doesn't shrink the result below limit
+    fetch_size = min(limit * 4, 100)
+    response = client.api.trace.list(limit=fetch_size)
     traces = response.data
 
     if not traces:
@@ -52,6 +54,8 @@ def list_traces(limit: int = 10) -> str:
 
     lines = []
     for t in traces:
+        if len(lines) >= limit:
+            break
         input_str = str(t.input or "")
         # Skip Open WebUI internal system calls (same filter as online eval worker)
         if input_str.startswith("### Task:"):
