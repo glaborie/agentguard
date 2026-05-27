@@ -50,7 +50,7 @@ A self-hosted RAG application with observability, guardrails, and evaluation bui
 - `app/eval/evaluators.py` - Four code-based evaluators + one LLM-as-judge. The judge returns JSON with binary relevance/faithfulness/completeness scores.
 - `app/eval/deepeval_metrics.py` - `LiteLLMModel(DeepEvalBaseLLM)` routes judge calls through LiteLLM. Metric factory functions + `METRIC_REGISTRY` for dynamic lookup.
 - `app/eval/deepeval_runner.py` - `run_deepeval_evaluation()` fetches a Langfuse dataset, runs the RAG chain, evaluates with DeepEval, pushes scores to Langfuse.
-- `app/eval/experiments.py` - Iterates dataset items x models, runs each through the RAG chain, applies code-based evaluators, returns `ExperimentResult` list.
+- `app/eval/experiments.py` - Multi-model experiment runner. `run_experiment(dataset, models)` runs every model against every dataset item, scores with DeepEval, pushes scores to Langfuse, and links each trace to a named dataset run via `client.api.dataset_run_items.create()`. `print_comparison_table()` prints a per-model average score table. CLI: `python -m app.main experiment --dataset rag-golden-set --models m1,m2`.
 - `scripts/build_dataset.py` - Builds the `rag-golden-set` Langfuse dataset from positively rated traces. Queries `user_feedback=1.0` scores, fetches each linked trace, upserts `{question, answer}` items with `source_trace_id`. `run_once()` is called by the worker every 5 minutes. State in `.build_dataset_state.json`.
 - `scripts/worker.py` - Combined background daemon. Runs three pollers in threads: `eval-worker` (60s), `feedback-worker` (120s), `dataset-builder` (300s). Seeds score configs on startup. Launched automatically by the `agentguard-worker` Docker service.
 - `scripts/utils.py` - Shared utilities for scripts: `langfuse_basic_auth()`, `load_state()`/`save_state()` (corrupt-safe JSON state files), `HTTP_TIMEOUT`, `TRACE_PAGE_SIZE`, `SCORE_PAGE_SIZE`.
@@ -68,7 +68,8 @@ python -m app.main query "question"    # Single RAG query with tracing
 python -m app.main chat                # Interactive RAG chat
 python -m app.main agent "question"    # ReAct agent with tools
 python -m app.main agent-chat          # Interactive agent chat with memory
-python -m app.main evaluate --dataset name  # Run DeepEval metrics
+python -m app.main evaluate --dataset name  # Run DeepEval metrics (single model)
+python -m app.main experiment --dataset rag-golden-set --models openrouter-gemini-flash,openrouter-mistral  # Multi-model comparison
 
 # One-time setup (after first docker compose up):
 python -m scripts.seed_langfuse_prompt        # Register RAG system prompt in Langfuse
