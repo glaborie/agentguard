@@ -5,7 +5,7 @@ from app.core.tracing import get_langfuse_client
 logger = logging.getLogger(__name__)
 
 
-def parse_feedback(payload: dict) -> tuple[str | None, float | None, str]:
+def parse_feedback(payload: dict[str, object]) -> tuple[str | None, float | None, str]:
     """Extract (message_id, score_value, comment) from a webhook payload.
 
     Returns (None, None, "") when the payload is missing required fields.
@@ -37,7 +37,7 @@ def push_score(message_id: str, score_value: float, comment: str) -> None:
     logger.info("scored trace %s: user_feedback=%.1f", message_id, score_value)
 
 
-def handle_webhook(payload: dict) -> dict:
+def handle_webhook(payload: dict[str, object]) -> dict[str, object]:
     """Full webhook flow: parse → validate → score. Returns the response dict."""
     logger.info("webhook payload: %s", payload)
     message_id, score_value, comment = parse_feedback(payload)

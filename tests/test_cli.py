@@ -41,3 +41,27 @@ class TestDispatchWiring:
     def test_func_assigned(self, argv, expected_func):
         args = _build_parser().parse_args(argv)
         assert args.func.__name__ == expected_func
+
+
+class TestSessionUserFlags:
+    """--session and --user must be accepted and wired consistently."""
+
+    @pytest.mark.parametrize("cmd", ["query", "chat", "agent-chat"])
+    def test_session_and_user_accepted(self, cmd):
+        argv = [cmd] + (["q"] if cmd == "query" else [])
+        argv += ["--session", "s1", "--user", "u1"]
+        args = _build_parser().parse_args(argv)
+        assert args.session == "s1"
+        assert args.user == "u1"
+
+    def test_agent_session_and_user_accepted(self):
+        args = _build_parser().parse_args(["agent", "q", "--session", "s1", "--user", "u1"])
+        assert args.session == "s1"
+        assert args.user == "u1"
+
+    @pytest.mark.parametrize("cmd", ["query", "chat", "agent", "agent-chat"])
+    def test_session_user_default_none(self, cmd):
+        argv = [cmd] + (["q"] if cmd in ("query", "agent") else [])
+        args = _build_parser().parse_args(argv)
+        assert args.session is None
+        assert args.user is None

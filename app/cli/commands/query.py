@@ -23,7 +23,13 @@ def cmd_query(args: Namespace) -> None:
     from app.rag.service import query
 
     handler = get_langfuse_handler()
-    answer = query(question=args.question, model=args.model, callbacks=[handler])
+    answer = query(
+        question=args.question,
+        model=args.model,
+        callbacks=[handler],
+        session_id=args.session,
+        user_id=args.user,
+    )
     print(f"\n{answer}")
     flush()
 
@@ -40,7 +46,13 @@ def cmd_chat(args: Namespace) -> None:
             break
         if not question or question.lower() in ("quit", "exit", "q"):
             break
-        answer = query(question=question, model=args.model, callbacks=[handler])
+        answer = query(
+            question=question,
+            model=args.model,
+            callbacks=[handler],
+            session_id=args.session,
+            user_id=args.user,
+        )
         print(f"\nAssistant: {answer}\n")
     flush()
     print("Goodbye.")

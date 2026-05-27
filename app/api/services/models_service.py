@@ -15,7 +15,7 @@ _DESCRIPTIONS: dict[str, str] = {
 }
 
 
-def get_model_list() -> dict:
+def get_model_list() -> dict[str, object]:
     return {
         "object": "list",
         "data": [
