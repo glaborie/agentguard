@@ -2,6 +2,17 @@ import logging
 from argparse import Namespace
 
 
+def register(sub) -> None:
+    p = sub.add_parser("experiment", help="Compare multiple models against a dataset")
+    p.add_argument("--dataset", required=True, help="Langfuse dataset name")
+    p.add_argument("--models", required=True, help="Comma-separated model names to compare")
+    p.add_argument("--metrics", default=None, help="Comma-separated DeepEval metric names (default: all)")
+    p.add_argument("--judge-model", default=None, help="Model for DeepEval judge (default: deepeval_model setting)")
+    p.add_argument("--run-prefix", default="experiment", help="Prefix for Langfuse run names (default: experiment)")
+    p.add_argument("--limit", type=int, default=None, help="Max dataset items to evaluate (default: all)")
+    p.set_defaults(func=cmd_experiment)
+
+
 def cmd_experiment(args: Namespace) -> None:
     from app.eval.experiments import print_comparison_table, run_experiment
 

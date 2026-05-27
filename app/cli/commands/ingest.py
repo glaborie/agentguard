@@ -1,6 +1,13 @@
 from argparse import Namespace
 
 
+def register(sub) -> None:
+    p = sub.add_parser("ingest", help="Ingest Langfuse docs into Qdrant")
+    p.add_argument("--chunk-size", type=int, default=800)
+    p.add_argument("--chunk-overlap", type=int, default=200)
+    p.set_defaults(func=cmd_ingest)
+
+
 def cmd_ingest(args: Namespace) -> None:
     from app.rag.ingest import ingest
 
