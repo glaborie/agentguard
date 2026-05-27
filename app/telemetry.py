@@ -23,11 +23,20 @@ def init_telemetry(app=None) -> None:
     if _initialized or not settings.otel_enabled:
         return
 
-    resource = Resource.create({SERVICE_NAME: "agentguard"})
-    provider = TracerProvider(resource=resource)
     exporter = OTLPSpanExporter(endpoint=settings.otel_endpoint)
-    provider.add_span_processor(BatchSpanProcessor(exporter))
-    trace.set_tracer_provider(provider)
+    processor = BatchSpanProcessor(exporter)
+
+    provider = trace.get_tracer_provider()
+    if hasattr(provider, "add_span_processor"):
+        # Langfuse v4 SDK (or another component) already set a TracerProvider at
+        # import time. Bolt our OTLP exporter onto it so spans fan-out to both
+        # Langfuse and the otel-collector → Jaeger pipeline.
+        provider.add_span_processor(processor)
+    else:
+        resource = Resource.create({SERVICE_NAME: "agentguard"})
+        provider = TracerProvider(resource=resource)
+        provider.add_span_processor(processor)
+        trace.set_tracer_provider(provider)
 
     HTTPXClientInstrumentor().instrument()
     if app is not None:
