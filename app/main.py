@@ -118,6 +118,30 @@ def cmd_evaluate(args: Namespace) -> None:
     )
 
 
+def cmd_experiment(args: Namespace) -> None:
+    from app.eval.experiments import print_comparison_table, run_experiment
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+    models = [m.strip() for m in args.models.split(",")]
+    metric_names = [m.strip() for m in args.metrics.split(",")] if args.metrics else None
+
+    print(f"Dataset : {args.dataset}")
+    print(f"Models  : {models}")
+    print(f"Metrics : {metric_names or 'all (faithfulness, answer_relevancy, contextual_relevancy, hallucination)'}")
+    print(f"Judge   : {args.judge_model or 'default (deepeval_model setting)'}\n")
+
+    results, run_names = run_experiment(
+        dataset_name=args.dataset,
+        models=models,
+        run_prefix=args.run_prefix,
+        metric_names=metric_names,
+        judge_model=args.judge_model,
+    )
+
+    print_comparison_table(results, run_names, args.dataset)
+
+
 def cmd_seed_dataset(args: Namespace) -> None:
     from scripts.seed_dataset import main as seed_main
 
@@ -176,6 +200,14 @@ def main() -> None:
     p_eval.add_argument("--metrics", default=None, help="Comma-separated metric names (default: all)")
     p_eval.add_argument("--model", default=None, help="LLM model for judge metrics")
 
+    # experiment
+    p_exp = sub.add_parser("experiment", help="Compare multiple models against a dataset")
+    p_exp.add_argument("--dataset", required=True, help="Langfuse dataset name")
+    p_exp.add_argument("--models", required=True, help="Comma-separated model names to compare")
+    p_exp.add_argument("--metrics", default=None, help="Comma-separated DeepEval metric names (default: all)")
+    p_exp.add_argument("--judge-model", default=None, help="Model for DeepEval judge (default: deepeval_model setting)")
+    p_exp.add_argument("--run-prefix", default="experiment", help="Prefix for Langfuse run names (default: experiment)")
+
     # seed-dataset
     sub.add_parser("seed-dataset", help="Create the rag-eval-v1 dataset in Langfuse")
 
@@ -198,6 +230,7 @@ def main() -> None:
         "agent": cmd_agent,
         "agent-chat": cmd_agent_chat,
         "evaluate": cmd_evaluate,
+        "experiment": cmd_experiment,
         "seed-dataset": cmd_seed_dataset,
         "online-eval": cmd_online_eval,
     }
