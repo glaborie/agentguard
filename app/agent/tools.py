@@ -50,19 +50,28 @@ def list_traces(limit: int = 10) -> str:
     if not traces:
         return "No traces found."
 
-    lines = [f"Found {len(traces)} recent trace(s):\n"]
+    lines = []
     for t in traces:
-        trace_id = t.id[:12] if t.id else "unknown"
+        input_str = str(t.input or "")
+        # Skip Open WebUI internal system calls (same filter as online eval worker)
+        if input_str.startswith("### Task:"):
+            continue
+        trace_id = t.id or "unknown"
         ts = t.timestamp.strftime("%Y-%m-%d %H:%M") if isinstance(t.timestamp, datetime) else str(t.timestamp or "")
-        input_preview = _truncate(str(t.input or ""), 80)
+        input_preview = _truncate(input_str, 80)
         output_preview = _truncate(str(t.output or ""), 80)
-        latency = f"{t.latency:.1f}s" if t.latency else "n/a"
+        # t.latency from the list endpoint equals (now - createdAt) for unclosed traces,
+        # not execution time. Cap at 120s to avoid surfacing stale-trace ages as durations.
+        latency = f"{t.latency:.1f}s" if t.latency is not None and t.latency <= 120 else "n/a"
         lines.append(
             f"- [{trace_id}] {ts} | latency: {latency}\n"
             f"  input:  {input_preview}\n"
             f"  output: {output_preview}"
         )
-    return "\n".join(lines)
+
+    if not lines:
+        return "No user traces found (only internal system calls in this window)."
+    return f"Found {len(lines)} recent trace(s):\n\n" + "\n".join(lines)
 
 
 @tool
