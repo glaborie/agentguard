@@ -103,7 +103,8 @@ class TestListTraces:
         mock_client.return_value = client
 
         list_traces.invoke({"limit": 100})
-        client.api.trace.list.assert_called_once_with(limit=50)
+        # user limit clamped to 50; fetch_size = min(50*4, 100) = 100
+        client.api.trace.list.assert_called_once_with(limit=100)
 
     @patch("app.agent.tools.get_langfuse_client")
     def test_limit_clamped_to_1(self, mock_client):
@@ -112,7 +113,8 @@ class TestListTraces:
         mock_client.return_value = client
 
         list_traces.invoke({"limit": -5})
-        client.api.trace.list.assert_called_once_with(limit=1)
+        # user limit clamped to 1; fetch_size = min(1*4, 100) = 4
+        client.api.trace.list.assert_called_once_with(limit=4)
 
     @patch("app.agent.tools.get_langfuse_client")
     def test_handles_none_fields(self, mock_client):

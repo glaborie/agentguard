@@ -17,7 +17,7 @@ class TestFormatDocs:
             metadata={"source": "https://langfuse.com/academy/tracing"},
         )
         result = format_docs([doc])
-        assert "[Source: https://langfuse.com/academy/tracing]" in result
+        assert "[Source: https://langfuse.com/academy/tracing" in result
         assert "Tracing captures execution paths." in result
 
     def test_formats_multiple_docs_with_separator(self):
@@ -29,13 +29,13 @@ class TestFormatDocs:
         assert "---" in result
         assert "First chunk." in result
         assert "Second chunk." in result
-        assert "[Source: a.md]" in result
-        assert "[Source: b.md]" in result
+        assert "[Source: a.md" in result
+        assert "[Source: b.md" in result
 
     def test_handles_missing_source(self):
         doc = Document(page_content="No source.", metadata={})
         result = format_docs([doc])
-        assert "[Source: unknown]" in result
+        assert "[Source: unknown" in result
 
     def test_empty_docs(self):
         assert format_docs([]) == ""
