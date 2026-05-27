@@ -69,6 +69,7 @@ flowchart TD
     subgraph Model["Model Routing + Protection"]
         LLM[LiteLLM Gateway]
         PROTECT[Business Protection<br/>Prompt Injection Blocking<br/>PII Masking]
+        CACHE[Redis Cache<br/>Query Caching / Token Savings]
     end
 
     subgraph Telemetry["Observability + Telemetry"]
@@ -94,6 +95,8 @@ flowchart TD
 
     LLM --> PROTECT
     LLM --> OLLAMA
+    LLM --> CACHE
+    CACHE -.-> REDIS
 
     RAG --> LF
     AGENT --> LF
