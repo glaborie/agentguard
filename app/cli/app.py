@@ -21,6 +21,9 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> None:
+    from app.core.logging import configure_logging
+
+    configure_logging()
     parser = _build_parser()
     args = parser.parse_args()
     if not args.command:

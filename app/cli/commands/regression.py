@@ -3,6 +3,8 @@ import logging
 import sys
 from argparse import Namespace
 
+logger = logging.getLogger(__name__)
+
 
 def register(sub) -> None:
     p = sub.add_parser("regression-gate", help="Run golden dataset through RAG and fail if metrics drop")
@@ -35,8 +37,7 @@ def cmd_regression_gate(args: Namespace) -> None:
             push_scores=not args.no_push,
         )
     except Exception as exc:
-        logging.basicConfig(level=logging.ERROR)
-        logging.getLogger(__name__).error("Gate error: %s", exc, exc_info=True)
+        logger.error("Gate error: %s", exc, exc_info=True)
         sys.exit(2)
 
     sys.exit(0 if passed else 1)
