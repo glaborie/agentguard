@@ -933,6 +933,181 @@ Low score + poor answer + thumbs-down = retrieval tuning opportunity (chunk size
 
 ---
 
+## Part 11 — LangGraph ReAct Agent
+
+This demonstrates the **agent** mode of AgentGuard: a LangGraph `StateGraph` running a ReAct loop that chooses from five tools to answer multi-step questions. The trace shape is fundamentally different from the RAG chain — instead of one retrieval → one LLM call, the agent iterates: LLM decides → tool executes → LLM reasons again — until it has a final answer.
+
+**How it works:**
+`app/agent/graph.py` builds a `StateGraph(MessagesState)` with two nodes: `agent` (LLM with bound tools) and `tools` (ToolNode). The `agent` node calls the LLM; if the response contains tool calls, the graph routes to `tools`, executes them, and loops back to `agent`. The Langfuse `CallbackHandler` traces every node automatically — each LLM reasoning step and each tool execution is a separate observation.
+
+**Available tools:**
+| Tool | Purpose |
+|---|---|
+| `search_docs` | Search the Langfuse documentation knowledge base |
+| `list_traces` | List recent traces from Langfuse |
+| `get_trace_detail` | Inspect a specific trace — observations, scores, token usage |
+| `score_response` | Run code-based quality checks on any text (citation, length, hallucination markers) |
+| `get_dataset_summary` | List datasets or show items from a named dataset |
+
+---
+
+### 11.1 Single-Tool Documentation Query
+
+From the terminal:
+
+```bash
+python -m app.main agent "What is the difference between a trace and a session in Langfuse?"
+```
+
+**Expected:** The agent calls `search_docs` once with a relevant query, then formulates an answer from the retrieved chunks. The response cites the documentation.
+
+**What to look for in Langfuse:**
+- A new trace appears with a name like `LangGraph` or `AgentExecutor`
+- The observation tree shows: `agent` (ChatOpenAI with a tool_call) → `tools` → `search_docs` → `agent` (ChatOpenAI final answer)
+- Two `ChatOpenAI` spans: the first with `tool_calls` in the output, the second with the final text response
+- The `search_docs` span shows the query string and retrieved chunks in its input/output
+
+---
+
+### 11.2 Observability Query — Inspect Live Traces
+
+```bash
+python -m app.main agent "What were the last 5 traces in the system and how long did each take?"
+```
+
+**Expected:** The agent calls `list_traces` with `limit=5`, then formats the results as a readable table.
+
+**What to look for in Langfuse:**
+- A `list_traces` tool observation appears in the tree, showing the raw JSON input/output
+- No `search_docs` call — the agent correctly identifies this as a live-system query, not a documentation question
+- The agent's reasoning loop completes in two steps: tool call → final response
+
+**Terminal check:** No `POST /v1/embeddings` in LiteLLM logs — this query doesn't touch Qdrant at all.
+
+---
+
+### 11.3 Multi-Step: List + Drill Down + Score
+
+This query forces the agent to use three tools in sequence:
+
+```bash
+python -m app.main agent "List the 3 most recent traces, get the full detail for the first one, and score the quality of its output."
+```
+
+**Expected:** The agent:
+1. Calls `list_traces(limit=3)` → gets trace IDs
+2. Calls `get_trace_detail(trace_id=<first id>)` → reads the output field
+3. Calls `score_response(response_text=<output>)` → runs quality checks
+4. Returns a summary: which checks passed, latency, and token usage for that trace
+
+**What to look for in Langfuse:**
+- The observation tree has three `tools` nodes between the `agent` reasoning steps
+- Four `ChatOpenAI` spans total (one per reasoning loop iteration): plan → tool1 → tool2 → tool3 → answer
+- The `get_trace_detail` observation's input shows the trace ID extracted from the previous tool's output — the agent is chaining context across steps
+- The `score_response` observation output is a JSON `{"summary": "2/3 checks passed", "scores": {...}}`
+
+---
+
+### 11.4 Multi-Turn Memory (agent-chat)
+
+```bash
+python -m app.main agent-chat
+```
+
+Start a session and send these turns:
+
+```
+> What datasets exist in the system?
+> How many items does the rag-golden-set have?
+> What was the first item's question?
+```
+
+**Expected:** The agent calls `get_dataset_summary()` on the first turn (no name — lists all), then `get_dataset_summary("rag-golden-set")` on the second (uses the name from the conversation), then returns the first item's input on the third.
+
+**What this demonstrates:** `MemorySaver` persists `MessagesState` across turns — the agent knows which dataset was mentioned two turns ago without re-asking. Each turn is a separate trace in Langfuse, linked by the session concept but independent traces.
+
+---
+
+### 11.5 Agent Trace Shape in Langfuse
+
+Open Langfuse → **Traces** → open the trace from scenario 11.3.
+
+**Expected observation tree (multi-step run):**
+```
+LangGraph  (root span — total agent wall time)
+  agent                            (ChatOpenAI — decides to call list_traces)
+  tools
+    list_traces                    (tool execution — returns trace list)
+  agent                            (ChatOpenAI — decides to call get_trace_detail)
+  tools
+    get_trace_detail               (tool execution — returns trace JSON)
+  agent                            (ChatOpenAI — decides to call score_response)
+  tools
+    score_response                 (tool execution — returns quality JSON)
+  agent                            (ChatOpenAI — final answer, no tool calls)
+```
+
+**What to look for:**
+- Each `agent` (ChatOpenAI) span shows a different `tool_calls` array in its output — except the last one, which contains the final text
+- The `tools` spans show raw tool input (the arguments the LLM chose) and raw tool output (the function return value) — both visible in the observation detail
+- Token usage accumulates: each `ChatOpenAI` observation shows the growing conversation context getting re-sent to the LLM on each iteration
+
+---
+
+### 11.6 Agent Trace in Jaeger
+
+1. Open Jaeger: [http://localhost:16686](http://localhost:16686)
+2. Search service `agentguard`, lookback 1h
+3. Find the trace for the scenario 11.3 command (look for longer duration — multi-step agents take more time than single RAG calls)
+
+**Expected span structure:**
+```
+POST /v1/chat/completions    (FastAPI root — full agent wall time)
+  POST /v1/chat/completions  (httpx — LLM call #1: plan + first tool call)
+  POST /v1/chat/completions  (httpx — LLM call #2: process tool result, decide next tool)
+  POST /v1/chat/completions  (httpx — LLM call #3: process tool result, decide next tool)
+  POST /v1/chat/completions  (httpx — LLM call #4: final answer)
+  POST /api/public/ingestion (httpx — Langfuse trace flush)
+```
+
+**What this demonstrates:**
+- Multiple LLM call spans side-by-side — a visual fingerprint of the ReAct loop
+- Compare to a RAG chain trace in the same Jaeger search: RAG has one `POST /v1/embeddings` + one `POST /v1/chat/completions`; agent has N generation calls and no embedding calls (unless `search_docs` was invoked)
+- The total span duration is longer — sequential LLM calls add up. This is the latency cost of agentic reasoning.
+
+**When `search_docs` is invoked:** the Jaeger span tree also shows `POST /v1/embeddings` from the tool call, making the agent's trace indistinguishable from a RAG chain at the HTTP layer for that iteration — but the count of LLM calls gives it away.
+
+---
+
+### 11.7 RAG Chain vs. Agent — Trace Shape Comparison
+
+Run the same question through both interfaces to see how the trace shapes differ:
+
+**Via RAG chain (Open WebUI → agentguard-rag):**
+```
+What is the purpose of scoring in Langfuse?
+```
+
+**Via agent (terminal):**
+```bash
+python -m app.main agent "What is the purpose of scoring in Langfuse?"
+```
+
+**In Langfuse, compare the two traces side-by-side:**
+
+| Dimension | RAG Chain | ReAct Agent |
+|---|---|---|
+| Root span name | `RunnableSequence` | `LangGraph` |
+| Retrieval | `ScoredRetriever` span, always | `search_docs` tool span, only if called |
+| LLM calls | 1 (`ChatOpenAI`) | 1–N (`ChatOpenAI` per reasoning step) |
+| Observation depth | 3 levels (chain → retriever → LLM) | 4–6 levels (graph → agent → tools → tool fn) |
+| Total latency | ~2–4s | ~5–15s (depends on tool count) |
+| Retrieval scores | `retrieval_score` in doc metadata | Same (reuses `ScoredRetriever` internally) |
+
+The RAG chain is fast and predictable. The agent is slower but capable of multi-step reasoning and system introspection. The Langfuse trace tree makes this architectural difference directly observable.
+
+---
+
 ## Verification Checklist
 
 | Scenario | Pass condition |
@@ -980,3 +1155,10 @@ Low score + poor answer + thumbs-down = retrieval tuning opportunity (chunk size
 | 10.3 | Jaeger `ScoredRetriever` span has `retrieval.avg_score`, `retrieval.min_score`, `retrieval.max_score`, `retrieval.chunk_count` attributes |
 | 10.4 | Jaeger tag search for `retrieval.avg_score` returns ScoredRetriever spans |
 | 10.5 | Low `user_feedback=0` trace → low retrieval scores → identifiable as retrieval problem, not model problem |
+| 11.1 | Agent answers documentation question; Langfuse trace shows `agent → tools → search_docs → agent` observation tree with two `ChatOpenAI` spans |
+| 11.2 | Agent calls `list_traces` without embedding call; LiteLLM logs show no `POST /v1/embeddings` |
+| 11.3 | Three-tool chain completes; Langfuse shows 3 `tools` nodes and 4 `ChatOpenAI` spans in sequence |
+| 11.4 | `agent-chat` session: second turn uses dataset name from first turn without re-asking |
+| 11.5 | Langfuse trace tree shows `LangGraph` root → alternating `agent`/`tools` nodes; tool input/output visible per observation |
+| 11.6 | Jaeger shows N `POST /v1/chat/completions` httpx spans side-by-side (one per reasoning step) — more than RAG chain's single LLM call |
+| 11.7 | RAG trace has `RunnableSequence` root + single `ChatOpenAI`; agent trace has `LangGraph` root + multiple `ChatOpenAI` spans |
