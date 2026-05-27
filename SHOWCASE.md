@@ -1108,6 +1108,111 @@ The RAG chain is fast and predictable. The agent is slower but capable of multi-
 
 ---
 
+## Part 12: Automated Regression Gate
+
+The feedback loop closes here: thumbs-up ratings build the golden dataset (Part 7); this gate protects it. Every run evaluates the full dataset with DeepEval, pushes scores to Langfuse, and exits non-zero if any metric average falls outside its threshold — making it CI-ready.
+
+**Narrative:** Human feedback → labeled data → automated quality gate.
+
+### 12.1 Smoke-test Run (5 Items)
+
+```bash
+python -m app.main regression-gate --dataset rag-golden-set --limit 5
+```
+
+Expected output (truncated per-item logs, then the summary table):
+
+```
+08:14:22 INFO Regression gate: dataset=rag-golden-set  model=openrouter-gemini-flash  items=5  judge=openrouter-gemini-flash
+08:14:23 INFO [1/5] What is the AI Engineering Loop?...
+08:14:28 INFO   FaithfulnessMetric             0.952  ...
+08:14:28 INFO   AnswerRelevancyMetric           0.881  ...
+...
+
+===========================================
+  Regression Gate  : rag-golden-set
+  Model            : openrouter-gemini-flash
+  Run at           : 2026-05-27 08:14
+  Items evaluated  : 5
+  Langfuse run     : regression-gate-20260527-0814
+  -------------------------------------------
+  Metric                           Avg  Threshold  Status
+  -------------------------------------------
+  FaithfulnessMetric             0.934    >= 0.80    PASS
+  AnswerRelevancyMetric          0.856    >= 0.70    PASS
+  ContextualRelevancyMetric      0.412    >= 0.30    PASS
+  HallucinationMetric            0.068    <= 0.30    PASS
+  -------------------------------------------
+
+  GATE PASSED  - all metrics within thresholds
+===========================================
+```
+
+The process exits 0 on pass, 1 on any metric failure, 2 on a runtime error.
+
+### 12.2 Langfuse Dataset Run
+
+Open Langfuse: [http://localhost:3000](http://localhost:3000) → Datasets → `rag-golden-set` → **Runs** tab.
+
+A new run named `regression-gate-<timestamp>` appears. Click it to see the **run detail view**: every golden dataset item is linked to the trace generated during this gate run.
+
+This is the same linking mechanism used by the experiment runner — per-item scores are visible in the trace's Scores tab, and aggregate scores appear in the run view.
+
+### 12.3 Triggering a Failure
+
+Override a threshold high enough to force a failure:
+
+```bash
+python -m app.main regression-gate --dataset rag-golden-set --limit 5 \
+  --thresholds '{"FaithfulnessMetric": 0.99}'
+```
+
+Expected:
+```
+  FaithfulnessMetric             0.934    >= 0.99    FAIL
+
+  GATE FAILED  (1 metric(s) out of range):
+    - FaithfulnessMetric: 0.934 < 0.99 (min required)
+```
+
+Exit code is 1. Restore the original threshold to confirm the gate passes again:
+
+```bash
+python -m app.main regression-gate --dataset rag-golden-set --limit 5
+# Exit code 0
+echo $?
+```
+
+### 12.4 Dry Run (No Langfuse Push)
+
+```bash
+python -m app.main regression-gate --dataset rag-golden-set --limit 3 --no-push
+```
+
+The report table prints normally, but no scores are written to Langfuse and no dataset run is created. Useful for local experimentation without polluting the observability history.
+
+### 12.5 Full Dataset Run
+
+```bash
+python -m app.main regression-gate --dataset rag-golden-set
+```
+
+Runs all items in the golden set. The Langfuse run created here is the canonical quality gate result — it should be part of any pre-release checklist. Compare the run scores in Langfuse across gate runs over time to detect metric regressions between deployments.
+
+### 12.6 Direct Script Invocation (CI Use Case)
+
+The gate also runs standalone — no app CLI required:
+
+```bash
+python -m scripts.regression_gate --dataset rag-golden-set --limit 5
+# or in CI:
+python -m scripts.regression_gate && echo "Quality gate passed" || exit 1
+```
+
+Exit codes map directly to CI pass/fail conditions.
+
+---
+
 ## Verification Checklist
 
 | Scenario | Pass condition |
@@ -1162,3 +1267,8 @@ The RAG chain is fast and predictable. The agent is slower but capable of multi-
 | 11.5 | Langfuse trace tree shows `LangGraph` root → alternating `agent`/`tools` nodes; tool input/output visible per observation |
 | 11.6 | Jaeger shows N `POST /v1/chat/completions` httpx spans side-by-side (one per reasoning step) — more than RAG chain's single LLM call |
 | 11.7 | RAG trace has `RunnableSequence` root + single `ChatOpenAI`; agent trace has `LangGraph` root + multiple `ChatOpenAI` spans |
+| 12.1 | `--limit 5` smoke-test finishes; report table printed; exit code 0 (pass) or 1 (fail) |
+| 12.2 | Langfuse Datasets → `rag-golden-set` → Runs tab shows a new `regression-gate-<timestamp>` run |
+| 12.3 | Run detail shows each golden item linked to its evaluation trace |
+| 12.4 | Lowered threshold triggers FAIL; restored threshold passes again |
+| 12.5 | `--no-push` run prints report without creating Langfuse scores or run link |
