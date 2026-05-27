@@ -1,10 +1,19 @@
+from typing import Annotated
+
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 __all__ = ["Settings", "settings"]
 
+_URL_SCHEMES = ("http://", "https://")
+
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+        validate_default=True,
+    )
 
     # Langfuse
     langfuse_public_key: str = "pk-lf-dev"
@@ -13,13 +22,13 @@ class Settings(BaseSettings):
 
     # LiteLLM proxy
     litellm_base_url: str = "http://localhost:4000"
-    litellm_master_key: str = "sk-litellm-dev-key"
+    litellm_master_key: Annotated[str, Field(min_length=1)] = "sk-litellm-dev-key"
     default_model: str = "openrouter-gemini-flash"
-    embedding_model: str = "nomic-embed-text"
+    embedding_model: Annotated[str, Field(min_length=1)] = "nomic-embed-text"
 
     # Qdrant
     qdrant_url: str = "http://localhost:6333"
-    qdrant_collection: str = "langfuse_docs"
+    qdrant_collection: Annotated[str, Field(min_length=1)] = "langfuse_docs"
 
     # OpenRouter (optional)
     openrouter_api_key: str = ""
@@ -35,6 +44,24 @@ class Settings(BaseSettings):
     # OpenTelemetry
     otel_enabled: bool = True
     otel_endpoint: str = "http://localhost:4318/v1/traces"
+
+    # CORS — comma-separated allowed origins; "*" allows all
+    # Example: CORS_ORIGINS=http://localhost:3001,https://your-domain.com
+    cors_origins: str = "*"
+
+    @field_validator(
+        "langfuse_base_url",
+        "litellm_base_url",
+        "qdrant_url",
+        "openwebui_base_url",
+        "otel_endpoint",
+        mode="after",
+    )
+    @classmethod
+    def _validate_url(cls, v: str) -> str:
+        if not v.startswith(_URL_SCHEMES):
+            raise ValueError(f"must start with http:// or https://, got: {v!r}")
+        return v
 
 
 settings = Settings()

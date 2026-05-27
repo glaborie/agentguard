@@ -7,7 +7,9 @@ from app.core.config import settings
 _TIMEOUT = 5.0
 
 
-async def _probe(name: str, url: str, headers: dict | None = None) -> tuple[str, dict]:
+async def _probe(
+    name: str, url: str, headers: dict[str, str] | None = None
+) -> tuple[str, dict[str, str]]:
     try:
         async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
             r = await client.get(url, headers=headers or {})
@@ -21,7 +23,7 @@ async def _probe(name: str, url: str, headers: dict | None = None) -> tuple[str,
         return name, {"status": "error", "error": str(e)}
 
 
-async def check_all() -> tuple[dict, bool]:
+async def check_all() -> tuple[dict[str, dict[str, str]], bool]:
     """Probe all three backing services. Returns (checks_dict, all_ok)."""
     results = await asyncio.gather(
         _probe("litellm", f"{settings.litellm_base_url}/health/liveliness",

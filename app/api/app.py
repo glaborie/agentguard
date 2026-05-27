@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import chat, health, models, webhook
+from app.core.config import settings
 from app.telemetry import init_telemetry
 
 
@@ -15,9 +16,10 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     application = FastAPI(title="AgentGuard RAG API", lifespan=lifespan)
+    cors_origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
     application.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=cors_origins,
         allow_methods=["*"],
         allow_headers=["*"],
     )

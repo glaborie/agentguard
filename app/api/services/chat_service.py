@@ -8,8 +8,8 @@ from app.api.services.models_service import DIRECT_MODELS, MODELS
 from app.core.telemetry import get_otel_trace_id
 
 
-def build_trace_metadata(body: ChatRequest, otel_tid: str | None) -> dict:
-    metadata: dict = {"owui_model": body.model}
+def build_trace_metadata(body: ChatRequest, otel_tid: str | None) -> dict[str, str]:
+    metadata: dict[str, str] = {"owui_model": body.model}
     if body.message_id:
         metadata["message_id"] = body.message_id
     if body.user_name:
@@ -56,7 +56,7 @@ async def complete(
     )
 
 
-def build_completion_response(completion_id: str, model: str, result: str) -> dict:
+def build_completion_response(completion_id: str, model: str, result: str) -> dict[str, object]:
     return {
         "id": completion_id,
         "object": "chat.completion",
