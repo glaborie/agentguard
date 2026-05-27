@@ -626,6 +626,97 @@ Rate a new response in Open WebUI — within ~7 minutes (2 min feedback sync + 5
 
 ---
 
+## Part 8 — OpenTelemetry / Jaeger
+
+This demonstrates the infrastructure observability layer that runs in parallel with Langfuse. While Langfuse captures LLM-native signal (token counts, prompts, completions, scores), the OTel pipeline captures the full request lifecycle — HTTP ingress, outbound calls to LiteLLM and Qdrant, and timing at the transport layer. Both views are cross-linked via a shared trace ID.
+
+**Pipeline:** `rag-api` → `otel-collector` → Jaeger (`:16686`) + Langfuse OTel endpoint (`/api/public/otel`)
+
+**What gets instrumented automatically:**
+- FastAPI HTTP spans — every `POST /v1/chat/completions` and `GET /health`
+- httpx outbound spans — calls to LiteLLM (`/v1/chat/completions`, `/v1/embeddings`) and Langfuse
+
+---
+
+### 8.1 Send a Chat Message and Open Jaeger
+
+1. Send any RAG query from Open WebUI ([http://localhost:3001](http://localhost:3001))
+2. Open Jaeger: [http://localhost:16686](http://localhost:16686)
+3. In the **Search** panel: set **Service** to `agentguard`, click **Find Traces**
+
+**Expected:** The most recent trace appears at the top with a name like `POST /v1/chat/completions`.
+
+---
+
+### 8.2 Inspect the Span Tree
+
+Click the trace to expand the waterfall view.
+
+**Expected span structure:**
+```
+POST /v1/chat/completions          (FastAPI — full request duration)
+  POST /v1/embeddings              (httpx — query embedding call to LiteLLM)
+  GET  /collections/langfuse_docs  (httpx — Qdrant collection validation)
+  POST /v1/chat/completions        (httpx — LLM generation call to LiteLLM)
+  POST /api/public/ingestion       (httpx — Langfuse trace flush)
+```
+
+**What to look for:**
+- Relative timing shows where latency is spent (embedding vs. retrieval vs. generation)
+- The generation span is the widest — it covers the full LLM round-trip
+- Custom attributes on the root span: `app.model`, `app.is_rag`, `app.chat_id` (if session linking is active)
+
+---
+
+### 8.3 Cross-Link to Langfuse
+
+Each RAG request injects its OTel trace ID into the Langfuse trace metadata.
+
+1. In Langfuse → **Traces** → open the trace for the same request
+2. In the trace **Metadata** section, look for `otel_trace_id`
+3. Copy the value and navigate to:
+   ```
+   http://localhost:16686/trace/<otel_trace_id>
+   ```
+
+**Expected:** Jaeger opens the matching trace — the same request, now showing the infrastructure layer.
+
+**What this demonstrates:** Both observability systems are navigable from a single trace record. Langfuse gives you the LLM internals; Jaeger gives you the network and timing picture.
+
+---
+
+### 8.4 Jaeger vs. Langfuse — Complementary Views
+
+| What you need to know | Go to |
+|---|---|
+| What did the LLM actually receive as prompt? | Langfuse → trace → `ChatOpenAI` observation |
+| How many tokens were used / what did it cost? | Langfuse → trace → Usage tab |
+| Which retrieved chunks influenced the answer? | Langfuse → trace → `Retriever` observation |
+| How long did the embedding call take? | Jaeger → `POST /v1/embeddings` span |
+| Was the Qdrant query slow? | Jaeger → `GET /collections/…` span duration |
+| Did a timeout happen at the HTTP layer? | Jaeger → span with error tag |
+| How long did the total HTTP request take? | Jaeger → root `POST /v1/chat/completions` span |
+
+---
+
+### 8.5 Watch the Collector Pipeline (Optional)
+
+To see spans flowing through the collector in real time:
+
+```bash
+docker compose logs -f otel-collector
+```
+
+Each batch export logs a line when spans are received and forwarded. A healthy export cycle looks like:
+
+```
+... otlp receiver accepted spans {"span_count": 5}
+... exporter sent spans to jaeger
+... exporter sent spans to langfuse
+```
+
+---
+
 ## Verification Checklist
 
 | Scenario | Pass condition |
@@ -660,3 +751,6 @@ Rate a new response in Open WebUI — within ~7 minutes (2 min feedback sync + 5
 | 7.3 | Langfuse Datasets → `rag-golden-set` shows items with input/expected_output/source trace |
 | 7.4 | `evaluate --dataset rag-golden-set` runs without error; dataset run visible in Langfuse |
 | 7.5 | Worker log shows `dataset-builder started (interval: 300s)`; new thumbs-up appears in dataset within ~7 min |
+| 8.1 | Jaeger at `:16686` shows `agentguard` service; trace appears after each chat message |
+| 8.2 | Waterfall shows `POST /v1/embeddings`, Qdrant span, and LLM generation span nested under root HTTP span |
+| 8.3 | `otel_trace_id` in Langfuse trace metadata navigates to the matching Jaeger trace |
