@@ -72,6 +72,7 @@ A RAG + agentic assistant over the NorthstarCRM synthetic knowledge base, with f
 - `app/eval/service.py` - Stable domain interface: `evaluate()`, `experiment()`, `show_experiment_table()`, `regression_gate()`. CLI commands call this instead of the runner/experiment modules or scripts directly.
 - `app/eval/benchmark.py` - Benchmark runner for the NorthstarCRM knowledge base. Evaluates the RAG pipeline across five metrics: retrieval hit rate, factual coverage, policy violation rate, correct escalation rate, answer helpfulness. Supports three run modes: `full` (RAG + guardrails), `no-guardrails` (RAG, guardrails off via `extra_body`), `direct` (bare LLM, no retrieval). Loads items from `mock_corpus/07_benchmark/` (JSONL). `run_benchmark()` drives item × mode combinations; `print_results()` outputs per-question details and an aggregate comparison table. Code-based metrics: `eval_retrieval_hit` (filename or full-path match), `eval_factual_coverage` (stop-word-filtered token overlap), `eval_escalation` (15 escalation-intent phrases). LLM-as-judge metrics: `eval_policy_violation` (7 NorthstarCRM sales policies + scoring rules that distinguish correct refusals from true violations), `eval_helpfulness` (1–5 deal-progression score). `_parse_judge_json()` strips markdown fences before parsing judge responses. CLI flag `--item <id>` (e.g. `--item edge_002`) runs a single benchmark item; combine with `--compare` to see all three modes for that item.
 - `scripts/build_dataset.py` - Builds the `rag-golden-set` Langfuse dataset from positively rated traces. Queries `user_feedback=1.0` scores, fetches each linked trace, upserts `{question, answer}` items with `source_trace_id`. `run_once()` is called by the worker every 5 minutes. State in `.build_dataset_state.json`.
+- `scripts/seed_benchmark_dataset.py` - Seeds two separate Langfuse datasets from local JSONL files (idempotent, safe to re-run). `northstar-rag` (18 items, item IDs `nr-*`): bench_001–008 from `benchmark_questions.jsonl` joined with ideal answers from `expected_answers.jsonl`, plus edge_001–010 from `edge_cases.jsonl`; each item carries `expected_facts`, `should_escalate`, `expected_action`, `gold_docs`, and `ideal_answer` where available — use this dataset for RAG quality experiments with DeepEval. `northstar-safety` (11 items, item IDs `ns-*`): 5 prompt injection, 3 threats/insults, 3 PII masking scenarios mirrored from `tests/test_integration.py`; each item carries `guardrail_type` and `expected_behavior` (`blocked` / `blocked_or_refused` / `pii_masked`) — use this dataset for guardrail behaviour evaluation. Run with `--dry-run` to preview without writing.
 - `scripts/regression_gate.py` - `run_gate()` implements the quality gate logic (run dataset items through RAG, evaluate with DeepEval, check thresholds). Exit codes: 0=all pass, 1=metric failure, 2=runtime error. Default thresholds: `FaithfulnessMetric≥0.80`, `AnswerRelevancyMetric≥0.70`, `ContextualRelevancyMetric≥0.30`, `HallucinationMetric≤0.30`. `HallucinationMetric` is lower-is-better — threshold is a maximum, not a minimum. Override thresholds via `--thresholds '{"FaithfulnessMetric":0.85}'`. Called by `app/eval/service.py::regression_gate()` and also callable directly: `python -m scripts.regression_gate --limit 5`.
 - `scripts/worker.py` - Combined background daemon. Runs three pollers in threads: `eval-worker` (60s), `feedback-worker` (120s), `dataset-builder` (300s). Seeds score configs on startup. Launched automatically by the `agentguard-worker` Docker service.
 - `scripts/utils.py` - Shared utilities for scripts: `langfuse_basic_auth()`, `load_state()`/`save_state()` (corrupt-safe JSON state files), `HTTP_TIMEOUT`, `TRACE_PAGE_SIZE`, `SCORE_PAGE_SIZE`.
@@ -103,6 +104,8 @@ python -m app.main benchmark --item edge_002 --compare           # Single item a
 # One-time setup (after first docker compose up):
 python -m scripts.seed_langfuse_prompt        # Register RAG system prompt in Langfuse
 python -m scripts.seed_langfuse_prompt --force # Push a new version (after editing)
+python -m scripts.seed_benchmark_dataset      # Seed northstar-benchmark dataset (29 items)
+python -m scripts.seed_benchmark_dataset --dry-run  # Preview without writing
 
 # Background workers (run automatically by agentguard-worker Docker service):
 python -m scripts.worker               # All three pollers in one process
@@ -136,12 +139,14 @@ Every function that calls an LLM should accept a `callbacks` parameter and pass 
 ### Tests
 
 ```bash
-pytest -m "not integration"   # 263 unit tests, no Docker needed (~5s)
-pytest -m integration          # 17 integration tests, Docker stack must be running
+pytest -m "not integration"   # unit tests, no Docker needed (~5s)
+pytest -m integration          # 19 integration tests, Docker stack must be running
 pytest -v                      # Full suite
 ```
 
-Integration tests auto-skip if the Docker stack is unreachable (checks `localhost:4000/health/liveliness` in `conftest.py`). The guardrail tests mock the entire `litellm` module hierarchy via `sys.modules` because `litellm` only exists inside the Docker container. `app/api/__init__.py` uses `__getattr__` lazy-loading so importing `app.api.services.*` in unit tests does not require fastapi.
+Integration tests auto-skip if the Docker stack is unreachable (checks `localhost:4000/health/liveliness` in `conftest.py`). The guardrail unit tests (`tests/test_guardrails.py`) mock the entire `litellm` module hierarchy via `sys.modules` because `litellm` only exists inside the Docker container. `app/api/__init__.py` uses `__getattr__` lazy-loading so importing `app.api.services.*` in unit tests does not require fastapi.
+
+`tests/test_integration.py::TestLiteLLMGuardrails` hits the live LiteLLM proxy to verify guardrails fire end-to-end. It covers three layers: prompt injection (5 parametrized cases, `_assert_blocked` — expects HTTP non-200 from `PromptInjectionGuard`), threats/insults (3 cases, `_assert_rejected` — accepts proxy block or model self-refusal), and PII masking (email and phone injected via system context, response must not contain the raw value). Use `_assert_blocked` when the proxy is the enforcement point (custom guard raises `BadRequestError`); use `_assert_rejected` when the built-in LiteLLM policy may pass the request to the model, which then self-censors.
 
 ### Guardrails
 
