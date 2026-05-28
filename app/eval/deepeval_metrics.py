@@ -22,6 +22,7 @@ class LiteLLMModel(DeepEvalBaseLLM):
             base_url=f"{settings.litellm_base_url}/v1",
             api_key=settings.litellm_master_key,
             temperature=0.0,
+            extra_body={"guardrails": []},  # judge prompts contain phrases that trip content guardrails
         )
 
     def load_model(self):
