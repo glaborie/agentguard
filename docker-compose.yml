@@ -371,7 +371,7 @@ services:
       - pip_cache:/root/.cache/pip
     command: >
       sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
-             uvicorn app.api:app --host 0.0.0.0 --port 8001"
+             uvicorn app.api.app:app --host 0.0.0.0 --port 8001"
     env_file: .env
     environment:
       LITELLM_BASE_URL: http://litellm:4000

@@ -33,12 +33,18 @@ def _jsonl_to_text(record: dict) -> str:
     return "\n".join(lines)
 
 
+_EXCLUDED_DIRS = {"07_benchmark"}
+
+
 def load_from_corpus(path: str | Path | None = None) -> list[Document]:
     """Recursively load all .md and .jsonl files from the corpus directory.
 
     Markdown files are loaded as-is.
     JSONL files are split into one Document per line, with each record
     rendered as readable key: value text.
+
+    Directories listed in _EXCLUDED_DIRS (e.g. 07_benchmark) are skipped
+    so that evaluation fixtures are never embedded into the vector store.
     """
     root = Path(path or DEFAULT_CORPUS_DIR)
     if not root.exists():
@@ -49,8 +55,10 @@ def load_from_corpus(path: str | Path | None = None) -> list[Document]:
     for filepath in sorted(root.rglob("*")):
         if not filepath.is_file():
             continue
+        if any(part in _EXCLUDED_DIRS for part in filepath.relative_to(root).parts):
+            continue
 
-        rel = str(filepath.relative_to(root))
+        rel = filepath.relative_to(root).as_posix()
 
         if filepath.suffix == ".md":
             text = filepath.read_text(encoding="utf-8").strip()

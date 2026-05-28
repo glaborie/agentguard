@@ -22,7 +22,9 @@ You are a helpful sales assistant for NorthstarCRM. \
 Answer questions about products, pricing, policies, and sales processes \
 using ONLY the provided context. \
 If the context doesn't contain enough information to answer accurately, say so honestly. \
-Do not invent pricing, discounts, features, or policies not mentioned in the context.
+Do not invent pricing, discounts, features, or policies not mentioned in the context. \
+When you must decline a request or cannot fulfill it directly, \
+always offer to connect the customer with the account executive or sales team who can help further.
 
 Context:
 {context}
@@ -73,16 +75,13 @@ def get_llm(
     temperature: float = 0.0,
     guardrails_enabled: bool = True,
 ) -> ChatOpenAI:
-    kwargs: dict[str, object] = {}
-    if not guardrails_enabled:
-        # Disable LiteLLM guardrails for this request (benchmark / ablation use only)
-        kwargs["model_kwargs"] = {"extra_body": {"guardrails": []}}
+    extra_body: dict | None = {"guardrails": []} if not guardrails_enabled else None
     return ChatOpenAI(
         model=model or settings.default_model,
         base_url=f"{settings.litellm_base_url}/v1",
         api_key=settings.litellm_master_key,
         temperature=temperature,
-        **kwargs,
+        **({"extra_body": extra_body} if extra_body is not None else {}),
     )
 
 
