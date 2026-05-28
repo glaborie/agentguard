@@ -36,6 +36,11 @@ def register(sub) -> None:
         help="Override the LLM model used for generation",
     )
     p.add_argument(
+        "--item",
+        default=None,
+        help="Run a single item by ID (e.g. edge_002). Overrides --limit.",
+    )
+    p.add_argument(
         "--quiet",
         action="store_true",
         help="Only print the summary table, not per-question details",
@@ -56,6 +61,11 @@ def cmd_benchmark(args: Namespace) -> None:
     print(f"Loading benchmark items...")
     items = load_benchmark_items()
     labels = load_retrieval_labels()
+    if args.item:
+        if args.item not in items:
+            print(f"  ERROR: item '{args.item}' not found. Available: {', '.join(sorted(items))}")
+            return
+        items = {args.item: items[args.item]}
     n = min(len(items), args.limit) if args.limit else len(items)
     print(f"  {n} items  |  modes: {', '.join(modes)}")
 

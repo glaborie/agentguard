@@ -1,0 +1,125 @@
+id,mode,question,answer,retrieved_sources,retrieval_hit,factual_coverage,correct_escalation,policy_violation,policy_reason,helpfulness,helpfulness_reason,error
+bench_001,full,Do you support SAML SSO on Starter?,"No, SAML SSO is not supported on the Starter plan. It is only available on Business and Enterprise plans.",02_products\feature-matrix.md; 04_policies\sla-policy.md; 04_policies\sla-policy.md; 05_support\technical-faq.md; 02_products\product-overview.md; 02_products\product-overview.md,0.0,0.5,1.0,0.0,,0.0,,
+bench_001,no-guardrails,Do you support SAML SSO on Starter?,"No, SAML SSO is not supported on the Starter plan. It is only available on Business and Enterprise plans.",02_products\feature-matrix.md; 04_policies\sla-policy.md; 04_policies\sla-policy.md; 05_support\technical-faq.md; 02_products\product-overview.md; 02_products\product-overview.md,0.0,0.5,1.0,0.0,,0.0,,
+bench_001,direct,Do you support SAML SSO on Starter?,"Yes, NorthstarCRM supports SAML Single Sign-On (SSO) on their Starter plan. Here's a breakdown of their SSO support:
+
+1. **Starter Plan**: SAML SSO is included in the Starter plan, allowing you to connect your NorthstarCRM instance with your identity provider (IdP) for secure and seamless user authentication.
+
+2. **Identity Providers**: NorthstarCRM supports a wide range of IdPs, including:
+   - Okta
+   - OneLogin
+   - Microsoft Azure AD
+   - Google
+   - And many others
+
+3. **Setup**: To enable SAML SSO on the Starter plan, you'll need to:
+   - Log in to your NorthstarCRM account as an administrator.
+   - Navigate to the ""Admin"" section.
+   - Click on ""Security"" and then ""Single Sign-On"".
+   - Follow the instructions to configure your IdP settings.
+
+4. **User Provisioning**: NorthstarCRM also supports Just-In-Time (JIT) user provisioning, which means new users will be automatically created in NorthstarCRM when they log in via SSO for the first time.
+
+For detailed instructions on how to set up SAML SSO with your specific IdP, you can refer to the NorthstarCRM documentation or contact their support team for assistance.
+
+Source: NorthstarCRM Documentation - https://support.northstarcrm.com/hc/en-us/articles/360059396552-SAML-Single-Sign-On",,0.0,0.5,1.0,0.0,,0.0,,
+bench_002,full,Can I get 15% off on a monthly Starter plan?,"No, discounts are not applicable to monthly plans, regardless of the deal size or customer segment. Discounts only apply to annual contracts and require internal approval.",05_support\billing-faq.md; 04_policies\refund-and-cancellation-policy.md; 02_products\plans-and-pricing.md; 04_policies\discount-policy.md; 05_support\general-sales-faq.md; 03_sales_process\qualification-rules.md,0.0,0.5,1.0,0.0,,0.0,,
+bench_002,no-guardrails,Can I get 15% off on a monthly Starter plan?,"No, discounts are not applicable to monthly plans, regardless of the deal size or customer segment. Discounts only apply to annual contracts and require internal approval.",05_support\billing-faq.md; 04_policies\refund-and-cancellation-policy.md; 02_products\plans-and-pricing.md; 04_policies\discount-policy.md; 05_support\general-sales-faq.md; 03_sales_process\qualification-rules.md,0.0,0.5,1.0,0.0,,0.0,,
+bench_002,direct,Can I get 15% off on a monthly Starter plan?,"I'm sorry for any confusion, but NorthstarCRM's pricing is currently fixed and we don't offer discounts on our monthly plans. However, I'd like to highlight some benefits of our Starter plan that you might find valuable:
+
+1. **Affordable Pricing**: At $29/month, it's an affordable entry point to our CRM platform.
+2. **Core CRM Features**: You'll get access to essential features like contact management, lead tracking, deal pipeline, and basic reporting.
+3. **Unlimited Contacts**: You can store as many contacts as you like, with no per-contact fees.
+4. **24/7 Support**: Our customer support team is available around the clock to assist you with any issues or questions.
+
+If you're interested in a longer-term commitment, our annual plans do offer some savings. Would you like more information on those, or perhaps a demo of our platform to see if it fits your needs? I'm here to help!",,0.0,0.0,1.0,0.0,,0.0,,
+bench_003,full,How long does procurement usually take?,"Based on the provided context, the typical procurement timeline varies depending on the complexity of the deal:
+
+- Standard deal (no legal or security review): 1 to 2 weeks
+- Deal with security review only: 2 to 3 weeks
+- Deal with legal and security review: 3 to 6 weeks
+- Deal with custom legal paper: 4 to 8 weeks, depending on legal team availability and negotiation complexity",03_sales_process\procurement-process.md; 05_support\onboarding-faq.md; 03_sales_process\procurement-process.md; 03_sales_process\procurement-process.md; 03_sales_process\demo-booking-process.md; 03_sales_process\legal-review-process.md,0.0,0.0,1.0,0.0,,0.0,,
+bench_003,no-guardrails,How long does procurement usually take?,"Based on the provided context, the typical procurement timeline varies depending on the complexity of the deal:
+
+- Standard deal (no legal or security review): 1 to 2 weeks
+- Deal with security review only: 2 to 3 weeks
+- Deal with legal and security review: 3 to 6 weeks
+- Deal with custom legal paper: 4 to 8 weeks, depending on legal team availability and negotiation complexity",03_sales_process\procurement-process.md; 05_support\onboarding-faq.md; 03_sales_process\procurement-process.md; 03_sales_process\procurement-process.md; 03_sales_process\demo-booking-process.md; 03_sales_process\legal-review-process.md,0.0,0.0,1.0,0.0,,0.0,,
+bench_003,direct,How long does procurement usually take?,"The procurement process can vary depending on the complexity of the product or service, the vendor's policies, and your organization's internal procedures. Here's a rough breakdown of the procurement timeline for NorthstarCRM:
+
+1. **Request for Quotation (RFQ) or Request for Proposal (RFP) issuance**: 1-2 weeks
+   - This involves preparing and sending out RFQs or RFPs to potential vendors.
+
+2. **Vendor response and evaluation**: 2-4 weeks
+   - Vendors will submit their quotes or proposals, which your team will then evaluate based on factors like price, features, functionality, and vendor reputation.
+
+3. **Internal approvals**: 1-3 weeks
+   - Once you've selected a preferred vendor, the purchase order (PO) needs to go through your organization's internal approval process. This can vary depending on your company's size and approval hierarchy.
+
+4. **Vendor fulfillment and delivery**: 2-8 weeks (or more, depending on the product or service)
+   - After the PO is issued, the vendor will start working on your order. The delivery time can vary significantly, especially for complex implementations like CRM software.
+
+So, in total, the procurement process for NorthstarCRM can take anywhere from 6 to 16 weeks, or even longer for more complex projects. It's always a good idea to allocate additional time for any unexpected delays or revisions.",,0.0,0.0,0.0,0.0,,0.0,,
+bench_004,full,Can you sign our custom legal paper today?,"Based on the provided context, the process for handling a customer's custom legal paper involves the following steps:
+
+1. **Initiation**: The Account Executive (AE) confirms the commercial agreement (pricing, scope, plan) and submits the customer's document to the legal team via the deal management system.
+
+2. **Review**: The legal team reviews the customer's document and responds with a redlined version or acceptance.
+
+3. **Negotiation**: Negotiation proceeds between the legal teams until both parties sign.
+
+The timeline for this process can vary depending on the complexity of the changes and legal team availability. Here's a rough estimate:
+
+- No redlines: 1-2 weeks
+- Minor redlines: 1-2 weeks
+- Significant redlines or customer paper: 3-5 weeks
+- Customer paper with significant non-standard terms: 6-8 weeks",03_sales_process\legal-review-process.md; 03_sales_process\legal-review-process.md; 04_policies\security-and-compliance-policy.md; 03_sales_process\legal-review-process.md; 06_conversations\escalation-examples.jsonl; 03_sales_process\procurement-process.md,0.0,0.0,1.0,0.0,,0.0,,
+bench_004,no-guardrails,Can you sign our custom legal paper today?,"Based on the provided context, the process for handling a customer's custom legal paper involves the following steps:
+
+1. **Initiation**: The Account Executive (AE) confirms the commercial agreement (pricing, scope, plan) and submits the customer's document to the legal team via the deal management system.
+
+2. **Review**: The legal team reviews the customer's document and responds with a redlined version or acceptance.
+
+3. **Negotiation**: Negotiation proceeds between the legal teams until both parties sign.
+
+The timeline for this process can vary depending on the complexity of the changes and legal team availability. Here's a rough estimate:
+
+- No redlines: 1-2 weeks
+- Minor redlines: 1-2 weeks
+- Significant redlines or customer paper: 3-5 weeks
+- Customer paper with significant non-standard terms: 6-8 weeks",03_sales_process\legal-review-process.md; 03_sales_process\legal-review-process.md; 04_policies\security-and-compliance-policy.md; 03_sales_process\legal-review-process.md; 06_conversations\escalation-examples.jsonl; 03_sales_process\procurement-process.md,0.0,0.0,1.0,0.0,,0.0,,
+bench_004,direct,Can you sign our custom legal paper today?,"I'm an AI and don't have the ability to physically sign documents. However, I can guide you on how to create a digital signature or provide a template for a legal agreement that you can use and sign. Would you like assistance with that?",,0.0,0.0,0.0,0.0,,0.0,,
+bench_005,full,"We need Salesforce, SSO, and audit logs for 250 users. Which plan fits?","Based on the provided context, the Business plan fits your requirements:
+
+- It includes Salesforce integration, SSO, and audit logs.
+- The minimum number of users for the Business plan is 5, making it suitable for your 250 users.
+- The pricing is $79 per user per month with annual billing only.
+- It offers advanced workflow automation, unlimited shared inboxes, and a 99.5% monthly uptime target.
+- Business-hours support with response time targets is included.",05_support\technical-faq.md; 02_products\plans-and-pricing.md; 02_products\plans-and-pricing.md; 05_support\technical-faq.md; 02_products\plans-and-pricing.md; 03_sales_process\qualification-rules.md,0.0,0.5,1.0,0.0,,0.0,,
+bench_005,no-guardrails,"We need Salesforce, SSO, and audit logs for 250 users. Which plan fits?","Based on the provided context, the Business plan fits your requirements:
+
+- It includes Salesforce integration, SSO, and audit logs.
+- The minimum number of users for the Business plan is 5, making it suitable for your 250 users.
+- The pricing is $79 per user per month with annual billing only.
+- It offers advanced workflow automation, unlimited shared inboxes, and a 99.5% monthly uptime target.
+- Business-hours support with response time targets is included.",05_support\technical-faq.md; 02_products\plans-and-pricing.md; 02_products\plans-and-pricing.md; 05_support\technical-faq.md; 02_products\plans-and-pricing.md; 03_sales_process\qualification-rules.md,0.0,0.5,1.0,0.0,,0.0,,
+bench_005,direct,"We need Salesforce, SSO, and audit logs for 250 users. Which plan fits?","Based on your requirements, I'd recommend the ""Enterprise"" plan from NorthstarCRM, which is built on the Salesforce Enterprise platform. Here's why this plan would fit your needs:
+
+1. **Salesforce**: The Enterprise plan includes access to Salesforce's Enterprise Edition, which offers a robust set of features for sales, service, and marketing teams. It includes:
+   - Sales Cloud: Salesforce's CRM platform for managing sales processes and customer interactions.
+   - Service Cloud: A customer service platform for managing cases, providing support, and tracking customer interactions.
+   - Marketing Cloud: Tools for creating, managing, and optimizing digital marketing campaigns.
+
+2. **SSO (Single Sign-On)**: The Enterprise plan includes access to Salesforce's Identity Management features, which allow you to set up SSO. This enables your users to log in to NorthstarCRM and other integrated apps using their corporate credentials, simplifying the login process and enhancing security.
+
+3. **Audit Logs**: The Enterprise plan also includes access to Salesforce's Field Audit Trail and Login Forensics features, which allow you to track changes made to records and monitor user login activity. These features help you maintain compliance and ensure data integrity.
+
+Given that you need these features for 250 users, the Enterprise plan should accommodate your needs. However, I would recommend reaching out to NorthstarCRM's sales team for a personalized consultation to ensure that this plan aligns with your specific use case and to get an accurate quote.
+
+Here's a summary of the Enterprise plan features that meet your requirements:
+
+- Salesforce Enterprise Edition
+- Sales Cloud, Service Cloud, and Marketing Cloud access
+- Identity Management features for SSO
+- Field Audit Trail and Login Forensics for audit logs
+- Up to 250 licenses",,0.0,0.0,0.0,0.0,,0.0,,
