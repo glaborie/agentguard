@@ -22,8 +22,15 @@ INJECTION_PATTERNS = [
     r"you are now (?:a |an )?",
     r"pretend (?:to be|you(?:'re| are))",
     r"new (?:instructions|rules|persona|role)\s*:",
+    # Verb + system prompt/instructions (original)
     r"(?:give|show|reveal|print|display|output|repeat|tell)\b.*\b(?:system\s*prompt|instructions|rules)",
     r"system\s*(?:prompt|message)\s*(?:override|update)",
+    # Any bare reference to the system prompt — "the system prompt", "your system prompt", etc.
+    r"\bsystem\s*prompt\b",
+    # Possessive reference to internal config without an explicit verb
+    r"\byour\s+(?:instructions|rules|guidelines|directives|constraints|configuration|prompt)\b",
+    # "what are you told / instructed / configured to do"
+    r"what\s+(?:are|were|is)\s+you\s+(?:told|instructed|configured|programmed|trained)",
     r"jailbreak",
     r"do anything now",
     r"developer mode",
