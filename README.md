@@ -79,7 +79,7 @@ For the full system view, see [Architecture](docs/architecture.md).
 - **Customer support assistants** — reduce hallucinated pricing, refund, and policy answers before they become customer-visible incidents.
 - **Internal knowledge copilots** — monitor retrieval quality, evaluate answer faithfulness, and reduce sensitive data exposure.
 - **Agentic workflows** — trace tool usage, benchmark outcomes, and catch costly action errors before production rollout.
-- 
+  
 ## Quick Start
 
 ```bash
