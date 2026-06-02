@@ -23,7 +23,7 @@ AgentGuard provides a control layer for observing, protecting, and evaluating th
 ## What it does
 
 - **Observability** — traces, retrieval, latency, model behavior, and tool usage
-- **Protection** — prompt injection blocking and PII masking
+- **Protection** — prompt injection blocking (regex + LLM-judge semantic pass), toxic content detection, PII masking, and agent tool-call guardrails
 - **Evaluation** — golden datasets, benchmarks, regression checks, and scoring
 - **Support for RAG and agents** — works across both retrieval pipelines and agentic workflows
 

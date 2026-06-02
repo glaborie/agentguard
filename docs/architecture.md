@@ -189,7 +189,8 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 │   ├── agent/
 │   │   ├── service.py        # Stable interface: run(), build_chat_session(), respond()
 │   │   ├── tools.py          # 5 agent tools (search, traces, scoring, datasets)
-│   │   ├── graph.py          # LangGraph ReAct agent (StateGraph + ToolNode)
+│   │   ├── graph.py          # LangGraph ReAct agent (StateGraph + guarded ToolNode)
+│   │   ├── tool_guard.py     # Pre-execution tool-call guardrail (allowlist + injection check)
 │   │   └── prompts.py        # Agent system prompt
 │   └── eval/
 │       ├── service.py        # Stable interface: evaluate(), experiment(), regression_gate()
@@ -199,12 +200,13 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 │       ├── deepeval_runner.py   # Evaluation runner with Langfuse score push
 │       └── benchmark.py      # Benchmark runner: 3 modes × 5 metrics over NorthstarCRM corpus
 ├── guardrails/
-│   └── custom_guardrails.py  # Prompt injection + PII masking guards
+│   └── custom_guardrails.py  # PromptInjectionGuard (regex + LLM-judge), ToxicityGuard, PIIMaskingGuard
 └── tests/
     ├── test_agent_tools.py      # 22 tests: all 5 agent tool functions
     ├── test_agent_graph.py      # 13 tests: graph structure, routing, prompts
+    ├── test_agent_tool_guard.py # 23 tests: allowlist, injection detection, limit bounds
     ├── test_deepeval_metrics.py # 14 tests: LiteLLM model, metric factories
-    ├── test_guardrails.py       # 43 tests: injection detection, PII masking
+    ├── test_guardrails.py       # 81 tests: injection detection, PII masking, toxicity detection, semantic guard
     ├── test_evaluators.py       # 16 tests: all code-based evaluators
     ├── test_config.py           # 3 tests: settings defaults + overrides
     ├── test_chain.py            # 9 tests: format_docs, prompt, e2e query
