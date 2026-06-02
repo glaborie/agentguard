@@ -30,6 +30,7 @@ class TestLiteLLMModel:
         mock_settings.deepeval_model = ""
         mock_settings.default_model = "openrouter-gemini-flash"
         mock_settings.litellm_base_url = "http://localhost:4000"
+        mock_settings.litellm_master_key = "sk-test"
         model = LiteLLMModel()
         assert model.get_model_name() == "openrouter-gemini-flash"
 
