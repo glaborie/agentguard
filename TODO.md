@@ -54,7 +54,7 @@ Wire to `pull_request` events on `main`.
 
 ## Maturity / quality gaps
 
-### [~] #4 Coverage reporting / badge (~2h)
+### [x] #4 Coverage reporting / badge (~2h)
 
 **Why:** README has no coverage badge. DeepEval and Phoenix both display >90% badges. 263 unit tests exist but no `pytest-cov` is configured.
 
