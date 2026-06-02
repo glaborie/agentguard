@@ -80,7 +80,7 @@ Then add a Codecov badge to `README.md`.
 
 ## Docs / onboarding gaps
 
-### [~] #6 Cloud deployment guide (~2d)
+### [x] #6 Cloud deployment guide (~2d)
 
 **Why:** README says "Google Cloud deployment is planned" but no Terraform, Helm chart, or GCP guide exists. Phoenix ships Kubernetes manifests; Haystack ships enterprise deployment docs.
 
