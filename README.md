@@ -74,6 +74,12 @@ For the full system view, see [Architecture](docs/architecture.md).
 - technical product owners responsible for release confidence
 - teams handling sensitive, regulated, or business-critical workflows
 
+## Use cases
+
+- **Customer support assistants** — reduce hallucinated pricing, refund, and policy answers before they become customer-visible incidents.
+- **Internal knowledge copilots** — monitor retrieval quality, evaluate answer faithfulness, and reduce sensitive data exposure.
+- **Agentic workflows** — trace tool usage, benchmark outcomes, and catch costly action errors before production rollout.
+- 
 ## Quick Start
 
 ```bash
