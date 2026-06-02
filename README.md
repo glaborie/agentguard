@@ -27,6 +27,24 @@ AgentGuard provides a control layer for observing, protecting, and evaluating th
 - **Evaluation** — golden datasets, benchmarks, regression checks, and scoring
 - **Support for RAG and agents** — works across both retrieval pipelines and agentic workflows
 
+## Why AgentGuard, not just observability or evals?
+
+Production AI failures are costly.
+
+When a RAG assistant hallucinates policy, an agent takes the wrong action, or a model response leaks sensitive data, the result is not just a bad answer — it is a business incident.
+
+Most teams stitch together separate tools for tracing, evaluations, and guardrails. That creates gaps:
+- observability shows what happened, but does not prevent it
+- evaluations measure quality, but do not protect runtime behavior
+- guardrails block narrow failure modes, but do not provide release confidence
+
+AgentGuard brings these controls together in one platform so teams can:
+- observe live AI behavior
+- test high-risk scenarios before release
+- block or reduce costly failures in production
+
+It is built for teams that need more than model experimentation — they need operational control.
+
 ## Architecture at a glance
 
 ```mermaid
