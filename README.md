@@ -4,7 +4,7 @@
 
 It helps teams detect, evaluate, and prevent costly AI incidents before they become customer-visible.
 
-[![CI](https://github.com/glaborie/agentguard/actions/workflows/ci.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/ci.yml)
+[![CI](https://github.com/glaborie/agentguard/actions/workflows/ci.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/ci.yml)[![Regression Gate](https://github.com/glaborie/agentguard/actions/workflows/regression-gate.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/regression-gate.yml)
 
 ## Why AgentGuard
 
