@@ -1,5 +1,29 @@
+[project]
+name = "langfuse-poc"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+asyncio_mode = "auto"
 markers = [
-    "integration: requires Docker stack running (auto-skipped if unreachable)",
+    "integration: requires live Docker stack (deselect with '-m not integration')",
 ]
+
+[tool.coverage.run]
+source = ["app", "guardrails"]
+omit = [
+    "*/test_*",
+    "app/main.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+show_missing = true
+fail_under = 60
