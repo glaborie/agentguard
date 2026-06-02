@@ -107,11 +107,16 @@ class PromptInjectionGuard(CustomGuardrail):
         Internal calls are tagged with SEMANTIC_INTERNAL_MARKER to prevent recursion.
         """
         try:
+            classify_prompt = (
+                f"{SEMANTIC_SYSTEM_PROMPT}\n\n"
+                f"=== MESSAGE TO CLASSIFY ===\n{content}\n=== END ===\n\n"
+                f"Reply with one word: INJECTION or SAFE"
+            )
             payload = {
                 "model": SEMANTIC_GUARD_MODEL,
                 "messages": [
-                    {"role": "system", "content": SEMANTIC_SYSTEM_PROMPT},
-                    {"role": "user", "content": content},
+                    {"role": "system", "content": classify_prompt},
+                    {"role": "user", "content": "Classify."},
                 ],
                 "max_tokens": 4,
                 "temperature": 0,
@@ -239,11 +244,16 @@ class ToxicityGuard(CustomGuardrail):
     async def _toxicity_check(self, content: str, master_key: str) -> bool:
         """Returns True if content is toxic. Returns False on any error (fail-open)."""
         try:
+            classify_prompt = (
+                f"{TOXICITY_SYSTEM_PROMPT}\n\n"
+                f"=== MESSAGE TO CLASSIFY ===\n{content}\n=== END ===\n\n"
+                f"Reply with one word: TOXIC or SAFE"
+            )
             payload = {
                 "model": TOXICITY_GUARD_MODEL,
                 "messages": [
-                    {"role": "system", "content": TOXICITY_SYSTEM_PROMPT},
-                    {"role": "user", "content": content},
+                    {"role": "system", "content": classify_prompt},
+                    {"role": "user", "content": "Classify."},
                 ],
                 "max_tokens": 4,
                 "temperature": 0,
