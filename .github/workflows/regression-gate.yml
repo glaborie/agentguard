@@ -1,10 +1,6 @@
 name: Regression Gate
 
 on:
-  pull_request:
-    branches: ["main"]
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -16,8 +12,7 @@ concurrency:
 
 jobs:
   regression-smoke:
-    name: Regression smoke (PR)
-    if: github.event_name == 'pull_request' && secrets.LANGFUSE_SECRET_KEY != ''
+    name: Regression smoke (5 items)
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -49,10 +44,10 @@ jobs:
           python -m scripts.regression_gate --limit 5
 
   regression-full:
-    name: Regression full (manual)
-    if: github.event_name == 'workflow_dispatch'
+    name: Regression full (all items)
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    needs: regression-smoke
 
     steps:
       - name: Checkout
