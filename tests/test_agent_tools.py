@@ -21,9 +21,10 @@ from app.agent.tools import (
 
 # ── Helper factories ──────────────────────────────────────────────
 
-def _make_trace(trace_id="abc123def456", input_val="What is tracing?", output_val="Tracing is...", latency=1.5, ts=None):
+def _make_trace(trace_id="abc123def456", input_val="What is tracing?", output_val="Tracing is...", latency=1.5, ts=None, name="RunnableSequence"):
     return SimpleNamespace(
         id=trace_id,
+        name=name,
         input=input_val,
         output=output_val,
         latency=latency,
@@ -119,7 +120,8 @@ class TestListTraces:
     @patch("app.agent.tools.get_langfuse_client")
     def test_handles_none_fields(self, mock_client):
         client = MagicMock()
-        trace = SimpleNamespace(id="x" * 20, input=None, output=None, latency=None, timestamp=None)
+        # latency=None → renders as "n/a"; input must be non-empty to pass filter
+        trace = SimpleNamespace(id="x" * 20, name="RunnableSequence", input="hello", output=None, latency=None, timestamp=None)
         client.api.trace.list.return_value = SimpleNamespace(data=[trace])
         mock_client.return_value = client
 
