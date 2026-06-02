@@ -27,6 +27,28 @@ AgentGuard provides a control layer for observing, protecting, and evaluating th
 - **Evaluation** — golden datasets, benchmarks, regression checks, and scoring
 - **Support for RAG and agents** — works across both retrieval pipelines and agentic workflows
 
+## Architecture at a glance
+
+```mermaid
+flowchart LR
+    APP[Your AI Application<br/>RAG or Agent]
+    AG[AgentGuard Control Layer]
+    LLM[LLMs / Model Gateway]
+    DATA[Knowledge, Tools, Actions]
+    SAFE[Protection]
+    OBS[Observability]
+    EVAL[Evaluation]
+
+    APP --> AG
+    AG --> LLM
+    AG --> DATA
+    AG --> SAFE
+    AG --> OBS
+    AG --> EVAL
+```
+
+For the full system view, see [Architecture](docs/architecture.md).
+
 ## Who it’s for
 
 - AI engineers building RAG or agentic systems
