@@ -50,7 +50,7 @@ ITEMS = [
 ]
 
 
-def main():
+def main() -> None:
     client = get_langfuse_client()
 
     # create_dataset is idempotent — safe to call even if it already exists

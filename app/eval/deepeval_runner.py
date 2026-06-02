@@ -11,7 +11,7 @@ def run_deepeval_evaluation(
     dataset_name: str,
     metric_names: list[str] | None = None,
     model: str | None = None,
-):
+) -> None:
     """Run DeepEval metrics against a Langfuse dataset and push scores back.
 
     Args:

@@ -1,3 +1,5 @@
+from typing import Any
+
 from langfuse import propagate_attributes
 
 from app.rag.chain import build_rag_chain
@@ -24,5 +26,5 @@ def query(
         return _query(question=question, model=model, callbacks=callbacks)
 
 
-def build_chain(model: str | None = None, k: int = 4):
+def build_chain(model: str | None = None, k: int = 4) -> Any:
     return build_rag_chain(model=model, k=k)

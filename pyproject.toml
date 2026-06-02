@@ -13,6 +13,20 @@ markers = [
     "integration: requires live Docker stack (deselect with '-m not integration')",
 ]
 
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+# Third-party libs (langchain, langfuse, litellm) have incomplete stubs;
+# ignore missing-import noise so errors reflect our own code only.
+reportMissingImports = "none"
+reportMissingModuleSource = "none"
+exclude = [
+    "scripts/openwebui_langfuse_filter.py",
+    "scripts/demo_prospect_chat.py",
+    ".venv",
+    "**/__pycache__",
+]
+
 [tool.coverage.run]
 source = ["app", "guardrails"]
 omit = [

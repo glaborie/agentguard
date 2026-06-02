@@ -6,7 +6,7 @@ router = APIRouter()
 
 
 @router.post("/webhook")
-async def webhook(request: Request):
+async def webhook(request: Request) -> dict:
     """Receive Open WebUI thumbs-up/down and push a score to Langfuse."""
     try:
         payload = await request.json()
