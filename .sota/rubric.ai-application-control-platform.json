@@ -1,0 +1,22 @@
+{
+  "domain": "ai-application-control-platform",
+  "version": 1,
+  "capabilities": [
+    { "id": "llm-request-tracing",         "tier": "table-stakes", "test": "traces LLM requests/responses with latency, tokens, inputs/outputs" },
+    { "id": "prompt-injection-blocking",   "tier": "table-stakes", "test": "detects and blocks prompt injection / jailbreak attempts before LLM call" },
+    { "id": "pii-masking",                 "tier": "table-stakes", "test": "detects and redacts PII (email, SSN, phone, card) from model outputs" },
+    { "id": "rag-quality-eval",            "tier": "table-stakes", "test": "evaluates faithfulness, relevance, hallucination for RAG responses" },
+    { "id": "dataset-management",          "tier": "table-stakes", "test": "creates/versions test datasets from production traces or golden examples" },
+    { "id": "human-feedback-loop",         "tier": "table-stakes", "test": "captures user thumbs-up/down and pushes scores back to observability system" },
+    { "id": "regression-gate",             "tier": "table-stakes", "test": "evaluates golden dataset and exits non-zero on quality regression" },
+    { "id": "self-hosted-deployment",      "tier": "table-stakes", "test": "fully deployable on-prem via Docker Compose or Kubernetes without cloud SaaS" },
+    { "id": "continuous-online-eval",      "tier": "table-stakes", "test": "background worker evaluates new traces automatically without manual trigger" },
+    { "id": "ml-semantic-guardrails",      "tier": "table-stakes", "test": "uses ML model (not just regex) for semantic injection/jailbreak detection" },
+    { "id": "ci-cd-integration",           "tier": "table-stakes", "test": "regression gate is invokable from CI pipeline with documented exit codes" },
+    { "id": "toxic-content-detection",     "tier": "table-stakes", "test": "detects toxicity, hate speech, or harmful language in inputs or outputs" },
+    { "id": "output-schema-validation",    "tier": "edge",         "test": "validates structured/JSON output against a schema before returning to caller" },
+    { "id": "auto-testset-generation",     "tier": "edge",         "test": "synthetically generates test Q&A pairs from documents without manual labeling" },
+    { "id": "prompt-playground-ui",        "tier": "edge",         "test": "visual UI to edit prompts, compare model outputs, and replay traces" },
+    { "id": "streaming-guardrails",        "tier": "edge",         "test": "guardrails apply to streaming (token-by-token) responses, not just batch" }
+  ]
+}
