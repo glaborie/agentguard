@@ -57,8 +57,13 @@ def list_traces(limit: int = 10) -> str:
         if len(lines) >= limit:
             break
         input_str = str(t.input or "")
-        # Skip Open WebUI internal system calls (same filter as online eval worker)
+        # Skip Open WebUI internal system calls
         if input_str.startswith("### Task:"):
+            continue
+        # Skip infrastructure noise: health-check GETs and raw LiteLLM spans (no user input)
+        if not input_str or input_str in ("None", "{}"):
+            continue
+        if (t.name or "").startswith("litellm-"):
             continue
         trace_id = t.id or "unknown"
         ts = t.timestamp.strftime("%Y-%m-%d %H:%M") if isinstance(t.timestamp, datetime) else str(t.timestamp or "")
