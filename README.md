@@ -4,6 +4,8 @@
 
 It helps teams detect, evaluate, and prevent costly AI incidents before they become customer-visible.
 
+[![CI](https://github.com/glaborie/agentguard/actions/workflows/ci.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/ci.yml)
+
 ## Why AgentGuard
 
 AI applications can fail in expensive ways:
