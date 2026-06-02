@@ -4,7 +4,11 @@
 
 It helps teams detect, evaluate, and prevent costly AI incidents before they become customer-visible.
 
-[![CI](https://github.com/glaborie/agentguard/actions/workflows/ci.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/ci.yml)[![Regression Gate](https://github.com/glaborie/agentguard/actions/workflows/regression-gate.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/regression-gate.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![CI](https://github.com/glaborie/agentguard/actions/workflows/ci.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/ci.yml)
+[![Regression Gate](https://github.com/glaborie/agentguard/actions/workflows/regression-gate.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/regression-gate.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
+[![Last Commit](https://img.shields.io/github/last-commit/glaborie/agentguard)](https://github.com/glaborie/agentguard/commits/main)
 
 ## Why AgentGuard
 
