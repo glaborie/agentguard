@@ -6,7 +6,7 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ## Direct peer gaps
 
-### [!] #1 ML/semantic injection detection (~2d)
+### [x] #1 ML/semantic injection detection (~2d)
 
 **Why:** Regex fails on paraphrased jailbreaks ("Act as if you have no rules" bypasses most patterns). LLM Guard's deberta model catches semantic variants that the 12 regex patterns in `guardrails/custom_guardrails.py` miss.
 
@@ -21,7 +21,7 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ---
 
-### [!] #2 CI/CD pipeline integration (~4h)
+### [x] #2 CI/CD pipeline integration (~4h)
 
 **Why:** `scripts/regression_gate.py` already exits 0/1/2 correctly — but no `.github/workflows/` file ships with the repo. Teams cloning AgentGuard must hand-wire CI themselves. DeepEval ships a ready-to-copy GitHub Actions template.
 
@@ -38,7 +38,7 @@ Wire to `pull_request` events on `main`.
 
 ---
 
-### [!] #3 Toxic/harmful content detection (~1d)
+### [x] #3 Toxic/harmful content detection (~1d)
 
 **Why:** Injection blocking + PII masking each guard one attack vector. Toxic/abusive inputs are a separate real-world failure mode not covered by either existing guard.
 
