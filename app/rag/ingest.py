@@ -111,7 +111,7 @@ def get_embeddings() -> OpenAIEmbeddings:
     )
 
 
-def create_collection(client: QdrantClient, collection_name: str, vector_size: int = 768):
+def create_collection(client: QdrantClient, collection_name: str, vector_size: int = 768) -> None:
     if not client.collection_exists(collection_name):
         client.create_collection(
             collection_name=collection_name,

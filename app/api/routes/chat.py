@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 
@@ -10,7 +12,7 @@ router = APIRouter()
 
 
 @router.post("/v1/chat/completions")
-async def chat_completions(body: ChatRequest, request: Request):
+async def chat_completions(body: ChatRequest, request: Request) -> Any:
     user_messages = [m for m in body.messages if m.role == "user"]
     if not user_messages:
         raise HTTPException(status_code=400, detail="No user message found")

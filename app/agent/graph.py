@@ -1,6 +1,6 @@
 """LangGraph ReAct agent for AgentGuard."""
 
-from typing import Literal
+from typing import Any, Literal
 
 from langchain_core.messages import SystemMessage
 from langchain_openai import ChatOpenAI
@@ -35,7 +35,7 @@ def _should_continue(state: MessagesState) -> Literal["tools", "__end__"]:
     return END
 
 
-def build_agent(model: str | None = None, checkpointer=None):
+def build_agent(model: str | None = None, checkpointer: Any = None) -> Any:
     """Build and compile the ReAct agent graph.
 
     Args:

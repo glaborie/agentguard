@@ -68,7 +68,7 @@ Then add a Codecov badge to `README.md`.
 
 ---
 
-### [~] #5 Type annotation completeness (~1d)
+### [x] #5 Type annotation completeness (~1d)
 
 **Why:** `app/eval/benchmark.py` and `scripts/` lack consistent type annotations. Guardrails AI enforces pyright strict; this repo has no mypy/pyright config.
 

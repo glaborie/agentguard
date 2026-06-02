@@ -1,4 +1,5 @@
 import uuid
+from typing import Any
 
 from langfuse import propagate_attributes
 
@@ -25,7 +26,7 @@ def run(
         )
 
 
-def build_chat_session(model: str | None = None, session_id: str | None = None):
+def build_chat_session(model: str | None = None, session_id: str | None = None) -> tuple[Any, str]:
     """Build a stateful agent session. Returns (graph, thread_id)."""
     from langgraph.checkpoint.memory import MemorySaver
 

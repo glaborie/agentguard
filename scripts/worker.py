@@ -105,7 +105,7 @@ def main() -> None:
     for t in threads:
         t.start()
 
-    def _shutdown(sig, _frame):
+    def _shutdown(sig: int, _frame: object) -> None:
         logger.info("Shutting down (signal %d)...", sig)
         _stop.set()
 

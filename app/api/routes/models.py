@@ -6,5 +6,5 @@ router = APIRouter()
 
 
 @router.get("/v1/models")
-def list_models():
+def list_models() -> dict:
     return models_service.get_model_list()

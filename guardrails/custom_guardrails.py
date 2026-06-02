@@ -11,7 +11,7 @@ the regex misses. It calls back through the LiteLLM proxy itself with max_tokens
 
 import os
 import re
-from typing import Optional
+from typing import Any, Optional
 
 import httpx
 from litellm._logging import verbose_proxy_logger
@@ -96,7 +96,7 @@ class PromptInjectionGuard(CustomGuardrail):
        Catches paraphrased jailbreaks the regex misses. Fails open on any error.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         self._compiled = [re.compile(p, re.IGNORECASE) for p in INJECTION_PATTERNS]
         super().__init__(**kwargs)
 
@@ -342,7 +342,7 @@ PII_RULES = [
 class PIIMaskingGuard(CustomGuardrail):
     """Scans LLM output and replaces PII patterns with redaction tokens."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         self._compiled = [(re.compile(p), repl) for p, repl in PII_RULES]
         super().__init__(**kwargs)
 
@@ -350,8 +350,8 @@ class PIIMaskingGuard(CustomGuardrail):
         self,
         data: dict,
         user_api_key_dict,
-        response,
-    ):
+        response: Any,
+    ) -> Any:
         if not hasattr(response, "choices"):
             return response
         for choice in response.choices:

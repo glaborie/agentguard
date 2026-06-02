@@ -22,9 +22,7 @@ You are a helpful sales assistant for NorthstarCRM. \
 Answer questions about products, pricing, policies, and sales processes \
 using ONLY the provided context. \
 If the context doesn't contain enough information to answer accurately, say so honestly. \
-Do not invent pricing, discounts, features, or policies not mentioned in the context. \
-When you must decline a request or cannot fulfill it directly, \
-always offer to connect the customer with the account executive or sales team who can help further.
+Do not invent pricing, discounts, features, or policies not mentioned in the context.
 
 Context:
 {context}
@@ -125,7 +123,7 @@ def build_rag_chain(
     model: str | None = None,
     k: int = 4,
     guardrails_enabled: bool = True,
-):
+) -> Any:
     retriever = get_retriever(k=k)
     llm = get_llm(model=model, guardrails_enabled=guardrails_enabled)
     prompt = _get_prompt_template()

@@ -15,7 +15,7 @@ from app.config import settings
 class LiteLLMModel(DeepEvalBaseLLM):
     """Routes DeepEval judge calls through the LiteLLM proxy."""
 
-    def __init__(self, model_name: str | None = None):
+    def __init__(self, model_name: str | None = None) -> None:
         self._model_name = model_name or settings.deepeval_model or settings.default_model
         self._llm = ChatOpenAI(
             model=self._model_name,
@@ -25,7 +25,7 @@ class LiteLLMModel(DeepEvalBaseLLM):
             extra_body={"guardrails": []},  # judge prompts contain phrases that trip content guardrails
         )
 
-    def load_model(self):
+    def load_model(self) -> ChatOpenAI:
         return self._llm
 
     def generate(self, prompt: str) -> str:
