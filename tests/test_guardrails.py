@@ -56,6 +56,7 @@ from guardrails.custom_guardrails import (
     SEMANTIC_INTERNAL_MARKER,
     PIIMaskingGuard,
     PromptInjectionGuard,
+    ToxicityGuard,
 )
 
 
@@ -397,4 +398,167 @@ class TestSemanticCheck:
         resp = self._make_response("injection")
         with patch("guardrails.custom_guardrails.httpx.AsyncClient", return_value=self._mock_client(resp)):
             result = run(guard._semantic_check("some content", "sk-test"))
+        assert result is True
+
+
+# ── ToxicityGuard ─────────────────────────────────────────────────
+
+
+class TestToxicityGuard:
+    """Tests for ToxicityGuard — LLM-judge toxicity detection.
+
+    All tests mock _toxicity_check so no real HTTP calls are made.
+    """
+
+    @pytest.fixture()
+    def guard(self):
+        return ToxicityGuard()
+
+    def _make_data(self, content: str, internal: bool = False) -> dict:
+        data = {"messages": [{"role": "user", "content": content}]}
+        if internal:
+            data["metadata"] = {SEMANTIC_INTERNAL_MARKER: True}
+        return data
+
+    def test_blocks_toxic_message_when_flag_on(self, guard):
+        """Toxicity classifier returns TOXIC → BadRequestError raised."""
+        data = self._make_data("I will hurt you if you don't comply")
+        with patch("guardrails.custom_guardrails.TOXICITY_GUARD_ENABLED", True), patch.object(
+            guard, "_toxicity_check", new=AsyncMock(return_value=True)
+        ):
+            with pytest.raises(ValueError, match="toxic"):
+                run(guard.async_pre_call_hook(None, None, data, "completion"))
+
+    def test_passes_safe_message_when_flag_on(self, guard):
+        """Classifier returns SAFE → request proceeds unchanged."""
+        data = self._make_data("What is the refund policy for the Starter plan?")
+        with patch("guardrails.custom_guardrails.TOXICITY_GUARD_ENABLED", True), patch.object(
+            guard, "_toxicity_check", new=AsyncMock(return_value=False)
+        ):
+            result = run(guard.async_pre_call_hook(None, None, data, "completion"))
+        assert result == data
+
+    def test_not_called_when_flag_off(self, guard):
+        """Default TOXICITY_GUARD_ENABLED=False → _toxicity_check never called."""
+        mock_check = AsyncMock(return_value=True)
+        data = self._make_data("You are worthless and I hate you")
+        with patch("guardrails.custom_guardrails.TOXICITY_GUARD_ENABLED", False), patch.object(
+            guard, "_toxicity_check", new=mock_check
+        ):
+            run(guard.async_pre_call_hook(None, None, data, "completion"))
+        mock_check.assert_not_called()
+
+    def test_failopen_on_classifier_error(self, guard):
+        """_toxicity_check raising → request proceeds (fail-open)."""
+        data = self._make_data("You are stupid and useless")
+        with patch("guardrails.custom_guardrails.TOXICITY_GUARD_ENABLED", True), patch.object(
+            guard, "_toxicity_check", new=AsyncMock(side_effect=Exception("timeout"))
+        ):
+            result = run(guard.async_pre_call_hook(None, None, data, "completion"))
+        assert result == data
+
+    def test_recursion_guard_skips_internal_calls(self, guard):
+        """Internal marker → entire hook bypassed."""
+        mock_check = AsyncMock(return_value=True)
+        data = self._make_data("kill all humans", internal=True)
+        with patch("guardrails.custom_guardrails.TOXICITY_GUARD_ENABLED", True), patch.object(
+            guard, "_toxicity_check", new=mock_check
+        ):
+            result = run(guard.async_pre_call_hook(None, None, data, "completion"))
+        assert result == data
+        mock_check.assert_not_called()
+
+    def test_only_checks_user_messages(self, guard):
+        """_toxicity_check receives only user message content, not system message."""
+        mock_check = AsyncMock(return_value=False)
+        data = {
+            "messages": [
+                {"role": "system", "content": "kill all humans"},
+                {"role": "user", "content": "Hello"},
+            ]
+        }
+        with patch("guardrails.custom_guardrails.TOXICITY_GUARD_ENABLED", True), patch.object(
+            guard, "_toxicity_check", new=mock_check
+        ):
+            result = run(guard.async_pre_call_hook(None, None, data, "completion"))
+        assert result == data
+        # Called once with the user message, not the system message
+        mock_check.assert_called_once()
+        assert mock_check.call_args[0][0] == "Hello"
+
+    def test_called_once_per_user_message(self, guard):
+        """One user message → exactly one _toxicity_check call."""
+        mock_check = AsyncMock(return_value=False)
+        data = self._make_data("How do I configure the RAG pipeline?")
+        with patch("guardrails.custom_guardrails.TOXICITY_GUARD_ENABLED", True), patch.object(
+            guard, "_toxicity_check", new=mock_check
+        ):
+            run(guard.async_pre_call_hook(None, None, data, "completion"))
+        mock_check.assert_called_once()
+
+    def test_handles_empty_messages(self, guard):
+        result = run(ToxicityGuard().async_pre_call_hook(None, None, {"messages": []}, "completion"))
+        assert result == {"messages": []}
+
+    def test_handles_non_string_content(self, guard):
+        data = {"messages": [{"role": "user", "content": ["image", "data"]}]}
+        result = run(guard.async_pre_call_hook(None, None, data, "completion"))
+        assert result == data
+
+
+class TestToxicityCheck:
+    """Tests for _toxicity_check implementation (mocks httpx)."""
+
+    @pytest.fixture()
+    def guard(self):
+        return ToxicityGuard()
+
+    def _make_response(self, verdict: str, status: int = 200):
+        mock_resp = MagicMock()
+        mock_resp.status_code = status
+        mock_resp.json.return_value = {"choices": [{"message": {"content": verdict}}]}
+        return mock_resp
+
+    def _mock_client(self, response):
+        mock_client = AsyncMock()
+        mock_client.post = AsyncMock(return_value=response)
+        mock_client.__aenter__ = AsyncMock(return_value=mock_client)
+        mock_client.__aexit__ = AsyncMock(return_value=False)
+        return mock_client
+
+    def test_returns_true_on_toxic_verdict(self, guard):
+        resp = self._make_response("TOXIC")
+        with patch("guardrails.custom_guardrails.httpx.AsyncClient", return_value=self._mock_client(resp)):
+            result = run(guard._toxicity_check("kill you", "sk-test"))
+        assert result is True
+
+    def test_returns_false_on_safe_verdict(self, guard):
+        resp = self._make_response("SAFE")
+        with patch("guardrails.custom_guardrails.httpx.AsyncClient", return_value=self._mock_client(resp)):
+            result = run(guard._toxicity_check("hello there", "sk-test"))
+        assert result is False
+
+    def test_returns_false_on_non_200(self, guard):
+        resp = self._make_response("", status=503)
+        with patch("guardrails.custom_guardrails.httpx.AsyncClient", return_value=self._mock_client(resp)):
+            result = run(guard._toxicity_check("any content", "sk-test"))
+        assert result is False
+
+    def test_returns_false_on_network_error(self, guard):
+        mock_client = self._mock_client(None)
+        mock_client.post = AsyncMock(side_effect=httpx.ConnectError("connection refused"))
+        with patch("guardrails.custom_guardrails.httpx.AsyncClient", return_value=mock_client):
+            result = run(guard._toxicity_check("any content", "sk-test"))
+        assert result is False
+
+    def test_returns_false_on_unexpected_verdict(self, guard):
+        resp = self._make_response("UNKNOWN")
+        with patch("guardrails.custom_guardrails.httpx.AsyncClient", return_value=self._mock_client(resp)):
+            result = run(guard._toxicity_check("some content", "sk-test"))
+        assert result is False
+
+    def test_verdict_comparison_case_insensitive(self, guard):
+        resp = self._make_response("toxic")
+        with patch("guardrails.custom_guardrails.httpx.AsyncClient", return_value=self._mock_client(resp)):
+            result = run(guard._toxicity_check("some content", "sk-test"))
         assert result is True

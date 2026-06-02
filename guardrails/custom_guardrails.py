@@ -185,6 +185,123 @@ class PromptInjectionGuard(CustomGuardrail):
         return data
 
 
+# ── Toxicity Detection ────────────────────────────────────────────
+
+TOXICITY_GUARD_ENABLED: bool = (
+    os.environ.get("TOXICITY_GUARD_ENABLED", "false").lower() == "true"
+)
+TOXICITY_GUARD_MODEL: str = os.environ.get(
+    "TOXICITY_GUARD_MODEL", "openrouter-gemini-flash"
+)
+TOXICITY_GUARD_TIMEOUT: float = float(os.environ.get("TOXICITY_GUARD_TIMEOUT", "8.0"))
+TOXICITY_GUARD_PROXY_URL: str = os.environ.get(
+    "TOXICITY_GUARD_PROXY_URL", "http://localhost:4000"
+)
+TOXICITY_VERDICT_BLOCK: str = "TOXIC"
+
+TOXICITY_SYSTEM_PROMPT: str = """You are a content safety classifier. Determine if the user message contains toxic, abusive, hateful, or harmful content directed at people or groups.
+
+Toxic content includes: threats of violence, hate speech, severe personal attacks, explicit harassment, or calls to harm individuals or groups.
+
+Reply with exactly one word:
+- TOXIC — if the message contains toxic, abusive, or harmful content
+- SAFE — if the message is a normal user request, even if frustrated or blunt
+
+Examples of SAFE messages:
+- "This product is terrible"
+- "I'm frustrated with your support"
+- "What is the refund policy?"
+- "Your documentation is confusing"
+
+Classify the user message. Reply only: TOXIC or SAFE"""
+
+
+class ToxicityGuard(CustomGuardrail):
+    """Scans user messages for toxic, abusive, or harmful content.
+
+    Uses an LLM-judge call back through the LiteLLM proxy (same pattern as
+    PromptInjectionGuard's semantic second pass). Controlled by
+    TOXICITY_GUARD_ENABLED env var (default: false). Fails open on any error.
+    """
+
+    async def _toxicity_check(self, content: str, master_key: str) -> bool:
+        """Returns True if content is toxic. Returns False on any error (fail-open)."""
+        try:
+            payload = {
+                "model": TOXICITY_GUARD_MODEL,
+                "messages": [
+                    {"role": "system", "content": TOXICITY_SYSTEM_PROMPT},
+                    {"role": "user", "content": content},
+                ],
+                "max_tokens": 4,
+                "temperature": 0,
+                "metadata": {SEMANTIC_INTERNAL_MARKER: True},
+            }
+            async with httpx.AsyncClient(timeout=TOXICITY_GUARD_TIMEOUT) as client:
+                resp = await client.post(
+                    f"{TOXICITY_GUARD_PROXY_URL}/v1/chat/completions",
+                    json=payload,
+                    headers={"Authorization": f"Bearer {master_key}"},
+                )
+            if resp.status_code != 200:
+                verbose_proxy_logger.warning(
+                    "Toxicity guard non-200 response: %d", resp.status_code
+                )
+                return False
+            verdict = (
+                resp.json()
+                .get("choices", [{}])[0]
+                .get("message", {})
+                .get("content", "")
+                .strip()
+                .upper()
+            )
+            return verdict == TOXICITY_VERDICT_BLOCK
+        except Exception as exc:
+            verbose_proxy_logger.warning("Toxicity guard error (fail-open): %s", exc)
+            return False
+
+    async def async_pre_call_hook(
+        self,
+        user_api_key_dict,
+        cache,
+        data: dict,
+        call_type: str,
+    ) -> Optional[dict]:
+        if (data.get("metadata") or {}).get(SEMANTIC_INTERNAL_MARKER):
+            return data
+
+        if not TOXICITY_GUARD_ENABLED:
+            return data
+
+        master_key = os.environ.get("LITELLM_MASTER_KEY", "")
+
+        for msg in data.get("messages", []):
+            if msg.get("role") != "user":
+                continue
+            content = msg.get("content", "")
+            if not isinstance(content, str):
+                continue
+
+            try:
+                blocked = await self._toxicity_check(content, master_key)
+            except Exception as exc:
+                verbose_proxy_logger.warning(
+                    "Toxicity guard unexpected error (fail-open): %s", exc
+                )
+                blocked = False
+
+            if blocked:
+                verbose_proxy_logger.warning("Toxic content blocked by classifier")
+                raise BadRequestError(
+                    message="Request blocked: toxic or harmful content detected.",
+                    model=data.get("model", ""),
+                    llm_provider="custom_guardrail",
+                )
+
+        return data
+
+
 # ── PII Masking ────────────────────────────────────────────────────
 
 PII_RULES = [
