@@ -1,0 +1,27 @@
+# Default owner for the repository
+* @glaborie
+
+# GitHub governance and repo settings
+/.github/ @glaborie
+/LICENSE @glaborie
+/NOTICE @glaborie
+/README.md @glaborie
+/CONTRIBUTING.md @glaborie
+/SECURITY.md @glaborie
+
+# Application code
+/app/ @glaborie
+/guardrails/ @glaborie
+
+# Tests
+/tests/ @glaborie
+
+# Infrastructure and runtime config
+/docker-compose.yml @glaborie
+/litellm_config.yaml @glaborie
+/requirements.txt @glaborie
+/pyproject.toml @glaborie
+/.env.example @glaborie
+
+# Example and benchmark corpus
+/mock_corpus/ @glaborie
