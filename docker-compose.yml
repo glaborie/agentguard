@@ -336,6 +336,11 @@ services:
       SEMANTIC_GUARD_MODEL: "${SEMANTIC_GUARD_MODEL:-openrouter-gemini-flash}"
       SEMANTIC_GUARD_TIMEOUT: "${SEMANTIC_GUARD_TIMEOUT:-8.0}"
       SEMANTIC_GUARD_PROXY_URL: "http://localhost:4000"
+      # Toxicity detection (LLM-judge classifier)
+      TOXICITY_GUARD_ENABLED: "${TOXICITY_GUARD_ENABLED:-false}"
+      TOXICITY_GUARD_MODEL: "${TOXICITY_GUARD_MODEL:-openrouter-gemini-flash}"
+      TOXICITY_GUARD_TIMEOUT: "${TOXICITY_GUARD_TIMEOUT:-8.0}"
+      TOXICITY_GUARD_PROXY_URL: "http://localhost:4000"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
       interval: 60s

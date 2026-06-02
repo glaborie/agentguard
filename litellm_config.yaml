@@ -41,6 +41,11 @@ guardrails:
       guardrail: custom_guardrails.PIIMaskingGuard
       mode: "post_call"
       default_on: true
+  - guardrail_name: "toxicity"
+    litellm_params:
+      guardrail: custom_guardrails.ToxicityGuard
+      mode: "pre_call"
+      default_on: true
 
 general_settings:
   master_key: sk-litellm-dev-key
