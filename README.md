@@ -67,6 +67,8 @@ flowchart LR
 
 For the full system view, see [Architecture](docs/architecture.md).
 
+For Observability views, see [Screenshots](docs/screenshots.md).
+
 ## Who it’s for
 
 - AI engineers building RAG or agentic systems
