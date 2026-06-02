@@ -116,6 +116,7 @@ class PromptInjectionGuard(CustomGuardrail):
                 "max_tokens": 4,
                 "temperature": 0,
                 "metadata": {SEMANTIC_INTERNAL_MARKER: True},
+                "guardrails": [],
             }
             async with httpx.AsyncClient(timeout=SEMANTIC_GUARD_TIMEOUT) as client:
                 resp = await client.post(
@@ -247,6 +248,7 @@ class ToxicityGuard(CustomGuardrail):
                 "max_tokens": 4,
                 "temperature": 0,
                 "metadata": {SEMANTIC_INTERNAL_MARKER: True},
+                "guardrails": [],
             }
             async with httpx.AsyncClient(timeout=TOXICITY_GUARD_TIMEOUT) as client:
                 resp = await client.post(
