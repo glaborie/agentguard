@@ -4,13 +4,13 @@
 
 It supports both **RAG** and **agentic** applications by helping teams detect, evaluate, and block failures before they reach users.
 
-When an AI assistant hallucinates a discount, misstates company policy, leaks sensitive data, or regresses after a prompt, model, retrieval, or tool change, the result is not just a bad answer — it is a business incident.
+When an AI assistant hallucinates a discount, misstates company policy, leaks sensitive data, or regresses after a prompt, model, retrieval, or tool change, the result is not just a bad answer — it can become a business incident.
 
 ## Why this matters
 
 AI applications fail in expensive ways.
 
-A RAG assistant can hallucinate a discount or refund policy. An agent can take the wrong action. A model update can silently degrade answer quality. A prompt change can introduce unsafe behavior or expose sensitive data.
+A RAG assistant can hallucinate a discount or refund policy. An agent can take the wrong action. A model update can silently degrade answer quality. A prompt change can introduce unsafe behavior or sensitive data leakage.
 
 These failures are not just model mistakes — they become business incidents.
 
@@ -18,7 +18,9 @@ AgentGuard is designed to help teams detect, evaluate, and reduce those incident
 
 ## Problem
 
-LLM applications — whether RAG assistants or agentic systems — can create customer-facing incidents by hallucinating offers, exposing PII, giving unsafe answers, taking incorrect actions, or silently regressing after system changes.
+LLM applications — whether RAG assistants or agentic systems — can create customer-facing incidents by hallucinating offers, exposing PII, giving unsafe answers, taking incorrect actions, or silently regressing after a release.
+
+Most teams lack a practical control layer for observing those failures, measuring them consistently, and preventing them before they reach production.
 
 ## Who this is for
 
@@ -206,16 +208,10 @@ Cloud deployment is planned next. In particular, porting the stack to **Google C
 
 ## Roadmap
 
-AgentGuard is currently focused on a self-hosted deployment model so teams can run observability, protection, and evaluation in an environment they control.
+For current product direction and priorities, see:
 
-Near-term roadmap priorities include:
-
-- **Google Cloud deployment** to make the platform easier to operate in production environments
-- **stronger release workflows** for evaluating prompt, model, and retrieval changes before rollout
-- **richer protection controls** for business-policy enforcement and sensitive-data handling
-- **improved operational visibility** across traces, scoring, caching, and agent behavior
-
-The goal is to evolve AgentGuard from a strong self-hosted reference platform into a production-ready control layer for AI applications.
+- [Roadmap](docs/ROADMAP.md)
+- [TODO / SOTA gaps](TODO.md)
 
 ## Prerequisites
 
@@ -354,7 +350,7 @@ In the current implementation, AgentGuard applies two built-in protections on Li
 
 | Protection | What it does | Business value |
 |---|---|---|
-| **Prompt injection blocking** | Detects and blocks common attempts to manipulate or override the assistant’s instructions before the model responds | Reduces the risk of policy bypass, unsafe behavior, and untrusted outputs |
+| **Prompt injection blocking** | Detects and blocks common attempts to manipulate or override the assistant’s instructions before the model responds | Reduces the risk of policy bypass, unsafe behavior, and prompt-level attacks |
 | **PII masking** | Redacts email addresses, SSNs, credit card numbers, and phone numbers from model responses | Reduces the risk of exposing sensitive user or customer data |
 
 Both protections are enabled by default in `litellm_config.yaml`, so they apply automatically without per-request configuration.
@@ -441,7 +437,7 @@ python -m app.main benchmark --mode no-guardrails         # Ablation: guardrails
 python -m app.main benchmark --mode direct                # Baseline: bare LLM, no retrieval
 ```
 
-The benchmark covers questions from `mock_corpus/07_benchmark/`, including standard questions and harder edge cases (competitor-match requests, partial feature overlap, custom legal paper, ambiguous procurement questions).
+The benchmark covers questions from `mock_corpus/07_benchmark/`, including standard questions and harder edge cases (competitor-match requests, partial feature overlap, custom legal paper, ambiguous policy interpretation).
 
 ## Testing and Coverage
 
@@ -453,7 +449,7 @@ pytest -m integration          # 17 integration tests, Docker stack required
 pytest -v                      # Full suite
 ```
 
-Coverage includes agent tools, graph structure, DeepEval metric wiring, business protections, evaluators, configuration, RAG chain behavior, corpus ingestion, CLI dispatch, service error mapping, API routes, benchmark metrics, and end-to-end integration flows.
+Coverage includes agent tools, graph structure, DeepEval metric wiring, business protections, evaluators, configuration, RAG chain behavior, corpus ingestion, CLI dispatch, service error mapping, benchmark metrics, and end-to-end integration paths.
 
 ## Project Structure
 
@@ -547,11 +543,11 @@ AgentGuard implements a closed-loop improvement cycle that connects production t
 
 4. **Experiment** — The experiment runner (`app/eval/experiments.py`) systematically compares model variants against golden datasets, recording all results back to Langfuse.
 
-5. **Evaluate** — Code-based evaluators, DeepEval metrics, and the benchmark runner provide layered quality signals. The regression gate (`app/eval/service.py::regression_gate()`) enforces pass/fail thresholds before changes go live.
+5. **Evaluate** — Code-based evaluators, DeepEval metrics, and the benchmark runner provide layered quality signals. The regression gate (`app/eval/service.py::regression_gate()`) enforces pass/fail thresholds for release decisions.
 
 ## Windows Notes
 
-Redis is mapped to host port **6300** instead of the default 6379 due to Windows dynamic port exclusion ranges (Hyper-V/WSL reserves port ranges that can include 6379). All container-internal ports remain default.
+Redis is mapped to host port **6300** instead of the default 6379 due to Windows dynamic port exclusion ranges (Hyper-V/WSL reserves port ranges that can include 6379). All container-internal ports remain standard.
 
 ## License
 
