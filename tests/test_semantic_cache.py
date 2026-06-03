@@ -192,3 +192,94 @@ class TestAsyncGetCacheMiss:
             cache._qdrant = mock_qdrant
             result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
         assert result is None
+
+
+class TestAsyncGetCacheHit:
+    @pytest.mark.asyncio
+    async def test_returns_cached_response_on_hit(self, cache):
+        mock_hit = SimpleNamespace(score=0.92, payload={"cache_key": "abc-123"})
+        serialized = json.dumps(SAMPLE_RESPONSE)
+
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
+             patch.object(cache, "_ensure_collection", return_value=None):
+            mock_qdrant = AsyncMock()
+            mock_qdrant.search = AsyncMock(return_value=[mock_hit])
+            cache._qdrant = mock_qdrant
+
+            mock_redis = AsyncMock()
+            mock_redis.get = AsyncMock(return_value=serialized)
+            cache._redis = mock_redis
+
+            result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
+
+        assert result == SAMPLE_RESPONSE
+
+    @pytest.mark.asyncio
+    async def test_score_below_threshold_is_miss(self, cache):
+        # Qdrant score_threshold filters server-side; empty results = below threshold
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
+             patch.object(cache, "_ensure_collection", return_value=None):
+            mock_qdrant = AsyncMock()
+            mock_qdrant.search = AsyncMock(return_value=[])  # filtered out
+            cache._qdrant = mock_qdrant
+            result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
+
+        assert result is None
+
+
+class TestAsyncSetCache:
+    @pytest.mark.asyncio
+    async def test_upserts_to_qdrant_and_writes_redis(self, cache):
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
+             patch.object(cache, "_ensure_collection", return_value=None):
+            mock_qdrant = AsyncMock()
+            mock_qdrant.upsert = AsyncMock()
+            cache._qdrant = mock_qdrant
+
+            mock_redis = AsyncMock()
+            mock_redis.setex = AsyncMock()
+            cache._redis = mock_redis
+
+            await cache.async_set_cache(
+                "key123", SAMPLE_RESPONSE, messages=SAMPLE_MESSAGES, model="gemini-flash"
+            )
+
+        mock_qdrant.upsert.assert_called_once()
+        call_kwargs = mock_qdrant.upsert.call_args
+        assert call_kwargs.kwargs["collection_name"] == "semantic-cache"
+        points = call_kwargs.kwargs["points"]
+        assert len(points) == 1
+        assert points[0].vector == SAMPLE_VECTOR
+        assert "cache_key" in points[0].payload
+        assert points[0].payload["model"] == "gemini-flash"
+
+        mock_redis.setex.assert_called_once()
+        setex_args = mock_redis.setex.call_args[0]
+        assert setex_args[0].startswith("semantic_cache:")
+        assert setex_args[1] == 3600
+        assert json.loads(setex_args[2]) == SAMPLE_RESPONSE
+
+    @pytest.mark.asyncio
+    async def test_skips_when_no_messages(self, cache):
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR):
+            mock_qdrant = AsyncMock()
+            cache._qdrant = mock_qdrant
+            await cache.async_set_cache("key123", SAMPLE_RESPONSE, messages=[])
+        mock_qdrant.upsert.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_silently_handles_qdrant_error(self, cache):
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
+             patch.object(cache, "_ensure_collection", return_value=None):
+            mock_qdrant = AsyncMock()
+            mock_qdrant.upsert = AsyncMock(side_effect=Exception("qdrant down"))
+            cache._qdrant = mock_qdrant
+            # Must not raise
+            await cache.async_set_cache("key123", SAMPLE_RESPONSE, messages=SAMPLE_MESSAGES)
+
+    @pytest.mark.asyncio
+    async def test_disabled_skips_write(self, cache):
+        with patch.dict(os.environ, {"SEMANTIC_CACHE_ENABLED": "false"}):
+            with patch.object(cache, "_embed") as mock_embed:
+                await cache.async_set_cache("key123", SAMPLE_RESPONSE, messages=SAMPLE_MESSAGES)
+            mock_embed.assert_not_called()

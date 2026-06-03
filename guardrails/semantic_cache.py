@@ -121,7 +121,34 @@ class QdrantSemanticCache(BaseCache):
             return None
 
     async def async_set_cache(self, key: str, value: Any, **kwargs) -> None:
-        pass  # implemented in Task 5
+        if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
+            return
+        try:
+            messages = kwargs.get("messages", [])
+            if not messages:
+                return
+            text = _messages_to_text(messages)
+            vector = await self._embed(text)
+            await self._ensure_collection()
+            cache_key = str(uuid4())
+            await self._get_qdrant().upsert(
+                collection_name=_COLLECTION,
+                points=[
+                    PointStruct(
+                        id=cache_key,
+                        vector=vector,
+                        payload={"cache_key": cache_key, "model": kwargs.get("model", "")},
+                    )
+                ],
+            )
+            await self._get_redis().setex(
+                f"semantic_cache:{cache_key}",
+                _TTL,
+                json.dumps(value),
+            )
+            logger.info("semantic_cache: SET key=%s", cache_key)
+        except Exception:
+            logger.warning("semantic_cache: set_cache error", exc_info=True)
 
     def get_cache(self, key: str, **kwargs) -> Optional[Any]:
         try:
