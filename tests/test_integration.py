@@ -6,6 +6,7 @@ if the stack is not reachable (see conftest.py).
 
 import pytest
 import requests
+import httpx
 
 from app.config import settings
 
@@ -223,3 +224,37 @@ class TestEndToEndRAG:
         assert len(docs) == 3
         sources = [d.metadata.get("source", "") for d in docs]
         assert any(s for s in sources)  # sources are relative paths within mock_corpus
+
+
+@pytest.mark.integration
+class TestSemanticCache:
+    """Verify semantic cache works end-to-end against live LiteLLM proxy.
+
+    Requires Docker stack running: pytest -m integration
+    """
+
+    BASE_URL = "http://localhost:4000"
+    HEADERS = {"Authorization": "Bearer sk-litellm-dev-key", "Content-Type": "application/json"}
+
+    def _chat(self, content: str) -> tuple[str, float]:
+        import time
+        payload = {"model": "openrouter-gemini-flash", "messages": [{"role": "user", "content": content}]}
+        start = time.perf_counter()
+        resp = httpx.post(f"{self.BASE_URL}/chat/completions", json=payload, headers=self.HEADERS, timeout=30)
+        elapsed = time.perf_counter() - start
+        resp.raise_for_status()
+        return resp.json()["choices"][0]["message"]["content"], elapsed
+
+    def test_exact_repeat_returns_faster(self):
+        query = "What is the NorthstarCRM refund policy? (cache test exact)"
+        _, t1 = self._chat(query)
+        _, t2 = self._chat(query)
+        assert t2 < t1 * 0.5, f"Cache hit should be >2x faster: first={t1:.2f}s second={t2:.2f}s"
+
+    def test_paraphrase_hits_cache(self):
+        original = "What is the return window for NorthstarCRM purchases? (cache test paraphrase)"
+        paraphrase = "How many days do I have to return a NorthstarCRM product? (cache test paraphrase)"
+        self._chat(original)  # warm cache
+        result, t = self._chat(paraphrase)
+        assert t < 1.0, f"Paraphrased query should hit semantic cache, got {t:.2f}s"
+        assert result

@@ -158,6 +158,8 @@ Three LiteLLM custom guardrails are registered. Two run on every request by defa
 
 Agent tool-call guardrail (separate layer, always active for the ReAct agent): `app/agent/tool_guard.py` validates tool name + args before `ToolNode` dispatches. Blocks unknown tools, injection-shaped `search_docs` queries, and out-of-range `list_traces` limits.
 
+**Semantic cache (LiteLLM proxy layer, always active when `SEMANTIC_CACHE_ENABLED=true`):** `guardrails/semantic_cache.py` implements `QdrantSemanticCache(BaseCache)`. On each LLM request: embeds the messages via `nomic-embed-text` (Ollama), searches the `semantic-cache` Qdrant collection for a cosine-similar vector above threshold (`SEMANTIC_CACHE_THRESHOLD`, default 0.85), and if found returns the cached response from Redis. Registered via `litellm_settings.callbacks` — the module-level code sets `litellm.cache = QdrantSemanticCache()` when LiteLLM imports the callback class at startup. Cache writes store the vector in Qdrant and the serialized response in Redis with `SEMANTIC_CACHE_TTL` TTL. All errors are non-fatal: failures return `None` and fall through to the LLM.
+
 Guardrails config: the `guardrails:` key in `litellm_config.yaml` is **top-level** — do not nest it under `litellm_settings:`. The module name in `guardrail:` must match the mounted filename (`custom_guardrails`, not `custom_guardrail`).
 
 To test guardrails manually, see `VALIDATION.md` section 8.
