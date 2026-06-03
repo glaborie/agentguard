@@ -6,10 +6,12 @@ run on the host without Docker.
 
 import asyncio
 import json
+import os
 import sys
 from types import ModuleType, SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import httpx
 import pytest
 
 # ── Mock litellm module hierarchy ─────────────────────────────────
@@ -137,3 +139,56 @@ class TestMessagesToText:
 
     def test_empty_messages(self):
         assert _messages_to_text([]) == ""
+
+
+class TestAsyncGetCacheMiss:
+    @pytest.mark.asyncio
+    async def test_returns_none_when_no_messages(self, cache):
+        result = await cache.async_get_cache("key123", messages=[])
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_returns_none_on_qdrant_empty_results(self, cache):
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
+             patch.object(cache, "_ensure_collection", return_value=None):
+            mock_qdrant = AsyncMock()
+            mock_qdrant.search = AsyncMock(return_value=[])
+            cache._qdrant = mock_qdrant
+            result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_returns_none_when_redis_key_missing(self, cache):
+        mock_hit = SimpleNamespace(score=0.91, payload={"cache_key": "abc-123"})
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
+             patch.object(cache, "_ensure_collection", return_value=None):
+            mock_qdrant = AsyncMock()
+            mock_qdrant.search = AsyncMock(return_value=[mock_hit])
+            cache._qdrant = mock_qdrant
+            mock_redis = AsyncMock()
+            mock_redis.get = AsyncMock(return_value=None)
+            cache._redis = mock_redis
+            result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_returns_none_when_disabled(self, cache):
+        with patch.dict(os.environ, {"SEMANTIC_CACHE_ENABLED": "false"}):
+            result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_returns_none_on_embed_failure(self, cache):
+        with patch.object(cache, "_embed", side_effect=httpx.ConnectError("down")):
+            result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_returns_none_on_qdrant_failure(self, cache):
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
+             patch.object(cache, "_ensure_collection", return_value=None):
+            mock_qdrant = AsyncMock()
+            mock_qdrant.search = AsyncMock(side_effect=Exception("qdrant down"))
+            cache._qdrant = mock_qdrant
+            result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
+        assert result is None
