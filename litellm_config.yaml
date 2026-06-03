@@ -22,13 +22,7 @@ litellm_settings:
   drop_params: true
   success_callback: ["langfuse"]
   failure_callback: ["langfuse"]
-  cache: true
-  cache_params:
-    type: "redis"
-    host: "redis"
-    port: 6379
-    password: "os.environ/REDIS_PASSWORD"
-    ttl: 3600
+  callbacks: ["semantic_cache.SemanticCacheActivator"]
 
 guardrails:
   - guardrail_name: "prompt-injection"
