@@ -47,7 +47,8 @@ _mock_qdrant_pkg = ModuleType("qdrant_client")
 _mock_qdrant_models = ModuleType("qdrant_client.models")
 
 class _FakeAsyncQdrantClient:
-    pass
+    def __init__(self, *args, **kwargs):
+        pass
 
 class _FakePointStruct:
     def __init__(self, id, vector, payload):
@@ -77,7 +78,8 @@ _mock_redis_pkg = ModuleType("redis")
 _mock_redis_asyncio = ModuleType("redis.asyncio")
 
 class _FakeRedis:
-    pass
+    def __init__(self, *args, **kwargs):
+        pass
 
 _mock_redis_asyncio.Redis = _FakeRedis
 _mock_redis_pkg.asyncio = _mock_redis_asyncio

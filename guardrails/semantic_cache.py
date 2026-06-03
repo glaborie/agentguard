@@ -43,46 +43,38 @@ def _messages_to_text(messages: list[dict]) -> str:
 
 class QdrantSemanticCache(BaseCache):
     def __init__(self):
-        self._qdrant: Optional[AsyncQdrantClient] = None
-        self._redis: Optional[aioredis.Redis] = None
-        self._http: Optional[httpx.AsyncClient] = None
+        self._qdrant = AsyncQdrantClient(url=_QDRANT_URL)
+        self._redis = aioredis.Redis(
+            host=_REDIS_HOST,
+            port=_REDIS_PORT,
+            password=_REDIS_PASSWORD or None,
+            decode_responses=True,
+        )
+        self._http = httpx.AsyncClient(timeout=10.0)
         self._collection_ready = False
 
-    def _get_qdrant(self) -> AsyncQdrantClient:
-        if self._qdrant is None:
-            self._qdrant = AsyncQdrantClient(url=_QDRANT_URL)
-        return self._qdrant
-
-    def _get_redis(self) -> aioredis.Redis:
-        if self._redis is None:
-            self._redis = aioredis.Redis(
-                host=_REDIS_HOST,
-                port=_REDIS_PORT,
-                password=_REDIS_PASSWORD or None,
-                decode_responses=True,
-            )
-        return self._redis
-
-    def _get_http(self) -> httpx.AsyncClient:
-        if self._http is None:
-            self._http = httpx.AsyncClient(timeout=10.0)
-        return self._http
+    def _serialize(self, value: Any) -> str:
+        """Serialize value to JSON string, handling Pydantic models."""
+        if hasattr(value, "model_dump"):
+            return json.dumps(value.model_dump())
+        if hasattr(value, "dict"):
+            return json.dumps(value.dict())
+        return json.dumps(value, default=str)
 
     async def _ensure_collection(self) -> None:
         if self._collection_ready:
             return
-        qdrant = self._get_qdrant()
-        collections = await qdrant.get_collections()
+        collections = await self._qdrant.get_collections()
         names = [c.name for c in collections.collections]
         if _COLLECTION not in names:
-            await qdrant.create_collection(
+            await self._qdrant.create_collection(
                 collection_name=_COLLECTION,
                 vectors_config=VectorParams(size=_VECTOR_SIZE, distance=Distance.COSINE),
             )
         self._collection_ready = True
 
     async def _embed(self, text: str) -> list[float]:
-        resp = await self._get_http().post(
+        resp = await self._http.post(
             f"{_OLLAMA_URL}/api/embeddings",
             json={"model": "nomic-embed-text", "prompt": text},
         )
@@ -99,7 +91,7 @@ class QdrantSemanticCache(BaseCache):
             text = _messages_to_text(messages)
             vector = await self._embed(text)
             await self._ensure_collection()
-            results = await self._get_qdrant().search(
+            results = await self._qdrant.search(
                 collection_name=_COLLECTION,
                 query_vector=vector,
                 limit=1,
@@ -111,7 +103,7 @@ class QdrantSemanticCache(BaseCache):
             cache_key = results[0].payload.get("cache_key")
             if not cache_key:
                 return None
-            raw = await self._get_redis().get(f"semantic_cache:{cache_key}")
+            raw = await self._redis.get(f"semantic_cache:{cache_key}")
             if raw is None:
                 return None
             logger.info("semantic_cache: HIT score=%.3f key=%s", results[0].score, cache_key)
@@ -131,7 +123,7 @@ class QdrantSemanticCache(BaseCache):
             vector = await self._embed(text)
             await self._ensure_collection()
             cache_key = str(uuid4())
-            await self._get_qdrant().upsert(
+            await self._qdrant.upsert(
                 collection_name=_COLLECTION,
                 points=[
                     PointStruct(
@@ -141,10 +133,10 @@ class QdrantSemanticCache(BaseCache):
                     )
                 ],
             )
-            await self._get_redis().setex(
+            await self._redis.setex(
                 f"semantic_cache:{cache_key}",
                 _TTL,
-                json.dumps(value),
+                self._serialize(value),
             )
             logger.info("semantic_cache: SET key=%s", cache_key)
         except Exception:
@@ -152,15 +144,17 @@ class QdrantSemanticCache(BaseCache):
 
     def get_cache(self, key: str, **kwargs) -> Optional[Any]:
         try:
-            loop = asyncio.get_event_loop()
-            return loop.run_until_complete(self.async_get_cache(key, **kwargs))
+            return asyncio.run(self.async_get_cache(key, **kwargs))
+        except RuntimeError:
+            return None
         except Exception:
             return None
 
     def set_cache(self, key: str, value: Any, **kwargs) -> None:
         try:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(self.async_set_cache(key, value, **kwargs))
+            asyncio.run(self.async_set_cache(key, value, **kwargs))
+        except RuntimeError:
+            pass
         except Exception:
             pass
 
