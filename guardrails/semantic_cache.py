@@ -163,3 +163,20 @@ class QdrantSemanticCache(BaseCache):
             loop.run_until_complete(self.async_set_cache(key, value, **kwargs))
         except Exception:
             pass
+
+
+class SemanticCacheActivator(CustomLogger):
+    """Dummy CustomLogger subclass.
+
+    LiteLLM proxy imports this class via litellm_settings.callbacks at startup.
+    The import triggers the module-level litellm.cache assignment below,
+    registering QdrantSemanticCache within the proxy process.
+    """
+
+
+# Module-level: runs when LiteLLM proxy imports this module at startup.
+# Removes need for cache_params in litellm_config.yaml — our assignment
+# takes effect before any requests are served.
+if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() == "true":
+    import litellm as _litellm
+    _litellm.cache = QdrantSemanticCache()

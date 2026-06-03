@@ -283,3 +283,14 @@ class TestAsyncSetCache:
             with patch.object(cache, "_embed") as mock_embed:
                 await cache.async_set_cache("key123", SAMPLE_RESPONSE, messages=SAMPLE_MESSAGES)
             mock_embed.assert_not_called()
+
+
+class TestSemanticCacheActivator:
+    def test_litellm_cache_set_when_enabled(self):
+        import litellm
+        assert isinstance(litellm.cache, QdrantSemanticCache)
+
+    def test_activator_is_custom_logger_subclass(self):
+        from guardrails.semantic_cache import SemanticCacheActivator
+        from litellm.integrations.custom_logger import CustomLogger
+        assert issubclass(SemanticCacheActivator, CustomLogger)
