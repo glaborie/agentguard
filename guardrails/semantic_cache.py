@@ -14,7 +14,10 @@ from uuid import uuid4
 
 import httpx
 import redis.asyncio as aioredis
-from litellm.caching import BaseCache
+try:
+    from litellm.caching.base_cache import BaseCache
+except ImportError:
+    from litellm.caching import BaseCache
 from litellm.integrations.custom_logger import CustomLogger
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
@@ -43,6 +46,9 @@ def _messages_to_text(messages: list[dict]) -> str:
 
 class QdrantSemanticCache(BaseCache):
     def __init__(self):
+        self.cache = self  # LiteLLM proxy accesses litellm.cache.cache internally
+        self.supported_call_types = ["completion", "acompletion", "text_completion", "atextcompletion"]
+        self._supports_async = lambda: True
         self._qdrant = AsyncQdrantClient(url=_QDRANT_URL)
         self._redis = aioredis.Redis(
             host=_REDIS_HOST,
@@ -81,7 +87,7 @@ class QdrantSemanticCache(BaseCache):
         resp.raise_for_status()
         return resp.json()["embedding"]
 
-    async def async_get_cache(self, key: str, **kwargs) -> Optional[Any]:
+    async def async_get_cache(self, key: str = "", **kwargs) -> Optional[Any]:
         if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
             return None
         try:
@@ -91,13 +97,14 @@ class QdrantSemanticCache(BaseCache):
             text = _messages_to_text(messages)
             vector = await self._embed(text)
             await self._ensure_collection()
-            results = await self._qdrant.search(
+            result = await self._qdrant.query_points(
                 collection_name=_COLLECTION,
-                query_vector=vector,
+                query=vector,
                 limit=1,
                 score_threshold=_THRESHOLD,
                 with_payload=True,
             )
+            results = result.points
             if not results:
                 return None
             cache_key = results[0].payload.get("cache_key")
@@ -112,7 +119,7 @@ class QdrantSemanticCache(BaseCache):
             logger.warning("semantic_cache: get_cache error", exc_info=True)
             return None
 
-    async def async_set_cache(self, key: str, value: Any, **kwargs) -> None:
+    async def async_set_cache(self, key: str = "", value: Any = None, **kwargs) -> None:
         if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
             return
         try:
@@ -158,6 +165,54 @@ class QdrantSemanticCache(BaseCache):
         except Exception:
             pass
 
+    async def async_set_cache_pipeline(self, cache_list: list, **kwargs) -> None:
+        for key, value in cache_list:
+            await self.async_set_cache(key, value, **kwargs)
+
+    def get_cache_key(self, *args, **kwargs) -> str:
+        import hashlib
+        messages = kwargs.get("messages", [])
+        model = kwargs.get("model", "")
+        raw = json.dumps({"model": model, "messages": messages}, sort_keys=True, default=str)
+        return hashlib.sha256(raw.encode()).hexdigest()
+
+    def flush_cache(self) -> None:
+        pass
+
+    def delete_cache(self, key: str) -> None:
+        pass
+
+    def delete_cache_keys(self, keys: list) -> None:
+        pass
+
+    def add_cache(self, key: str = "", value: Any = None, **kwargs) -> None:
+        self.set_cache(key, value, **kwargs)
+
+    async def async_add_cache(self, result, *args, **kwargs) -> None:
+        await self.async_set_cache(value=result, **kwargs)
+
+    async def async_add_cache_pipeline(self, cache_list: list, **kwargs) -> None:
+        for item in cache_list:
+            await self.async_set_cache(value=item, **kwargs)
+
+    def ping(self) -> bool:
+        return True
+
+    def disconnect(self) -> None:
+        pass
+
+    def should_use_cache(self, *args, **kwargs) -> bool:
+        return os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() == "true"
+
+    def get_ttl(self, *args, **kwargs):
+        return _TTL
+
+    async def batch_cache_write(self, result, *args, **kwargs) -> None:
+        await self.async_set_cache(value=result, **kwargs)
+
+    def add_embedding_response_to_cache(self, *args, **kwargs) -> None:
+        pass
+
 
 class SemanticCacheActivator(CustomLogger):
     """Dummy CustomLogger subclass.
@@ -166,6 +221,30 @@ class SemanticCacheActivator(CustomLogger):
     The import triggers the module-level litellm.cache assignment below,
     registering QdrantSemanticCache within the proxy process.
     """
+
+    @staticmethod
+    async def async_log_success_event(kwargs, response_obj, start_time, end_time):
+        pass
+
+    @staticmethod
+    async def async_log_failure_event(kwargs, response_obj, start_time, end_time):
+        pass
+
+    @staticmethod
+    async def async_post_call_success_hook(data, user_api_key_dict, response):
+        return response
+
+    @staticmethod
+    async def async_pre_call_hook(user_api_key_dict, cache, data, call_type):
+        return data
+
+    @staticmethod
+    def log_success_event(kwargs, response_obj, start_time, end_time):
+        pass
+
+    @staticmethod
+    def log_failure_event(kwargs, response_obj, start_time, end_time):
+        pass
 
 
 # Module-level: runs when LiteLLM proxy imports this module at startup.

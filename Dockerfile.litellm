@@ -1,0 +1,2 @@
+FROM ghcr.io/berriai/litellm:main-v1.82.3
+RUN pip install --no-cache-dir "qdrant-client>=1.12"
