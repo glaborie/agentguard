@@ -88,7 +88,10 @@ class QdrantSemanticCache(BaseCache):
         return resp.json()["embedding"]
 
     async def async_get_cache(self, key: str = "", **kwargs) -> Optional[Any]:
-        if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
+        # Cache reads disabled: LiteLLM cache return format incompatible with LangChain deserialization.
+        # Writes still happen so vectors accumulate; re-enable reads once return format is fixed.
+        return None
+        if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":  # noqa: unreachable
             return None
         try:
             messages = kwargs.get("messages", [])
@@ -212,6 +215,45 @@ class QdrantSemanticCache(BaseCache):
 
     def add_embedding_response_to_cache(self, *args, **kwargs) -> None:
         pass
+
+    def _get_preset_cache_key_from_kwargs(self, **kwargs):
+        return None
+
+    def _set_preset_cache_key_in_kwargs(self, cache_key: str, **kwargs) -> None:
+        pass
+
+    def _get_hashed_cache_key(self, cache_key: str) -> str:
+        return cache_key
+
+    def _add_namespace_to_cache_key(self, cache_key: str, **kwargs) -> str:
+        return cache_key
+
+    def _get_cache_logic(self, cached_result, max_age=None):
+        return None
+
+    def _add_cache_logic(self, result, *args, **kwargs):
+        return None
+
+    def _get_caching_group(self, *args, **kwargs):
+        return None
+
+    def _get_model_param_value(self, *args, **kwargs):
+        return None
+
+    def _get_param_value(self, *args, **kwargs):
+        return None
+
+    def _get_file_param_value(self, *args, **kwargs):
+        return None
+
+    def _convert_to_cached_embedding(self, *args, **kwargs):
+        return None
+
+    async def generate_streaming_content(self, content):
+        yield content
+
+    def test_connection(self, *args, **kwargs) -> bool:
+        return True
 
 
 class SemanticCacheActivator(CustomLogger):
