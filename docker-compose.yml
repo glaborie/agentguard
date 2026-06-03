@@ -44,24 +44,6 @@ x-deploy-ollama: &deploy-ollama
           count: all
           capabilities: [gpu]
 
-x-deploy-otel: &deploy-otel
-  resources:
-    limits:
-      cpus: "0.5"
-      memory: 256m
-    reservations:
-      cpus: "0.25"
-      memory: 128m
-
-x-deploy-jaeger: &deploy-jaeger
-  resources:
-    limits:
-      cpus: "0.5"
-      memory: 512m
-    reservations:
-      cpus: "0.25"
-      memory: 256m
-
 services:
   langfuse-web:
     image: docker.io/langfuse/langfuse:3.174.1
@@ -482,38 +464,6 @@ services:
     networks:
       - langfuse
 
-  portainer:
-    image: portainer/portainer-ce@sha256:8d2f5c9fbc5b8490fb3a12efadbad74978e22991911e1db611d8a45871775112
-    restart: always
-    logging: *default-logging
-    deploy: *deploy-limits
-    pull_policy: if_not_present
-    ports:
-      - "9443:9443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - portainer_data:/data
-    environment:
-      TZ: UTC
-    networks:
-      - langfuse
-
-  dozzle:
-    image: amir20/dozzle:v10.6.0
-    restart: always
-    logging: *default-logging
-    deploy: *deploy-limits
-    pull_policy: if_not_present
-    ports:
-      - "8080:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      DOZZLE_NO_ANALYTICS: "true"
-      TZ: UTC
-    networks:
-      - langfuse
-
   qdrant:
     image: qdrant/qdrant:v1.18.0
     restart: always
@@ -536,48 +486,6 @@ services:
     networks:
       - langfuse
 
-  jaeger:
-    image: jaegertracing/all-in-one:1.62.0
-    restart: always
-    logging: *default-logging
-    deploy: *deploy-jaeger
-    pull_policy: if_not_present
-    environment:
-      COLLECTOR_OTLP_ENABLED: "true"
-      TZ: UTC
-    ports:
-      - "16686:16686"
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:16686/"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    networks:
-      - langfuse
-
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.114.0
-    restart: always
-    logging: *default-logging
-    deploy: *deploy-otel
-    pull_policy: if_not_present
-    volumes:
-      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
-    environment:
-      LANGFUSE_OTEL_AUTH: "${LANGFUSE_OTEL_AUTH:-Basic cGstbGYtZGV2OnNrLWxmLWRldg==}"
-      TZ: UTC
-    ports:
-      - "4317:4317"
-      - "4318:4318"
-    depends_on:
-      langfuse-web:
-        condition: service_healthy
-      jaeger:
-        condition: service_started
-    networks:
-      - langfuse
-
 volumes:
   postgres_data:
   clickhouse_data:
@@ -586,7 +494,6 @@ volumes:
   redis_data:
   ollama_data:
   qdrant_data:
-  portainer_data:
   pip_cache:
   openwebui_data:
 
