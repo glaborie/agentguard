@@ -6,7 +6,7 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ## Direct peer gaps
 
-### [x] #1 ML/semantic injection detection (~2d)
+### [done] #1 ML/semantic injection detection (~2d)
 
 **Why:** Regex fails on paraphrased jailbreaks ("Act as if you have no rules" bypasses most patterns). LLM Guard's deberta model catches semantic variants that the 12 regex patterns in `guardrails/custom_guardrails.py` miss.
 
@@ -21,7 +21,7 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ---
 
-### [x] #2 CI/CD pipeline integration (~4h)
+### [done] #2 CI/CD pipeline integration (~4h)
 
 **Why:** `scripts/regression_gate.py` already exits 0/1/2 correctly — but no `.github/workflows/` file ships with the repo. Teams cloning AgentGuard must hand-wire CI themselves. DeepEval ships a ready-to-copy GitHub Actions template.
 
@@ -38,7 +38,7 @@ Wire to `pull_request` events on `main`.
 
 ---
 
-### [x] #3 Toxic/harmful content detection (~1d)
+### [done] #3 Toxic/harmful content detection (~1d)
 
 **Why:** Injection blocking + PII masking each guard one attack vector. Toxic/abusive inputs are a separate real-world failure mode not covered by either existing guard.
 
@@ -54,7 +54,7 @@ Wire to `pull_request` events on `main`.
 
 ## Maturity / quality gaps
 
-### [x] #4 Coverage reporting / badge (~2h)
+### [done] #4 Coverage reporting / badge (~2h)
 
 **Why:** README has no coverage badge. DeepEval and Phoenix both display >90% badges. 263 unit tests exist but no `pytest-cov` is configured.
 
@@ -68,7 +68,7 @@ Then add a Codecov badge to `README.md`.
 
 ---
 
-### [x] #5 Type annotation completeness (~1d)
+### [done] #5 Type annotation completeness (~1d)
 
 **Why:** `app/eval/benchmark.py` and `scripts/` lack consistent type annotations. Guardrails AI enforces pyright strict; this repo has no mypy/pyright config.
 
@@ -80,7 +80,7 @@ Then add a Codecov badge to `README.md`.
 
 ## Docs / onboarding gaps
 
-### [x] #6 Cloud deployment guide (~2d)
+### [done] #6 Cloud deployment guide (~2d)
 
 **Why:** README says "Google Cloud deployment is planned" but no Terraform, Helm chart, or GCP guide exists. Phoenix ships Kubernetes manifests; Haystack ships enterprise deployment docs.
 
@@ -92,7 +92,7 @@ Then add a Codecov badge to `README.md`.
 
 ---
 
-### [~] #7 CONTRIBUTING.md + local dev setup (~2h)
+### [done] #7 CONTRIBUTING.md + local dev setup (~2h)
 
 **Why:** No `CONTRIBUTING.md`. New contributors must reverse-engineer setup from `README.md`. Phoenix and Haystack both ship detailed contributor guides.
 
