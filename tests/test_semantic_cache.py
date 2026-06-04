@@ -222,7 +222,8 @@ class TestAsyncGetCacheHit:
 
             result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
 
-        assert result is not None
+        import litellm
+        assert isinstance(result, litellm.ModelResponse)
         assert result["choices"] == SAMPLE_RESPONSE["choices"]
 
     @pytest.mark.asyncio
