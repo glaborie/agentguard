@@ -25,6 +25,7 @@ AgentGuard provides a control layer for observing, protecting, and evaluating th
 - **Observability** — traces, retrieval, latency, model behavior, and tool usage
 - **Protection** — prompt injection blocking (regex + LLM-judge semantic pass), toxic content detection, PII masking, and agent tool-call guardrails
 - **Evaluation** — golden datasets, benchmarks, regression checks, and scoring
+- **Red teaming** — automated adversarial probing across 4 attack types (prompt injection, jailbreak, PII extraction, system prompt leak) with CI-compatible exit codes
 - **Support for RAG and agents** — works across both retrieval pipelines and agentic workflows
 
 ## Why AgentGuard, not just observability or evals?
