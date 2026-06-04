@@ -1,6 +1,6 @@
 {
   "domain": "ai-application-control-platform",
-  "version": 2,
+  "version": 3,
   "capabilities": [
     { "id": "llm-request-tracing",           "tier": "table-stakes", "test": "traces LLM requests/responses with latency, tokens, inputs/outputs" },
     { "id": "prompt-injection-blocking",     "tier": "table-stakes", "test": "detects and blocks prompt injection / jailbreak attempts before LLM call" },
@@ -15,9 +15,11 @@
     { "id": "ci-cd-integration",             "tier": "table-stakes", "test": "regression gate is invokable from CI pipeline with documented exit codes" },
     { "id": "toxic-content-detection",       "tier": "table-stakes", "test": "detects toxicity, hate speech, or harmful language in inputs or outputs" },
     { "id": "agentic-tool-call-guardrails",  "tier": "table-stakes", "test": "validates/guards agent tool calls before execution to prevent unsafe actions" },
+    { "id": "automated-red-teaming",         "tier": "table-stakes", "test": "auto-generates adversarial test cases (OWASP LLM Top 10, jailbreaks, PII probes) without manual authoring" },
     { "id": "output-schema-validation",      "tier": "edge",         "test": "validates structured/JSON output against a schema before returning to caller" },
     { "id": "auto-testset-generation",       "tier": "edge",         "test": "synthetically generates test Q&A pairs from documents without manual labeling" },
     { "id": "prompt-playground-ui",          "tier": "edge",         "test": "visual UI to edit prompts, compare model outputs, and replay traces" },
-    { "id": "streaming-guardrails",          "tier": "edge",         "test": "guardrails apply to streaming (token-by-token) responses, not just batch" }
+    { "id": "streaming-guardrails",          "tier": "edge",         "test": "guardrails apply to streaming (token-by-token) responses, not just batch" },
+    { "id": "semantic-cache",                "tier": "edge",         "test": "caches semantically similar queries via vector search to reduce LLM calls" }
   ]
 }

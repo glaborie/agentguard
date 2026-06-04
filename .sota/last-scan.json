@@ -1,175 +1,42 @@
 {
-  "date": "2026-06-02",
-  "domains": [
-    "ai-application-control-platform"
-  ],
-  "rubric_version": 2,
+  "date": "2026-06-04",
+  "domains": ["ai-application-control-platform"],
+  "rubric_version": 3,
   "field": [
-    {
-      "repo": "langfuse/langfuse",
-      "type": "canonical",
-      "stars": 28368,
-      "pushed": "2026-06-02",
-      "archived": false
-    },
-    {
-      "repo": "Arize-ai/phoenix",
-      "type": "technically-advanced",
-      "stars": 9962,
-      "pushed": "2026-06-02",
-      "archived": false
-    },
-    {
-      "repo": "confident-ai/deepeval",
-      "type": "popular",
-      "stars": 15857,
-      "pushed": "2026-06-01",
-      "archived": false
-    },
-    {
-      "repo": "explodinggradients/ragas",
-      "type": "popular",
-      "stars": 14195,
-      "pushed": "2026-02-24",
-      "archived": false
-    },
-    {
-      "repo": "guardrails-ai/guardrails",
-      "type": "canonical",
-      "stars": 6956,
-      "pushed": "2026-05-26",
-      "archived": false
-    },
-    {
-      "repo": "NVIDIA/NeMo-Guardrails",
-      "type": "technically-advanced",
-      "stars": 6329,
-      "pushed": "2026-06-02",
-      "archived": false
-    },
-    {
-      "repo": "protectai/llm-guard",
-      "type": "niche-relevant",
-      "stars": 3026,
-      "pushed": "2025-12-15",
-      "archived": false
-    },
-    {
-      "repo": "deepset-ai/haystack",
-      "type": "popular",
-      "stars": 25439,
-      "pushed": "2026-06-02",
-      "archived": false
-    },
-    {
-      "repo": "BerriAI/litellm",
-      "type": "popular",
-      "stars": 49033,
-      "pushed": "2026-06-02",
-      "archived": false
-    },
-    {
-      "repo": "traceloop/openllmetry",
-      "type": "niche-relevant",
-      "stars": 7166,
-      "pushed": "2026-05-31",
-      "archived": false
-    }
+    { "repo": "langfuse/langfuse",           "type": "canonical",           "stars": 28494, "pushed": "2026-06-04", "archived": false },
+    { "repo": "Arize-ai/phoenix",            "type": "technically-advanced","stars": 9978,  "pushed": "2026-06-04", "archived": false },
+    { "repo": "confident-ai/deepeval",       "type": "popular",             "stars": 15914, "pushed": "2026-06-04", "archived": false },
+    { "repo": "guardrails-ai/guardrails",    "type": "canonical",           "stars": 6966,  "pushed": "2026-06-04", "archived": false },
+    { "repo": "NVIDIA/NeMo-Guardrails",      "type": "technically-advanced","stars": 6349,  "pushed": "2026-06-04", "archived": false },
+    { "repo": "protectai/llm-guard",         "type": "niche-relevant",      "stars": 3034,  "pushed": "2025-12-15", "archived": false },
+    { "repo": "promptfoo/promptfoo",         "type": "technically-advanced","stars": 21870, "pushed": "2026-06-04", "archived": false },
+    { "repo": "comet-ml/opik",               "type": "popular",             "stars": 19431, "pushed": "2026-06-04", "archived": false },
+    { "repo": "giskard-ai/giskard",          "type": "niche-relevant",      "stars": 5417,  "pushed": "2026-06-04", "archived": false },
+    { "repo": "BerriAI/litellm",             "type": "popular",             "stars": 49033, "pushed": "2026-06-04", "archived": false }
   ],
-  "cluster_note": "No direct peer with same integration scope. Flat peer group by maturity, same as prior scan.",
+  "cluster_note": "No direct peer with identical integration scope (observability+guardrails+eval unified). Flat peer group by maturity. Rubric bumped to v3: added automated-red-teaming (table-stakes) based on promptfoo/giskard/NeMo adoption.",
   "matrix": [
-    {
-      "id": "llm-request-tracing",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "prompt-injection-blocking",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "pii-masking",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "rag-quality-eval",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "dataset-management",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "human-feedback-loop",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "regression-gate",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "self-hosted-deployment",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "continuous-online-eval",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "ml-semantic-guardrails",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "ci-cd-integration",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "toxic-content-detection",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "agentic-tool-call-guardrails",
-      "us": "met",
-      "tier": "table-stakes"
-    },
-    {
-      "id": "output-schema-validation",
-      "us": "missing",
-      "tier": "edge"
-    },
-    {
-      "id": "auto-testset-generation",
-      "us": "missing",
-      "tier": "edge"
-    },
-    {
-      "id": "prompt-playground-ui",
-      "us": "missing",
-      "tier": "edge"
-    },
-    {
-      "id": "streaming-guardrails",
-      "us": "missing",
-      "tier": "edge"
-    }
+    { "id": "llm-request-tracing",           "us": "met",     "tier": "table-stakes" },
+    { "id": "prompt-injection-blocking",     "us": "met",     "tier": "table-stakes" },
+    { "id": "pii-masking",                   "us": "met",     "tier": "table-stakes" },
+    { "id": "rag-quality-eval",              "us": "met",     "tier": "table-stakes" },
+    { "id": "dataset-management",            "us": "met",     "tier": "table-stakes" },
+    { "id": "human-feedback-loop",           "us": "met",     "tier": "table-stakes" },
+    { "id": "regression-gate",               "us": "met",     "tier": "table-stakes" },
+    { "id": "self-hosted-deployment",        "us": "met",     "tier": "table-stakes" },
+    { "id": "continuous-online-eval",        "us": "met",     "tier": "table-stakes" },
+    { "id": "ml-semantic-guardrails",        "us": "met",     "tier": "table-stakes" },
+    { "id": "ci-cd-integration",             "us": "met",     "tier": "table-stakes" },
+    { "id": "toxic-content-detection",       "us": "met",     "tier": "table-stakes" },
+    { "id": "agentic-tool-call-guardrails",  "us": "met",     "tier": "table-stakes" },
+    { "id": "automated-red-teaming",         "us": "missing", "tier": "table-stakes" },
+    { "id": "output-schema-validation",      "us": "missing", "tier": "edge" },
+    { "id": "auto-testset-generation",       "us": "missing", "tier": "edge" },
+    { "id": "prompt-playground-ui",          "us": "missing", "tier": "edge" },
+    { "id": "streaming-guardrails",          "us": "missing", "tier": "edge" },
+    { "id": "semantic-cache",                "us": "met",     "tier": "edge" }
   ],
-  "coverage": {
-    "met": 13,
-    "partial": 0,
-    "total": 13,
-    "pct": 100
-  },
-  "tier": "FRONTIER",
-  "gaps_total": 0
+  "coverage": { "met": 13, "partial": 0, "total": 14, "pct": 93 },
+  "tier": "COMPETITIVE",
+  "gaps_total": 1
 }
