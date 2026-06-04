@@ -18,3 +18,4 @@ PLAN.md
 coverage.xml
 .deepeval/
 .vscode/
+.claude/
