@@ -151,3 +151,4 @@ volumes:
 networks:
   langfuse:
     external: true
+    name: langfuse_poc_langfuse
