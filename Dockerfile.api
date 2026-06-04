@@ -1,0 +1,36 @@
+# Multi-stage Dockerfile for rag-api
+FROM python:3.11-slim AS builder
+
+WORKDIR /build
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip wheel --no-cache-dir --wheel-dir /build/wheels -r requirements.txt
+
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY --from=builder /build/wheels /wheels
+COPY --from=builder /build/requirements.txt .
+
+RUN pip install --no-cache-dir --no-index --find-links=/wheels -r requirements.txt && \
+    rm -rf /wheels
+
+COPY app ./app
+
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+
+EXPOSE 8001
+
+HEALTHCHECK --interval=30s --timeout=5s --retries=5 --start-period=120s \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8001/health', timeout=4)" || exit 1
+
+CMD ["uvicorn", "app.api.app:app", "--host", "0.0.0.0", "--port", "8001"]
