@@ -88,10 +88,7 @@ class QdrantSemanticCache(BaseCache):
         return resp.json()["embedding"]
 
     async def async_get_cache(self, key: str = "", **kwargs) -> Optional[Any]:
-        # Cache reads disabled: LiteLLM cache return format incompatible with LangChain deserialization.
-        # Writes still happen so vectors accumulate; re-enable reads once return format is fixed.
-        return None
-        if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":  # noqa: unreachable
+        if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
             return None
         try:
             messages = kwargs.get("messages", [])
@@ -117,7 +114,8 @@ class QdrantSemanticCache(BaseCache):
             if raw is None:
                 return None
             logger.info("semantic_cache: HIT score=%.3f key=%s", results[0].score, cache_key)
-            return json.loads(raw)
+            import litellm
+            return litellm.ModelResponse(**json.loads(raw))
         except Exception:
             logger.warning("semantic_cache: get_cache error", exc_info=True)
             return None

@@ -21,7 +21,7 @@ class TestSettingsDefaults:
         s = Settings(_env_file=None)
         assert s.langfuse_public_key == "pk-lf-dev"
         assert s.langfuse_secret_key == "sk-lf-dev"
-        assert s.langfuse_base_url == "http://localhost:3000"
+        assert s.langfuse_base_url == "http://localhost:3200"
         assert s.litellm_base_url == "http://localhost:4000"
         assert s.litellm_master_key == "sk-litellm-dev-key"
         assert s.default_model == "openrouter-gemini-flash"
