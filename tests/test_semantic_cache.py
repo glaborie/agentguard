@@ -19,6 +19,13 @@ import pytest
 _mock_litellm = ModuleType("litellm")
 _mock_litellm.cache = None  # will be set by semantic_cache module-level code
 
+class _FakeModelResponse(dict):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.__dict__.update(kwargs)
+
+_mock_litellm.ModelResponse = _FakeModelResponse
+
 _mock_caching = ModuleType("litellm.caching")
 
 class _FakeBaseCache:
@@ -201,11 +208,12 @@ class TestAsyncGetCacheHit:
     async def test_returns_cached_response_on_hit(self, cache):
         mock_hit = SimpleNamespace(score=0.92, payload={"cache_key": "abc-123"})
         serialized = json.dumps(SAMPLE_RESPONSE)
+        mock_result = SimpleNamespace(points=[mock_hit])
 
         with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
              patch.object(cache, "_ensure_collection", return_value=None):
             mock_qdrant = AsyncMock()
-            mock_qdrant.search = AsyncMock(return_value=[mock_hit])
+            mock_qdrant.query_points = AsyncMock(return_value=mock_result)
             cache._qdrant = mock_qdrant
 
             mock_redis = AsyncMock()
@@ -214,15 +222,18 @@ class TestAsyncGetCacheHit:
 
             result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
 
-        assert result == SAMPLE_RESPONSE
+        import litellm
+        assert isinstance(result, litellm.ModelResponse)
+        assert result["choices"] == SAMPLE_RESPONSE["choices"]
 
     @pytest.mark.asyncio
     async def test_score_below_threshold_is_miss(self, cache):
         # Qdrant score_threshold filters server-side; empty results = below threshold
+        mock_result = SimpleNamespace(points=[])
         with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
              patch.object(cache, "_ensure_collection", return_value=None):
             mock_qdrant = AsyncMock()
-            mock_qdrant.search = AsyncMock(return_value=[])  # filtered out
+            mock_qdrant.query_points = AsyncMock(return_value=mock_result)
             cache._qdrant = mock_qdrant
             result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES)
 
