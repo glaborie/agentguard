@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.cli.commands import agent, benchmark, dataset, evaluate, experiment, ingest, query, regression  # noqa: E402
+from app.cli.commands import agent, benchmark, dataset, evaluate, experiment, ingest, query, red_team, regression  # noqa: E402
 
-_MODULES = [ingest, query, agent, evaluate, experiment, dataset, regression, benchmark]
+_MODULES = [ingest, query, agent, evaluate, experiment, dataset, regression, benchmark, red_team]
 
 
 def _build_parser() -> argparse.ArgumentParser:
