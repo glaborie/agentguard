@@ -44,6 +44,9 @@ async def complete(
             [m.model_dump() for m in body.messages],
             litellm_model,
             request_id,
+            query=query,
+            chat_id=chat_id,
+            user_id=body.user_id,
         )
 
     return await rag_llm.call(

@@ -32,6 +32,18 @@ SCORE_CONFIGS = [
      "Thumbs-up (1) or thumbs-down (0) from Open WebUI, synced by scripts/sync_feedback.py"),
     ("user_feedback_rating", ScoreConfigDataType.NUMERIC,
      "1–10 numeric rating from Open WebUI annotation.details.rating, synced by scripts/sync_feedback.py"),
+
+    # Guardrail events — written by app/api/services/guardrail_scoring.py
+    ("guardrail_triggered", ScoreConfigDataType.BOOLEAN,
+     "Request was blocked or modified by any guardrail (1 = triggered)"),
+    ("guardrail_prompt_injection", ScoreConfigDataType.BOOLEAN,
+     "Blocked by PromptInjectionGuard regex patterns"),
+    ("guardrail_prompt_injection_semantic", ScoreConfigDataType.BOOLEAN,
+     "Blocked by PromptInjectionGuard LLM-judge semantic classifier"),
+    ("guardrail_toxicity", ScoreConfigDataType.BOOLEAN,
+     "Blocked by ToxicityGuard LLM-judge classifier"),
+    ("guardrail_pii_masked", ScoreConfigDataType.BOOLEAN,
+     "Response had PII redacted by PIIMaskingGuard"),
 ]
 
 
