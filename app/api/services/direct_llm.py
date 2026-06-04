@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 import httpx
 
@@ -8,7 +9,15 @@ from app.core.ids import completion_id
 logger = logging.getLogger(__name__)
 
 
-async def call(messages: list[dict], litellm_model: str, request_id: str) -> tuple[str, str]:
+async def call(
+    messages: list[dict],
+    litellm_model: str,
+    request_id: str,
+    *,
+    query: Optional[str] = None,
+    chat_id: Optional[str] = None,
+    user_id: Optional[str] = None,
+) -> tuple[str, str]:
     """Call LiteLLM directly (no RAG context). Returns (result_text, completion_id).
 
     Guardrails (injection guard + PII masking) still apply because the call
@@ -31,6 +40,11 @@ async def call(messages: list[dict], litellm_model: str, request_id: str) -> tup
             detail = e.response.text
         logger.error("[%s] LiteLLM HTTP error: %s", request_id, detail)
         result = f"[Error: {detail}] (request_id={request_id})"
+        if e.response.status_code == 400:
+            from app.api.services.guardrail_scoring import detect_guardrail_type, score_guardrail_block
+            gtype = detect_guardrail_type(detail)
+            if gtype:
+                score_guardrail_block(gtype, query or "", None, chat_id=chat_id, user_id=user_id)
     except httpx.TimeoutException as e:
         logger.error("[%s] LiteLLM request timed out: %s", request_id, e)
         result = f"[Error: upstream timeout] (request_id={request_id})"

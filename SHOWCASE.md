@@ -1,10 +1,10 @@
 # AgentGuard — Manual Showcase Scenarios
 
-Prompts to run from Open WebUI ([http://localhost:3001](http://localhost:3001)) to demonstrate the two core capabilities: RAG and guardrails.
+Prompts to run from Open WebUI ([http://localhost:3100](http://localhost:3100)) to demonstrate the two core capabilities: RAG and guardrails.
 
 **Before you start:**
 - Select model **agentguard-rag** in the model dropdown
-- Have Langfuse open in another tab ([http://localhost:3000](http://localhost:3000) → Traces) to watch traces appear in real time
+- Have Langfuse open in another tab ([http://localhost:3200](http://localhost:3200) → Traces) to watch traces appear in real time
 - Have a terminal ready: `docker compose logs -f litellm | grep -E "POST|embeddings"` to watch embedding calls
 
 **Prerequisites (one-time setup):**
@@ -238,7 +238,7 @@ My customer's email is bob@acme.io and their phone number is (800) 867-5309. Can
 
 These steps demonstrate Langfuse's Prompt Registry: versioned prompts edited in the UI and picked up by the running system without a code redeploy.
 
-**Before you start:** Open [http://localhost:3000](http://localhost:3000) → **Prompts** in the left nav. You should see `rag-system-prompt` with label `production`.
+**Before you start:** Open [http://localhost:3200](http://localhost:3200) → **Prompts** in the left nav. You should see `rag-system-prompt` with label `production`.
 
 ---
 
@@ -391,14 +391,14 @@ This step is required once after first `docker compose up`. Without it, session 
 
 **Option A — Import from file (faster):**
 
-1. Open [http://localhost:3001](http://localhost:3001) → **Admin Panel** (top-right avatar) → **Functions**
+1. Open [http://localhost:3100](http://localhost:3100) → **Admin Panel** (top-right avatar) → **Functions**
 2. Click the **import** icon (arrow-into-box, top-right of the Functions list)
 3. Select `config/openwebui/chat_id_injection.json` from this repo
 4. The function imports as already-active (`is_global: true`, `is_active: true`) — no further configuration needed
 
 **Option B — Create manually:**
 
-1. Open [http://localhost:3001](http://localhost:3001) → **Admin Panel** → **Functions**
+1. Open [http://localhost:3100](http://localhost:3100) → **Admin Panel** → **Functions**
 2. Click **+** to create a new function
 3. Replace the editor contents with the contents of `scripts/openwebui_langfuse_filter.py` and click **Save**
 4. Toggle the function **on** (blue) in the Functions list — this enables it globally for all models
@@ -410,7 +410,7 @@ In either case, verify the function appears with a blue (active) toggle before p
 ### 5.1 Send a Multi-Turn Chat
 
 1. In Open WebUI, start a **new chat** with **agentguard-rag**
-2. Note the UUID from the browser URL bar: `http://localhost:3001/c/<chat-uuid>`
+2. Note the UUID from the browser URL bar: `http://localhost:3100/c/<chat-uuid>`
 3. Send at least two questions in the same conversation, e.g.:
    - "What is a trace in Langfuse?"
    - "How does that relate to a session?"
@@ -422,7 +422,7 @@ In either case, verify the function appears with a blue (active) toggle before p
 Open the Langfuse Sessions view using the same UUID from the chat URL:
 
 ```
-http://localhost:3000/project/my-project/sessions/<chat-uuid>
+http://localhost:3200/project/my-project/sessions/<chat-uuid>
 ```
 
 **Expected:** Both turns appear as separate traces grouped under the same session ID.
@@ -642,7 +642,7 @@ This demonstrates the infrastructure observability layer that runs in parallel w
 
 ### 8.1 Send a Chat Message and Open Jaeger
 
-1. Send any RAG query from Open WebUI ([http://localhost:3001](http://localhost:3001))
+1. Send any RAG query from Open WebUI ([http://localhost:3100](http://localhost:3100))
 2. Open Jaeger: [http://localhost:16686](http://localhost:16686)
 3. In the **Search** panel: set **Service** to `agentguard`, click **Find Traces**
 
@@ -1154,7 +1154,7 @@ The process exits 0 on pass, 1 on any metric failure, 2 on a runtime error.
 
 ### 12.2 Langfuse Dataset Run
 
-Open Langfuse: [http://localhost:3000](http://localhost:3000) → Datasets → `rag-golden-set` → **Runs** tab.
+Open Langfuse: [http://localhost:3200](http://localhost:3200) → Datasets → `rag-golden-set` → **Runs** tab.
 
 A new run named `regression-gate-<timestamp>` appears. Click it to see the **run detail view**: every golden dataset item is linked to the trace generated during this gate run.
 
@@ -1239,7 +1239,7 @@ Exit codes map directly to CI pass/fail conditions.
 | All RAG | `POST /v1/embeddings` visible in LiteLLM logs for every query |
 | All RAG | Trace visible in Langfuse with Retriever + ChatOpenAI spans |
 | 5.0 | Filter function "Langfuse Session Linker" visible in Admin → Functions and toggled on |
-| 5.1–5.3 | UUID in `http://localhost:3001/c/<uuid>` opens matching session at `http://localhost:3000/…/sessions/<uuid>`; CLI confirms `"traces"` array |
+| 5.1–5.3 | UUID in `http://localhost:3100/c/<uuid>` opens matching session at `http://localhost:3200/…/sessions/<uuid>`; CLI confirms `"traces"` array |
 | 6.1 | Worker output shows trace IDs with pass/fail counts; no `### Task:` system calls in output |
 | 6.2 | Trace Scores tab shows `online_has_citation`, `online_within_length`, `online_no_hallucination_markers` |
 | 6.3 | New query appears in worker output within one poll interval |

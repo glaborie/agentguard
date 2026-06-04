@@ -3,6 +3,11 @@ import logging
 import httpx
 from langfuse import propagate_attributes
 
+from app.api.services.guardrail_scoring import (
+    detect_guardrail_type,
+    score_guardrail_block,
+    score_pii_masked,
+)
 from app.core.ids import completion_id
 from app.core.tracing import get_langfuse_handler
 from app.rag.service import build_chain
@@ -42,6 +47,14 @@ async def call(
     except Exception as e:
         logger.error("[%s] RAG chain error: %s", request_id, e)
         result = f"[Error: {e}] (request_id={request_id})"
+        gtype = detect_guardrail_type(e)
+        if gtype:
+            score_guardrail_block(
+                gtype, query, handler.last_trace_id,
+                chat_id=chat_id, user_id=user_id,
+            )
 
     trace_id = handler.last_trace_id
+    if trace_id and isinstance(result, str) and not result.startswith("[Error:"):
+        score_pii_masked(trace_id, result)
     return result, trace_id if trace_id else completion_id()

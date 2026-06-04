@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     # Langfuse
     langfuse_public_key: str = "pk-lf-dev"
     langfuse_secret_key: str = "sk-lf-dev"
-    langfuse_base_url: str = "http://localhost:3000"
+    langfuse_base_url: str = "http://localhost:3200"
 
     # LiteLLM proxy
     litellm_base_url: str = "http://localhost:4000"

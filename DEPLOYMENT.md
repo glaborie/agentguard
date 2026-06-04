@@ -31,7 +31,7 @@ Key variables in `.env`:
 |---|---|---|
 | `OPENROUTER_API_KEY` | *(empty)* | Required for cloud LLM via OpenRouter |
 | `QDRANT_COLLECTION` | `northstar_crm` | Change if using a different corpus |
-| `CORS_ORIGINS` | `*` | Comma-separated origins, e.g. `http://localhost:3001` |
+| `CORS_ORIGINS` | `*` | Comma-separated origins, e.g. `http://localhost:3100` |
 | `LITELLM_MASTER_KEY` | `sk-litellm-dev-key` | Auth key for the LiteLLM proxy |
 | `DEFAULT_MODEL` | `openrouter-gemini-flash` | Default chat LLM |
 
@@ -100,9 +100,9 @@ python -m scripts.seed_score_configs
 
 ### 1.7 Configure Open WebUI
 
-1. Open [http://localhost:3001](http://localhost:3001) and create an admin account (first visit only).
+1. Open [http://localhost:3100](http://localhost:3100) and create an admin account (first visit only).
 2. Select **agentguard-rag** from the model dropdown.
-3. Go to **Admin → Functions → Import** and load `config/openwebui/chat_id_injection.json`, then toggle it on.
+3. Go to **Admin → Functions → Import** and load `config/openwebui/chat_id_injection.json`, then toggle it on and make it **global**
    - This function injects the Open WebUI chat ID into requests for Langfuse session linking.
 
 ### 1.8 Verify
@@ -111,7 +111,7 @@ python -m scripts.seed_score_configs
 python -m app.main query "What plans does NorthstarCRM offer?"
 ```
 
-Check Langfuse at [http://localhost:3000](http://localhost:3000) (admin@local.dev / admin123456) — the trace should appear within seconds.
+Check Langfuse at [http://localhost:3200](http://localhost:3200) (admin@local.dev / admin123456) — the trace should appear within seconds.
 
 ---
 
@@ -224,7 +224,7 @@ Exit codes: `0` = all pass, `1` = metric failure, `2` = runtime error.
 
 | Tool | URL | Purpose |
 |---|---|---|
-| Langfuse | http://localhost:3000 | Traces, scores, sessions, prompts, datasets |
+| Langfuse | http://localhost:3200 | Traces, scores, sessions, prompts, datasets |
 | Jaeger | http://localhost:16686 | OpenTelemetry spans (full request lifecycle) |
 | Dozzle | http://localhost:8080 | Real-time container logs |
 | Portainer | https://localhost:9443 | Container management UI |
@@ -253,4 +253,4 @@ Re-ingestion is **not** needed after a restart — Qdrant persists vectors to di
 | Langfuse prompt not updating | 60s cache TTL | Wait 60s, or restart `rag-api` |
 | Open WebUI chat not linked to Langfuse session | Filter not installed | Import `config/openwebui/chat_id_injection.json` in Admin → Functions |
 | HTTP 400 on queries with injection patterns | Guardrail firing | Expected — the prompt injection guard is working |
-| `curl` from Windows host returns HTTP 000 | AdGuard intercepting | Use Open WebUI at http://localhost:3001 instead |
+| `curl` from Windows host returns HTTP 000 | AdGuard intercepting | Use Open WebUI at http://localhost:3100 instead |
