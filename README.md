@@ -94,8 +94,8 @@ python -m app.main query "Does the Starter plan include SAML SSO?"
 ```
 
 Open:
-- Open WebUI: `http://localhost:3001`
-- Langfuse: `http://localhost:3000`
+- Open WebUI: `http://localhost:3100`
+- Langfuse: `http://localhost:3200`
 
 ## Documentation
 

@@ -44,10 +44,27 @@ x-deploy-ollama: &deploy-ollama
           count: all
           capabilities: [gpu]
 
+x-deploy-otel: &deploy-otel
+  resources:
+    limits:
+      cpus: "0.5"
+      memory: 256m
+    reservations:
+      cpus: "0.25"
+      memory: 128m
+
+x-deploy-jaeger: &deploy-jaeger
+  resources:
+    limits:
+      cpus: "0.5"
+      memory: 512m
+    reservations:
+      cpus: "0.25"
+      memory: 256m
+
 services:
   langfuse-web:
     image: docker.io/langfuse/langfuse:3.174.1
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -63,18 +80,20 @@ services:
       clickhouse:
         condition: service_healthy
     ports:
-      - "3200:3000"
+      - "3000:3000"
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://$(hostname -i):3000/api/public/health"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 30s
+    security_opt:
+      - no-new-privileges:true
+    read_only_root_filesystem: false
     environment: &langfuse-env
       TZ: UTC
-      LANGFUSE_LOG_LEVEL: debug
       NEXTAUTH_URL: http://localhost:3200
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+      DATABASE_URL: postgresql://postgres:[REDACTED]@postgres:5432/postgres
       TELEMETRY_ENABLED: "false"
       LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
       CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
@@ -116,7 +135,6 @@ services:
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.174.1
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -131,12 +149,13 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   postgres:
     image: docker.io/postgres:17-alpine
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-postgres
@@ -147,6 +166,9 @@ services:
       -c tcp_keepalives_interval=10
       -c tcp_keepalives_count=5
       -c idle_in_transaction_session_timeout=30000
+      -c max_connections=200
+      -c shared_buffers=256MB
+      -c effective_cache_size=1GB
     ulimits:
       nofile:
         soft: 65536
@@ -166,12 +188,13 @@ services:
       interval: 3s
       timeout: 3s
       retries: 10
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   clickhouse:
     image: docker.io/clickhouse/clickhouse-server:26.4
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-clickhouse
@@ -184,7 +207,7 @@ services:
       CLICKHOUSE_USER: clickhouse
     ports:
       - "127.0.0.1:8123:8123"
-      - "127.0.0.1:9350:9000"
+      - "127.0.0.1:9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_logs:/var/log/clickhouse-server
@@ -194,12 +217,13 @@ services:
       timeout: 5s
       retries: 10
       start_period: 1s
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   minio:
     image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -211,8 +235,8 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       TZ: UTC
     ports:
-      - "127.0.0.1:9299:9000"
-      - "127.0.0.1:9300:9001"
+      - "127.0.0.1:9090:9000"
+      - "127.0.0.1:9091:9001"
     volumes:
       - minio_data:/data
     healthcheck:
@@ -221,6 +245,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
@@ -238,12 +264,13 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   redis:
     image: docker.io/redis:7-alpine
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -267,12 +294,13 @@ services:
       interval: 3s
       timeout: 10s
       retries: 10
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   ollama:
     image: ollama/ollama:0.20.7
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-ollama
@@ -294,14 +322,13 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   litellm:
-    build:
-      context: .
-      dockerfile: Dockerfile.litellm
-    init: true
+    image: ghcr.io/berriai/litellm:main-v1.82.3
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -312,45 +339,34 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - ./litellm_config.yaml:/app/config.yaml
-      - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py
-      - ./guardrails/semantic_cache.py:/app/semantic_cache.py
+      - ./litellm_config.yaml:/app/config.yaml:ro
+      - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py:ro
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     env_file: .env
     environment:
       LANGFUSE_HOST: http://langfuse-web:3000
       TZ: UTC
-      PYTHONPATH: /app
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
       LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
+      DATABASE_URL: postgresql://postgres:[REDACTED]@postgres:5432/litellm
       STORE_MODEL_IN_DB: "True"
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redissecret}
-      # Semantic injection second pass (LLM-judge classifier)
       SEMANTIC_GUARD_ENABLED: "${SEMANTIC_GUARD_ENABLED:-false}"
       SEMANTIC_GUARD_MODEL: "${SEMANTIC_GUARD_MODEL:-openrouter-gemini-flash}"
       SEMANTIC_GUARD_TIMEOUT: "${SEMANTIC_GUARD_TIMEOUT:-8.0}"
       SEMANTIC_GUARD_PROXY_URL: "http://localhost:4000"
-      # Toxicity detection (LLM-judge classifier)
       TOXICITY_GUARD_ENABLED: "${TOXICITY_GUARD_ENABLED:-false}"
       TOXICITY_GUARD_MODEL: "${TOXICITY_GUARD_MODEL:-openrouter-gemini-flash}"
       TOXICITY_GUARD_TIMEOUT: "${TOXICITY_GUARD_TIMEOUT:-8.0}"
       TOXICITY_GUARD_PROXY_URL: "http://localhost:4000"
-      # Semantic cache (Qdrant vectors + Redis responses)
-      SEMANTIC_CACHE_ENABLED: "${SEMANTIC_CACHE_ENABLED:-true}"
-      SEMANTIC_CACHE_THRESHOLD: "${SEMANTIC_CACHE_THRESHOLD:-0.85}"
-      SEMANTIC_CACHE_COLLECTION: "${SEMANTIC_CACHE_COLLECTION:-semantic-cache}"
-      SEMANTIC_CACHE_TTL: "${SEMANTIC_CACHE_TTL:-3600}"
-      OLLAMA_URL: "http://ollama:11434"
-      QDRANT_URL: "http://qdrant:6333"
-      REDIS_HOST: "redis"
-      REDIS_PORT: "6379"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
       interval: 60s
       timeout: 5s
       retries: 5
       start_period: 45s
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
@@ -370,23 +386,21 @@ services:
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
       LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
       TZ: UTC
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   rag-api:
-    image: python:3.11-slim
-    init: true
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      cache_from:
+        - rag-api:latest
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
-    working_dir: /workspace
-    volumes:
-      - .:/workspace
-      - pip_cache:/root/.cache/pip
-    command: >
-      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
-             uvicorn app.api.app:app --host 0.0.0.0 --port 8001"
     env_file: .env
     environment:
       LITELLM_BASE_URL: http://litellm:4000
@@ -394,6 +408,7 @@ services:
       LANGFUSE_BASE_URL: http://langfuse-web:3000
       OTEL_ENDPOINT: http://otel-collector:4318/v1/traces
       TZ: UTC
+      PYTHONUNBUFFERED: "1"
     ports:
       - "8001:8001"
     depends_on:
@@ -407,12 +422,14 @@ services:
       timeout: 5s
       retries: 5
       start_period: 120s
+    security_opt:
+      - no-new-privileges:true
+    read_only_root_filesystem: false
     networks:
       - langfuse
 
   openwebui:
     image: ghcr.io/open-webui/open-webui@sha256:74093dadc9c6aabc23987a74fd8c2fb8d995b1a5b22e83b0036fb9d6af590e8c
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -427,8 +444,6 @@ services:
       OPENAI_API_KEYS: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
       WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-agentguard-secret-key}
       DEFAULT_MODELS: "agentguard-rag"
-      # Prevent Open WebUI downloading sentence-transformer models from HF on startup.
-      # We use our own RAG chain, so point its embedding engine at LiteLLM instead.
       RAG_EMBEDDING_ENGINE: "openai"
       RAG_OPENAI_API_BASE_URL: "http://litellm:4000/v1"
       RAG_OPENAI_API_KEY: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
@@ -443,23 +458,21 @@ services:
       timeout: 10s
       retries: 3
       start_period: 120s
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   agentguard-worker:
-    image: python:3.11-slim
-    init: true
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+      cache_from:
+        - agentguard-worker:latest
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
-    working_dir: /workspace
-    volumes:
-      - .:/workspace
-      - pip_cache:/root/.cache/pip
-    command: >
-      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
-             python -m scripts.worker"
     env_file: .env
     environment:
       LANGFUSE_BASE_URL: http://langfuse-web:3000
@@ -473,12 +486,49 @@ services:
         condition: service_healthy
       openwebui:
         condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - langfuse
+
+  portainer:
+    image: portainer/portainer-ce@sha256:8d2f5c9fbc5b8490fb3a12efadbad74978e22991911e1db611d8a45871775112
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer_data:/data
+    environment:
+      TZ: UTC
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - langfuse
+
+  dozzle:
+    image: amir20/dozzle:v10.6.0
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      DOZZLE_NO_ANALYTICS: "true"
+      TZ: UTC
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
   qdrant:
     image: qdrant/qdrant:v1.18.0
-    init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
@@ -496,6 +546,54 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - langfuse
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.62.0
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-jaeger
+    pull_policy: if_not_present
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+      TZ: UTC
+    ports:
+      - "16686:16686"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:16686/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - langfuse
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.114.0
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-otel
+    pull_policy: if_not_present
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    environment:
+      LANGFUSE_OTEL_AUTH: "${LANGFUSE_OTEL_AUTH:-Basic cGstbGYtZGV2OnNrLWxmLWRldg==}"
+      TZ: UTC
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    depends_on:
+      langfuse-web:
+        condition: service_healthy
+      jaeger:
+        condition: service_started
+    security_opt:
+      - no-new-privileges:true
     networks:
       - langfuse
 
@@ -507,6 +605,7 @@ volumes:
   redis_data:
   ollama_data:
   qdrant_data:
+  portainer_data:
   pip_cache:
   openwebui_data:
 

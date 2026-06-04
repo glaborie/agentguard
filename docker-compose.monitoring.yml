@@ -131,7 +131,7 @@ services:
     deploy: *deploy-otel
     pull_policy: if_not_present
     ports:
-      - "3100:3000"
+      - "3300:3000"
     volumes:
       - grafana_data:/var/lib/grafana
     environment:

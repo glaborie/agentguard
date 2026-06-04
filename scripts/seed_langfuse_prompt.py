@@ -43,11 +43,11 @@ def main(force: bool = False) -> None:
         type="chat",
         prompt=LANGFUSE_PROMPT_MESSAGES,
         labels=["production"],
-        config={"model": "openrouter-gemini-flash", "temperature": 0},
+        config={"model": "openrouter-mistral", "temperature": 0.5},
         commit_message="Initial RAG system prompt" if not force else "Updated RAG system prompt",
     )
     print(f"Created prompt '{PROMPT_NAME}' in Langfuse with label 'production'.")
-    print(f"Edit it at http://localhost:3000 > Prompts > {PROMPT_NAME}")
+    print(f"Edit it at http://localhost:3200 > Prompts > {PROMPT_NAME}")
 
 
 if __name__ == "__main__":
