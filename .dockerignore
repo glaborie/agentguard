@@ -1,0 +1,62 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Development
+.venv
+venv
+.env.local
+*.pyc
+__pycache__
+.pytest_cache
+.coverage
+htmlcov
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+docs
+*.md
+README.md
+CONTRIBUTING.md
+
+# Test files
+tests/
+.sotasetup
+
+# Other build artifacts
+*.egg-info
+dist
+build
+.mypy_cache
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Data/configs (non-source)
+mock_corpus/
+notebooks/
+data/
+.claude/
+
+# Docker files (unnecessary in build context)
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# Runtime state files (generated at runtime, not needed in image)
+.*_state.json
+*.swp
+scratch
+
+# Runtime state files
+.*_state.json
+scratch
