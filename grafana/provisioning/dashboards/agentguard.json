@@ -284,18 +284,18 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"search_docs\" [1m]))",
+          "expr": "sum(count_over_time({service=\"rag-api\"} |= \"agent_tool: search_docs\" [1m]))",
           "legendFormat": "search_docs",
           "refId": "A"
         },
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"list_traces\" [1m]))",
+          "expr": "sum(count_over_time({service=\"rag-api\"} |= \"agent_tool: list_traces\" [1m]))",
           "legendFormat": "list_traces",
           "refId": "B"
         },
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"score_response\" [1m]))",
-          "legendFormat": "score_response",
+          "expr": "sum(count_over_time({service=\"rag-api\"} |~ \"agent_tool: (score_response|get_trace_detail|get_dataset_summary)\" [1m]))",
+          "legendFormat": "other tools",
           "refId": "C"
         }
       ]
