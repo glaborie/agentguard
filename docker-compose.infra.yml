@@ -141,6 +141,7 @@ services:
       - "3300:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD:-admin}
       GF_SECURITY_ADMIN_USER: admin
@@ -156,12 +157,16 @@ services:
     logging: *default-logging
     deploy: *deploy-otel
     pull_policy: if_not_present
-    command: -config.file=/etc/loki/config.yml
+    user: "root"
+    entrypoint:
+      - sh
+      - -c
+      - mkdir -p /tmp/loki/chunks /tmp/loki/rules && chmod -R 777 /tmp/loki && exec /usr/bin/loki -config.file=/etc/loki/config.yml
     volumes:
       - ./loki-config.yml:/etc/loki/config.yml:ro
       - loki_data:/tmp/loki
     ports:
-      - "127.0.0.1:3100:3100"
+      - "127.0.0.1:3101:3100"
     environment:
       TZ: UTC
     healthcheck:
