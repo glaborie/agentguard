@@ -34,7 +34,14 @@ def call(
 
     try:
         result = graph.invoke({"messages": [HumanMessage(content=query)]}, config=config)
-        answer = result["messages"][-1].content
+        raw = result["messages"][-1].content
+        if isinstance(raw, list):
+            answer = "".join(
+                part.get("text", "") if isinstance(part, dict) else str(part)
+                for part in raw
+            )
+        else:
+            answer = raw
     except Exception as e:
         logger.error("[%s] Agent error: %s", request_id, e)
         answer = f"[Error: {e}] (request_id={request_id})"
