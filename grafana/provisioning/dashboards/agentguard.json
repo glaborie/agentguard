@@ -128,17 +128,17 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"PromptInjectionGuard\" |= \"BLOCK\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"injection blocked\" [1m]))",
           "legendFormat": "prompt injection",
           "refId": "A"
         },
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"PIIMaskingGuard\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"PII masked in response\" [1m]))",
           "legendFormat": "PII masked",
           "refId": "B"
         },
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"ToxicityGuard\" |= \"BLOCK\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"Toxic content blocked\" [1m]))",
           "legendFormat": "toxicity",
           "refId": "C"
         }
@@ -160,7 +160,7 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |~ \"PromptInjectionGuard.*BLOCK|ToxicityGuard.*BLOCK\" [1h]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |~ \"injection blocked|Toxic content blocked\" [1h]))",
           "legendFormat": "blocks",
           "refId": "A"
         }
@@ -211,7 +211,7 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_guard\" |= \"BLOCK\" [1h]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"blocked by semantic classifier\" [1h]))",
           "legendFormat": "semantic blocks",
           "refId": "A"
         }
