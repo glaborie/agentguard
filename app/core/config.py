@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     litellm_base_url: str = "http://localhost:4000"
     litellm_master_key: Annotated[str, Field(min_length=1)] = "sk-litellm-dev-key"
     default_model: str = "openrouter-gemini-flash"
+    agent_model: str = "openrouter-mistral"
     embedding_model: Annotated[str, Field(min_length=1)] = "nomic-embed-text"
 
     # Qdrant

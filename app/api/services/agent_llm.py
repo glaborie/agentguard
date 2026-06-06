@@ -5,6 +5,7 @@ from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.memory import MemorySaver
 
 from app.agent.graph import build_agent
+from app.core.config import settings
 from app.core.ids import completion_id
 
 logger = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ def _get_graph():
     global _graph, _checkpointer
     if _graph is None:
         _checkpointer = MemorySaver()
-        _graph = build_agent(checkpointer=_checkpointer)
+        _graph = build_agent(model=settings.agent_model, checkpointer=_checkpointer)
     return _graph
 
 
