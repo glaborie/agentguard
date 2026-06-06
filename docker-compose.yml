@@ -347,7 +347,7 @@ services:
       REDIS_PORT: "6379"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
-      interval: 60s
+      interval: 10s
       timeout: 5s
       retries: 5
       start_period: 45s
@@ -403,10 +403,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health', timeout=4)"]
-      interval: 30s
+      interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 120s
+      retries: 12
+      start_period: 30s
     networks:
       - langfuse
 
@@ -439,10 +439,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
-      interval: 30s
+      interval: 10s
       timeout: 10s
       retries: 3
-      start_period: 120s
+      start_period: 60s
     networks:
       - langfuse
 
