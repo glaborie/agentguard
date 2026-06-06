@@ -61,6 +61,8 @@ class QdrantSemanticCache(BaseCache):
 
     def _serialize(self, value: Any) -> str:
         """Serialize value to JSON string, handling Pydantic models."""
+        if isinstance(value, str):
+            return value  # already serialized — don't double-encode
         if hasattr(value, "model_dump"):
             return json.dumps(value.model_dump())
         if hasattr(value, "dict"):
@@ -90,6 +92,8 @@ class QdrantSemanticCache(BaseCache):
     async def async_get_cache(self, key: str = "", **kwargs) -> Optional[Any]:
         if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
             return None
+        if kwargs.get("tools"):  # tool-calling responses are live-data-dependent — skip cache
+            return None
         try:
             messages = kwargs.get("messages", [])
             if not messages:
@@ -115,13 +119,18 @@ class QdrantSemanticCache(BaseCache):
                 return None
             logger.info("semantic_cache: HIT score=%.3f key=%s", results[0].score, cache_key)
             import litellm
-            return litellm.ModelResponse(**json.loads(raw))
+            parsed = json.loads(raw)
+            if isinstance(parsed, str):
+                parsed = json.loads(parsed)  # handle legacy double-encoded entries
+            return litellm.ModelResponse(**parsed)
         except Exception:
             logger.warning("semantic_cache: get_cache error", exc_info=True)
             return None
 
     async def async_set_cache(self, key: str = "", value: Any = None, **kwargs) -> None:
         if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
+            return
+        if kwargs.get("tools"):  # don't cache tool-calling responses
             return
         try:
             messages = kwargs.get("messages", [])

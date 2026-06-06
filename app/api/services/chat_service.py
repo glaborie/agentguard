@@ -1,10 +1,11 @@
+import asyncio
 import time
 
 from opentelemetry import trace as otel_trace
 
 from app.api.schemas import ChatRequest
-from app.api.services import direct_llm, rag_llm
-from app.api.services.models_service import DIRECT_MODELS, MODELS
+from app.api.services import agent_llm, direct_llm, rag_llm
+from app.api.services.models_service import AGENT_MODELS, DIRECT_MODELS, MODELS
 from app.core.telemetry import get_otel_trace_id
 
 
@@ -23,7 +24,7 @@ def annotate_span(body: ChatRequest, chat_id: str | None) -> None:
     """Set OTel span attributes so Jaeger shows model, RAG mode, and session."""
     span = otel_trace.get_current_span()
     span.set_attribute("app.model", body.model)
-    span.set_attribute("app.is_rag", body.model not in DIRECT_MODELS)
+    span.set_attribute("app.is_rag", body.model not in DIRECT_MODELS and body.model not in AGENT_MODELS)
     if chat_id:
         span.set_attribute("app.chat_id", chat_id)
 
@@ -38,6 +39,15 @@ async def complete(
     litellm_model = MODELS.get(body.model, "openrouter-gemini-flash")
     trace_metadata = build_trace_metadata(body, get_otel_trace_id())
     annotate_span(body, chat_id)
+
+    if body.model in AGENT_MODELS:
+        return await asyncio.to_thread(
+            agent_llm.call,
+            query=query,
+            chat_id=chat_id,
+            user_id=body.user_id,
+            request_id=request_id,
+        )
 
     if body.model in DIRECT_MODELS:
         return await direct_llm.call(

@@ -157,6 +157,12 @@ class TestAsyncGetCacheMiss:
         assert result is None
 
     @pytest.mark.asyncio
+    async def test_returns_none_when_tools_present(self, cache):
+        tools = [{"type": "function", "function": {"name": "search_docs"}}]
+        result = await cache.async_get_cache("key123", messages=SAMPLE_MESSAGES, tools=tools)
+        assert result is None
+
+    @pytest.mark.asyncio
     async def test_returns_none_on_qdrant_empty_results(self, cache):
         with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR), \
              patch.object(cache, "_ensure_collection", return_value=None):
@@ -278,6 +284,15 @@ class TestAsyncSetCache:
             mock_qdrant = AsyncMock()
             cache._qdrant = mock_qdrant
             await cache.async_set_cache("key123", SAMPLE_RESPONSE, messages=[])
+        mock_qdrant.upsert.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_skips_when_tools_present(self, cache):
+        tools = [{"type": "function", "function": {"name": "search_docs"}}]
+        with patch.object(cache, "_embed", return_value=SAMPLE_VECTOR):
+            mock_qdrant = AsyncMock()
+            cache._qdrant = mock_qdrant
+            await cache.async_set_cache("key123", SAMPLE_RESPONSE, messages=SAMPLE_MESSAGES, tools=tools)
         mock_qdrant.upsert.assert_not_called()
 
     @pytest.mark.asyncio
