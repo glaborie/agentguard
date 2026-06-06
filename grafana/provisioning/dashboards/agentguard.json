@@ -4,14 +4,25 @@
   "schemaVersion": 39,
   "version": 1,
   "refresh": "30s",
-  "time": { "from": "now-1h", "to": "now" },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
   "panels": [
     {
       "id": 1,
       "title": "Cache Hits / min",
       "type": "timeseries",
-      "gridPos": { "x": 0, "y": 0, "w": 8, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: HIT\" [1m]))",
@@ -19,14 +30,26 @@
           "refId": "A"
         }
       ],
-      "options": { "tooltip": { "mode": "single" } }
+      "options": {
+        "tooltip": {
+          "mode": "single"
+        }
+      }
     },
     {
       "id": 2,
       "title": "Cache Misses / min",
       "type": "timeseries",
-      "gridPos": { "x": 8, "y": 0, "w": 8, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: SET\" [1m]))",
@@ -39,8 +62,16 @@
       "id": 3,
       "title": "Cache Hit Rate %",
       "type": "stat",
-      "gridPos": { "x": 16, "y": 0, "w": 8, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 16,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: HIT\" [1h])) / (sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: HIT\" [1h])) + sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: SET\" [1h]))) * 100",
@@ -49,7 +80,11 @@
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
         "orientation": "auto",
         "textMode": "auto",
         "colorMode": "background"
@@ -60,9 +95,18 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "yellow", "value": 30 },
-              { "color": "green", "value": 60 }
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "green",
+                "value": 60
+              }
             ]
           }
         }
@@ -72,8 +116,16 @@
       "id": 4,
       "title": "Guardrail Blocks / min",
       "type": "timeseries",
-      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum(count_over_time({service=\"litellm\"} |= \"PromptInjectionGuard\" |= \"BLOCK\" [1m]))",
@@ -96,8 +148,16 @@
       "id": 5,
       "title": "Total Guardrail Blocks (1h)",
       "type": "stat",
-      "gridPos": { "x": 12, "y": 8, "w": 6, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 6,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum(count_over_time({service=\"litellm\"} |~ \"PromptInjectionGuard.*BLOCK|ToxicityGuard.*BLOCK\" [1h]))",
@@ -106,7 +166,11 @@
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
         "colorMode": "background"
       },
       "fieldConfig": {
@@ -114,9 +178,18 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 5 },
-              { "color": "red", "value": 20 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 20
+              }
             ]
           }
         }
@@ -126,8 +199,16 @@
       "id": 6,
       "title": "Semantic Guard Blocks (1h)",
       "type": "stat",
-      "gridPos": { "x": 18, "y": 8, "w": 6, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 18,
+        "y": 8,
+        "w": 6,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_guard\" |= \"BLOCK\" [1h]))",
@@ -136,7 +217,11 @@
         }
       ],
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
         "colorMode": "background"
       },
       "fieldConfig": {
@@ -144,9 +229,18 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 3 },
-              { "color": "red", "value": 10 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
             ]
           }
         }
@@ -156,8 +250,16 @@
       "id": 7,
       "title": "Errors by Service / min",
       "type": "timeseries",
-      "gridPos": { "x": 0, "y": 16, "w": 12, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum by (service) (count_over_time({project=\"langfuse-poc\"} |= \"ERROR\" [1m]))",
@@ -170,8 +272,16 @@
       "id": 8,
       "title": "Agent Tool Calls / min",
       "type": "timeseries",
-      "gridPos": { "x": 12, "y": 16, "w": 12, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "sum(count_over_time({service=\"rag-api\"} |= \"search_docs\" [1m]))",
@@ -192,10 +302,18 @@
     },
     {
       "id": 9,
-      "title": "Live Logs — RAG API",
+      "title": "Live Logs \u2014 RAG API",
       "type": "logs",
-      "gridPos": { "x": 0, "y": 24, "w": 24, "h": 8 },
-      "datasource": { "type": "loki", "uid": "${loki_uid}" },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
       "targets": [
         {
           "expr": "{service=\"rag-api\"}",
@@ -211,13 +329,6 @@
     }
   ],
   "templating": {
-    "list": [
-      {
-        "name": "loki_uid",
-        "type": "constant",
-        "current": { "value": "loki" },
-        "hide": 2
-      }
-    ]
+    "list": []
   }
 }
