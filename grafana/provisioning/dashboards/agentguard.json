@@ -1,0 +1,334 @@
+{
+  "title": "AgentGuard",
+  "uid": "agentguard-main",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Cache Hits / min",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: HIT\" [1m]))",
+          "legendFormat": "hits/min",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "tooltip": {
+          "mode": "single"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Cache Misses / min",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: SET\" [1m]))",
+          "legendFormat": "misses/min",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Cache Hit Rate %",
+      "type": "stat",
+      "gridPos": {
+        "x": 16,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: HIT\" [1h])) / (sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: HIT\" [1h])) + sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: SET\" [1h]))) * 100",
+          "legendFormat": "hit rate %",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "green",
+                "value": 60
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Guardrail Blocks / min",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"injection blocked\" [1m]))",
+          "legendFormat": "prompt injection",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"PII masked in response\" [1m]))",
+          "legendFormat": "PII masked",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"Toxic content blocked\" [1m]))",
+          "legendFormat": "toxicity",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Total Guardrail Blocks (1h)",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 6,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |~ \"injection blocked|Toxic content blocked\" [1h]))",
+          "legendFormat": "blocks",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 20
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "Semantic Guard Blocks (1h)",
+      "type": "stat",
+      "gridPos": {
+        "x": 18,
+        "y": 8,
+        "w": 6,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"blocked by semantic classifier\" [1h]))",
+          "legendFormat": "semantic blocks",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Errors by Service / min",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum by (service) (count_over_time({project=\"langfuse-poc\"} |= \"ERROR\" [1m]))",
+          "legendFormat": "{{service}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Agent Tool Calls / min",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"search_docs\" [1m]))",
+          "legendFormat": "search_docs",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"list_traces\" [1m]))",
+          "legendFormat": "list_traces",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"score_response\" [1m]))",
+          "legendFormat": "score_response",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Live Logs \u2014 RAG API",
+      "type": "logs",
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "targets": [
+        {
+          "expr": "{service=\"rag-api\"} | decolorize",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "dedupStrategy": "none",
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      }
+    }
+  ],
+  "templating": {
+    "list": []
+  }
+}

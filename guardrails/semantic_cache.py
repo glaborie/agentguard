@@ -23,6 +23,11 @@ from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
 logger = logging.getLogger(__name__)
+if not logger.handlers:
+    _handler = logging.StreamHandler()
+    _handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s:%(levelname)s - %(message)s"))
+    logger.addHandler(_handler)
+    logger.setLevel(logging.WARNING)
 
 _COLLECTION = os.environ.get("SEMANTIC_CACHE_COLLECTION", "semantic-cache")
 _THRESHOLD = float(os.environ.get("SEMANTIC_CACHE_THRESHOLD", "0.85"))
@@ -117,7 +122,7 @@ class QdrantSemanticCache(BaseCache):
             raw = await self._redis.get(f"semantic_cache:{cache_key}")
             if raw is None:
                 return None
-            logger.info("semantic_cache: HIT score=%.3f key=%s", results[0].score, cache_key)
+            logger.warning("semantic_cache: HIT score=%.3f key=%s", results[0].score, cache_key)
             import litellm
             parsed = json.loads(raw)
             if isinstance(parsed, str):
@@ -155,7 +160,7 @@ class QdrantSemanticCache(BaseCache):
                 _TTL,
                 self._serialize(value),
             )
-            logger.info("semantic_cache: SET key=%s", cache_key)
+            logger.warning("semantic_cache: SET key=%s", cache_key)
         except Exception:
             logger.warning("semantic_cache: set_cache error", exc_info=True)
 
