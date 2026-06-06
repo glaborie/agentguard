@@ -20,6 +20,7 @@ def _get_llm(model: str | None = None) -> ChatOpenAI:
         base_url=f"{settings.litellm_base_url}/v1",
         api_key=settings.litellm_master_key,
         temperature=0.0,
+        default_headers={"x-agentguard-internal": "true"},
     )
 
 
