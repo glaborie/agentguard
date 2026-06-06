@@ -92,6 +92,8 @@ class QdrantSemanticCache(BaseCache):
     async def async_get_cache(self, key: str = "", **kwargs) -> Optional[Any]:
         if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
             return None
+        if kwargs.get("tools"):  # tool-calling responses are live-data-dependent — skip cache
+            return None
         try:
             messages = kwargs.get("messages", [])
             if not messages:
@@ -127,6 +129,8 @@ class QdrantSemanticCache(BaseCache):
 
     async def async_set_cache(self, key: str = "", value: Any = None, **kwargs) -> None:
         if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
+            return
+        if kwargs.get("tools"):  # don't cache tool-calling responses
             return
         try:
             messages = kwargs.get("messages", [])
