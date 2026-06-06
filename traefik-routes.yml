@@ -24,9 +24,9 @@ http:
       rule: "Host(`jaeger.localhost`)"
       service: jaeger
       entryPoints: [web]
-    dozzle:
-      rule: "Host(`dozzle.localhost`)"
-      service: dozzle
+    loki:
+      rule: "Host(`loki.localhost`)"
+      service: loki
       entryPoints: [web]
 
   services:
@@ -54,7 +54,7 @@ http:
       loadBalancer:
         servers:
           - url: "http://jaeger:16686"
-    dozzle:
+    loki:
       loadBalancer:
         servers:
-          - url: "http://dozzle:8080"
+          - url: "http://loki:3100"
