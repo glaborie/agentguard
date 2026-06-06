@@ -21,7 +21,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -48,7 +48,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -70,7 +70,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -124,7 +124,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -156,7 +156,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -207,7 +207,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -258,7 +258,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -280,7 +280,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
@@ -312,7 +312,7 @@
       },
       "datasource": {
         "type": "loki",
-        "uid": "loki"
+        "uid": "P8E80F9AEF21F6940"
       },
       "targets": [
         {
