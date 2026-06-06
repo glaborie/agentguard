@@ -25,7 +25,7 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: HIT\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: HIT\" [1m]))",
           "legendFormat": "hits/min",
           "refId": "A"
         }
@@ -52,7 +52,7 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: SET\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: SET\" [1m]))",
           "legendFormat": "misses/min",
           "refId": "A"
         }
@@ -74,7 +74,7 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: HIT\" [1h])) / (sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: HIT\" [1h])) + sum(count_over_time({service=\"litellm\"} |= \"semantic_cache: SET\" [1h]))) * 100",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: HIT\" [1h])) / (sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: HIT\" [1h])) + sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_cache: SET\" [1h]))) * 100",
           "legendFormat": "hit rate %",
           "refId": "A"
         }
@@ -128,17 +128,17 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |= \"PromptInjectionGuard\" |= \"BLOCK\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"PromptInjectionGuard\" |= \"BLOCK\" [1m]))",
           "legendFormat": "prompt injection",
           "refId": "A"
         },
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |= \"PIIMaskingGuard\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"PIIMaskingGuard\" [1m]))",
           "legendFormat": "PII masked",
           "refId": "B"
         },
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |= \"ToxicityGuard\" |= \"BLOCK\" [1m]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"ToxicityGuard\" |= \"BLOCK\" [1m]))",
           "legendFormat": "toxicity",
           "refId": "C"
         }
@@ -160,7 +160,7 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |~ \"PromptInjectionGuard.*BLOCK|ToxicityGuard.*BLOCK\" [1h]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |~ \"PromptInjectionGuard.*BLOCK|ToxicityGuard.*BLOCK\" [1h]))",
           "legendFormat": "blocks",
           "refId": "A"
         }
@@ -211,7 +211,7 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"litellm\"} |= \"semantic_guard\" |= \"BLOCK\" [1h]))",
+          "expr": "sum(count_over_time({service=\"litellm\"} | decolorize |= \"semantic_guard\" |= \"BLOCK\" [1h]))",
           "legendFormat": "semantic blocks",
           "refId": "A"
         }
@@ -284,17 +284,17 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} |= \"search_docs\" [1m]))",
+          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"search_docs\" [1m]))",
           "legendFormat": "search_docs",
           "refId": "A"
         },
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} |= \"list_traces\" [1m]))",
+          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"list_traces\" [1m]))",
           "legendFormat": "list_traces",
           "refId": "B"
         },
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} |= \"score_response\" [1m]))",
+          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"score_response\" [1m]))",
           "legendFormat": "score_response",
           "refId": "C"
         }
@@ -316,7 +316,7 @@
       },
       "targets": [
         {
-          "expr": "{service=\"rag-api\"}",
+          "expr": "{service=\"rag-api\"} | decolorize",
           "refId": "A"
         }
       ],
