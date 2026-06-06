@@ -66,12 +66,12 @@ class TestModelsRoute:
         assert r.status_code == 200
         assert r.json()["object"] == "list"
 
-    def test_returns_three_models(self, client):
-        assert len(client.get("/v1/models").json()["data"]) == 3
+    def test_returns_four_models(self, client):
+        assert len(client.get("/v1/models").json()["data"]) == 4
 
     def test_expected_model_ids(self, client):
         ids = {m["id"] for m in client.get("/v1/models").json()["data"]}
-        assert ids == {"agentguard-rag", "agentguard-rag-mistral", "agentguard-direct"}
+        assert ids == {"agentguard-rag", "agentguard-rag-mistral", "agentguard-direct", "agentguard-agent"}
 
     def test_required_fields_on_every_model(self, client):
         for m in client.get("/v1/models").json()["data"]:
