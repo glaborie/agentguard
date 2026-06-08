@@ -198,12 +198,12 @@ services:
 
   scout:
     image: docker/scout-cli:latest
-    pull_policy: always
+    pull_policy: if_not_present
     profiles: [tools]
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${HOME}/.docker:/root/.docker:ro
+      - ${HOME}/.docker:/root/.docker
     environment:
       DOCKER_SCOUT_HUB_USER: ${DOCKER_SCOUT_HUB_USER:-}
       DOCKER_SCOUT_HUB_PASSWORD: ${DOCKER_SCOUT_HUB_PASSWORD:-}
