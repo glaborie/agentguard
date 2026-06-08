@@ -12,6 +12,7 @@ router = APIRouter()
 
 
 @router.post("/v1/chat/completions")
+@router.post("/api/chat/completions")
 async def chat_completions(body: ChatRequest, request: Request) -> Any:
     user_messages = [m for m in body.messages if m.role == "user"]
     if not user_messages:
