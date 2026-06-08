@@ -196,6 +196,21 @@ services:
     networks:
       - langfuse
 
+  scout:
+    image: docker/scout-cli:latest
+    pull_policy: always
+    profiles: [tools]
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.docker:/root/.docker:ro
+    environment:
+      DOCKER_SCOUT_HUB_USER: ${DOCKER_SCOUT_HUB_USER:-}
+      DOCKER_SCOUT_HUB_PASSWORD: ${DOCKER_SCOUT_HUB_PASSWORD:-}
+      TZ: UTC
+    networks:
+      - langfuse
+
 volumes:
   portainer_data:
   prometheus_data:
