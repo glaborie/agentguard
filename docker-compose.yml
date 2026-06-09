@@ -315,6 +315,7 @@ services:
       - ./litellm_config.yaml:/app/config.yaml
       - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py
       - ./guardrails/semantic_cache.py:/app/semantic_cache.py
+      - ./runtime_config.json:/app/runtime_config.json
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     env_file: .env
     environment:
