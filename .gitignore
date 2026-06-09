@@ -20,3 +20,5 @@ coverage.xml
 .vscode/
 .claude/
 .arize/
+.agents/
+graphify-out/
