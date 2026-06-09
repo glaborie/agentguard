@@ -85,11 +85,13 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ---
 
-### [ ] #10 LLM observability dashboards (~2h)
+### [done] #10 LLM observability dashboards (~2h)
 
 **Why:** Traces flow into OpenObserve but no dashboards exist. Teams need out-of-box visibility into latency, token counts, guardrail block rates, cache hit rates, and error rates.
 
-**Panels to build:** LLM latency p50/p95/p99 per model, guardrail block rate, semantic cache hit rate, token counts over time, error rate by service.
+**Panels built:** Request rate, LLM latency p50/p95/p99 over time, latency by model, token usage (prompt + completion), error rate by service, guardrail block rate, request volume by model, semantic cache hits vs misses.
+
+**Files:** `openobserve/dashboards/agentguard_llm.json` (import via UI or `./openobserve/import_dashboards.sh`).
 
 ---
 
