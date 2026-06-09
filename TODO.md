@@ -95,11 +95,13 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ---
 
-### [ ] #11 Alerts on trace data (~1h)
+### [done] #11 Alerts on trace data (~1h)
 
 **Why:** No proactive alerting exists. Guardrail block spikes (injection attack in progress), high latency, and elevated error rates need automated notification.
 
-**Targets:** Guardrail block rate spike, latency > threshold, error rate > threshold. Fire to Slack/email/webhook.
+**Alerts created:** `agentguard-error-rate-spike` (≥5 errors/5min), `agentguard-high-llm-latency` (avg>30s/10min), `agentguard-guardrail-block-spike` (≥3 RAG chain errors/5min).
+
+**Setup:** `ALERT_WEBHOOK_URL=https://... ./openobserve/setup_alerts.sh` — idempotent, fires to any webhook (Slack, Discord, custom). Update URL in OO UI: Alerts → Destinations → agentguard-webhook.
 
 ---
 
