@@ -496,6 +496,30 @@ services:
     networks:
       - langfuse
 
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    restart: unless-stopped
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    ports:
+      - "5080:5080"
+    volumes:
+      - openobserve_data:/data
+    environment:
+      ZO_DATA_DIR: /data
+      ZO_ROOT_USER_EMAIL: "${ZO_ROOT_USER_EMAIL:-root@example.com}"
+      ZO_ROOT_USER_PASSWORD: "${ZO_ROOT_USER_PASSWORD:-Complexpass#123}"
+      TZ: UTC
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5080/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - langfuse
+
 volumes:
   postgres_data:
   clickhouse_data:
@@ -505,6 +529,7 @@ volumes:
   ollama_data:
   qdrant_data:
   openwebui_data:
+  openobserve_data:
 
 networks:
   langfuse:
