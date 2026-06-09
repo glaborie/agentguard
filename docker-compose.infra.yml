@@ -85,6 +85,10 @@ services:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
     environment:
       LANGFUSE_OTEL_AUTH: "${LANGFUSE_OTEL_AUTH:-Basic cGstbGYtZGV2OnNrLWxmLWRldg==}"
+      # OpenObserve: endpoint uses host.docker.internal so collector reaches host port 5080.
+      # Auth = Basic base64(email:password). Default self-hosted: admin@example.com:admin123
+      OPENOBSERVE_OTLP_ENDPOINT: "${OPENOBSERVE_OTLP_ENDPOINT:-http://host.docker.internal:5080/api/default}"
+      OPENOBSERVE_AUTH: "${OPENOBSERVE_AUTH:-Basic YWRtaW5AZXhhbXBsZS5jb206YWRtaW4xMjM=}"
       TZ: UTC
     ports:
       - "4317:4317"
