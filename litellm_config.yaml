@@ -20,8 +20,8 @@ model_list:
 
 litellm_settings:
   drop_params: true
-  success_callback: ["langfuse"]
-  failure_callback: ["langfuse"]
+  success_callback: ["langfuse", "arize"]
+  failure_callback: ["langfuse", "arize"]
   callbacks: ["semantic_cache.SemanticCacheActivator", "prometheus"]
 
 guardrails:

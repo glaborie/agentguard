@@ -345,6 +345,10 @@ services:
       QDRANT_URL: "http://qdrant:6333"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
+      ARIZE_SPACE_KEY: ${ARIZE_SPACE_KEY}
+      ARIZE_API_KEY: ${ARIZE_API_KEY}
+      ARIZE_PROJECT_NAME: ${ARIZE_PROJECT_NAME:-agentguard}
+      ARIZE_HTTP_ENDPOINT: "https://otlp.eu-west-1a.arize.com/v1"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
       interval: 10s
@@ -447,7 +451,7 @@ services:
       - langfuse
 
   agentguard-worker:
-    image: python:3.11-slim
+    image: python:3.14-slim
     init: true
     restart: always
     logging: *default-logging
