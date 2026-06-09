@@ -85,6 +85,10 @@ services:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
     environment:
       LANGFUSE_OTEL_AUTH: "${LANGFUSE_OTEL_AUTH:-Basic cGstbGYtZGV2OnNrLWxmLWRldg==}"
+      # OpenObserve: endpoint uses host.docker.internal so collector reaches host port 5080.
+      # Auth = Basic base64(email:password). Default self-hosted: admin@example.com:admin123
+      OPENOBSERVE_OTLP_ENDPOINT: "${OPENOBSERVE_OTLP_ENDPOINT:-http://openobserve:5080/api/default}"
+      OPENOBSERVE_AUTH: "${OPENOBSERVE_AUTH:-Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4cGFzcyMxMjM=}"
       TZ: UTC
     ports:
       - "4317:4317"
@@ -184,12 +188,14 @@ services:
     logging: *default-logging
     deploy: *deploy-otel
     pull_policy: if_not_present
-    command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml -config.expand-env=true
     volumes:
       - ./promtail-config.yml:/etc/promtail/config.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       TZ: UTC
+      ZO_ROOT_USER_EMAIL: "${ZO_ROOT_USER_EMAIL:-root@example.com}"
+      ZO_ROOT_USER_PASSWORD: "${ZO_ROOT_USER_PASSWORD:-Complexpass#123}" 
     depends_on:
       loki:
         condition: service_healthy

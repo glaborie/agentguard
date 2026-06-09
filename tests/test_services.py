@@ -192,6 +192,12 @@ async def _probe_qdrant_down(name, url, headers=None):
 
 
 class TestCheckAll:
+    def setup_method(self):
+        # Reset module-level cache so tests don't share stale results.
+        import app.api.services.health_service as hs
+        hs._cached_checks = None
+        hs._cached_at = 0.0
+
     def test_all_ok(self):
         with patch("app.api.services.health_service._probe", _probe_all_ok):
             checks, all_ok = asyncio.run(health_service.check_all())

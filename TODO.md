@@ -72,3 +72,35 @@ All additive — no architectural change required. Independent, can be paralleli
 ### [done] #7 CONTRIBUTING.md + local dev setup (~2h)
 
 **Reference:** `deepset-ai/haystack` → `CONTRIBUTING.md`
+
+---
+
+## OpenObserve observability gaps
+
+### [done] #9 Logs fan-out to OpenObserve (~1h)
+
+**Why:** Container logs currently go to Loki only. OpenObserve can ingest logs via Promtail, giving unified traces + logs in one UI — correlate a trace to container logs without switching tools.
+
+**Reference:** OpenObserve Promtail ingestion endpoint `/api/default/loki/api/v1/push` (Loki-compatible API).
+
+---
+
+### [ ] #10 LLM observability dashboards (~2h)
+
+**Why:** Traces flow into OpenObserve but no dashboards exist. Teams need out-of-box visibility into latency, token counts, guardrail block rates, cache hit rates, and error rates.
+
+**Panels to build:** LLM latency p50/p95/p99 per model, guardrail block rate, semantic cache hit rate, token counts over time, error rate by service.
+
+---
+
+### [ ] #11 Alerts on trace data (~1h)
+
+**Why:** No proactive alerting exists. Guardrail block spikes (injection attack in progress), high latency, and elevated error rates need automated notification.
+
+**Targets:** Guardrail block rate spike, latency > threshold, error rate > threshold. Fire to Slack/email/webhook.
+
+---
+
+### [ ] #12 Prometheus metrics ingestion (~1h)
+
+**Why:** rag-api exposes `/metrics` (prometheus_fastapi_instrumentator) and LiteLLM exposes Prometheus metrics. OpenObserve can scrape both, consolidating metrics + traces + logs in one platform.
