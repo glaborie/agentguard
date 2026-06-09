@@ -88,7 +88,7 @@ services:
       # OpenObserve: endpoint uses host.docker.internal so collector reaches host port 5080.
       # Auth = Basic base64(email:password). Default self-hosted: admin@example.com:admin123
       OPENOBSERVE_OTLP_ENDPOINT: "${OPENOBSERVE_OTLP_ENDPOINT:-http://host.docker.internal:5080/api/default}"
-      OPENOBSERVE_AUTH: "${OPENOBSERVE_AUTH:-Basic YWRtaW5AZXhhbXBsZS5jb206YWRtaW4xMjM=}"
+      OPENOBSERVE_AUTH: "${OPENOBSERVE_AUTH:-Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4cGFzcyMxMjM=}"
       TZ: UTC
     ports:
       - "4317:4317"
