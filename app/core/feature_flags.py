@@ -33,6 +33,11 @@ DEFAULTS: dict[str, Any] = {
     # LLM defaults
     "default_model": "openrouter-gemini-flash",
     "agent_model": "openrouter-mistral",
+    # Hybrid retrieval (BM25 + vector RRF)
+    "hybrid_search_enabled": True,
+    "hybrid_search_vector_weight": 0.5,
+    "hybrid_search_bm25_weight": 0.5,
+    "hybrid_search_rrf_c": 60,
 }
 
 AVAILABLE_MODELS = [

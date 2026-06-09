@@ -8,6 +8,8 @@ build/
 .ipynb_checkpoints/
 data/docs/*.md
 data/docs/*.html
+data/bm25_index.pkl
+data/bm25_index.pkl.tmp
 .pytest_cache/
 Agentic_Plan.md
 PLAN.md
