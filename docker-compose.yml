@@ -379,19 +379,16 @@ services:
       - langfuse
 
   rag-api:
-    image: python:3.11-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.api
     init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
-    working_dir: /workspace
     volumes:
-      - .:/workspace
-      - pip_cache:/root/.cache/pip
-    command: >
-      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
-             uvicorn app.api.app:app --host 0.0.0.0 --port 8001"
+      - ./runtime_config.json:/app/runtime_config.json
     env_file: .env
     environment:
       LITELLM_BASE_URL: http://litellm:4000
@@ -452,19 +449,14 @@ services:
       - langfuse
 
   agentguard-worker:
-    image: python:3.14-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
     init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
-    working_dir: /workspace
-    volumes:
-      - .:/workspace
-      - pip_cache:/root/.cache/pip
-    command: >
-      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
-             python -m scripts.worker"
     env_file: .env
     environment:
       LANGFUSE_BASE_URL: http://langfuse-web:3000
@@ -512,7 +504,6 @@ volumes:
   redis_data:
   ollama_data:
   qdrant_data:
-  pip_cache:
   openwebui_data:
 
 networks:

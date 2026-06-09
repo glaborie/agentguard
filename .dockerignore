@@ -3,15 +3,25 @@
 .gitignore
 .gitattributes
 
+# Credentials — never send to Docker daemon
+.env
+.env.*
+*.key
+*.pem
+*.p12
+
 # Development
 .venv
 venv
-.env.local
 *.pyc
 __pycache__
 .pytest_cache
 .coverage
 htmlcov
+.mypy_cache
+*.egg-info
+dist
+build
 
 # IDE
 .vscode
@@ -24,39 +34,36 @@ htmlcov
 # Documentation
 docs
 *.md
-README.md
 CONTRIBUTING.md
+CLAUDE.original.md
 
 # Test files
 tests/
 .sotasetup
 
-# Other build artifacts
-*.egg-info
-dist
-build
-.mypy_cache
-
 # CI/CD
 .github
 .gitlab-ci.yml
 
-# Data/configs (non-source)
+# Data/configs (not needed in image — loaded at runtime or on host)
 mock_corpus/
 notebooks/
 data/
 .claude/
+guardrails/
+litellm_config.yaml
+runtime_config.json
+promptfooconfig.yaml
+redteam.yaml
 
 # Docker files (unnecessary in build context)
 docker-compose*.yml
 Dockerfile*
 .dockerignore
 
-# Runtime state files (generated at runtime, not needed in image)
-.*_state.json
-*.swp
-scratch
-
 # Runtime state files
 .*_state.json
 scratch
+graphify-out/
+tmp/
+skills-lock.json
