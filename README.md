@@ -22,7 +22,7 @@ AgentGuard provides a control layer for observing, protecting, and evaluating th
 
 ## What it does
 
-- **Observability** — traces, retrieval, latency, model behavior, and tool usage
+- **Observability** — traces, retrieval, latency, model behavior, and tool usage (Langfuse + Arize AX + Grafana + Jaeger)
 - **Protection** — prompt injection blocking (regex + LLM-judge semantic pass), toxic content detection, PII masking, and agent tool-call guardrails
 - **Evaluation** — golden datasets, benchmarks, regression checks, and scoring
 - **Red teaming** — automated adversarial probing across 4 attack types (prompt injection, jailbreak, PII extraction, system prompt leak) with CI-compatible exit codes
@@ -97,6 +97,7 @@ python -m app.main query "Does the Starter plan include SAML SSO?"
 Open:
 - Open WebUI: `http://localhost:3100`
 - Langfuse: `http://localhost:3200`
+- Arize AX: `https://app.arize.com` (project: `agentguard`)
 
 ## Documentation
 
