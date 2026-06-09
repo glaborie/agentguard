@@ -19,3 +19,4 @@ coverage.xml
 .deepeval/
 .vscode/
 .claude/
+.arize/
