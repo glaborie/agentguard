@@ -51,7 +51,7 @@ async def call(
         if gtype:
             score_guardrail_block(
                 gtype, query, handler.last_trace_id,
-                chat_id=chat_id, user_id=user_id,
+                chat_id=chat_id, user_id=user_id, request_id=request_id,
             )
 
     trace_id = handler.last_trace_id
