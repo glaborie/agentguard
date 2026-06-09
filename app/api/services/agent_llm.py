@@ -5,6 +5,7 @@ from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.memory import MemorySaver
 
 from app.agent.graph import build_agent
+from app.api.services.guardrail_scoring import detect_guardrail_type, score_guardrail_block
 from app.core.config import settings
 from app.core.ids import completion_id
 
@@ -46,5 +47,11 @@ def call(
     except Exception as e:
         logger.error("[%s] Agent error: %s", request_id, e)
         answer = f"[Error: {e}] (request_id={request_id})"
+        gtype = detect_guardrail_type(e)
+        if gtype:
+            score_guardrail_block(
+                gtype, query, None,
+                chat_id=chat_id, user_id=user_id, request_id=request_id,
+            )
 
     return answer, completion_id()
