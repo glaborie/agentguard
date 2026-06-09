@@ -1,9 +1,12 @@
 """Agent tools for the AgentGuard ReAct agent."""
 
 import json
+import logging
 from datetime import datetime
 
 from langchain_core.tools import tool
+
+logger = logging.getLogger(__name__)
 
 from app.eval.evaluators import (
     contains_no_hallucination_markers,
@@ -25,6 +28,7 @@ def search_docs(query: str) -> str:
     Args:
         query: The search query describing what you want to find.
     """
+    logger.warning("agent_tool: search_docs query=%r", query[:80])
     retriever = get_retriever(k=6)
     docs = retriever.invoke(query)
     if not docs:
@@ -42,6 +46,7 @@ def list_traces(limit: int = 10) -> str:
     Args:
         limit: Number of traces to return (default 10, max 50).
     """
+    logger.warning("agent_tool: list_traces limit=%d", limit)
     limit = min(max(1, limit), 50)
     client = get_langfuse_client()
     # Fetch a larger batch so filtering system calls doesn't shrink the result below limit
@@ -93,6 +98,7 @@ def get_trace_detail(trace_id: str) -> str:
     Args:
         trace_id: The trace ID (or prefix) from list_traces output.
     """
+    logger.warning("agent_tool: get_trace_detail trace_id=%r", trace_id)
     client = get_langfuse_client()
     try:
         trace = client.api.trace.get(trace_id)
@@ -139,6 +145,7 @@ def score_response(response_text: str) -> str:
     Args:
         response_text: The text to evaluate.
     """
+    logger.warning("agent_tool: score_response len=%d", len(response_text))
     scores = {
         "has_source_citation": has_source_citation(response_text),
         "is_within_length": is_within_length(response_text),
@@ -163,6 +170,7 @@ def get_dataset_summary(dataset_name: str = "") -> str:
     Args:
         dataset_name: If provided, show items from this dataset. If empty, list all datasets.
     """
+    logger.warning("agent_tool: get_dataset_summary dataset=%r", dataset_name)
     client = get_langfuse_client()
 
     if not dataset_name:

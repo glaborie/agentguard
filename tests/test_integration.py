@@ -195,7 +195,7 @@ class TestRagApi:
             f"{self._base}/v1/chat/completions",
             json={
                 "model": "agentguard-rag",
-                "messages": [{"role": "user", "content": "What is tracing in Langfuse?"}],
+                "messages": [{"role": "user", "content": "What is NorthstarCRM?"}],
             },
             timeout=60,
         )

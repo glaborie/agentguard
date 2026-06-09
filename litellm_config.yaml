@@ -22,7 +22,7 @@ litellm_settings:
   drop_params: true
   success_callback: ["langfuse"]
   failure_callback: ["langfuse"]
-  callbacks: ["semantic_cache.SemanticCacheActivator"]
+  callbacks: ["semantic_cache.SemanticCacheActivator", "prometheus"]
 
 guardrails:
   - guardrail_name: "prompt-injection"

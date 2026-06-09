@@ -284,18 +284,18 @@
       },
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"search_docs\" [1m]))",
+          "expr": "sum(count_over_time({service=\"rag-api\"} |= \"agent_tool: search_docs\" [1m]))",
           "legendFormat": "search_docs",
           "refId": "A"
         },
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"list_traces\" [1m]))",
+          "expr": "sum(count_over_time({service=\"rag-api\"} |= \"agent_tool: list_traces\" [1m]))",
           "legendFormat": "list_traces",
           "refId": "B"
         },
         {
-          "expr": "sum(count_over_time({service=\"rag-api\"} | decolorize |= \"score_response\" [1m]))",
-          "legendFormat": "score_response",
+          "expr": "sum(count_over_time({service=\"rag-api\"} |~ \"agent_tool: (score_response|get_trace_detail|get_dataset_summary)\" [1m]))",
+          "legendFormat": "other tools",
           "refId": "C"
         }
       ]
@@ -326,6 +326,297 @@
         "sortOrder": "Descending",
         "wrapLogMessage": true
       }
+    },
+    {
+      "id": 10,
+      "title": "Proxy — Requests / min by model",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 32, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "sum by (requested_model) (rate(litellm_proxy_total_requests_metric_total[1m]) * 60)",
+          "legendFormat": "{{requested_model}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Proxy — In-flight Requests",
+      "type": "gauge",
+      "gridPos": { "x": 12, "y": 32, "w": 6, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "litellm_in_flight_requests",
+          "legendFormat": "in-flight",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "minVizWidth": 75,
+        "minVizHeight": 75
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 50,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 10 },
+              { "color": "red", "value": 30 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "Proxy — Success Rate % (1h)",
+      "type": "stat",
+      "gridPos": { "x": 18, "y": 32, "w": 6, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "100 * (1 - sum(increase(litellm_proxy_failed_requests_metric_total[1h])) / sum(increase(litellm_proxy_total_requests_metric_total[1h])))",
+          "legendFormat": "success %",
+          "refId": "A"
+        }
+      ],
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 95 },
+              { "color": "green", "value": 99 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "title": "Latency — Total p50 / p95",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 40, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(litellm_request_total_latency_metric_bucket[5m])))",
+          "legendFormat": "total p50",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(litellm_request_total_latency_metric_bucket[5m])))",
+          "legendFormat": "total p95",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "id": 14,
+      "title": "Latency — LLM API vs Overhead p95",
+      "type": "timeseries",
+      "gridPos": { "x": 8, "y": 40, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(litellm_llm_api_latency_metric_bucket[5m])))",
+          "legendFormat": "LLM API p95",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(litellm_overhead_latency_metric_bucket[5m])))",
+          "legendFormat": "overhead p95",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "id": 15,
+      "title": "Latency — Time to First Token p50 / p95",
+      "type": "timeseries",
+      "gridPos": { "x": 16, "y": 40, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(litellm_llm_api_time_to_first_token_metric_bucket[5m])))",
+          "legendFormat": "TTFT p50",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(litellm_llm_api_time_to_first_token_metric_bucket[5m])))",
+          "legendFormat": "TTFT p95",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "id": 16,
+      "title": "Deployment — State (0=healthy 1=partial 2=down)",
+      "type": "table",
+      "gridPos": { "x": 0, "y": 48, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "litellm_deployment_state",
+          "legendFormat": "{{litellm_model_name}}",
+          "refId": "A",
+          "instant": true
+        }
+      ],
+      "options": {
+        "sortBy": [{ "displayName": "Value", "desc": false }]
+      },
+      "transformations": [
+        { "id": "labelsToFields", "options": { "mode": "columns", "keepLabels": ["litellm_model_name", "api_provider"] } },
+        { "id": "organize", "options": { "renameByName": { "Value": "state", "litellm_model_name": "model", "api_provider": "provider" } } }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Deployment — Success vs Failure / min",
+      "type": "timeseries",
+      "gridPos": { "x": 8, "y": 48, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "sum by (litellm_model_name) (rate(litellm_deployment_success_responses_total[1m]) * 60)",
+          "legendFormat": "✓ {{litellm_model_name}}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (litellm_model_name) (rate(litellm_deployment_failure_responses_total[1m]) * 60)",
+          "legendFormat": "✗ {{litellm_model_name}}",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Deployment — Fallbacks & Cooldowns",
+      "type": "timeseries",
+      "gridPos": { "x": 16, "y": 48, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "sum(increase(litellm_deployment_successful_fallbacks_total[5m]))",
+          "legendFormat": "fallback success",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(increase(litellm_deployment_failed_fallbacks_total[5m]))",
+          "legendFormat": "fallback failed",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(increase(litellm_deployment_cooled_down_total[5m]))",
+          "legendFormat": "cooled down",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Tokens — Input / Output / min",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 56, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "sum(rate(litellm_input_tokens_metric_total[1m]) * 60)",
+          "legendFormat": "input tokens/min",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(litellm_output_tokens_metric_total[1m]) * 60)",
+          "legendFormat": "output tokens/min",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Spend — $ / min by model",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 56, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "sum by (requested_model) (rate(litellm_spend_metric_total[1m]) * 60)",
+          "legendFormat": "{{requested_model}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "currencyUSD" } }
+    },
+    {
+      "id": 21,
+      "title": "Guardrails — Requests / min by name",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 64, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "sum by (guardrail_name, status) (rate(litellm_guardrail_requests_total[1m]) * 60)",
+          "legendFormat": "{{guardrail_name}} {{status}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Guardrails — Latency p95 + Errors",
+      "type": "timeseries",
+      "gridPos": { "x": 8, "y": 64, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (le, guardrail_name) (rate(litellm_guardrail_latency_seconds_bucket[5m])))",
+          "legendFormat": "p95 {{guardrail_name}}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (guardrail_name) (rate(litellm_guardrail_errors_total[1m]) * 60)",
+          "legendFormat": "errors {{guardrail_name}}",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "id": 23,
+      "title": "Queue — Time p95 + Callback Failures",
+      "type": "timeseries",
+      "gridPos": { "x": 16, "y": 64, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(litellm_request_queue_time_seconds_bucket[5m])))",
+          "legendFormat": "queue time p95",
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (callback_name) (rate(litellm_callback_logging_failures_metric_total[1m]) * 60)",
+          "legendFormat": "callback failures {{callback_name}}",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" } }
     }
   ],
   "templating": {

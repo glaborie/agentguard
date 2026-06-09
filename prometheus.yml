@@ -17,3 +17,8 @@ scrape_configs:
     static_configs:
       - targets: ['rag-api:8001']
     metrics_path: /metrics
+
+  - job_name: 'litellm'
+    static_configs:
+      - targets: ['litellm:4000']
+    metrics_path: /metrics
