@@ -1,0 +1,436 @@
+{
+  "version": 3,
+  "title": "AgentGuard — LLM Observability",
+  "description": "LLM latency, token usage, guardrail blocks, cache hits, and error rates. Stream: agentguard (OTel traces via OTLP).",
+  "role": "",
+  "owner": "",
+  "panels": [
+    {
+      "id": "Panel_1",
+      "type": "line",
+      "title": "Request Rate (spans/min)",
+      "description": "Total LLM span count over time.",
+      "config": {
+        "show_legends": true,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT histogram(_timestamp, '1 minute') AS x_axis_1, count(*) AS y_axis_1 FROM \"agentguard\" WHERE operation_name LIKE '%ChatCompletion%' OR operation_name LIKE '%litellm%' GROUP BY x_axis_1 ORDER BY x_axis_1",
+          "fields": {
+            "x": [
+              {
+                "label": "Timestamp",
+                "alias": "x_axis_1",
+                "column": "_timestamp",
+                "color": null,
+                "aggregationFunction": "histogram"
+              }
+            ],
+            "y": [
+              {
+                "label": "Requests/min",
+                "alias": "y_axis_1",
+                "column": "*",
+                "color": "#5960b2",
+                "aggregationFunction": "count"
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "line",
+            "weight_fixed": 1,
+            "limit": 0
+          }
+        }
+      ],
+      "layout": { "x": 0, "y": 0, "w": 12, "h": 7, "i": "1" },
+      "htmlContent": "",
+      "markdownContent": ""
+    },
+    {
+      "id": "Panel_2",
+      "type": "line",
+      "title": "LLM Latency p50 / p95 / p99 (ms)",
+      "description": "Span duration percentiles for LLM calls. duration_micro / 1000 = ms.",
+      "config": {
+        "show_legends": true,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT histogram(_timestamp, '5 minute') AS x_axis_1, approx_percentile_cont(duration_micro / 1000.0, 0.50) AS p50_ms, approx_percentile_cont(duration_micro / 1000.0, 0.95) AS p95_ms, approx_percentile_cont(duration_micro / 1000.0, 0.99) AS p99_ms FROM \"agentguard\" WHERE operation_name LIKE '%ChatCompletion%' OR operation_name LIKE '%litellm%' GROUP BY x_axis_1 ORDER BY x_axis_1",
+          "fields": {
+            "x": [
+              {
+                "label": "Timestamp",
+                "alias": "x_axis_1",
+                "column": "_timestamp",
+                "color": null,
+                "aggregationFunction": "histogram"
+              }
+            ],
+            "y": [
+              {
+                "label": "p50 (ms)",
+                "alias": "p50_ms",
+                "column": "duration_micro",
+                "color": "#38a169",
+                "aggregationFunction": "p50"
+              },
+              {
+                "label": "p95 (ms)",
+                "alias": "p95_ms",
+                "column": "duration_micro",
+                "color": "#dd6b20",
+                "aggregationFunction": "p95"
+              },
+              {
+                "label": "p99 (ms)",
+                "alias": "p99_ms",
+                "column": "duration_micro",
+                "color": "#e53e3e",
+                "aggregationFunction": "p99"
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "line",
+            "weight_fixed": 1,
+            "limit": 0
+          }
+        }
+      ],
+      "layout": { "x": 12, "y": 0, "w": 12, "h": 7, "i": "2" },
+      "htmlContent": "",
+      "markdownContent": ""
+    },
+    {
+      "id": "Panel_3",
+      "type": "bar",
+      "title": "Latency p50/p95/p99 by Model",
+      "description": "LLM call latency broken down by model name.",
+      "config": {
+        "show_legends": true,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT \"attributes.llm.model_name\" AS model, approx_percentile_cont(duration_micro / 1000.0, 0.50) AS p50_ms, approx_percentile_cont(duration_micro / 1000.0, 0.95) AS p95_ms, approx_percentile_cont(duration_micro / 1000.0, 0.99) AS p99_ms FROM \"agentguard\" WHERE \"attributes.llm.model_name\" IS NOT NULL GROUP BY model ORDER BY p95_ms DESC",
+          "fields": {
+            "x": [
+              {
+                "label": "Model",
+                "alias": "model",
+                "column": "attributes.llm.model_name",
+                "color": null,
+                "aggregationFunction": null
+              }
+            ],
+            "y": [
+              {
+                "label": "p50 (ms)",
+                "alias": "p50_ms",
+                "column": "duration_micro",
+                "color": "#38a169",
+                "aggregationFunction": "p50"
+              },
+              {
+                "label": "p95 (ms)",
+                "alias": "p95_ms",
+                "column": "duration_micro",
+                "color": "#dd6b20",
+                "aggregationFunction": "p95"
+              },
+              {
+                "label": "p99 (ms)",
+                "alias": "p99_ms",
+                "column": "duration_micro",
+                "color": "#e53e3e",
+                "aggregationFunction": "p99"
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "bar",
+            "weight_fixed": 1,
+            "limit": 10
+          }
+        }
+      ],
+      "layout": { "x": 0, "y": 7, "w": 12, "h": 7, "i": "3" },
+      "htmlContent": "",
+      "markdownContent": ""
+    },
+    {
+      "id": "Panel_4",
+      "type": "area",
+      "title": "Token Usage Over Time",
+      "description": "Total tokens (prompt + completion) per 5-minute window.",
+      "config": {
+        "show_legends": true,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT histogram(_timestamp, '5 minute') AS x_axis_1, sum(CAST(\"attributes.llm.usage.prompt_tokens\" AS BIGINT)) AS prompt_tokens, sum(CAST(\"attributes.llm.usage.completion_tokens\" AS BIGINT)) AS completion_tokens FROM \"agentguard\" WHERE \"attributes.llm.usage.total_tokens\" IS NOT NULL GROUP BY x_axis_1 ORDER BY x_axis_1",
+          "fields": {
+            "x": [
+              {
+                "label": "Timestamp",
+                "alias": "x_axis_1",
+                "column": "_timestamp",
+                "color": null,
+                "aggregationFunction": "histogram"
+              }
+            ],
+            "y": [
+              {
+                "label": "Prompt Tokens",
+                "alias": "prompt_tokens",
+                "column": "attributes.llm.usage.prompt_tokens",
+                "color": "#5960b2",
+                "aggregationFunction": "sum"
+              },
+              {
+                "label": "Completion Tokens",
+                "alias": "completion_tokens",
+                "column": "attributes.llm.usage.completion_tokens",
+                "color": "#38a169",
+                "aggregationFunction": "sum"
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "area",
+            "weight_fixed": 1,
+            "limit": 0
+          }
+        }
+      ],
+      "layout": { "x": 12, "y": 7, "w": 12, "h": 7, "i": "4" },
+      "htmlContent": "",
+      "markdownContent": ""
+    },
+    {
+      "id": "Panel_5",
+      "type": "line",
+      "title": "Error Rate by Service",
+      "description": "Spans with status_code=2 (ERROR) grouped by service name.",
+      "config": {
+        "show_legends": true,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT histogram(_timestamp, '5 minute') AS x_axis_1, service_name, count(*) AS error_count FROM \"agentguard\" WHERE status_code = 2 GROUP BY x_axis_1, service_name ORDER BY x_axis_1",
+          "fields": {
+            "x": [
+              {
+                "label": "Timestamp",
+                "alias": "x_axis_1",
+                "column": "_timestamp",
+                "color": null,
+                "aggregationFunction": "histogram"
+              }
+            ],
+            "y": [
+              {
+                "label": "Errors",
+                "alias": "error_count",
+                "column": "*",
+                "color": "#e53e3e",
+                "aggregationFunction": "count"
+              }
+            ],
+            "breakdown": [
+              {
+                "label": "Service",
+                "alias": "service_name",
+                "column": "service_name",
+                "color": null,
+                "aggregationFunction": null
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "line",
+            "weight_fixed": 1,
+            "limit": 0
+          }
+        }
+      ],
+      "layout": { "x": 0, "y": 14, "w": 12, "h": 7, "i": "5" },
+      "htmlContent": "",
+      "markdownContent": ""
+    },
+    {
+      "id": "Panel_6",
+      "type": "line",
+      "title": "Guardrail Block Rate",
+      "description": "Spans from GUARDRAIL-kind or injection/toxicity/PII guard operations. Proxy blocks = HTTP 400/403 which appear as error spans.",
+      "config": {
+        "show_legends": true,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT histogram(_timestamp, '5 minute') AS x_axis_1, count(*) AS blocked FROM \"agentguard\" WHERE (operation_name LIKE '%guardrail%' OR operation_name LIKE '%injection%' OR operation_name LIKE '%toxicity%' OR operation_name LIKE '%pii%') AND status_code = 2 GROUP BY x_axis_1 ORDER BY x_axis_1",
+          "fields": {
+            "x": [
+              {
+                "label": "Timestamp",
+                "alias": "x_axis_1",
+                "column": "_timestamp",
+                "color": null,
+                "aggregationFunction": "histogram"
+              }
+            ],
+            "y": [
+              {
+                "label": "Blocked",
+                "alias": "blocked",
+                "column": "*",
+                "color": "#e53e3e",
+                "aggregationFunction": "count"
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "line",
+            "weight_fixed": 1,
+            "limit": 0
+          }
+        }
+      ],
+      "layout": { "x": 12, "y": 14, "w": 12, "h": 7, "i": "6" },
+      "htmlContent": "",
+      "markdownContent": ""
+    },
+    {
+      "id": "Panel_7",
+      "type": "bar",
+      "title": "Request Volume by Model",
+      "description": "Total LLM spans per model (last time window).",
+      "config": {
+        "show_legends": false,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT \"attributes.llm.model_name\" AS model, count(*) AS requests FROM \"agentguard\" WHERE \"attributes.llm.model_name\" IS NOT NULL GROUP BY model ORDER BY requests DESC LIMIT 10",
+          "fields": {
+            "x": [
+              {
+                "label": "Model",
+                "alias": "model",
+                "column": "attributes.llm.model_name",
+                "color": null,
+                "aggregationFunction": null
+              }
+            ],
+            "y": [
+              {
+                "label": "Requests",
+                "alias": "requests",
+                "column": "*",
+                "color": "#5960b2",
+                "aggregationFunction": "count"
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "bar",
+            "weight_fixed": 1,
+            "limit": 10
+          }
+        }
+      ],
+      "layout": { "x": 0, "y": 21, "w": 12, "h": 7, "i": "7" },
+      "htmlContent": "",
+      "markdownContent": ""
+    },
+    {
+      "id": "Panel_8",
+      "type": "line",
+      "title": "Semantic Cache Hit Rate",
+      "description": "Cache hits vs misses from semantic cache spans. Requires SEMANTIC_CACHE_ENABLED=true.",
+      "config": {
+        "show_legends": true,
+        "legends_position": "bottom"
+      },
+      "queryType": "sql",
+      "queries": [
+        {
+          "query": "SELECT histogram(_timestamp, '5 minute') AS x_axis_1, sum(CASE WHEN operation_name LIKE '%cache_hit%' OR \"attributes.cache.hit\" = 'true' THEN 1 ELSE 0 END) AS hits, sum(CASE WHEN operation_name LIKE '%cache_miss%' OR (operation_name LIKE '%cache%' AND (\"attributes.cache.hit\" = 'false' OR \"attributes.cache.hit\" IS NULL)) THEN 1 ELSE 0 END) AS misses FROM \"agentguard\" WHERE operation_name LIKE '%cache%' OR \"attributes.cache.hit\" IS NOT NULL GROUP BY x_axis_1 ORDER BY x_axis_1",
+          "fields": {
+            "x": [
+              {
+                "label": "Timestamp",
+                "alias": "x_axis_1",
+                "column": "_timestamp",
+                "color": null,
+                "aggregationFunction": "histogram"
+              }
+            ],
+            "y": [
+              {
+                "label": "Cache Hits",
+                "alias": "hits",
+                "column": "hits",
+                "color": "#38a169",
+                "aggregationFunction": "sum"
+              },
+              {
+                "label": "Cache Misses",
+                "alias": "misses",
+                "column": "misses",
+                "color": "#a0aec0",
+                "aggregationFunction": "sum"
+              }
+            ],
+            "z": [],
+            "filter": []
+          },
+          "config": {
+            "promql_legend": "",
+            "layer_type": "line",
+            "weight_fixed": 1,
+            "limit": 0
+          }
+        }
+      ],
+      "layout": { "x": 12, "y": 21, "w": 12, "h": 7, "i": "8" },
+      "htmlContent": "",
+      "markdownContent": ""
+    }
+  ]
+}
