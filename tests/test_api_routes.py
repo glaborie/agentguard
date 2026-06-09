@@ -35,6 +35,11 @@ async def _qdrant_down(name, url, headers=None):
 # ── /health ───────────────────────────────────────────────────────────────────
 
 class TestHealthRoute:
+    def setup_method(self):
+        import app.api.services.health_service as hs
+        hs._cached_checks = None
+        hs._cached_at = 0.0
+
     def test_all_healthy_returns_200(self, client):
         with patch("app.api.services.health_service._probe", _all_ok):
             r = client.get("/health")
