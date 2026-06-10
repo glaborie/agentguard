@@ -72,7 +72,7 @@ echo "done"
 echo -n "[1/6] Upserting alert template ... "
 _put "$ZO_ORG/alerts/templates/agentguard-webhook" '{
   "name": "agentguard-webhook",
-  "body": "{\"alert\": \"{alert_name}\", \"org\": \"{org_name}\", \"stream\": \"{stream_name}\", \"condition\": \"{alert_operator} {alert_threshold}\", \"value\": \"{alert_value}\", \"start\": \"{alert_start_time}\", \"url\": \"{alert_url}\"}",
+  "body": "{\"topic\": \"agentguard-alerts-abc123\", \"title\": \"AgentGuard: {alert_name}\", \"message\": \"Condition: {alert_operator} {alert_threshold}\\nValue: {alert_value}\\nTime: {alert_start_time}\\nDetails: {alert_url}\", \"tags\": [\"warning\"]}",
   "type": "http"
 }'
 
@@ -275,14 +275,14 @@ _post "v2/$ZO_ORG/alerts" '{
     "threshold": 1,
     "frequency": 2,
     "frequency_type": "minutes",
-    "silence": 10,
+    "silence": 1,
     "timezone": "UTC",
     "tolerance_in_secs": null
   },
   "destinations": ["agentguard-webhook"],
   "context_attributes": {},
   "row_template": "",
-  "description": "Fires when any guardrail block appears in app logs within 5 min. Log-based — catches prompt injection, toxicity, and semantic guard blocks regardless of OTel span presence.",
+  "description": "Fires when any guardrail block appears in app logs within 5 min. Log-based — catches all guard types. Notification via ntfy template.",
   "enabled": true,
   "tz_offset": 0
 }'
