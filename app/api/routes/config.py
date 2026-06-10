@@ -150,6 +150,30 @@ _DASHBOARD_HTML = """<!DOCTYPE html>
       </div>
     </div>
 
+    <!-- Hybrid Search -->
+    <div class="card">
+      <div class="card-title"><span class="dot dot-blue"></span>Hybrid Search</div>
+      <div class="row">
+        <div class="row-label">Enabled<small>BM25 + vector RRF fusion</small></div>
+        <label class="toggle">
+          <input type="checkbox" id="hybrid_search_enabled" onchange="save('hybrid_search_enabled', this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="row">
+        <div class="row-label">Vector weight<small>0.0 – 1.0</small></div>
+        <input type="number" class="num-input" id="hybrid_search_vector_weight" min="0" max="1" step="0.05" onchange="save('hybrid_search_vector_weight', parseFloat(this.value))">
+      </div>
+      <div class="row">
+        <div class="row-label">BM25 weight<small>0.0 – 1.0</small></div>
+        <input type="number" class="num-input" id="hybrid_search_bm25_weight" min="0" max="1" step="0.05" onchange="save('hybrid_search_bm25_weight', parseFloat(this.value))">
+      </div>
+      <div class="row">
+        <div class="row-label">RRF constant<small>rank fusion smoothing (default 60)</small></div>
+        <input type="number" class="num-input" id="hybrid_search_rrf_c" min="1" max="200" step="1" onchange="save('hybrid_search_rrf_c', parseInt(this.value))">
+      </div>
+    </div>
+
     <!-- LLM & Observability -->
     <div class="card">
       <div class="card-title"><span class="dot dot-purple"></span>LLM &amp; Observability</div>
@@ -192,7 +216,7 @@ _DASHBOARD_HTML = """<!DOCTYPE html>
 <div class="toast" id="toast"></div>
 
 <script>
-const BOOL_KEYS = ['semantic_guard_enabled','toxicity_guard_enabled','semantic_cache_enabled','otel_enabled'];
+const BOOL_KEYS = ['semantic_guard_enabled','toxicity_guard_enabled','semantic_cache_enabled','otel_enabled','hybrid_search_enabled'];
 
 function showToast(msg, type='ok') {
   const t = document.getElementById('toast');
