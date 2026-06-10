@@ -57,7 +57,7 @@ RAG + agentic assistant over NorthstarCRM synthetic knowledge base, with full ob
 - `app/cli/app.py` - Argument parser and dispatch. `_build_parser()` calls each command module's `register(sub)`; `main()` calls `configure_logging()` then dispatches via `args.func(args)`.
 - `app/cli/commands/` - One module per command domain: `ingest.py`, `query.py`, `agent.py`, `evaluate.py`, `experiment.py`, `dataset.py`, `regression.py`, `benchmark.py`, `red_team.py`. Each exposes `register(sub)` and command functions. All call through domain service wrappers.
 - `app/api/__init__.py` - Lazy-loads FastAPI `app` object via `__getattr__` so importing `app.api.services.*` does not require fastapi. `uvicorn app.api:app` still works.
-- `app/api/app.py` - `create_app()` factory: builds FastAPI app, registers CORS middleware and all routers, sets up OTel in lifespan.
+- `app/api/app.py` - `create_app()` factory: builds FastAPI app, registers CORS middleware and all routers, sets up OTel in lifespan. Lifespan also calls `_warmup_bm25()`: when `hybrid_search_enabled=True`, runs `bm25_index.build_or_load()` in a thread executor at startup so the first agent/RAG query never pays the full Qdrant-scroll + BM25-build latency. Non-fatal — logs a warning and continues if Qdrant is unreachable or collection is empty.
 - `app/api/schemas.py` - `Message` and `ChatRequest` Pydantic models.
 - `app/api/streaming.py` - `stream_from_result()` SSE generator.
 - `app/api/routes/` - Thin handlers: `health.py`, `models.py`, `webhook.py`, `chat.py`, `config.py`. Each validates request, calls one service function, returns result. `config.py` serves dashboard HTML at `GET /dashboard` and REST config API at `GET/PATCH /api/config` + `POST /api/config/reset`.
