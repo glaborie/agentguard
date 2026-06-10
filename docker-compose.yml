@@ -388,9 +388,13 @@ services:
     deploy: *deploy-limits
     pull_policy: if_not_present
     volumes:
+      - ./app:/app/app
+      - ./scripts:/app/scripts
+      - ./guardrails:/app/guardrails
       - ./runtime_config.json:/app/runtime_config.json
     env_file: .env
     environment:
+      WATCHFILES_FORCE_POLLING: "true"
       LITELLM_BASE_URL: http://litellm:4000
       QDRANT_URL: http://qdrant:6333
       LANGFUSE_BASE_URL: http://langfuse-web:3000
