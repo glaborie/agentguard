@@ -461,6 +461,9 @@ services:
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
+    volumes:
+      - ./app:/app/app
+      - ./scripts:/app/scripts
     env_file: .env
     environment:
       LANGFUSE_BASE_URL: http://langfuse-web:3000
@@ -468,6 +471,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       OPENWEBUI_BASE_URL: http://openwebui:8080
       PYTHONUNBUFFERED: "1"
+      WATCHFILES_FORCE_POLLING: "true"
       TZ: UTC
     depends_on:
       langfuse-web:
