@@ -84,7 +84,8 @@ if [ -z "$ALERT_WEBHOOK_URL" ]; then
   ALERT_WEBHOOK_URL="https://example.com/webhook-placeholder"
 fi
 
-echo -n "[2/6] Creating webhook destination ... "
+echo -n "[2/6] Upserting webhook destination ... "
+curl -s $AUTH -X DELETE "$BASE/$ZO_ORG/alerts/destinations/agentguard-webhook" >/dev/null 2>&1 || true
 _post "$ZO_ORG/alerts/destinations" "{
   \"name\": \"agentguard-webhook\",
   \"url\": \"$ALERT_WEBHOOK_URL\",
