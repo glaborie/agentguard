@@ -105,6 +105,8 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ---
 
-### [ ] #12 Prometheus metrics ingestion (~1h)
+### [done] #12 Prometheus metrics ingestion (~1h)
 
 **Why:** rag-api exposes `/metrics` (prometheus_fastapi_instrumentator) and LiteLLM exposes Prometheus metrics. OpenObserve can scrape both, consolidating metrics + traces + logs in one platform.
+
+**How:** Added `remote_write` block to `prometheus.yml` pointing at OpenObserve's Prometheus ingestion endpoint (`/api/default/prometheus/api/v1/write`). Credentials read from `ZO_ROOT_USER_EMAIL`/`ZO_ROOT_USER_PASSWORD` env vars (already set in `.env`). Prometheus scrapes rag-api, litellm, and otel-collector every 15s and forwards all time-series to OpenObserve. Requires infra stack running (`docker compose -f docker-compose.infra.yml up -d`). In OpenObserve: Streams → `prometheus` stream type to query metrics.
