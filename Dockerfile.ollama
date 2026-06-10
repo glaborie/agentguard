@@ -1,0 +1,8 @@
+FROM ollama/ollama:0.20.7
+
+# Pull nomic-embed-text at build time so first boot needs no download.
+# ollama serve must run during build; RUN layer captures the model files.
+RUN ollama serve & \
+    sleep 5 && \
+    ollama pull nomic-embed-text && \
+    pkill ollama || true

@@ -271,7 +271,9 @@ services:
       - langfuse
 
   ollama:
-    image: ollama/ollama:0.20.7
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
     init: true
     restart: always
     logging: *default-logging
