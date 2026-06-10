@@ -53,6 +53,21 @@ _put() {
 echo "=== AgentGuard OpenObserve Alert Setup ==="
 echo "Target: $OPENOBSERVE_URL (org: $ZO_ORG)"
 
+# OO v2 ?overwrite=true creates duplicates instead of replacing by name.
+# Delete all existing AgentGuard alerts first so re-runs stay idempotent.
+echo -n "[0/6] Deleting existing agentguard alerts ... "
+EXISTING=$(curl -s $AUTH "$BASE/v2/$ZO_ORG/alerts" 2>/dev/null)
+echo "$EXISTING" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+for a in d.get('list',[]):
+    if a['name'].startswith('agentguard-'):
+        print(a['alert_id'])
+" 2>/dev/null | while read -r aid; do
+  curl -s $AUTH -X DELETE "$BASE/v2/$ZO_ORG/alerts/$aid" >/dev/null 2>&1
+done
+echo "done"
+
 # ── 1. Template ──────────────────────────────────────────────────────────────
 echo -n "[1/6] Upserting alert template ... "
 _put "$ZO_ORG/alerts/templates/agentguard-webhook" '{
@@ -83,7 +98,7 @@ _post "$ZO_ORG/alerts/destinations" "{
 # ── 3. Alert: Error rate spike ────────────────────────────────────────────────
 # Fires when ≥5 ERROR spans appear within a 5-minute window, checked every 5 min.
 echo -n "[3/6] Creating alert: error-rate-spike ... "
-_post "v2/$ZO_ORG/alerts?overwrite=true" '{
+_post "v2/$ZO_ORG/alerts" '{
   "name": "agentguard-error-rate-spike",
   "stream_type": "traces",
   "stream_name": "default",
@@ -128,7 +143,7 @@ _post "v2/$ZO_ORG/alerts?overwrite=true" '{
 # ── 4. Alert: High LLM latency ────────────────────────────────────────────────
 # Fires when avg ChatOpenAI duration exceeds 30s (30_000_000 µs) in 10-min window.
 echo -n "[4/6] Creating alert: high-llm-latency ... "
-_post "v2/$ZO_ORG/alerts?overwrite=true" '{
+_post "v2/$ZO_ORG/alerts" '{
   "name": "agentguard-high-llm-latency",
   "stream_type": "traces",
   "stream_name": "default",
@@ -174,7 +189,7 @@ _post "v2/$ZO_ORG/alerts?overwrite=true" '{
 # Fires when >=3 RunnableSequence spans end in ERROR within 5 min (proxy returning 400/403
 # causes the chain span to fail — no dedicated guardrail span in OTel traces).
 echo -n "[5/6] Creating alert: guardrail-block-spike ... "
-_post "v2/$ZO_ORG/alerts?overwrite=true" '{
+_post "v2/$ZO_ORG/alerts" '{
   "name": "agentguard-guardrail-block-spike",
   "stream_type": "traces",
   "stream_name": "default",
@@ -221,7 +236,7 @@ _post "v2/$ZO_ORG/alerts?overwrite=true" '{
 # score_guardrail_block() logs WARNING "guardrail block | type=..." via Docker logs
 # → Promtail → OO logs stream. Fires on first block (threshold=1) — real-time signal.
 echo -n "[6/6] Creating alert: guardrail-block-log ... "
-_post "v2/$ZO_ORG/alerts?overwrite=true" '{
+_post "v2/$ZO_ORG/alerts" '{
   "name": "agentguard-guardrail-block-log",
   "stream_type": "logs",
   "stream_name": "default",
