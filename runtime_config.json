@@ -11,5 +11,9 @@
   "langfuse_tracing_enabled": true,
   "otel_enabled": true,
   "default_model": "openrouter-gemini-flash",
-  "agent_model": "openrouter-mistral"
+  "agent_model": "openrouter-mistral",
+  "hybrid_search_enabled": true,
+  "hybrid_search_vector_weight": 0.5,
+  "hybrid_search_bm25_weight": 0.5,
+  "hybrid_search_rrf_c": 60
 }

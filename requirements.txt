@@ -7,6 +7,7 @@ langchain-community>=0.3,<1.0
 openai>=1.0
 qdrant-client>=1.12
 pydantic-settings>=2.0
+rank-bm25>=0.2.2
 python-dotenv>=1.0
 beautifulsoup4>=4.12
 requests>=2.31

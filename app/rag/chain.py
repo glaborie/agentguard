@@ -15,6 +15,7 @@ from pydantic import ConfigDict
 from qdrant_client import QdrantClient
 
 from app.config import settings
+from app.core.feature_flags import get_flags
 from app.tracing import get_langfuse_client
 
 RAG_SYSTEM_PROMPT = """\
@@ -83,7 +84,15 @@ def get_llm(
     )
 
 
-def get_retriever(k: int = 6) -> ScoredRetriever:
+def get_retriever(k: int = 6) -> BaseRetriever:
+    """Build the active retriever.
+
+    Returns a ``HybridRetriever`` (vector + BM25 via RRF) when the
+    ``hybrid_search_enabled`` flag is on — the default — and falls back to the plain
+    ``ScoredRetriever`` when the flag is off. ``format_docs`` and ``build_rag_chain``
+    are unchanged; both retriever types emit ``Document`` objects with the same
+    ``page_content`` / ``metadata`` shape.
+    """
     embeddings = OpenAIEmbeddings(
         model=settings.embedding_model,
         openai_api_base=f"{settings.litellm_base_url}/v1",
@@ -95,7 +104,28 @@ def get_retriever(k: int = 6) -> ScoredRetriever:
         collection_name=settings.qdrant_collection,
         embedding=embeddings,
     )
-    return ScoredRetriever(vector_store=vector_store, k=k)
+    vector_retriever = ScoredRetriever(vector_store=vector_store, k=k)
+
+    flags = get_flags()
+    if not flags.get("hybrid_search_enabled", True):
+        return vector_retriever
+
+    # Lazy import: only the hybrid code path pulls in rank_bm25/langchain-community BM25.
+    from app.rag.bm25_index import build_or_load
+    from app.rag.hybrid_retriever import HybridRetriever
+
+    bm25_retriever = build_or_load(client, settings.qdrant_collection)
+    # Cast k up so each retriever returns enough candidates for RRF to be useful;
+    # the ensemble's fused list is then sliced back to ``k`` by HybridRetriever.
+    bm25_retriever.k = max(k, 12)
+    return HybridRetriever(
+        vector_retriever=vector_retriever,
+        bm25_retriever=bm25_retriever,
+        k=k,
+        vector_weight=float(flags.get("hybrid_search_vector_weight", 0.5)),
+        bm25_weight=float(flags.get("hybrid_search_bm25_weight", 0.5)),
+        rrf_c=int(flags.get("hybrid_search_rrf_c", 60)),
+    )
 
 
 def format_docs(docs) -> str:
