@@ -34,13 +34,16 @@ test-all-cov: ## Run full test suite with coverage report
 
 # ── per-module targets ────────────────────────────────────────────────────────
 .PHONY: test-agent
-test-agent: ## Run agent tests (graph, tools, tool_guard, agent integration)
+test-agent: ## Run agent tests (graph, tools, tool_guard, agent integration, llm)
 	$(PYTEST) tests/test_agent_graph.py tests/test_agent_tools.py \
-	          tests/test_agent_tool_guard.py tests/test_agent_integration.py -v
+	          tests/test_agent_tool_guard.py tests/test_agent_integration.py \
+	          tests/test_agent_llm.py -v
 
 .PHONY: test-rag
-test-rag: ## Run RAG pipeline tests (chain, ingest)
-	$(PYTEST) tests/test_chain.py tests/test_ingest.py -v
+test-rag: ## Run RAG pipeline tests (chain, ingest, hybrid retriever, bm25)
+	$(PYTEST) tests/test_chain.py tests/test_ingest.py \
+	          tests/test_hybrid_retriever.py tests/test_bm25_warmup.py \
+	          tests/test_bm25_index.py -v
 
 .PHONY: test-api
 test-api: ## Run API route and service tests
@@ -58,6 +61,14 @@ test-guardrails: ## Run guardrail and semantic cache tests
 .PHONY: test-cli
 test-cli: ## Run CLI tests
 	$(PYTEST) tests/test_cli.py -v
+
+.PHONY: test-red-team
+test-red-team: ## Run red team adversarial tests (requires Docker stack)
+	$(PYTEST) tests/test_red_team.py -v
+
+.PHONY: test-integration-end-to-end
+test-integration-end-to-end: ## Run end-to-end integration tests (requires Docker stack)
+	$(PYTEST) tests/test_integration.py -v
 
 .PHONY: test-config
 test-config: ## Run config tests
