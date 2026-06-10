@@ -2,7 +2,7 @@
   "semantic_guard_enabled": false,
   "semantic_guard_model": "openrouter-gemini-flash",
   "semantic_guard_timeout": 8.0,
-  "toxicity_guard_enabled": false,
+  "toxicity_guard_enabled": true,
   "toxicity_guard_model": "openrouter-gemini-flash",
   "toxicity_guard_timeout": 8.0,
   "semantic_cache_enabled": true,

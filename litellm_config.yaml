@@ -47,3 +47,8 @@ general_settings:
     - "/model_group/info"
     - "/health/liveliness"
     - "/health/readiness"
+  user_header_mappings:
+    - header_name: X-OpenWebUI-User-Id
+      litellm_user_role: internal_user
+    - header_name: X-OpenWebUI-User-Email
+      litellm_user_role: customer
