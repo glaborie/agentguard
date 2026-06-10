@@ -54,7 +54,7 @@ echo "=== AgentGuard OpenObserve Alert Setup ==="
 echo "Target: $OPENOBSERVE_URL (org: $ZO_ORG)"
 
 # ── 1. Template ──────────────────────────────────────────────────────────────
-echo -n "[1/5] Upserting alert template ... "
+echo -n "[1/6] Upserting alert template ... "
 _put "$ZO_ORG/alerts/templates/agentguard-webhook" '{
   "name": "agentguard-webhook",
   "body": "{\"alert\": \"{alert_name}\", \"org\": \"{org_name}\", \"stream\": \"{stream_name}\", \"condition\": \"{alert_operator} {alert_threshold}\", \"value\": \"{alert_value}\", \"start\": \"{alert_start_time}\", \"url\": \"{alert_url}\"}",
@@ -69,7 +69,7 @@ if [ -z "$ALERT_WEBHOOK_URL" ]; then
   ALERT_WEBHOOK_URL="https://example.com/webhook-placeholder"
 fi
 
-echo -n "[2/5] Creating webhook destination ... "
+echo -n "[2/6] Creating webhook destination ... "
 _post "$ZO_ORG/alerts/destinations" "{
   \"name\": \"agentguard-webhook\",
   \"url\": \"$ALERT_WEBHOOK_URL\",
@@ -82,7 +82,7 @@ _post "$ZO_ORG/alerts/destinations" "{
 
 # ── 3. Alert: Error rate spike ────────────────────────────────────────────────
 # Fires when ≥5 ERROR spans appear within a 5-minute window, checked every 5 min.
-echo -n "[3/5] Creating alert: error-rate-spike ... "
+echo -n "[3/6] Creating alert: error-rate-spike ... "
 _post "v2/$ZO_ORG/alerts?overwrite=true" '{
   "name": "agentguard-error-rate-spike",
   "stream_type": "traces",
@@ -127,7 +127,7 @@ _post "v2/$ZO_ORG/alerts?overwrite=true" '{
 
 # ── 4. Alert: High LLM latency ────────────────────────────────────────────────
 # Fires when avg ChatOpenAI duration exceeds 30s (30_000_000 µs) in 10-min window.
-echo -n "[4/5] Creating alert: high-llm-latency ... "
+echo -n "[4/6] Creating alert: high-llm-latency ... "
 _post "v2/$ZO_ORG/alerts?overwrite=true" '{
   "name": "agentguard-high-llm-latency",
   "stream_type": "traces",
@@ -173,7 +173,7 @@ _post "v2/$ZO_ORG/alerts?overwrite=true" '{
 # ── 5. Alert: Guardrail block spike ───────────────────────────────────────────
 # Fires when >=3 RunnableSequence spans end in ERROR within 5 min (proxy returning 400/403
 # causes the chain span to fail — no dedicated guardrail span in OTel traces).
-echo -n "[5/5] Creating alert: guardrail-block-spike ... "
+echo -n "[5/6] Creating alert: guardrail-block-spike ... "
 _post "v2/$ZO_ORG/alerts?overwrite=true" '{
   "name": "agentguard-guardrail-block-spike",
   "stream_type": "traces",
@@ -212,6 +212,53 @@ _post "v2/$ZO_ORG/alerts?overwrite=true" '{
   "context_attributes": {},
   "row_template": "",
   "description": "Fires when >=3 RAG chain requests fail in 5 min — indicates guardrail blocking spike or attack.",
+  "enabled": true,
+  "tz_offset": 0
+}'
+
+
+# ── 6. Alert: Guardrail block in logs (log-based, catches all guard types) ────
+# score_guardrail_block() logs WARNING "guardrail block | type=..." via Docker logs
+# → Promtail → OO logs stream. Fires on first block (threshold=1) — real-time signal.
+echo -n "[6/6] Creating alert: guardrail-block-log ... "
+_post "v2/$ZO_ORG/alerts?overwrite=true" '{
+  "name": "agentguard-guardrail-block-log",
+  "stream_type": "logs",
+  "stream_name": "default",
+  "is_real_time": false,
+  "query_condition": {
+    "type": "sql",
+    "sql": "SELECT count(*) AS block_count FROM \"default\" WHERE body LIKE '\''%guardrail block%'\''",
+    "conditions": null,
+    "promql": null,
+    "promql_condition": null,
+    "aggregation": {
+      "group_by": [],
+      "function": "count",
+      "having": {
+        "column": "block_count",
+        "operator": ">=",
+        "value": 1
+      }
+    },
+    "vrl_function": null,
+    "search_event_type": "alerts",
+    "multi_time_range": []
+  },
+  "trigger_condition": {
+    "period": 5,
+    "operator": ">=",
+    "threshold": 1,
+    "frequency": 2,
+    "frequency_type": "minutes",
+    "silence": 10,
+    "timezone": "UTC",
+    "tolerance_in_secs": null
+  },
+  "destinations": ["agentguard-webhook"],
+  "context_attributes": {},
+  "row_template": "",
+  "description": "Fires when any guardrail block appears in app logs within 5 min. Log-based — catches prompt injection, toxicity, and semantic guard blocks regardless of OTel span presence.",
   "enabled": true,
   "tz_offset": 0
 }'
