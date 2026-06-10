@@ -55,12 +55,12 @@ RAG + agentic assistant over NorthstarCRM synthetic knowledge base, with full ob
 - `app/core/ids.py` - `request_id()` (12-char hex, for log correlation) and `completion_id()` (OpenAI-style `chatcmpl-<hex8>`).
 - `app/main.py` - Bare entry point: `from app.cli.app import main` + `if __name__ == "__main__": main()`.
 - `app/cli/app.py` - Argument parser and dispatch. `_build_parser()` calls each command module's `register(sub)`; `main()` calls `configure_logging()` then dispatches via `args.func(args)`.
-- `app/cli/commands/` - One module per command domain: `ingest.py`, `query.py`, `agent.py`, `evaluate.py`, `experiment.py`, `dataset.py`, `regression.py`, `benchmark.py`, `red_team.py`. Each exposes `register(sub)` and command functions. All call through domain service wrappers.
+- `app/cli/commands/` - One module per command domain: `ingest.py`, `query.py`, `agent.py`, `evaluate.py`, `experiment.py`, `dataset.py`, `regression.py`, `benchmark.py`, `red_team.py`, `retrieval_debug.py`. Each exposes `register(sub)` and command functions. All call through domain service wrappers.
 - `app/api/__init__.py` - Lazy-loads FastAPI `app` object via `__getattr__` so importing `app.api.services.*` does not require fastapi. `uvicorn app.api:app` still works.
 - `app/api/app.py` - `create_app()` factory: builds FastAPI app, registers CORS middleware and all routers, sets up OTel in lifespan. Lifespan also calls `_warmup_bm25()`: when `hybrid_search_enabled=True`, runs `bm25_index.build_or_load()` in a thread executor at startup so the first agent/RAG query never pays the full Qdrant-scroll + BM25-build latency. Non-fatal — logs a warning and continues if Qdrant is unreachable or collection is empty.
 - `app/api/schemas.py` - `Message` and `ChatRequest` Pydantic models.
 - `app/api/streaming.py` - `stream_from_result()` SSE generator.
-- `app/api/routes/` - Thin handlers: `health.py`, `models.py`, `webhook.py`, `chat.py`, `config.py`. Each validates request, calls one service function, returns result. `config.py` serves dashboard HTML at `GET /dashboard` and REST config API at `GET/PATCH /api/config` + `POST /api/config/reset`.
+- `app/api/routes/` - Thin handlers: `health.py`, `models.py`, `webhook.py`, `chat.py`, `config.py`, `retrieval.py`. Each validates request, calls one service function, returns result. `config.py` serves dashboard HTML at `GET /dashboard` and REST config API at `GET/PATCH /api/config` + `POST /api/config/reset`. `retrieval.py` exposes `POST /api/retrieval/debug` — runs a query through vector/hybrid/compare retrievers and returns ranked chunks with scores, sources, and a diff summary. Also rendered as interactive Retrieval Debug panel at bottom of `/dashboard`.
 - `app/api/services/models_service.py` - `MODELS`, `DIRECT_MODELS`, model descriptions, `get_model_list()`. Canonical location for virtual-model config (imported by `chat_service`).
 - `app/api/services/health_service.py` - `_probe(name, url)` async prober + `check_all()` aggregator.
 - `app/api/services/feedback_service.py` - `parse_feedback(payload)` normalises flat/nested Open WebUI payloads; `push_score()` writes to Langfuse; `handle_webhook()` orchestrates full flow.
@@ -120,6 +120,9 @@ python -m app.main benchmark --mode direct                        # Baseline: ba
 python -m app.main benchmark --item edge_002                      # Run a single item by ID
 python -m app.main benchmark --item edge_002 --compare           # Single item across all 3 modes
 
+python -m app.main debug-retrieval "query"                        # Show retrieved chunks with scores (compare mode)
+python -m app.main debug-retrieval "query" --mode vector --k 4   # Vector-only, top-4
+python -m app.main debug-retrieval "query" --mode hybrid --json  # Hybrid, raw JSON output
 python -m app.main red-team                                       # Probe all 4 attack types, 5 variants each
 python -m app.main red-team --attacks prompt_injection jailbreak  # Run specific attack types
 python -m app.main red-team --limit 10                           # 10 variants per attack type

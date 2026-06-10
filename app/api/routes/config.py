@@ -213,6 +213,27 @@ _DASHBOARD_HTML = """<!DOCTYPE html>
   </div>
 </div>
 
+<!-- ── Retrieval Debug ─────────────────────────────────────────────── -->
+<div class="container" style="margin-top:32px;">
+  <div class="card full" style="grid-column:1/-1">
+    <div class="card-title"><span class="dot dot-blue"></span>Retrieval Debug</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+      <input id="rd-query" type="text" placeholder="Enter a query…"
+        style="flex:1;min-width:220px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 12px;font-size:0.875rem;"
+        onkeydown="if(event.key==='Enter')runDebug()">
+      <input id="rd-k" type="number" value="6" min="1" max="20"
+        style="width:60px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:0.875rem;text-align:center;">
+      <select id="rd-mode" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:0.875rem;">
+        <option value="compare">compare</option>
+        <option value="vector">vector only</option>
+        <option value="hybrid">hybrid only</option>
+      </select>
+      <button class="btn" onclick="runDebug()">Run</button>
+    </div>
+    <div id="rd-results" style="font-size:0.8rem;color:var(--muted);">Results appear here.</div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -259,6 +280,64 @@ async function resetAll() {
   await fetch('/api/config/reset', {method: 'POST'});
   await load();
   showToast('Reset to defaults', 'ok');
+}
+
+async function runDebug() {
+  const query = document.getElementById('rd-query').value.trim();
+  if (!query) return;
+  const k = parseInt(document.getElementById('rd-k').value) || 6;
+  const mode = document.getElementById('rd-mode').value;
+  const out = document.getElementById('rd-results');
+  out.innerHTML = '<span style="color:var(--muted)">Running…</span>';
+  try {
+    const res = await fetch('/api/retrieval/debug', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({query, k, mode})
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    out.innerHTML = _renderDebug(data);
+  } catch(e) {
+    out.innerHTML = '<span style="color:var(--red)">Error: ' + e.message + '</span>';
+  }
+}
+
+function _renderDebug(data) {
+  const modes = Object.keys(data.results).filter(m => m !== 'diff');
+  let html = '';
+  for (const m of modes) {
+    const {chunks, ms} = data.results[m];
+    html += `<div style="margin-bottom:20px;">
+      <div style="font-weight:700;color:var(--text);margin-bottom:6px;text-transform:uppercase;font-size:0.7rem;letter-spacing:.08em;">${m} — ${ms} ms</div>
+      <table style="width:100%;border-collapse:collapse;font-size:0.78rem;">
+        <thead><tr style="color:var(--muted);border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:4px 8px;">#</th>
+          <th style="text-align:left;padding:4px 8px;">Score</th>
+          <th style="text-align:left;padding:4px 8px;">Source</th>
+          <th style="text-align:left;padding:4px 8px;">Preview</th>
+        </tr></thead><tbody>`;
+    for (const c of chunks) {
+      const score = c.score != null ? c.score.toFixed(4) : 'n/a';
+      const src = (c.source || '').split('/').pop();
+      const preview = (c.text || '').replace(/</g,'&lt;').replace(/\\n/g,' ').slice(0, 120);
+      html += `<tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:4px 8px;color:var(--muted);">${c.rank}</td>
+        <td style="padding:4px 8px;font-family:monospace;">${score}</td>
+        <td style="padding:4px 8px;color:var(--accent);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${c.source}">${src}</td>
+        <td style="padding:4px 8px;color:var(--text);">${preview}</td>
+      </tr>`;
+    }
+    html += '</tbody></table></div>';
+  }
+  if (data.results.diff) {
+    const d = data.results.diff;
+    html += `<div style="margin-top:8px;font-size:0.75rem;color:var(--muted);">
+      <span style="color:var(--green)">Only hybrid: </span>${d.only_hybrid.join(', ') || '—'} &nbsp;
+      <span style="color:var(--yellow)">Only vector: </span>${d.only_vector.join(', ') || '—'}
+    </div>`;
+  }
+  return html;
 }
 
 load();
