@@ -85,8 +85,16 @@ if [ -z "$ALERT_WEBHOOK_URL" ]; then
 fi
 
 echo -n "[2/6] Upserting webhook destination ... "
-curl -s $AUTH -X DELETE "$BASE/$ZO_ORG/alerts/destinations/agentguard-webhook" >/dev/null 2>&1 || true
-_post "$ZO_ORG/alerts/destinations" "{
+# Try PUT (update existing) first; fall back to POST (create new).
+_put "$ZO_ORG/alerts/destinations/agentguard-webhook" "{
+  \"name\": \"agentguard-webhook\",
+  \"url\": \"$ALERT_WEBHOOK_URL\",
+  \"method\": \"post\",
+  \"skip_tls_verify\": false,
+  \"headers\": {\"Content-Type\": \"application/json\"},
+  \"template\": \"agentguard-webhook\",
+  \"type\": \"http\"
+}" || _post "$ZO_ORG/alerts/destinations" "{
   \"name\": \"agentguard-webhook\",
   \"url\": \"$ALERT_WEBHOOK_URL\",
   \"method\": \"post\",
