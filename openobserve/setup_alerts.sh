@@ -228,7 +228,7 @@ _post "v2/$ZO_ORG/alerts?overwrite=true" '{
   "is_real_time": false,
   "query_condition": {
     "type": "sql",
-    "sql": "SELECT count(*) AS block_count FROM \"default\" WHERE body LIKE '\''%guardrail block%'\''",
+    "sql": "SELECT count(*) AS block_count FROM \"default\" WHERE message LIKE '\''%guardrail block%'\''",
     "conditions": null,
     "promql": null,
     "promql_condition": null,
