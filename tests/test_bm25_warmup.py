@@ -10,7 +10,7 @@ async def test_warmup_skipped_when_hybrid_disabled():
     with patch("app.core.feature_flags.get_flags", return_value=flags):
         from app.api.app import _warmup_bm25
         # Should return immediately, no QdrantClient instantiated
-        with patch("qdrant_client.QdrantClient") as mock_client:
+        with patch("qdrant_client.QdrantClient", create=True) as mock_client:
             await _warmup_bm25()
             mock_client.assert_not_called()
 
@@ -22,7 +22,7 @@ async def test_warmup_runs_when_hybrid_enabled():
     with (
         patch("app.core.feature_flags.get_flags", return_value=flags),
         patch("app.core.config.settings") as mock_settings,
-        patch("qdrant_client.QdrantClient"),
+        patch("qdrant_client.QdrantClient", create=True),
         patch("app.rag.bm25_index.build_or_load", return_value=mock_retriever) as mock_build,
     ):
         mock_settings.qdrant_url = "http://localhost:6333"
@@ -38,7 +38,7 @@ async def test_warmup_survives_qdrant_unreachable():
     with (
         patch("app.core.feature_flags.get_flags", return_value=flags),
         patch("app.core.config.settings") as mock_settings,
-        patch("qdrant_client.QdrantClient", side_effect=ConnectionError("unreachable")),
+        patch("qdrant_client.QdrantClient", create=True, side_effect=ConnectionError("unreachable")),
     ):
         mock_settings.qdrant_url = "http://localhost:6333"
         mock_settings.qdrant_collection = "test_col"
@@ -53,7 +53,7 @@ async def test_warmup_survives_empty_collection():
     with (
         patch("app.core.feature_flags.get_flags", return_value=flags),
         patch("app.core.config.settings") as mock_settings,
-        patch("qdrant_client.QdrantClient"),
+        patch("qdrant_client.QdrantClient", create=True),
         patch("app.rag.bm25_index.build_or_load", side_effect=Exception("collection empty")),
     ):
         mock_settings.qdrant_url = "http://localhost:6333"
