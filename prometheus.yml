@@ -23,8 +23,10 @@ scrape_configs:
       - targets: ['litellm:4000']
     metrics_path: /metrics
 
+# Prometheus does not expand env vars in config — credentials are literal.
+# Update here if ZO_ROOT_USER_EMAIL/ZO_ROOT_USER_PASSWORD change in .env.
 remote_write:
   - url: "http://openobserve:5080/api/default/prometheus/api/v1/write"
     basic_auth:
-      username: "${ZO_ROOT_USER_EMAIL}"
-      password: "${ZO_ROOT_USER_PASSWORD}"
+      username: "root@example.com"
+      password: "Complexpass#123"
