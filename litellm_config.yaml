@@ -18,6 +18,12 @@ model_list:
       api_base: https://openrouter.ai/api/v1
       api_key: os.environ/OPENROUTER_API_KEY
 
+  - model_name: openrouter-claude-haiku
+    litellm_params:
+      model: openai/anthropic/claude-haiku-4-5
+      api_base: https://openrouter.ai/api/v1
+      api_key: os.environ/OPENROUTER_API_KEY
+
 litellm_settings:
   drop_params: true
   num_retries: 3

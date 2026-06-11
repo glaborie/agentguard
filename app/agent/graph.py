@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import END, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode
 
-from app.agent.mcp_client import github_mcp_tools
+from app.agent.mcp_client import load_github_mcp_tools
 from app.agent.prompts import AGENT_SYSTEM_PROMPT
 from app.agent.tool_guard import ToolCallBlockedError, register_mcp_tools, validate_tool_call
 from app.agent.tools import ALL_TOOLS
@@ -25,9 +25,9 @@ def _get_llm(model: str | None = None) -> ChatOpenAI:
     )
 
 
-def _agent_node(state: MessagesState, llm_with_tools: Any) -> dict:
+async def _agent_node(state: MessagesState, llm_with_tools: Any) -> dict:
     messages = [SystemMessage(content=AGENT_SYSTEM_PROMPT)] + state["messages"]
-    response = llm_with_tools.invoke(messages)
+    response = await llm_with_tools.ainvoke(messages)
     return {"messages": [response]}
 
 
@@ -42,7 +42,7 @@ def _make_guarded_tool_node(tools: list) -> Any:
     """Return a guarded node that validates tool calls before dispatching."""
     tool_node = ToolNode(tools)
 
-    def guarded(state: MessagesState) -> dict:
+    async def guarded(state: MessagesState) -> dict:
         last = state["messages"][-1]
         tool_calls = getattr(last, "tool_calls", []) or []
 
@@ -64,11 +64,11 @@ def _make_guarded_tool_node(tools: list) -> Any:
             return {"messages": blocked_messages}
 
         if blocked_messages:
-            result = tool_node.invoke(state)
+            result = await tool_node.ainvoke(state)
             result["messages"] = blocked_messages + result.get("messages", [])
             return result
 
-        return tool_node.invoke(state)
+        return await tool_node.ainvoke(state)
 
     return guarded
 
@@ -89,8 +89,8 @@ def build_agent(
     llm = _get_llm(model)
     llm_with_tools = llm.bind_tools(tools)
 
-    def agent_node(state: MessagesState) -> dict:
-        return _agent_node(state, llm_with_tools)
+    async def agent_node(state: MessagesState) -> dict:
+        return await _agent_node(state, llm_with_tools)
 
     builder = StateGraph(MessagesState)
     builder.add_node("agent", agent_node)
@@ -113,22 +113,22 @@ async def run_agent_async(
     """Async version of run_agent — loads GitHub MCP tools if token configured."""
     from langchain_core.messages import HumanMessage
 
-    async with github_mcp_tools() as mcp_tools:
-        if mcp_tools:
-            register_mcp_tools([t.name for t in mcp_tools])
+    mcp_tools = await load_github_mcp_tools()
+    if mcp_tools:
+        register_mcp_tools([t.name for t in mcp_tools])
 
-        graph = build_agent(model=model, checkpointer=checkpointer, extra_tools=mcp_tools)
+    graph = build_agent(model=model, checkpointer=checkpointer, extra_tools=mcp_tools)
 
-        config: dict = {}
-        if callbacks:
-            config["callbacks"] = callbacks
-        if thread_id:
-            config["configurable"] = {"thread_id": thread_id}
+    config: dict = {}
+    if callbacks:
+        config["callbacks"] = callbacks
+    if thread_id:
+        config["configurable"] = {"thread_id": thread_id}
 
-        result = await graph.ainvoke(
-            {"messages": [HumanMessage(content=question)]},
-            config=config,
-        )
+    result = await graph.ainvoke(
+        {"messages": [HumanMessage(content=question)]},
+        config=config,
+    )
 
     last_message = result["messages"][-1]
     return last_message.content

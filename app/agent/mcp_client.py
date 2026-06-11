@@ -1,54 +1,41 @@
-"""Async context manager that provides GitHub MCP tools via langchain-mcp-adapters.
+"""GitHub MCP tool loader for the AgentGuard agent.
 
-In Docker: connects to the github-mcp sidecar via SSE (GITHUB_MCP_URL).
-On host:   spawns npx subprocess via stdio (requires Node.js).
-
-Usage:
-    async with github_mcp_tools() as tools:
-        # tools is list[BaseTool] — empty when token not configured
-        graph = build_agent(extra_tools=tools)
-        result = await graph.ainvoke(...)
+Connects to the github-mcp sidecar via streamable HTTP (GITHUB_MCP_URL).
+Host usage: set GITHUB_MCP_URL=http://localhost:8091/mcp in .env.
+Docker usage: default http://github-mcp:8080/mcp resolves via bridge network.
 """
 
 import logging
-from contextlib import asynccontextmanager
 
 from app.config import settings
 
 logger = logging.getLogger(__name__)
 
 
-@asynccontextmanager
-async def github_mcp_tools():
-    """Yield GitHub MCP tools if GITHUB_PERSONAL_ACCESS_TOKEN is configured."""
+async def load_github_mcp_tools() -> list:
+    """Return GitHub MCP tools, or empty list if token/package not configured."""
     token = settings.github_personal_access_token
     if not token:
         logger.info("GITHUB_PERSONAL_ACCESS_TOKEN not set — GitHub MCP tools disabled")
-        yield []
-        return
+        return []
 
     try:
         from langchain_mcp_adapters.client import MultiServerMCPClient
     except ImportError:
         logger.warning("langchain-mcp-adapters not installed — GitHub MCP tools disabled")
-        yield []
-        return
+        return []
 
     mcp_url = settings.github_mcp_url
     if mcp_url:
-        # Docker mode: connect to github-mcp sidecar via streamable HTTP (/mcp endpoint)
-        # The github-mcp-server HTTP mode requires Bearer token auth
-        mcp_endpoint = mcp_url.rstrip("/")
         config = {
             "github": {
                 "transport": "streamable_http",
-                "url": mcp_endpoint,
+                "url": mcp_url,
                 "headers": {"Authorization": f"Bearer {token}"},
             }
         }
-        logger.info("GitHub MCP: connecting via streamable_http to %s", mcp_endpoint)
+        logger.info("GitHub MCP: connecting via streamable_http to %s", mcp_url)
     else:
-        # Local dev mode: spawn subprocess via stdio (requires Node.js)
         config = {
             "github": {
                 "command": "npx",
@@ -60,10 +47,10 @@ async def github_mcp_tools():
         logger.info("GitHub MCP: spawning stdio subprocess")
 
     try:
-        async with MultiServerMCPClient(config) as client:
-            tools = client.get_tools()
-            logger.info("GitHub MCP tools loaded: %s", [t.name for t in tools])
-            yield tools
+        client = MultiServerMCPClient(config)
+        tools = await client.get_tools()
+        logger.info("GitHub MCP tools loaded: %s", [t.name for t in tools])
+        return tools
     except Exception as exc:
         logger.error("GitHub MCP client failed: %s", exc)
-        yield []
+        return []
