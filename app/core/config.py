@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     # OpenRouter (optional)
     openrouter_api_key: str = ""
 
+    # GitHub MCP (optional — enables GitHub tools in agent)
+    github_personal_access_token: str = ""
+
     # DeepEval judge model — defaults to Gemini Flash via OpenRouter for stable evaluation
     deepeval_model: str = "openrouter-gemini-flash"
 
