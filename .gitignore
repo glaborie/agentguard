@@ -24,3 +24,5 @@ coverage.xml
 .arize/
 .agents/
 graphify-out/
+!.claude/
+!.claude/agentguard-files.md
