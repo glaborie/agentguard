@@ -47,6 +47,7 @@ async def complete(
             chat_id=chat_id,
             user_id=body.user_id,
             request_id=request_id,
+            model=litellm_model,
         )
 
     if body.model in DIRECT_MODELS:

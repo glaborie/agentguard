@@ -330,6 +330,8 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
       STORE_MODEL_IN_DB: "True"
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redissecret}
+      # disable prisma migrations on restart
+      DISABLE_SCHEMA_UPDATE: "True"
       # Semantic injection second pass (LLM-judge classifier)
       SEMANTIC_GUARD_ENABLED: "${SEMANTIC_GUARD_ENABLED:-false}"
       SEMANTIC_GUARD_MODEL: "${SEMANTIC_GUARD_MODEL:-openrouter-gemini-flash}"
@@ -402,6 +404,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       LANGFUSE_BASE_URL: http://langfuse-web:3000
       OTEL_ENDPOINT: http://otel-collector:4318/v1/traces
+      GITHUB_MCP_URL: http://github-mcp:8080/mcp
       TZ: UTC
     ports:
       - "8001:8001"
