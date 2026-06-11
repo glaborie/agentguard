@@ -36,6 +36,8 @@ class Settings(BaseSettings):
 
     # GitHub MCP (optional — enables GitHub tools in agent)
     github_personal_access_token: str = ""
+    # SSE URL of github-mcp sidecar (set automatically in Docker; leave empty for stdio on host)
+    github_mcp_url: str = "http://github-mcp:8080/sse"
 
     # DeepEval judge model — defaults to Gemini Flash via OpenRouter for stable evaluation
     deepeval_model: str = "openrouter-gemini-flash"

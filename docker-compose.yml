@@ -531,6 +531,22 @@ services:
     networks:
       - langfuse
 
+  github-mcp:
+    image: ghcr.io/github/github-mcp-server:latest
+    restart: unless-stopped
+    logging: *default-logging
+    pull_policy: if_not_present
+    command: ["--transport", "sse", "--port", "8080"]
+    ports:
+      - "127.0.0.1:8090:8080"
+    environment:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_PERSONAL_ACCESS_TOKEN:-}"
+      TZ: UTC
+    networks:
+      - langfuse
+    profiles:
+      - mcp
+
 volumes:
   postgres_data:
   clickhouse_data:

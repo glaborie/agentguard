@@ -1,8 +1,11 @@
 """Async context manager that provides GitHub MCP tools via langchain-mcp-adapters.
 
+In Docker: connects to the github-mcp sidecar via SSE (GITHUB_MCP_URL).
+On host:   spawns npx subprocess via stdio (requires Node.js).
+
 Usage:
     async with github_mcp_tools() as tools:
-        # tools is a list[BaseTool] — empty when token not configured
+        # tools is list[BaseTool] — empty when token not configured
         graph = build_agent(extra_tools=tools)
         result = await graph.ainvoke(...)
 """
@@ -31,14 +34,27 @@ async def github_mcp_tools():
         yield []
         return
 
-    config = {
-        "github": {
-            "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-github"],
-            "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": token},
-            "transport": "stdio",
+    mcp_url = settings.github_mcp_url
+    if mcp_url:
+        # Docker mode: connect to github-mcp sidecar via SSE
+        config = {
+            "github": {
+                "transport": "sse",
+                "url": mcp_url,
+            }
         }
-    }
+        logger.info("GitHub MCP: connecting via SSE to %s", mcp_url)
+    else:
+        # Local dev mode: spawn subprocess via stdio (requires Node.js)
+        config = {
+            "github": {
+                "command": "npx",
+                "args": ["-y", "@modelcontextprotocol/server-github"],
+                "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": token},
+                "transport": "stdio",
+            }
+        }
+        logger.info("GitHub MCP: spawning stdio subprocess")
 
     try:
         async with MultiServerMCPClient(config) as client:
@@ -46,5 +62,5 @@ async def github_mcp_tools():
             logger.info("GitHub MCP tools loaded: %s", [t.name for t in tools])
             yield tools
     except Exception as exc:
-        logger.error("GitHub MCP client failed to start: %s", exc)
+        logger.error("GitHub MCP client failed: %s", exc)
         yield []
