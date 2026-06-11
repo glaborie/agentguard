@@ -189,6 +189,8 @@ class TestRagApi:
         ids = {m["id"] for m in resp.json()["data"]}
         assert "agentguard-rag" in ids
         assert "agentguard-rag-mistral" in ids
+        assert "agentguard-rag-claude-haiku" in ids
+        assert "agentguard-agent-claude-haiku" in ids
 
     def test_chat_completion_returns_answer(self):
         resp = requests.post(
