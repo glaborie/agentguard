@@ -8,7 +8,7 @@ from datetime import datetime
 from deepeval.test_case import LLMTestCase
 
 from app.eval.deepeval_metrics import get_metrics
-from app.rag.chain import get_retriever, query
+from app.rag.chain import get_retriever, query_with_usage
 from app.tracing import get_langfuse_client, get_langfuse_handler
 
 logger = logging.getLogger(__name__)
@@ -21,6 +21,10 @@ class ItemResult:
     output: str
     scores: dict[str, float] = field(default_factory=dict)
     trace_id: str | None = None
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+    cost_usd: float = 0.0
 
 
 def run_experiment(
@@ -78,7 +82,7 @@ def run_experiment(
 
             # ── Generate answer ───────────────────────────────────────────────
             handler = get_langfuse_handler()
-            output = query(question=question, model=model_name, callbacks=[handler])
+            output, usage = query_with_usage(question=question, model=model_name, callbacks=[handler])
             trace_id = handler.last_trace_id
 
             # ── DeepEval metrics ──────────────────────────────────────────────
@@ -112,6 +116,19 @@ def run_experiment(
                 except Exception as exc:
                     logger.warning("  %s FAILED: %s", metric_label, exc)
 
+            # ── Push cost score to Langfuse ───────────────────────────────────
+            if trace_id and usage.get("total_tokens"):
+                try:
+                    client.create_score(
+                        trace_id=trace_id,
+                        name="cost_usd",
+                        value=usage["cost_usd"],
+                        data_type="NUMERIC",
+                        comment=f"prompt={usage['prompt_tokens']} completion={usage['completion_tokens']}",
+                    )
+                except Exception as exc:
+                    logger.warning("cost score push failed: %s", exc)
+
             # ── Link trace to the model's dataset run ─────────────────────────
             if trace_id:
                 try:
@@ -129,10 +146,73 @@ def run_experiment(
                 output=output,
                 scores=item_scores,
                 trace_id=trace_id,
+                prompt_tokens=int(usage["prompt_tokens"]),
+                completion_tokens=int(usage["completion_tokens"]),
+                total_tokens=int(usage["total_tokens"]),
+                cost_usd=float(usage["cost_usd"]),
             ))
 
     client.flush()
     return results, run_names
+
+
+def aggregate_costs(results: list[ItemResult]) -> dict[str, dict[str, float | int]]:
+    """Aggregate token usage and cost per model across all results."""
+    agg: dict[str, dict[str, float | int]] = defaultdict(lambda: {
+        "total_cost_usd": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "n_items": 0,
+    })
+    for r in results:
+        m = r.model
+        agg[m]["total_cost_usd"] = float(agg[m]["total_cost_usd"]) + r.cost_usd
+        agg[m]["prompt_tokens"] = int(agg[m]["prompt_tokens"]) + r.prompt_tokens
+        agg[m]["completion_tokens"] = int(agg[m]["completion_tokens"]) + r.completion_tokens
+        agg[m]["total_tokens"] = int(agg[m]["total_tokens"]) + r.total_tokens
+        agg[m]["n_items"] = int(agg[m]["n_items"]) + 1
+    return dict(agg)
+
+
+def print_cost_table(results: list[ItemResult], run_names: dict[str, str]) -> None:
+    """Print per-model cost and token summary."""
+    if not results:
+        return
+    agg = aggregate_costs(results)
+    models = list(run_names.keys())
+
+    display_names = {
+        m: (m.split("-", 1)[-1] if m.startswith("openrouter-") else m)
+        for m in models
+    }
+    col_w = max(max(len(d) for d in display_names.values()) + 2, 14)
+    label_w = 22
+    sep = "-" * (label_w + col_w * len(models) + 2)
+
+    print(f"  {'Cost Summary':}")
+    print(f"  {sep}")
+    header = f"  {'Metric':<{label_w}}"
+    for m in models:
+        header += f"{display_names[m]:>{col_w}}"
+    print(header)
+    print(f"  {sep}")
+
+    rows = [
+        ("Total cost (USD)", lambda d: f"${float(d['total_cost_usd']):.4f}"),
+        ("Cost per item (USD)", lambda d: f"${float(d['total_cost_usd']) / max(int(d['n_items']), 1):.4f}"),
+        ("Prompt tokens", lambda d: str(int(d['prompt_tokens']))),
+        ("Completion tokens", lambda d: str(int(d['completion_tokens']))),
+        ("Total tokens", lambda d: str(int(d['total_tokens']))),
+    ]
+    for label, fmt in rows:
+        row = f"  {label:<{label_w}}"
+        for m in models:
+            val = fmt(agg.get(m, {"total_cost_usd": 0.0, "prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0, "n_items": 1}))
+            row += f"{val:>{col_w}}"
+        print(row)
+
+    print(f"  {sep}\n")
 
 
 def print_comparison_table(
@@ -206,3 +286,5 @@ def print_comparison_table(
     for m, run_name in run_names.items():
         print(f"    {run_name}")
     print(f"{'=' * (len(sep) + 2)}\n")
+
+    print_cost_table(results, run_names)

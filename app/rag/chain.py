@@ -174,3 +174,43 @@ def build_rag_chain(
 def query(question: str, model: str | None = None, callbacks: list | None = None) -> str:
     chain = build_rag_chain(model=model)
     return chain.invoke(question, config={"callbacks": callbacks or []})
+
+
+def query_with_usage(
+    question: str,
+    model: str | None = None,
+    callbacks: list | None = None,
+) -> tuple[str, dict[str, int | float]]:
+    """Run RAG query and return (answer, usage_dict).
+
+    usage_dict keys: prompt_tokens, completion_tokens, total_tokens, cost_usd.
+    cost_usd comes from response_metadata["usage"]["estimated_cost"] if the proxy
+    returns it, otherwise 0.0.
+    """
+    llm = get_llm(model=model)
+    retriever = get_retriever(k=4)
+    prompt = _get_prompt_template()
+
+    # Build chain without StrOutputParser to retain AIMessage with usage metadata.
+    chain_raw = (
+        {
+            "context": retriever | format_docs,
+            "question": RunnablePassthrough(),
+        }
+        | prompt
+        | llm
+    )
+    ai_message = chain_raw.invoke(question, config={"callbacks": callbacks or []})
+
+    text = ai_message.content if hasattr(ai_message, "content") else str(ai_message)
+
+    usage: dict[str, int | float] = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0, "cost_usd": 0.0}
+    meta = getattr(ai_message, "response_metadata", {}) or {}
+    token_usage = meta.get("token_usage") or meta.get("usage") or {}
+    if token_usage:
+        usage["prompt_tokens"] = int(token_usage.get("prompt_tokens", 0))
+        usage["completion_tokens"] = int(token_usage.get("completion_tokens", 0))
+        usage["total_tokens"] = int(token_usage.get("total_tokens", 0))
+        usage["cost_usd"] = float(token_usage.get("estimated_cost", 0.0))
+
+    return text, usage

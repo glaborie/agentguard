@@ -3,7 +3,7 @@
 from deepeval.test_case import LLMTestCase
 
 from app.eval.deepeval_metrics import get_metrics
-from app.rag.chain import get_retriever, format_docs, query
+from app.rag.chain import get_retriever, query_with_usage
 from app.tracing import get_langfuse_client, get_langfuse_handler
 
 
@@ -11,6 +11,7 @@ def run_deepeval_evaluation(
     dataset_name: str,
     metric_names: list[str] | None = None,
     model: str | None = None,
+    cost_report: bool = False,
 ) -> None:
     """Run DeepEval metrics against a Langfuse dataset and push scores back.
 
@@ -38,6 +39,9 @@ def run_deepeval_evaluation(
     print(f"Items:   {len(dataset.items)}\n")
 
     retriever = get_retriever(k=6)
+    total_prompt_tokens = 0
+    total_completion_tokens = 0
+    total_cost_usd = 0.0
 
     for i, item in enumerate(dataset.items):
         question = item.input.get("question", str(item.input)) if isinstance(item.input, dict) else str(item.input)
@@ -46,7 +50,10 @@ def run_deepeval_evaluation(
         print(f"[{i+1}/{len(dataset.items)}] {question[:80]}...")
 
         handler = get_langfuse_handler()
-        output = query(question=question, model=model, callbacks=[handler])
+        output, usage = query_with_usage(question=question, model=model, callbacks=[handler])
+        total_prompt_tokens += int(usage.get("prompt_tokens", 0))
+        total_completion_tokens += int(usage.get("completion_tokens", 0))
+        total_cost_usd += float(usage.get("cost_usd", 0.0))
 
         docs = retriever.invoke(question)
         retrieval_context = [doc.page_content for doc in docs]
@@ -79,3 +86,16 @@ def run_deepeval_evaluation(
 
     client.flush()
     print(f"\nDone. Scores pushed to Langfuse for {len(dataset.items)} items.")
+
+    if cost_report:
+        n = len(dataset.items)
+        print("\n  Cost Report")
+        print(f"  {'─' * 40}")
+        print(f"  {'Model':<22} {model}")
+        print(f"  {'Items':<22} {n}")
+        print(f"  {'Prompt tokens':<22} {total_prompt_tokens:,}")
+        print(f"  {'Completion tokens':<22} {total_completion_tokens:,}")
+        print(f"  {'Total tokens':<22} {total_prompt_tokens + total_completion_tokens:,}")
+        print(f"  {'Total cost (USD)':<22} ${total_cost_usd:.4f}")
+        print(f"  {'Cost per item (USD)':<22} ${total_cost_usd / max(n, 1):.4f}")
+        print(f"  {'─' * 40}\n")

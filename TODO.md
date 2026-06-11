@@ -110,3 +110,31 @@ All additive — no architectural change required. Independent, can be paralleli
 **Why:** rag-api exposes `/metrics` (prometheus_fastapi_instrumentator) and LiteLLM exposes Prometheus metrics. OpenObserve can scrape both, consolidating metrics + traces + logs in one platform.
 
 **How:** Added `remote_write` block to `prometheus.yml` pointing at OpenObserve's Prometheus ingestion endpoint (`/api/default/prometheus/api/v1/write`). Credentials read from `ZO_ROOT_USER_EMAIL`/`ZO_ROOT_USER_PASSWORD` env vars (already set in `.env`). Prometheus scrapes rag-api, litellm, and otel-collector every 15s and forwards all time-series to OpenObserve. Requires infra stack running (`docker compose -f docker-compose.infra.yml up -d`). In OpenObserve: Streams → `prometheus` stream type to query metrics.
+
+Here's a precise handover prompt for Claude Code:
+
+---
+
+### [done] #13 Surface per-experiment cost in AgentGuard's experiment runner**
+
+In `app/eval/experiments.py`, the `run_experiment()` function compares multiple models against a Langfuse dataset. LiteLLM already returns token usage in its responses. The goal is to capture and surface cost per model per experiment run.
+
+**What to do:**
+
+1. In the experiment runner, capture `usage` (prompt_tokens, completion_tokens) from LiteLLM responses for each dataset item evaluated. LiteLLM exposes this on the response object as `response.usage` — it also has `response._hidden_params["response_cost"]` which is the pre-calculated USD cost per call.
+
+2. Aggregate per model: total cost (USD), total prompt tokens, total completion tokens, cost per item (mean), and cost/quality ratio (cost divided by mean faithfulness score if available).
+
+3. Surface this in `print_results()` as an additional cost summary table alongside the existing quality metrics table.
+
+4. Also write the cost breakdown into the Langfuse experiment metadata so it's visible in the UI — use `langfuse.score()` or tag it on the dataset run object.
+
+5. Add a `--cost-report` flag to the CLI (`app/main.py evaluate`) that prints the cost table even when running a single model (no comparison needed).
+
+**Constraints:**
+- LiteLLM proxy is the only LLM call path — do not add direct SDK calls
+- All models are defined in `litellm_config.yaml`; cost data comes from LiteLLM responses, not hardcoded pricing tables
+- Tests live in `tests/test_evaluators.py` and `tests/test_integration.py` — add unit tests for the cost aggregation logic, mock `response._hidden_params`
+- Keep backward compatibility: `run_experiment()` signature unchanged, cost data is additive
+
+**Files to touch:** `app/eval/experiments.py`, `app/main.py`, `tests/test_evaluators.py` (or new `tests/test_experiments.py`)

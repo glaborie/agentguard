@@ -6,8 +6,9 @@ def evaluate(
     dataset_name: str,
     metric_names: list[str] | None = None,
     model: str | None = None,
+    cost_report: bool = False,
 ) -> None:
-    run_deepeval_evaluation(dataset_name=dataset_name, metric_names=metric_names, model=model)
+    run_deepeval_evaluation(dataset_name=dataset_name, metric_names=metric_names, model=model, cost_report=cost_report)
 
 
 def experiment(
