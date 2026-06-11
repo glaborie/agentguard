@@ -98,6 +98,29 @@ Open:
 - Langfuse: `http://localhost:3200`
 - Arize AX: `https://app.arize.com` (project: `agentguard`)
 
+## GitHub MCP Integration
+
+The `agentguard-agent` and `agentguard-agent-claude-haiku` models include GitHub tool access via a [Model Context Protocol](https://modelcontextprotocol.io) sidecar.
+
+**Available tools:** search repositories, read file contents, list issues, list pull requests, create issues, and more (27 tools total).
+
+**Setup** — add your GitHub token to `.env`:
+
+```bash
+GITHUB_MCP_URL=http://localhost:8091/mcp
+GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...   # repo + read:org scopes
+```
+
+The `github-mcp` container starts automatically with `docker compose up -d`. No extra steps needed.
+
+**Try it** in Open WebUI — select `agentguard-agent-claude-haiku` and ask:
+
+```
+Summarize the open issues in glaborie/agentguard
+```
+
+**URL split:** CLI uses `localhost:8091`; the `rag-api` container reaches the sidecar via `http://github-mcp:8080/mcp` (set in `docker-compose.yml` environment block, overriding `.env`).
+
 ## Documentation
 
 - [Roadmap](docs/ROADMAP.md)
