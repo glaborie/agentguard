@@ -551,6 +551,29 @@ services:
     profiles:
       - mcp
 
+  traefik:
+    image: traefik:v3.2
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+      - "--providers.file.filename=/etc/traefik/routes.yml"
+      - "--providers.file.watch=true"
+      - "--log.level=INFO"
+    ports:
+      - "80:80"
+      - "8090:8080"
+    volumes:
+      - ./traefik-routes.yml:/etc/traefik/routes.yml:ro
+    environment:
+      TZ: UTC
+    networks:
+      - langfuse
+
 volumes:
   postgres_data:
   clickhouse_data:

@@ -211,6 +211,6 @@ def query_with_usage(
         usage["prompt_tokens"] = int(token_usage.get("prompt_tokens", 0))
         usage["completion_tokens"] = int(token_usage.get("completion_tokens", 0))
         usage["total_tokens"] = int(token_usage.get("total_tokens", 0))
-        usage["cost_usd"] = float(token_usage.get("estimated_cost", 0.0))
+        usage["cost_usd"] = float(token_usage.get("cost", 0.0) or token_usage.get("estimated_cost", 0.0))
 
     return text, usage

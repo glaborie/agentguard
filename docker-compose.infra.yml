@@ -32,29 +32,6 @@ x-deploy-jaeger: &deploy-jaeger
       memory: 256m
 
 services:
-  traefik:
-    image: traefik:v3.2
-    restart: always
-    logging: *default-logging
-    deploy: *deploy-otel
-    pull_policy: if_not_present
-    command:
-      - "--api.dashboard=true"
-      - "--api.insecure=true"
-      - "--entrypoints.web.address=:80"
-      - "--providers.file.filename=/etc/traefik/routes.yml"
-      - "--providers.file.watch=true"
-      - "--log.level=INFO"
-    ports:
-      - "80:80"
-      - "8090:8080"
-    volumes:
-      - ./traefik-routes.yml:/etc/traefik/routes.yml:ro
-    environment:
-      TZ: UTC
-    networks:
-      - langfuse
-
   jaeger:
     image: jaegertracing/all-in-one:1.62.0
     restart: always
