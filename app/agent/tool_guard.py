@@ -14,6 +14,14 @@ _TOOL_ALLOWLIST = frozenset({
     "get_dataset_summary",
 })
 
+# Dynamically extended at runtime when MCP tools are loaded
+_MCP_TOOL_ALLOWLIST: set[str] = set()
+
+
+def register_mcp_tools(tool_names: list[str]) -> None:
+    """Register MCP tool names so the guard allows them through."""
+    _MCP_TOOL_ALLOWLIST.update(tool_names)
+
 _LIST_TRACES_MAX_LIMIT = 50
 
 # Injection patterns scoped to search queries — subset of PromptInjectionGuard patterns
@@ -45,10 +53,10 @@ def validate_tool_call(tool_name: str, tool_args: dict) -> None:
     Raises ToolCallBlockedError if the call violates policy.
     All legitimate AgentGuard tool calls pass through unchanged.
     """
-    if tool_name not in _TOOL_ALLOWLIST:
+    if tool_name not in _TOOL_ALLOWLIST and tool_name not in _MCP_TOOL_ALLOWLIST:
         raise ToolCallBlockedError(
             f"Tool '{tool_name}' is not in allowlist. "
-            f"Allowed tools: {sorted(_TOOL_ALLOWLIST)}"
+            f"Allowed tools: {sorted(_TOOL_ALLOWLIST | _MCP_TOOL_ALLOWLIST)}"
         )
 
     if tool_name == "search_docs":

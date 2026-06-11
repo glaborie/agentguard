@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
 
-from app.api.routes import chat, config, health, models, webhook
+from app.api.routes import chat, config, health, models, retrieval, webhook
 from app.core.config import settings
 from app.telemetry import init_telemetry
 
@@ -51,6 +51,7 @@ def create_app() -> FastAPI:
     application.include_router(webhook.router)
     application.include_router(chat.router)
     application.include_router(config.router)
+    application.include_router(retrieval.router)
     Instrumentator().instrument(application).expose(application, endpoint="/metrics")
     return application
 

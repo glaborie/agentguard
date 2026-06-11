@@ -88,7 +88,6 @@ For Observability views, see [Screenshots](docs/screenshots.md).
 ```bash
 cp .env.example .env
 docker compose up -d
-docker compose exec ollama ollama pull nomic-embed-text
 pip install -r requirements.txt
 python -m app.main ingest
 python -m app.main query "Does the Starter plan include SAML SSO?"

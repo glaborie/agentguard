@@ -40,4 +40,4 @@ USER appuser
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "-m", "scripts.worker"]
+CMD ["watchfiles", "--filter", "python", "python -m scripts.worker", "/app/app", "/app/scripts"]

@@ -3,18 +3,22 @@ import time
 MODELS: dict[str, str] = {
     "agentguard-rag": "openrouter-gemini-flash",
     "agentguard-rag-mistral": "openrouter-mistral",
+    "agentguard-rag-claude-haiku": "openrouter-claude-haiku",
     "agentguard-direct": "openrouter-gemini-flash",
     "agentguard-agent": "openrouter-gemini-flash",
+    "agentguard-agent-claude-haiku": "openrouter-claude-haiku",
 }
 
 DIRECT_MODELS: set[str] = {"agentguard-direct"}
-AGENT_MODELS: set[str] = {"agentguard-agent"}
+AGENT_MODELS: set[str] = {"agentguard-agent", "agentguard-agent-claude-haiku"}
 
 _DESCRIPTIONS: dict[str, str] = {
     "agentguard-rag": "RAG over NorthstarCRM knowledge base (Gemini Flash)",
     "agentguard-rag-mistral": "RAG over NorthstarCRM knowledge base (Mistral)",
+    "agentguard-rag-claude-haiku": "RAG over NorthstarCRM knowledge base (Claude Haiku)",
     "agentguard-direct": "Direct LLM — no RAG context, guardrails only",
     "agentguard-agent": "ReAct agent with tools — doc search, trace listing, scoring",
+    "agentguard-agent-claude-haiku": "ReAct agent with tools + GitHub MCP (Claude Haiku)",
 }
 
 

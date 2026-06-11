@@ -72,7 +72,7 @@ services:
       start_period: 30s
     environment: &langfuse-env
       TZ: UTC
-      LANGFUSE_LOG_LEVEL: debug
+      LANGFUSE_LOG_LEVEL: warn
       NEXTAUTH_URL: http://localhost:3200
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
       TELEMETRY_ENABLED: "false"
@@ -125,6 +125,7 @@ services:
     depends_on: *langfuse-deps
     environment:
       <<: *langfuse-env
+      LOG_LEVEL: warn
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://$(hostname -i):3030/api/health"]
       interval: 10s
@@ -271,7 +272,9 @@ services:
       - langfuse
 
   ollama:
-    image: ollama/ollama:0.20.7
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
     init: true
     restart: always
     logging: *default-logging
@@ -327,6 +330,8 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
       STORE_MODEL_IN_DB: "True"
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redissecret}
+      # disable prisma migrations on restart
+      DISABLE_SCHEMA_UPDATE: "True"
       # Semantic injection second pass (LLM-judge classifier)
       SEMANTIC_GUARD_ENABLED: "${SEMANTIC_GUARD_ENABLED:-false}"
       SEMANTIC_GUARD_MODEL: "${SEMANTIC_GUARD_MODEL:-openrouter-gemini-flash}"
@@ -388,13 +393,18 @@ services:
     deploy: *deploy-limits
     pull_policy: if_not_present
     volumes:
+      - ./app:/app/app
+      - ./scripts:/app/scripts
+      - ./guardrails:/app/guardrails
       - ./runtime_config.json:/app/runtime_config.json
     env_file: .env
     environment:
+      WATCHFILES_FORCE_POLLING: "true"
       LITELLM_BASE_URL: http://litellm:4000
       QDRANT_URL: http://qdrant:6333
       LANGFUSE_BASE_URL: http://langfuse-web:3000
       OTEL_ENDPOINT: http://otel-collector:4318/v1/traces
+      GITHUB_MCP_URL: http://github-mcp:8080/mcp
       TZ: UTC
     ports:
       - "8001:8001"
@@ -457,6 +467,9 @@ services:
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
+    volumes:
+      - ./app:/app/app
+      - ./scripts:/app/scripts
     env_file: .env
     environment:
       LANGFUSE_BASE_URL: http://langfuse-web:3000
@@ -464,6 +477,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       OPENWEBUI_BASE_URL: http://openwebui:8080
       PYTHONUNBUFFERED: "1"
+      WATCHFILES_FORCE_POLLING: "true"
       TZ: UTC
     depends_on:
       langfuse-web:
@@ -519,6 +533,22 @@ services:
       start_period: 15s
     networks:
       - langfuse
+
+  github-mcp:
+    image: ghcr.io/github/github-mcp-server:latest
+    restart: unless-stopped
+    logging: *default-logging
+    pull_policy: if_not_present
+    command: ["http", "--port", "8080", "--toolsets", "issues,repos,search,git"]
+    ports:
+      - "127.0.0.1:8091:8080"
+    environment:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_PERSONAL_ACCESS_TOKEN:-}"
+      TZ: UTC
+    networks:
+      - langfuse
+    profiles:
+      - mcp
 
 volumes:
   postgres_data:
