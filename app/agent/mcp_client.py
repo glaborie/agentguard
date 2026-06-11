@@ -36,14 +36,17 @@ async def github_mcp_tools():
 
     mcp_url = settings.github_mcp_url
     if mcp_url:
-        # Docker mode: connect to github-mcp sidecar via SSE
+        # Docker mode: connect to github-mcp sidecar via streamable HTTP (/mcp endpoint)
+        # The github-mcp-server HTTP mode requires Bearer token auth
+        mcp_endpoint = mcp_url.rstrip("/")
         config = {
             "github": {
-                "transport": "sse",
-                "url": mcp_url,
+                "transport": "streamable_http",
+                "url": mcp_endpoint,
+                "headers": {"Authorization": f"Bearer {token}"},
             }
         }
-        logger.info("GitHub MCP: connecting via SSE to %s", mcp_url)
+        logger.info("GitHub MCP: connecting via streamable_http to %s", mcp_endpoint)
     else:
         # Local dev mode: spawn subprocess via stdio (requires Node.js)
         config = {
