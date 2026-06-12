@@ -6,7 +6,6 @@ go through LiteLLM so they are rate-limited, proxied, and traced.
 
 from __future__ import annotations
 
-import asyncio
 import logging
 from typing import TYPE_CHECKING
 
@@ -120,13 +119,17 @@ def run_ragas_evaluation(
     metrics = _get_metric_objects(names, model)
 
     log.info("Running RAGAS metrics: %s", names)
-    result = asyncio.run(evaluate(dataset=dataset, metrics=metrics))
+    result = evaluate(dataset=dataset, metrics=metrics)
 
-    # result.scores is a list[dict] or a pandas-compatible object
-    try:
-        scores_list: list[dict] = result.scores.to_list() if hasattr(result.scores, "to_list") else list(result.scores)
-    except Exception:
-        # fallback: convert Dataset to list of dicts
-        scores_list = [dict(zip(result.scores.column_names, row)) for row in zip(*result.scores.to_list())]  # type: ignore
+    # Normalise to list[dict] regardless of RAGAS version
+    if isinstance(result, dict):
+        # Older RAGAS returns averaged dict — broadcast to per-sample list
+        n = len(dataset.samples)
+        scores_list: list[dict] = [result] * n
+    elif hasattr(result, "scores"):
+        scores = result.scores
+        scores_list = scores.to_list() if hasattr(scores, "to_list") else list(scores)
+    else:
+        scores_list = list(result)
 
     return scores_list
