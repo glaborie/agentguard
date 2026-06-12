@@ -8,7 +8,7 @@ Compressing inline since text was provided directly (no file path given).
 
 AgentGuard — self-hosted control layer for preventing costly incidents in AI apps.
 
-RAG + agentic assistant over NorthstarCRM synthetic knowledge base, with full observability, guardrails, and evaluation. Demonstrates how teams detect, evaluate, and block AI failures before reaching users: hallucinated policies, PII leaks, prompt injection, silent regressions after model/prompt changes.
+RAG + agentic assistant over IBM watsonxDocsQA knowledge base (1 144 docs, 45 QA pairs from ibm-research/watsonxDocsQA), with full observability, guardrails, and evaluation. Demonstrates how teams detect, evaluate, and block AI failures before reaching users: hallucination, PII leaks, prompt injection, silent regressions after model/prompt changes.
 
 ## Architecture decisions
 
@@ -19,6 +19,8 @@ RAG + agentic assistant over NorthstarCRM synthetic knowledge base, with full ob
 **LangGraph ReAct agent.** Agent in `app/agent/graph.py` is `StateGraph(MessagesState)` with two nodes: `agent` (LLM with bound tools) and `tools` (ToolNode). Agent decides which tools to call based on question. Five tools: doc search, trace listing, trace detail, response scoring, dataset summary. Langfuse CallbackHandler traces every node automatically. `MemorySaver` provides multi-turn memory for chat sessions.
 
 **DeepEval for LLM-judged evaluation.** DeepEval metrics (faithfulness, answer relevancy, contextual relevancy, hallucination) run through `LiteLLMModel` wrapper routing judge calls through LiteLLM proxy. Scores pushed back to Langfuse via `client.create_score()`. Replaces hand-rolled LLM-as-judge for most use cases.
+
+**RAGAS for RAG evaluation.** `app/eval/ragas_metrics.py` wraps RAGAS 0.2.x `evaluate()` against a `EvaluationDataset`. Five metrics: faithfulness, answer_relevancy, context_precision, context_recall, answer_correctness. All judge LLM and embedding calls go through LiteLLM proxy (`LangchainLLMWrapper` / `LangchainEmbeddingsWrapper`). `n=1` forced on every metric — OpenRouter does not support `n>1`. Scores pushed per-trace to Langfuse; `run_ragas_experiment()` in `experiments.py` batches generation then evaluates in one `evaluate()` call per model (more efficient than per-item). Parallel to DeepEval path — both coexist.
 
 **Qdrant for vector storage.** Chosen over Chroma/FAISS: runs as proper Docker service with persistence, good LangChain integration, HTTP and gRPC APIs.
 
@@ -56,6 +58,9 @@ python -m app.main agent "question"    # ReAct agent with tools
 python -m app.main agent-chat          # Interactive agent chat with memory
 python -m app.main evaluate --dataset name  # Run DeepEval metrics (single model)
 python -m app.main experiment --dataset rag-golden-set --models openrouter-gemini-flash,openrouter-mistral  # Multi-model comparison
+python -m app.main ragas-experiment --dataset watsonx-qa --models openrouter-gemini-flash  # RAGAS eval on watsonx corpus
+python -m app.main ragas-experiment --dataset watsonx-qa --models openrouter-gemini-flash --limit 10  # Quick run (10 items)
+python -m app.main ragas-experiment --dataset watsonx-qa --models openrouter-gemini-flash,openrouter-mistral --metrics faithfulness,answer_relevancy  # Subset of metrics
 python -m app.main regression-gate --dataset rag-golden-set      # Run quality gate (exit 0=pass, 1=fail)
 python -m app.main regression-gate --limit 5                     # Quick smoke-test (5 items)
 python -m app.main benchmark                                      # Run benchmark (full mode, all items)
@@ -77,6 +82,11 @@ python -m app.main red-team --attacks prompt_injection jailbreak  # Run specific
 python -m app.main red-team --limit 10                           # 10 variants per attack type
 python -m scripts.red_team --limit 3                             # Direct script entry point
 # One-time setup (after first docker compose up):
+python -m scripts.load_watsonx_corpus              # Download ibm-research/watsonxDocsQA → data/docs/watsonx/ + data/watsonx_qa_pairs.jsonl
+python -m scripts.load_watsonx_corpus --dry-run    # Preview stats without writing
+python -m scripts.seed_watsonx_dataset             # Seed Langfuse watsonx-qa dataset from HF
+python -m scripts.seed_watsonx_dataset --from-file # Seed from local data/watsonx_qa_pairs.jsonl (faster)
+python -m scripts.seed_watsonx_dataset --limit 20  # Seed subset
 python -m scripts.seed_langfuse_prompt        # Register RAG system prompt in Langfuse
 python -m scripts.seed_langfuse_prompt --force # Push a new version (after editing)
 python -m scripts.seed_benchmark_dataset      # Seed northstar-benchmark dataset (29 items)
@@ -101,7 +111,7 @@ python -m app.main query "question" --model new-model-name
 
 ### Adding a new evaluator
 
-Add function to `app/eval/evaluators.py` taking output string and returning score. Wire into `run_experiment()` in `app/eval/experiments.py` inside `scores` dict. For DeepEval metrics, add factory function to `app/eval/deepeval_metrics.py` and register in `METRIC_REGISTRY`.
+Add function to `app/eval/evaluators.py` taking output string and returning score. Wire into `run_experiment()` in `app/eval/experiments.py` inside `scores` dict. For DeepEval metrics, add factory function to `app/eval/deepeval_metrics.py` and register in `METRIC_REGISTRY`. For RAGAS metrics, import from `ragas.metrics`, add to `ALL_METRICS` list and `_get_metric_objects()` registry in `app/eval/ragas_metrics.py`, then set `m.llm`, `m.embeddings`, and `m.n = 1` in the loop.
 
 ### Quality drift monitoring
 
