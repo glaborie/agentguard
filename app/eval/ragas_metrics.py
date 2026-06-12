@@ -74,9 +74,10 @@ def _get_metric_objects(names: list[str], model: str | None = None) -> list:
         m.llm = llm
         if hasattr(m, "embeddings"):
             m.embeddings = emb
-        # OpenRouter does not support n>1; suppress "returned 1 instead of 3" warnings
-        if hasattr(m, "n"):
-            m.n = 1
+        # OpenRouter returns 1 completion per call; strictness>1 on AnswerRelevancy
+        # generates n questions to estimate relevancy — cap at 1 to suppress warnings
+        if hasattr(m, "strictness"):
+            m.strictness = 1
 
     return selected
 
