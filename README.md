@@ -24,7 +24,7 @@ AgentGuard provides a control layer for observing, protecting, and evaluating th
 
 - **Observability** — traces, retrieval, latency, model behavior, and tool usage (Langfuse + Arize AX + Grafana + Jaeger)
 - **Protection** — prompt injection blocking (regex + LLM-judge semantic pass), toxic content detection, PII masking, and agent tool-call guardrails
-- **Evaluation** — golden datasets, benchmarks, regression checks, and scoring
+- **Evaluation** — DeepEval + RAGAS metrics, golden datasets, benchmarks, regression checks, and scoring
 - **Red teaming** — automated adversarial probing across 4 attack types (prompt injection, jailbreak, PII extraction, system prompt leak) with CI-compatible exit codes
 - **Support for RAG and agents** — works across both retrieval pipelines and agentic workflows
 
@@ -150,6 +150,7 @@ python -m app.main debug-retrieval "discount approval policy" --mode hybrid --js
 - [Architecture](docs/architecture.md)
 - [Local deployment](docs/deployment/local.md)
 - [Evaluation](docs/evaluation.md)
+- [Repository conventions](docs/repository-conventions.md)
 - [Agent workflow](docs/agent-workflow.md)
 - [TODO / SOTA gaps](TODO.md)
 

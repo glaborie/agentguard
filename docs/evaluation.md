@@ -62,6 +62,40 @@ python -m app.main evaluate --dataset rag-eval-v1
 python -m app.main evaluate --dataset rag-eval-v1 --metrics faithfulness,hallucination
 ```
 
+## RAGAS evaluation for RAG pipelines (`app/eval/ragas_metrics.py`)
+
+AgentGuard also supports [RAGAS](https://github.com/explodinggradients/ragas) for retrieval-focused evaluation.
+
+Use this path when you want metrics that explicitly measure retrieval quality and answer grounding from retrieved context.
+
+| RAGAS metric | What it measures |
+|---|---|
+| `faithfulness` | Is the answer grounded in retrieved context? |
+| `answer_relevancy` | Does the answer address the user question? |
+| `context_precision` | How much of retrieved context is relevant? |
+| `context_recall` | How much relevant context was retrieved? |
+| `answer_correctness` | How accurate is the generated answer vs reference? |
+
+Run RAGAS from the CLI:
+
+```bash
+python -m app.main ragas-experiment \
+  --dataset watsonx-qa \
+  --models openrouter-gemini-flash
+
+python -m app.main ragas-experiment \
+  --dataset watsonx-qa \
+  --models openrouter-gemini-flash,openrouter-mistral \
+  --metrics faithfulness,answer_relevancy \
+  --limit 10
+```
+
+Notes:
+
+- RAGAS runs in batch per model for better efficiency on larger datasets.
+- All judge LLM and embedding calls are routed through LiteLLM, same as the rest of AgentGuard.
+- Scores are written back to Langfuse as `ragas_<metric_name>` trace scores.
+
 ## Comparing models and configurations (`app/eval/experiments.py`)
 
 AgentGuard can compare multiple models against the same golden dataset so teams can make safer rollout decisions:

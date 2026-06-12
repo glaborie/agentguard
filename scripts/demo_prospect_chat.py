@@ -6,7 +6,7 @@ retrieval, feature confirmation, trial policy, and discount approval tiers.
 Usage:
     python -m scripts.demo_prospect_chat                      # headed (watch it run)
     python -m scripts.demo_prospect_chat --headless           # CI / no window
-    python -m scripts.demo_prospect_chat --screenshot-dir ss/ # save screenshots
+    python -m scripts.demo_prospect_chat --screenshot-dir docs/assets/screenshots # save screenshots
     python -m scripts.demo_prospect_chat --slow 500           # slower for live demos
 
 Requirements:
@@ -20,7 +20,7 @@ from pathlib import Path
 
 from playwright.sync_api import Page, sync_playwright
 
-OPENWEBUI_URL = "http://localhost:3001"
+OPENWEBUI_URL = "http://localhost:3100"
 EMAIL = "playwright@local.dev"
 PASSWORD = "playwright"
 MODEL = "agentguard-rag"
