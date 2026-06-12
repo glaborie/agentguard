@@ -321,6 +321,8 @@ services:
       - ./guardrails/semantic_cache.py:/app/semantic_cache.py
       - ./runtime_config.json:/app/runtime_config.json
     command: ["--config", "/app/config.yaml", "--port", "4000"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file: .env
     environment:
       LANGFUSE_HOST: http://langfuse-web:3000
