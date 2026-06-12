@@ -121,10 +121,10 @@ def run_experiment(
                 try:
                     client.create_score(
                         trace_id=trace_id,
-                        name="cost_usd",
-                        value=usage["cost_usd"],
+                        name="cost_usd_milli",
+                        value=round(float(usage["cost_usd"]) * 1000, 4),
                         data_type="NUMERIC",
-                        comment=f"prompt={usage['prompt_tokens']} completion={usage['completion_tokens']}",
+                        comment=f"cost=${usage['cost_usd']:.6f} prompt={usage['prompt_tokens']} completion={usage['completion_tokens']}",
                     )
                 except Exception as exc:
                     logger.warning("cost score push failed: %s", exc)

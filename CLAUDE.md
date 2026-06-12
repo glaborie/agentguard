@@ -69,6 +69,9 @@ python -m app.main benchmark --item edge_002 --compare           # Single item a
 python -m app.main debug-retrieval "query"                        # Show retrieved chunks with scores (compare mode)
 python -m app.main debug-retrieval "query" --mode vector --k 4   # Vector-only, top-4
 python -m app.main debug-retrieval "query" --mode hybrid --json  # Hybrid, raw JSON output
+python -m app.main drift-check                                    # Detect quality regressions from Langfuse score history
+python -m app.main drift-check --fail-on-regression              # Exit 1 if regression detected (CI gate)
+python -m app.main drift-check --days 30 --threshold faithfulness=0.03  # Custom window + threshold
 python -m app.main red-team                                       # Probe all 4 attack types, 5 variants each
 python -m app.main red-team --attacks prompt_injection jailbreak  # Run specific attack types
 python -m app.main red-team --limit 10                           # 10 variants per attack type
@@ -99,6 +102,10 @@ python -m app.main query "question" --model new-model-name
 ### Adding a new evaluator
 
 Add function to `app/eval/evaluators.py` taking output string and returning score. Wire into `run_experiment()` in `app/eval/experiments.py` inside `scores` dict. For DeepEval metrics, add factory function to `app/eval/deepeval_metrics.py` and register in `METRIC_REGISTRY`.
+
+### Quality drift monitoring
+
+`app/eval/drift.py` detects metric regressions by comparing two consecutive 7-day windows from Langfuse score history. `check_drift(df)` is a pure function (no Langfuse dependency) — pass it any DataFrame with columns `[timestamp, trace_id, metric, value, model]`. `fetch_scores_from_langfuse(days=14)` returns that DataFrame from live data. To add a new tracked metric, add it to `score_names` in `fetch_scores_from_langfuse()` and optionally set a default threshold in `_DEFAULT_THRESHOLDS`. For metrics where higher = worse, add the name to `_HIGHER_IS_WORSE`. Notebook: `notebooks/quality_drift.ipynb` (set `USE_SYNTHETIC_DATA = True` on fresh installs).
 
 ### Adding a new agent tool
 
@@ -167,3 +174,7 @@ All containers have log rotation (`10m` max, 2 files). Memory-heavy services hav
 - **Redis requires password.** Redis container started with `--requirepass` using `REDIS_PASSWORD` from `.env`. Langfuse authenticates via `REDIS_AUTH`. If `.env` has `REDIS_PASSWORD` but Redis not configured to require it, worker logs "ERR AUTH called without any password configured" warnings.
 - **langfuse-worker Redis socket timeout errors are expected.** `@langfuse/shared` hardcodes `socketTimeout: 30000` on all ioredis connections (prevents hung `moveToCompleted()` from blocking concurrency slots forever). Fires every ~30s on idle BullMQ connections. `REDIS_SOCKET_TIMEOUT_MS` env var ignored in this build — value not read by BullMQ's connection path. BullMQ auto-reconnects after each timeout; worker remains healthy and jobs not lost. Error spam is cosmetic.
 - **All outbound HTTP calls use 60s timeout.** Langfuse SDK client (`app/core/tracing.py`) and all `httpx` calls in `scripts/` use `timeout=60` to tolerate slow responses from resource-constrained local Docker stack. Increase if timeouts appear on very slow hardware.
+
+## Project layout
+
+- [`FILETREE.md`](./FILETREE.md) — per-file index; read before `ls` / `grep` to locate any file

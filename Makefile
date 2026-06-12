@@ -54,6 +54,10 @@ test-eval: ## Run evaluation tests (evaluators, deepeval, regression gate, bench
 	$(PYTEST) tests/test_evaluators.py tests/test_deepeval_metrics.py \
 	          tests/test_regression_gate.py tests/test_benchmark.py -v
 
+.PHONY: test-drift
+test-drift: ## Run quality drift detection tests
+	$(PYTEST) tests/test_drift.py -v
+
 .PHONY: test-guardrails
 test-guardrails: ## Run guardrail and semantic cache tests
 	$(PYTEST) tests/test_guardrails.py tests/test_semantic_cache.py -v

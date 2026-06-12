@@ -438,8 +438,8 @@ services:
       - openwebui_data:/app/backend/data
     environment:
       ENABLE_OLLAMA_API: "false"
-      OPENAI_API_BASE_URLS: "http://rag-api:8001/v1"
-      OPENAI_API_KEYS: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
+      OPENAI_API_BASE_URLS: "http://rag-api:8001/v1;http://litellm:4000/v1"
+      OPENAI_API_KEYS: "${LITELLM_MASTER_KEY:-sk-litellm-dev-key};${LITELLM_MASTER_KEY:-sk-litellm-dev-key}"
       WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-agentguard-secret-key}
       DEFAULT_MODELS: "agentguard-rag"
       # Prevent Open WebUI downloading sentence-transformer models from HF on startup.
