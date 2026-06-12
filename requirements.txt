@@ -37,3 +37,6 @@ pytest-cov>=5.0
 
 # Demo automation
 playwright>=1.44
+
+# Data analysis
+pandas>=2.0

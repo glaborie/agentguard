@@ -7,6 +7,7 @@ def register(sub) -> None:
     p.add_argument("--dataset", required=True, help="Langfuse dataset name")
     p.add_argument("--metrics", default=None, help="Comma-separated metric names (default: all)")
     p.add_argument("--model", default=None, help="LLM model for judge metrics")
+    p.add_argument("--cost-report", action="store_true", help="Print token usage and cost summary after evaluation")
     p.set_defaults(func=cmd_evaluate)
 
     p = sub.add_parser("online-eval", help="Continuous eval worker: score new RAG traces automatically")
@@ -21,7 +22,7 @@ def cmd_evaluate(args: Namespace) -> None:
     from app.eval.service import evaluate
 
     metrics = args.metrics.split(",") if args.metrics else None
-    evaluate(dataset_name=args.dataset, metric_names=metrics, model=args.model)
+    evaluate(dataset_name=args.dataset, metric_names=metrics, model=args.model, cost_report=args.cost_report)
 
 
 def cmd_online_eval(args: Namespace) -> None:
