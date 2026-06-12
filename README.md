@@ -22,7 +22,7 @@ AgentGuard provides a control layer for observing, protecting, and evaluating th
 
 ## What it does
 
-- **Observability** — traces, retrieval, latency, model behavior, and tool usage
+- **Observability** — traces, retrieval, latency, model behavior, and tool usage (Langfuse + Arize AX + Grafana + Jaeger)
 - **Protection** — prompt injection blocking (regex + LLM-judge semantic pass), toxic content detection, PII masking, and agent tool-call guardrails
 - **Evaluation** — golden datasets, benchmarks, regression checks, and scoring
 - **Red teaming** — automated adversarial probing across 4 attack types (prompt injection, jailbreak, PII extraction, system prompt leak) with CI-compatible exit codes
@@ -88,7 +88,6 @@ For Observability views, see [Screenshots](docs/screenshots.md).
 ```bash
 cp .env.example .env
 docker compose up -d
-docker compose exec ollama ollama pull nomic-embed-text
 pip install -r requirements.txt
 python -m app.main ingest
 python -m app.main query "Does the Starter plan include SAML SSO?"
@@ -97,6 +96,30 @@ python -m app.main query "Does the Starter plan include SAML SSO?"
 Open:
 - Open WebUI: `http://localhost:3100`
 - Langfuse: `http://localhost:3200`
+- Arize AX: `https://app.arize.com` (project: `agentguard`)
+
+## GitHub MCP Integration
+
+The `agentguard-agent` and `agentguard-agent-claude-haiku` models include GitHub tool access via a [Model Context Protocol](https://modelcontextprotocol.io) sidecar.
+
+**Available tools:** search repositories, read file contents, list issues, list pull requests, create issues, and more (27 tools total).
+
+**Setup** — add your GitHub token to `.env`:
+
+```bash
+GITHUB_MCP_URL=http://localhost:8091/mcp
+GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...   # repo + read:org scopes
+```
+
+The `github-mcp` container starts automatically with `docker compose up -d`. No extra steps needed.
+
+**Try it** in Open WebUI — select `agentguard-agent-claude-haiku` and ask:
+
+```
+Summarize the open issues in glaborie/agentguard
+```
+
+**URL split:** CLI uses `localhost:8091`; the `rag-api` container reaches the sidecar via `http://github-mcp:8080/mcp` (set in `docker-compose.yml` environment block, overriding `.env`).
 
 ## Documentation
 

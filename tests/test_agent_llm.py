@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -9,23 +9,29 @@ def test_agent_model_in_models():
     assert "agentguard-agent" in MODELS
 
 
+def test_agent_claude_haiku_in_models():
+    assert "agentguard-agent-claude-haiku" in MODELS
+
+
+def test_rag_claude_haiku_in_models():
+    assert "agentguard-rag-claude-haiku" in MODELS
+
+
 def test_agent_models_set():
     assert "agentguard-agent" in AGENT_MODELS
+    assert "agentguard-agent-claude-haiku" in AGENT_MODELS
 
 
 def test_agent_model_in_model_list():
     result = get_model_list()
     ids = [m["id"] for m in result["data"]]
     assert "agentguard-agent" in ids
+    assert "agentguard-agent-claude-haiku" in ids
+    assert "agentguard-rag-claude-haiku" in ids
 
 
-def test_call_returns_tuple(monkeypatch):
-    mock_graph = MagicMock()
-    mock_graph.invoke.return_value = {
-        "messages": [MagicMock(content="agent answer")]
-    }
-
-    with patch("app.api.services.agent_llm._get_graph", return_value=mock_graph):
+def test_call_returns_tuple():
+    with patch("app.api.services.agent_llm.asyncio.run", return_value="agent answer"):
         from app.api.services import agent_llm
         result, cid = agent_llm.call(
             query="hello",
@@ -38,51 +44,39 @@ def test_call_returns_tuple(monkeypatch):
     assert cid.startswith("chatcmpl-")
 
 
-def test_call_uses_chat_id_as_thread_id(monkeypatch):
-    mock_graph = MagicMock()
-    mock_graph.invoke.return_value = {
-        "messages": [MagicMock(content="ok")]
-    }
-
-    with patch("app.api.services.agent_llm._get_graph", return_value=mock_graph):
+def test_call_returns_list_answer():
+    raw = [{"text": "part1"}, {"text": "part2"}]
+    with patch("app.api.services.agent_llm.asyncio.run", return_value=raw):
         from app.api.services import agent_llm
-        agent_llm.call(
+        result, cid = agent_llm.call(
             query="hello",
-            chat_id="my-chat-id",
+            chat_id="chat-abc",
             user_id=None,
-            request_id="req-002",
+            request_id="req-001",
         )
 
-    call_args = mock_graph.invoke.call_args
-    config = call_args[1].get("config") or call_args[0][1]
-    assert config["configurable"]["thread_id"] == "my-chat-id"
+    assert result == "part1part2"
+    assert cid.startswith("chatcmpl-")
 
 
-def test_call_falls_back_to_request_id_when_no_chat_id(monkeypatch):
-    mock_graph = MagicMock()
-    mock_graph.invoke.return_value = {
-        "messages": [MagicMock(content="ok")]
-    }
-
-    with patch("app.api.services.agent_llm._get_graph", return_value=mock_graph):
+def test_call_uses_provided_model():
+    with patch("app.api.services.agent_llm.asyncio.run", return_value="ok") as mock_run:
         from app.api.services import agent_llm
-        agent_llm.call(
+        result, cid = agent_llm.call(
             query="hello",
-            chat_id=None,
+            chat_id="chat-abc",
             user_id=None,
-            request_id="req-fallback",
+            request_id="req-001",
+            model="openrouter-claude-haiku",
         )
 
-    call_args = mock_graph.invoke.call_args
-    config = call_args[1].get("config") or call_args[0][1]
-    assert config["configurable"]["thread_id"] == "req-fallback"
+    mock_run.assert_called_once()
+    assert result == "ok"
+    assert cid.startswith("chatcmpl-")
 
 
-def test_call_returns_error_string_on_exception(monkeypatch):
-    mock_graph = MagicMock()
-    mock_graph.invoke.side_effect = RuntimeError("boom")
-
-    with patch("app.api.services.agent_llm._get_graph", return_value=mock_graph):
+def test_call_returns_error_string_on_exception():
+    with patch("app.api.services.agent_llm.asyncio.run", side_effect=RuntimeError("boom")):
         from app.api.services import agent_llm
         result, cid = agent_llm.call(
             query="hello",
@@ -118,6 +112,36 @@ async def test_chat_service_routes_agent_model():
         chat_id="chat-123",
         user_id=None,
         request_id="req-999",
+        model="openrouter-gemini-flash",
     )
     assert result == "tool answer"
     assert cid == "chatcmpl-xyz"
+
+
+@pytest.mark.asyncio
+async def test_chat_service_routes_agent_claude_haiku():
+    from app.api.schemas import ChatRequest, Message
+    from app.api.services import chat_service
+
+    body = ChatRequest(
+        model="agentguard-agent-claude-haiku",
+        messages=[Message(role="user", content="list repos")],
+    )
+
+    with patch("app.api.services.agent_llm.call", return_value=("haiku answer", "chatcmpl-haiku")) as mock_call:
+        result, cid = await chat_service.complete(
+            body=body,
+            query="list repos",
+            chat_id="chat-456",
+            request_id="req-haiku",
+        )
+
+    mock_call.assert_called_once_with(
+        query="list repos",
+        chat_id="chat-456",
+        user_id=None,
+        request_id="req-haiku",
+        model="openrouter-claude-haiku",
+    )
+    assert result == "haiku answer"
+    assert cid == "chatcmpl-haiku"

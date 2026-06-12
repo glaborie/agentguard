@@ -96,3 +96,35 @@ python -m app.main benchmark --mode direct                # Baseline: bare LLM, 
 ```
 
 The benchmark covers questions from `mock_corpus/07_benchmark/`, including standard questions and harder edge cases (competitor-match requests, partial feature overlap, custom legal paper, ambiguous policy interpretation).
+
+## Quality drift monitoring (`app/eval/drift.py`)
+
+AgentGuard tracks metric trends over time and alerts when a metric regresses between consecutive 7-day windows.
+
+| Metric | Regression condition |
+|---|---|
+| `faithfulness` | Current window mean drops > 0.05 vs prior window |
+| `answer_relevancy` | Current window mean drops > 0.05 vs prior window |
+| `contextual_relevancy` | Current window mean drops > 0.05 vs prior window |
+| `hallucination` | Current window mean rises > 0.05 vs prior window (higher = worse) |
+
+Run from the CLI against real Langfuse score history:
+
+```bash
+# Report only
+python -m app.main drift-check
+
+# Exit 1 if any regression detected (suitable for CI)
+python -m app.main drift-check --fail-on-regression
+
+# Custom history window and per-metric threshold overrides
+python -m app.main drift-check --days 30 --threshold faithfulness=0.03 --threshold hallucination=0.02
+```
+
+For exploratory analysis, open `notebooks/quality_drift.ipynb`. Set `USE_SYNTHETIC_DATA = True` on fresh installs (fewer than 14 days of real Langfuse scores) to see the full trend visualization with synthetic data.
+
+The core logic lives in `app/eval/drift.py`:
+
+- `check_drift(scores: pd.DataFrame, threshold_overrides=None) -> list[DriftAlert]` — pure function, takes a DataFrame, returns alerts. No Langfuse dependency; easy to test and import from CI.
+- `fetch_scores_from_langfuse(days=14) -> pd.DataFrame` — fetches scores from Langfuse and returns the DataFrame that `check_drift` expects.
+- `DriftAlert` — dataclass with `metric`, `baseline_mean`, `current_mean`, `delta`, `threshold`, `status`.

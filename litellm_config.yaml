@@ -7,22 +7,49 @@ model_list:
 
   # ── Chat models (OpenRouter) ─────────────────────────────────────────
   - model_name: openrouter-gemini-flash
+    model_info:
+      input_cost_per_token: 0.0000001    # $0.10/M
+      output_cost_per_token: 0.0000004   # $0.40/M
     litellm_params:
       model: openai/google/gemini-2.5-flash-lite
       api_base: https://openrouter.ai/api/v1
       api_key: os.environ/OPENROUTER_API_KEY
 
   - model_name: openrouter-mistral
+    model_info:
+      input_cost_per_token: 0.00000002   # $0.02/M
+      output_cost_per_token: 0.00000003  # $0.03/M
     litellm_params:
       model: openai/mistralai/mistral-nemo
       api_base: https://openrouter.ai/api/v1
       api_key: os.environ/OPENROUTER_API_KEY
 
+  # ── Mock LLM (load testing — zero cost, instant response) ───────────
+  - model_name: mock-llm
+    model_info:
+      input_cost_per_token: 0.0
+      output_cost_per_token: 0.0
+    litellm_params:
+      model: openai/mock-llm
+      api_base: http://host.docker.internal:3000/v1
+      api_key: mock-key
+
+  - model_name: openrouter-claude-haiku
+    model_info:
+      input_cost_per_token: 0.000001     # $1.00/M
+      output_cost_per_token: 0.000005    # $5.00/M
+    litellm_params:
+      model: openai/anthropic/claude-haiku-4-5
+      api_base: https://openrouter.ai/api/v1
+      api_key: os.environ/OPENROUTER_API_KEY
+
 litellm_settings:
   drop_params: true
-  success_callback: ["langfuse"]
-  failure_callback: ["langfuse"]
-  callbacks: ["semantic_cache.SemanticCacheActivator"]
+  num_retries: 3
+  fallbacks: [{"openrouter-mistral": ["openrouter-gemini-flash"]}]
+  success_callback: ["langfuse", "arize"]
+  failure_callback: ["langfuse", "arize"]
+  callbacks: ["semantic_cache.SemanticCacheActivator", "prometheus"]
 
 guardrails:
   - guardrail_name: "prompt-injection"
@@ -47,3 +74,8 @@ general_settings:
     - "/model_group/info"
     - "/health/liveliness"
     - "/health/readiness"
+  user_header_mappings:
+    - header_name: X-OpenWebUI-User-Id
+      litellm_user_role: internal_user
+    - header_name: X-OpenWebUI-User-Email
+      litellm_user_role: customer

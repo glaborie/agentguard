@@ -35,6 +35,11 @@ async def _qdrant_down(name, url, headers=None):
 # ── /health ───────────────────────────────────────────────────────────────────
 
 class TestHealthRoute:
+    def setup_method(self):
+        import app.api.services.health_service as hs
+        hs._cached_checks = None
+        hs._cached_at = 0.0
+
     def test_all_healthy_returns_200(self, client):
         with patch("app.api.services.health_service._probe", _all_ok):
             r = client.get("/health")
@@ -66,12 +71,19 @@ class TestModelsRoute:
         assert r.status_code == 200
         assert r.json()["object"] == "list"
 
-    def test_returns_four_models(self, client):
-        assert len(client.get("/v1/models").json()["data"]) == 4
+    def test_returns_six_models(self, client):
+        assert len(client.get("/v1/models").json()["data"]) == 6
 
     def test_expected_model_ids(self, client):
         ids = {m["id"] for m in client.get("/v1/models").json()["data"]}
-        assert ids == {"agentguard-rag", "agentguard-rag-mistral", "agentguard-direct", "agentguard-agent"}
+        assert ids == {
+            "agentguard-rag",
+            "agentguard-rag-mistral",
+            "agentguard-rag-claude-haiku",
+            "agentguard-direct",
+            "agentguard-agent",
+            "agentguard-agent-claude-haiku",
+        }
 
     def test_required_fields_on_every_model(self, client):
         for m in client.get("/v1/models").json()["data"]:

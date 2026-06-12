@@ -1,0 +1,402 @@
+openapi: 3.0.3
+info:
+  title: AgentGuard RAG API
+  description: |
+    Control layer for AI applications — RAG over NorthstarCRM, guardrails,
+    observability, and human feedback ingestion.
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:8001
+    description: Local dev (direct)
+  - url: http://rag-api.localhost
+    description: Local dev (Traefik)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    Message:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [user, assistant, system]
+        content:
+          type: string
+          minLength: 1
+
+    ChatRequest:
+      type: object
+      required: [messages]
+      properties:
+        model:
+          type: string
+          default: agentguard-rag
+          enum:
+            - agentguard-rag
+            - agentguard-rag-mistral
+            - agentguard-direct
+            - agentguard-agent
+        messages:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/Message"
+        stream:
+          type: boolean
+          default: false
+        temperature:
+          type: number
+          minimum: 0.0
+          maximum: 2.0
+          nullable: true
+        max_tokens:
+          type: integer
+          minimum: 1
+          nullable: true
+        chat_id:
+          type: string
+          nullable: true
+          description: Open WebUI conversation UUID for Langfuse session linking
+        message_id:
+          type: string
+          nullable: true
+          description: Open WebUI message UUID for feedback correlation
+        user_id:
+          type: string
+          nullable: true
+        user_name:
+          type: string
+          nullable: true
+
+    ChatCompletionChoice:
+      type: object
+      properties:
+        index:
+          type: integer
+        message:
+          $ref: "#/components/schemas/Message"
+        finish_reason:
+          type: string
+
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Langfuse trace ID or OpenAI-style chatcmpl-* ID
+        object:
+          type: string
+          example: chat.completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatCompletionChoice"
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+
+    ModelObject:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          example: model
+        created:
+          type: integer
+        owned_by:
+          type: string
+        description:
+          type: string
+
+    ModelListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ModelObject"
+
+    ServiceCheck:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, error]
+        error:
+          type: string
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+        checks:
+          type: object
+          properties:
+            litellm:
+              $ref: "#/components/schemas/ServiceCheck"
+            langfuse:
+              $ref: "#/components/schemas/ServiceCheck"
+            qdrant:
+              $ref: "#/components/schemas/ServiceCheck"
+
+    WebhookPayload:
+      type: object
+      description: Open WebUI thumbs-up/down feedback payload (flat or nested)
+      properties:
+        message_id:
+          type: string
+        rating:
+          type: string
+          enum: ["1", "-1", "thumbs_up", "thumbs_down"]
+        details:
+          type: object
+          properties:
+            rating:
+              type: number
+      additionalProperties: true
+
+    WebhookResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        score_id:
+          type: string
+        trace_id:
+          type: string
+        error:
+          type: string
+
+paths:
+  /v1/chat/completions:
+    post:
+      summary: Chat completion
+      description: |
+        OpenAI-compatible chat completion endpoint. Routes to RAG, direct LLM,
+        or ReAct agent depending on the `model` field. Supports streaming via SSE.
+
+        Guardrails (prompt injection, PII masking) are applied by the LiteLLM proxy.
+        Pass `chat-id` header or `chat_id` body field to link traces to an
+        Open WebUI session in Langfuse.
+      tags: [Chat]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+            examples:
+              rag_query:
+                summary: RAG query (NorthstarCRM)
+                value:
+                  model: agentguard-rag
+                  messages:
+                    - role: user
+                      content: "What are the discount approval tiers for NorthstarCRM?"
+              agent_query:
+                summary: ReAct agent with tools
+                value:
+                  model: agentguard-agent
+                  messages:
+                    - role: user
+                      content: "Search for the latest traces and score them"
+              direct_query:
+                summary: Direct LLM (no RAG)
+                value:
+                  model: agentguard-direct
+                  messages:
+                    - role: user
+                      content: "Summarise what NorthstarCRM does"
+              streaming:
+                summary: Streaming response
+                value:
+                  model: agentguard-rag
+                  stream: true
+                  messages:
+                    - role: user
+                      content: "What is the SLA policy?"
+              with_session:
+                summary: With Open WebUI session linking
+                value:
+                  model: agentguard-rag
+                  chat_id: "550e8400-e29b-41d4-a716-446655440000"
+                  message_id: "msg-abc123"
+                  messages:
+                    - role: user
+                      content: "Can I get a 30% discount?"
+      responses:
+        "200":
+          description: Completion response (or SSE stream if stream=true)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletionResponse"
+            text/event-stream:
+              schema:
+                type: string
+                description: SSE stream of delta chunks in OpenAI format
+        "400":
+          description: No user message found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+      parameters:
+        - name: chat-id
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Open WebUI conversation UUID (alternative to body chat_id)
+
+  /v1/models:
+    get:
+      summary: List available models
+      description: Returns all virtual models exposed by AgentGuard RAG API.
+      tags: [Models]
+      responses:
+        "200":
+          description: Model list in OpenAI format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelListResponse"
+              example:
+                object: list
+                data:
+                  - id: agentguard-rag
+                    object: model
+                    owned_by: agentguard
+                    description: "RAG over NorthstarCRM knowledge base (Gemini Flash)"
+                  - id: agentguard-rag-mistral
+                    object: model
+                    owned_by: agentguard
+                    description: "RAG over NorthstarCRM knowledge base (Mistral)"
+                  - id: agentguard-direct
+                    object: model
+                    owned_by: agentguard
+                    description: "Direct LLM — no RAG context, guardrails only"
+                  - id: agentguard-agent
+                    object: model
+                    owned_by: agentguard
+                    description: "ReAct agent with tools — doc search, trace listing, scoring"
+
+  /health:
+    get:
+      summary: Health check
+      description: |
+        Probes all three backing services (LiteLLM, Langfuse, Qdrant).
+        Returns 200 if all healthy, 503 if any service is degraded.
+      tags: [Operations]
+      responses:
+        "200":
+          description: All services healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+              example:
+                status: ok
+                checks:
+                  litellm:
+                    status: ok
+                  langfuse:
+                    status: ok
+                  qdrant:
+                    status: ok
+        "503":
+          description: One or more services degraded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+              example:
+                status: degraded
+                checks:
+                  litellm:
+                    status: ok
+                  langfuse:
+                    status: error
+                    error: "timeout"
+                  qdrant:
+                    status: ok
+
+  /webhook:
+    post:
+      summary: Ingest feedback from Open WebUI
+      description: |
+        Receives thumbs-up/down ratings from Open WebUI and pushes two Langfuse
+        scores: `user_feedback` (BOOLEAN) and optionally `user_feedback_rating`
+        (NUMERIC 1–10). Correlates by `message_id` metadata on the Langfuse trace.
+      tags: [Feedback]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebhookPayload"
+            examples:
+              thumbs_up:
+                summary: Thumbs up
+                value:
+                  message_id: "msg-abc123"
+                  rating: "1"
+              thumbs_down:
+                summary: Thumbs down
+                value:
+                  message_id: "msg-abc123"
+                  rating: "-1"
+              with_numeric_rating:
+                summary: With numeric detail rating
+                value:
+                  message_id: "msg-abc123"
+                  rating: "1"
+                  details:
+                    rating: 8
+      responses:
+        "200":
+          description: Feedback processed (check `ok` field for success)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookResponse"
+              examples:
+                success:
+                  value:
+                    ok: true
+                    score_id: "score-xyz"
+                    trace_id: "trace-abc"
+                no_trace:
+                  value:
+                    ok: false
+                    error: "no trace found for message_id msg-abc123"
+                invalid_json:
+                  value:
+                    ok: false
+                    error: "invalid JSON"

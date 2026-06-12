@@ -35,10 +35,10 @@ x-deploy-ollama: &deploy-ollama
   resources:
     limits:
       cpus: "4"
-      memory: 12g
+      memory: 6g
     reservations:
       cpus: "2"
-      memory: 10g
+      memory: 5g
       devices:
         - driver: nvidia
           count: all
@@ -72,14 +72,15 @@ services:
       start_period: 30s
     environment: &langfuse-env
       TZ: UTC
-      LANGFUSE_LOG_LEVEL: debug
+      LANGFUSE_LOG_LEVEL: warn
       NEXTAUTH_URL: http://localhost:3200
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
       TELEMETRY_ENABLED: "false"
       LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
-      CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
+      CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:clickhouse@clickhouse:9000
       CLICKHOUSE_URL: http://clickhouse:8123
       CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
       CLICKHOUSE_CLUSTER_ENABLED: "false"
       LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
       LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
@@ -125,6 +126,7 @@ services:
     depends_on: *langfuse-deps
     environment:
       <<: *langfuse-env
+      LOG_LEVEL: warn
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://$(hostname -i):3030/api/health"]
       interval: 10s
@@ -174,7 +176,14 @@ services:
     init: true
     restart: always
     logging: *default-logging
-    deploy: *deploy-clickhouse
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4g
+        reservations:
+          cpus: "1"
+          memory: 2g
     pull_policy: if_not_present
     user: "101:101"
     env_file: .env
@@ -188,6 +197,7 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_logs:/var/log/clickhouse-server
+      - ./config/clickhouse_dev.xml:/etc/clickhouse-server/config.d/dev_memory.xml:ro
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
       interval: 5s
@@ -202,7 +212,14 @@ services:
     init: true
     restart: always
     logging: *default-logging
-    deploy: *deploy-limits
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2g
+        reservations:
+          cpus: "1"
+          memory: 1g
     pull_policy: if_not_present
     env_file: .env
     command: server /data --console-address ":9001"
@@ -258,8 +275,9 @@ services:
       --requirepass ${REDIS_PASSWORD:-redissecret}
     environment:
       TZ: UTC
-    ports:
-      - "127.0.0.1:6300:6379"
+    # ports no longer needed - redis accessed internally only
+    # ports:
+    #   - "6301:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -271,7 +289,9 @@ services:
       - langfuse
 
   ollama:
-    image: ollama/ollama:0.20.7
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
     init: true
     restart: always
     logging: *default-logging
@@ -315,7 +335,10 @@ services:
       - ./litellm_config.yaml:/app/config.yaml
       - ./guardrails/custom_guardrails.py:/app/custom_guardrails.py
       - ./guardrails/semantic_cache.py:/app/semantic_cache.py
+      - ./runtime_config.json:/app/runtime_config.json
     command: ["--config", "/app/config.yaml", "--port", "4000"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file: .env
     environment:
       LANGFUSE_HOST: http://langfuse-web:3000
@@ -326,6 +349,8 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
       STORE_MODEL_IN_DB: "True"
       REDIS_PASSWORD: ${REDIS_PASSWORD:-redissecret}
+      # disable prisma migrations on restart
+      DISABLE_SCHEMA_UPDATE: "True"
       # Semantic injection second pass (LLM-judge classifier)
       SEMANTIC_GUARD_ENABLED: "${SEMANTIC_GUARD_ENABLED:-false}"
       SEMANTIC_GUARD_MODEL: "${SEMANTIC_GUARD_MODEL:-openrouter-gemini-flash}"
@@ -345,12 +370,16 @@ services:
       QDRANT_URL: "http://qdrant:6333"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
+      ARIZE_SPACE_KEY: ${ARIZE_SPACE_KEY}
+      ARIZE_API_KEY: ${ARIZE_API_KEY}
+      ARIZE_PROJECT_NAME: ${ARIZE_PROJECT_NAME:-agentguard}
+      ARIZE_HTTP_ENDPOINT: "https://otlp.eu-west-1a.arize.com/v1"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 45s
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     networks:
       - langfuse
 
@@ -374,25 +403,27 @@ services:
       - langfuse
 
   rag-api:
-    image: python:3.11-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.api
     init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
-    working_dir: /workspace
     volumes:
-      - .:/workspace
-      - pip_cache:/root/.cache/pip
-    command: >
-      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
-             uvicorn app.api.app:app --host 0.0.0.0 --port 8001"
+      - ./app:/app/app
+      - ./scripts:/app/scripts
+      - ./guardrails:/app/guardrails
+      - ./runtime_config.json:/app/runtime_config.json
     env_file: .env
     environment:
+      WATCHFILES_FORCE_POLLING: "true"
       LITELLM_BASE_URL: http://litellm:4000
       QDRANT_URL: http://qdrant:6333
       LANGFUSE_BASE_URL: http://langfuse-web:3000
       OTEL_ENDPOINT: http://otel-collector:4318/v1/traces
+      GITHUB_MCP_URL: http://github-mcp:8080/mcp
       TZ: UTC
     ports:
       - "8001:8001"
@@ -403,9 +434,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health', timeout=4)"]
-      interval: 5s
-      timeout: 5s
-      retries: 12
+      interval: 30s
+      timeout: 10s
+      retries: 5
       start_period: 30s
     networks:
       - langfuse
@@ -415,7 +446,14 @@ services:
     init: true
     restart: always
     logging: *default-logging
-    deploy: *deploy-limits
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 1.5g
+        reservations:
+          cpus: "1"
+          memory: 1g
     pull_policy: if_not_present
     ports:
       - "3100:8080"
@@ -423,8 +461,8 @@ services:
       - openwebui_data:/app/backend/data
     environment:
       ENABLE_OLLAMA_API: "false"
-      OPENAI_API_BASE_URLS: "http://rag-api:8001/v1"
-      OPENAI_API_KEYS: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
+      OPENAI_API_BASE_URLS: "http://rag-api:8001/v1;http://litellm:4000/v1"
+      OPENAI_API_KEYS: "${LITELLM_MASTER_KEY:-sk-litellm-dev-key};${LITELLM_MASTER_KEY:-sk-litellm-dev-key}"
       WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-agentguard-secret-key}
       DEFAULT_MODELS: "agentguard-rag"
       # Prevent Open WebUI downloading sentence-transformer models from HF on startup.
@@ -447,19 +485,17 @@ services:
       - langfuse
 
   agentguard-worker:
-    image: python:3.11-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
     init: true
     restart: always
     logging: *default-logging
     deploy: *deploy-limits
     pull_policy: if_not_present
-    working_dir: /workspace
     volumes:
-      - .:/workspace
-      - pip_cache:/root/.cache/pip
-    command: >
-      sh -c "pip install -r requirements.txt -q --cache-dir /root/.cache/pip &&
-             python -m scripts.worker"
+      - ./app:/app/app
+      - ./scripts:/app/scripts
     env_file: .env
     environment:
       LANGFUSE_BASE_URL: http://langfuse-web:3000
@@ -467,6 +503,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       OPENWEBUI_BASE_URL: http://openwebui:8080
       PYTHONUNBUFFERED: "1"
+      WATCHFILES_FORCE_POLLING: "true"
       TZ: UTC
     depends_on:
       langfuse-web:
@@ -499,6 +536,76 @@ services:
     networks:
       - langfuse
 
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    restart: unless-stopped
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 1.5g
+        reservations:
+          cpus: "1"
+          memory: 1g
+    pull_policy: if_not_present
+    ports:
+      - "5080:5080"
+    volumes:
+      - openobserve_data:/data
+    environment:
+      ZO_DATA_DIR: /data
+      ZO_ROOT_USER_EMAIL: "${ZO_ROOT_USER_EMAIL:-root@example.com}"
+      ZO_ROOT_USER_PASSWORD: "${ZO_ROOT_USER_PASSWORD:-Complexpass#123}"
+      TZ: UTC
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5080/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - langfuse
+
+  github-mcp:
+    image: ghcr.io/github/github-mcp-server:latest
+    restart: unless-stopped
+    logging: *default-logging
+    pull_policy: if_not_present
+    command: ["http", "--port", "8080", "--toolsets", "issues,repos,search,git"]
+    ports:
+      - "127.0.0.1:8091:8080"
+    environment:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_PERSONAL_ACCESS_TOKEN:-}"
+      TZ: UTC
+    networks:
+      - langfuse
+    profiles:
+      - mcp
+
+  traefik:
+    image: traefik:v3.7.5
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-limits
+    pull_policy: if_not_present
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+      - "--providers.file.filename=/etc/traefik/routes.yml"
+      - "--providers.file.watch=true"
+      - "--log.level=INFO"
+    ports:
+      - "80:80"
+      - "8090:8080"
+    volumes:
+      - ./traefik-routes.yml:/etc/traefik/routes.yml:ro
+    environment:
+      TZ: UTC
+    networks:
+      - langfuse
+
 volumes:
   postgres_data:
   clickhouse_data:
@@ -507,8 +614,8 @@ volumes:
   redis_data:
   ollama_data:
   qdrant_data:
-  pip_cache:
   openwebui_data:
+  openobserve_data:
 
 networks:
   langfuse:

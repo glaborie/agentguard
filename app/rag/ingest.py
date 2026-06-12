@@ -162,4 +162,10 @@ def ingest(
     )
     print(f"  Stored {len(chunks)} chunks in Qdrant")
 
+    # BM25 index mirrors the Qdrant contents; a recreate invalidates the cache so the
+    # next get_retriever() rebuilds from the new chunks. Imported lazily so unit tests
+    # of chunking/loading don't need rank_bm25 installed.
+    from app.rag.bm25_index import invalidate
+    invalidate()
+
     return vector_store

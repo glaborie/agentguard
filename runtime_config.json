@@ -1,0 +1,19 @@
+{
+  "semantic_guard_enabled": false,
+  "semantic_guard_model": "openrouter-gemini-flash",
+  "semantic_guard_timeout": 8.0,
+  "toxicity_guard_enabled": false,
+  "toxicity_guard_model": "openrouter-gemini-flash",
+  "toxicity_guard_timeout": 8.0,
+  "semantic_cache_enabled": true,
+  "semantic_cache_threshold": 0.85,
+  "semantic_cache_ttl": 3600,
+  "langfuse_tracing_enabled": true,
+  "otel_enabled": true,
+  "default_model": "openrouter-gemini-flash",
+  "agent_model": "openrouter-gemini-flash",
+  "hybrid_search_enabled": true,
+  "hybrid_search_vector_weight": 0.5,
+  "hybrid_search_bm25_weight": 0.5,
+  "hybrid_search_rrf_c": 60
+}

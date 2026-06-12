@@ -34,8 +34,19 @@ class Settings(BaseSettings):
     # OpenRouter (optional)
     openrouter_api_key: str = ""
 
+    # GitHub MCP (optional — enables GitHub tools in agent)
+    github_personal_access_token: str = ""
+    # SSE URL of github-mcp sidecar (set automatically in Docker; leave empty for stdio on host)
+    github_mcp_url: str = "http://github-mcp:8080/mcp"
+
     # DeepEval judge model — defaults to Gemini Flash via OpenRouter for stable evaluation
     deepeval_model: str = "openrouter-gemini-flash"
+
+    # RAGAS judge model — leave empty to fall back to default_model
+    ragas_model: str = ""
+
+    # Qdrant collection for watsonx corpus (separate from northstar_crm)
+    watsonx_collection: str = "watsonx_docs"
 
     # Open WebUI — used by sync_feedback worker
     openwebui_base_url: str = "http://localhost:3001"

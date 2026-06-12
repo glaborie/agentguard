@@ -1,0 +1,60 @@
+http:
+  routers:
+    openwebui:
+      rule: "Host(`openwebui.localhost`)"
+      service: openwebui
+      entryPoints: [web]
+    langfuse:
+      rule: "Host(`langfuse.localhost`)"
+      service: langfuse
+      entryPoints: [web]
+    litellm:
+      rule: "Host(`litellm.localhost`)"
+      service: litellm
+      entryPoints: [web]
+    rag-api:
+      rule: "Host(`rag-api.localhost`)"
+      service: rag-api
+      entryPoints: [web]
+    grafana:
+      rule: "Host(`grafana.localhost`)"
+      service: grafana
+      entryPoints: [web]
+    jaeger:
+      rule: "Host(`jaeger.localhost`)"
+      service: jaeger
+      entryPoints: [web]
+    loki:
+      rule: "Host(`loki.localhost`)"
+      service: loki
+      entryPoints: [web]
+
+  services:
+    openwebui:
+      loadBalancer:
+        servers:
+          - url: "http://openwebui:8080"
+    langfuse:
+      loadBalancer:
+        servers:
+          - url: "http://langfuse-web:3000"
+    litellm:
+      loadBalancer:
+        servers:
+          - url: "http://litellm:4000"
+    rag-api:
+      loadBalancer:
+        servers:
+          - url: "http://rag-api:8001"
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://grafana:3000"
+    jaeger:
+      loadBalancer:
+        servers:
+          - url: "http://jaeger:16686"
+    loki:
+      loadBalancer:
+        servers:
+          - url: "http://loki:3100"

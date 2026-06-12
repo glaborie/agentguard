@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<clickhouse>
+    <!-- Development memory optimization -->
+    
+    <!-- Reduce uncompressed cache from default 8GB to 256MB for dev -->
+    <uncompressed_cache_size>268435456</uncompressed_cache_size>
+    
+    <!-- Reduce mark cache from default 5GB to 128MB for dev -->
+    <mark_cache_size>134217728</mark_cache_size>
+    
+    <!-- Reduce index mark cache to 64MB -->
+    <index_mark_cache_size>67108864</index_mark_cache_size>
+</clickhouse>

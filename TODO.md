@@ -72,3 +72,94 @@ All additive — no architectural change required. Independent, can be paralleli
 ### [done] #7 CONTRIBUTING.md + local dev setup (~2h)
 
 **Reference:** `deepset-ai/haystack` → `CONTRIBUTING.md`
+
+---
+
+## OpenObserve observability gaps
+
+### [done] #9 Logs fan-out to OpenObserve (~1h)
+
+**Why:** Container logs currently go to Loki only. OpenObserve can ingest logs via Promtail, giving unified traces + logs in one UI — correlate a trace to container logs without switching tools.
+
+**Reference:** OpenObserve Promtail ingestion endpoint `/api/default/loki/api/v1/push` (Loki-compatible API).
+
+---
+
+### [done] #10 LLM observability dashboards (~2h)
+
+**Why:** Traces flow into OpenObserve but no dashboards exist. Teams need out-of-box visibility into latency, token counts, guardrail block rates, cache hit rates, and error rates.
+
+**Panels built:** Request rate, LLM latency p50/p95/p99 over time, latency by model, token usage (prompt + completion), error rate by service, guardrail block rate, request volume by model, semantic cache hits vs misses.
+
+**Files:** `openobserve/dashboards/agentguard_llm.json` (import via UI or `./openobserve/import_dashboards.sh`).
+
+---
+
+### [done] #11 Alerts on trace data (~1h)
+
+**Why:** No proactive alerting exists. Guardrail block spikes (injection attack in progress), high latency, and elevated error rates need automated notification.
+
+**Alerts created:** `agentguard-error-rate-spike` (≥5 errors/5min), `agentguard-high-llm-latency` (avg>30s/10min), `agentguard-guardrail-block-spike` (≥3 RAG chain errors/5min).
+
+**Setup:** `ALERT_WEBHOOK_URL=https://... ./openobserve/setup_alerts.sh` — idempotent, fires to any webhook (Slack, Discord, custom). Update URL in OO UI: Alerts → Destinations → agentguard-webhook.
+
+---
+
+### [done] #12 Prometheus metrics ingestion (~1h)
+
+**Why:** rag-api exposes `/metrics` (prometheus_fastapi_instrumentator) and LiteLLM exposes Prometheus metrics. OpenObserve can scrape both, consolidating metrics + traces + logs in one platform.
+
+**How:** Added `remote_write` block to `prometheus.yml` pointing at OpenObserve's Prometheus ingestion endpoint (`/api/default/prometheus/api/v1/write`). Credentials read from `ZO_ROOT_USER_EMAIL`/`ZO_ROOT_USER_PASSWORD` env vars (already set in `.env`). Prometheus scrapes rag-api, litellm, and otel-collector every 15s and forwards all time-series to OpenObserve. Requires infra stack running (`docker compose -f docker-compose.infra.yml up -d`). In OpenObserve: Streams → `prometheus` stream type to query metrics.
+
+Here's a precise handover prompt for Claude Code:
+
+---
+
+### [done] #13 Surface per-experiment cost in AgentGuard's experiment runner**
+
+In `app/eval/experiments.py`, the `run_experiment()` function compares multiple models against a Langfuse dataset. LiteLLM already returns token usage in its responses. The goal is to capture and surface cost per model per experiment run.
+
+**What to do:**
+
+1. In the experiment runner, capture `usage` (prompt_tokens, completion_tokens) from LiteLLM responses for each dataset item evaluated. LiteLLM exposes this on the response object as `response.usage` — it also has `response._hidden_params["response_cost"]` which is the pre-calculated USD cost per call.
+
+2. Aggregate per model: total cost (USD), total prompt tokens, total completion tokens, cost per item (mean), and cost/quality ratio (cost divided by mean faithfulness score if available).
+
+3. Surface this in `print_results()` as an additional cost summary table alongside the existing quality metrics table.
+
+4. Also write the cost breakdown into the Langfuse experiment metadata so it's visible in the UI — use `langfuse.score()` or tag it on the dataset run object.
+
+5. Add a `--cost-report` flag to the CLI (`app/main.py evaluate`) that prints the cost table even when running a single model (no comparison needed).
+
+**Constraints:**
+- LiteLLM proxy is the only LLM call path — do not add direct SDK calls
+- All models are defined in `litellm_config.yaml`; cost data comes from LiteLLM responses, not hardcoded pricing tables
+- Tests live in `tests/test_evaluators.py` and `tests/test_integration.py` — add unit tests for the cost aggregation logic, mock `response._hidden_params`
+- Keep backward compatibility: `run_experiment()` signature unchanged, cost data is additive
+
+**Files to touch:** `app/eval/experiments.py`, `app/main.py`, `tests/test_evaluators.py` (or new `tests/test_experiments.py`)
+
+
+### [done] #14 Quality drift monitoring notebook for AgentGuard**
+
+Add `notebooks/quality_drift.ipynb` that pulls historical eval scores from Langfuse and surfaces metric trends with regression alerting.
+
+**What to do:**
+
+1. **Fetch scores from Langfuse** using the Langfuse SDK (`langfuse.get_scores()` with pagination). Filter by score name: `faithfulness`, `answer_relevancy`, `contextual_relevancy`, `hallucination`. Return a flat DataFrame with columns: `timestamp`, `trace_id`, `metric`, `value`, `model`.
+
+2. **Trend plot** — one line per metric over time, x-axis is date bucketed by day. Use matplotlib or plotly (plotly preferred, already in the stack via Langfuse). Overlay a 7-day rolling mean. One subplot per metric, shared x-axis.
+
+3. **Regression detection** — for each metric, compare the last 7-day window mean against the prior 7-day window mean. Flag as regression if delta exceeds a configurable threshold (default: -0.05 for faithfulness/relevancy, +0.05 for hallucination since higher = worse). Print a clear summary table: metric | baseline_mean | current_mean | delta | status (✅ / ⚠️ REGRESSION).
+
+4. **Alerting stub** — a `check_drift(threshold_overrides: dict) -> list[DriftAlert]` Python function at the bottom of the notebook, callable from CI or the CLI. Returns a list of dataclass objects so `app/main.py` can import and run it as `python -m app.main drift-check --fail-on-regression` (exit code 1 if any regression detected).
+
+5. **Seed data** — if Langfuse has fewer than 14 days of scores (fresh install), generate synthetic score history so the notebook renders meaningfully. Gate behind a `USE_SYNTHETIC_DATA = True` flag at the top.
+
+**Constraints:**
+- Langfuse connection via existing `app/tracing.py` and `app/config.py` — don't hardcode credentials
+- No new Python dependencies unless unavoidable; plotly is already present
+- The `check_drift()` function must be importable without running the full notebook (extract to `app/eval/drift.py`, import into notebook)
+- Add unit tests for `check_drift()` in `tests/test_drift.py` covering: no regression, single regression, threshold override, empty scores edge case
+
+**Files to create/touch:** `notebooks/quality_drift.ipynb`, `app/eval/drift.py`, `app/main.py` (add `drift-check` command), `tests/test_drift.py`

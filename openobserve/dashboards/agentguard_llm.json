@@ -1,0 +1,582 @@
+{
+  "version": 3,
+  "dashboardId": "",
+  "title": "AgentGuard — LLM Observability",
+  "description": "LLM latency, token usage, guardrail blocks, cache hits, and error rates.",
+  "role": "",
+  "owner": "",
+  "created": "2026-06-09T00:00:00Z",
+  "tabs": [
+    {
+      "tabId": "default",
+      "name": "Overview",
+      "panels": [
+        {
+          "id": "Panel_ID1",
+          "type": "line",
+          "title": "LLM Request Rate (per min)",
+          "description": "ChatOpenAI spans per minute.",
+          "config": {
+            "show_legends": true,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT histogram(_timestamp) AS \"x_axis_1\", count(*) AS \"y_axis_1\" FROM \"default\" WHERE operation_name = 'ChatOpenAI' GROUP BY x_axis_1 ORDER BY x_axis_1 ASC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": " ",
+                    "alias": "x_axis_1",
+                    "column": "_timestamp",
+                    "color": null,
+                    "aggregationFunction": "histogram",
+                    "sortBy": "ASC",
+                    "args": [ { "value": null } ]
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "Requests/min",
+                    "alias": "y_axis_1",
+                    "column": "*",
+                    "color": "#5960b2",
+                    "aggregationFunction": "count"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "line",
+                "weight_fixed": 1,
+                "limit": 0,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 0, "y": 0, "w": 24, "h": 9, "i": 1 },
+          "htmlContent": "",
+          "markdownContent": ""
+        },
+        {
+          "id": "Panel_ID2",
+          "type": "line",
+          "title": "LLM Latency p50 / p95 / p99 (ms)",
+          "description": "ChatOpenAI span duration percentiles. duration field is in microseconds.",
+          "config": {
+            "show_legends": true,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT histogram(_timestamp) AS \"x_axis_1\", approx_percentile_cont(duration / 1000.0, 0.50) AS \"y_axis_1\", approx_percentile_cont(duration / 1000.0, 0.95) AS \"y_axis_2\", approx_percentile_cont(duration / 1000.0, 0.99) AS \"y_axis_3\" FROM \"default\" WHERE operation_name = 'ChatOpenAI' GROUP BY x_axis_1 ORDER BY x_axis_1 ASC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": " ",
+                    "alias": "x_axis_1",
+                    "column": "_timestamp",
+                    "color": null,
+                    "aggregationFunction": "histogram",
+                    "sortBy": "ASC",
+                    "args": [ { "value": null } ]
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "p50 (ms)",
+                    "alias": "y_axis_1",
+                    "column": "duration",
+                    "color": "#38a169",
+                    "aggregationFunction": "p50"
+                  },
+                  {
+                    "label": "p95 (ms)",
+                    "alias": "y_axis_2",
+                    "column": "duration",
+                    "color": "#dd6b20",
+                    "aggregationFunction": "p95"
+                  },
+                  {
+                    "label": "p99 (ms)",
+                    "alias": "y_axis_3",
+                    "column": "duration",
+                    "color": "#e53e3e",
+                    "aggregationFunction": "p99"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "line",
+                "weight_fixed": 1,
+                "limit": 0,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 24, "y": 0, "w": 24, "h": 9, "i": 2 },
+          "htmlContent": "",
+          "markdownContent": ""
+        },
+        {
+          "id": "Panel_ID3",
+          "type": "bar",
+          "title": "Latency p95 by Model (ms)",
+          "description": "p95 LLM latency grouped by gen_ai_response_model.",
+          "config": {
+            "show_legends": true,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT gen_ai_response_model AS \"x_axis_1\", approx_percentile_cont(duration / 1000.0, 0.50) AS \"y_axis_1\", approx_percentile_cont(duration / 1000.0, 0.95) AS \"y_axis_2\" FROM \"default\" WHERE operation_name = 'ChatOpenAI' AND gen_ai_response_model IS NOT NULL GROUP BY x_axis_1 ORDER BY y_axis_2 DESC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": "Model",
+                    "alias": "x_axis_1",
+                    "column": "gen_ai_response_model",
+                    "color": null,
+                    "aggregationFunction": null
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "p50 (ms)",
+                    "alias": "y_axis_1",
+                    "column": "duration",
+                    "color": "#38a169",
+                    "aggregationFunction": "p50"
+                  },
+                  {
+                    "label": "p95 (ms)",
+                    "alias": "y_axis_2",
+                    "column": "duration",
+                    "color": "#dd6b20",
+                    "aggregationFunction": "p95"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "bar",
+                "weight_fixed": 1,
+                "limit": 10,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 0, "y": 9, "w": 24, "h": 9, "i": 3 },
+          "htmlContent": "",
+          "markdownContent": ""
+        },
+        {
+          "id": "Panel_ID4",
+          "type": "area",
+          "title": "Token Usage Over Time",
+          "description": "Prompt and completion tokens per histogram bucket. Fields: gen_ai_usage_input_tokens, gen_ai_usage_output_tokens.",
+          "config": {
+            "show_legends": true,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT histogram(_timestamp) AS \"x_axis_1\", sum(gen_ai_usage_input_tokens) AS \"y_axis_1\", sum(gen_ai_usage_output_tokens) AS \"y_axis_2\" FROM \"default\" WHERE operation_name = 'ChatOpenAI' AND gen_ai_usage_total_tokens IS NOT NULL GROUP BY x_axis_1 ORDER BY x_axis_1 ASC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": " ",
+                    "alias": "x_axis_1",
+                    "column": "_timestamp",
+                    "color": null,
+                    "aggregationFunction": "histogram",
+                    "sortBy": "ASC",
+                    "args": [ { "value": null } ]
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "Prompt Tokens",
+                    "alias": "y_axis_1",
+                    "column": "gen_ai_usage_input_tokens",
+                    "color": "#5960b2",
+                    "aggregationFunction": "sum"
+                  },
+                  {
+                    "label": "Completion Tokens",
+                    "alias": "y_axis_2",
+                    "column": "gen_ai_usage_output_tokens",
+                    "color": "#38a169",
+                    "aggregationFunction": "sum"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "area",
+                "weight_fixed": 1,
+                "limit": 0,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 24, "y": 9, "w": 24, "h": 9, "i": 4 },
+          "htmlContent": "",
+          "markdownContent": ""
+        },
+        {
+          "id": "Panel_ID5",
+          "type": "line",
+          "title": "Error Rate Over Time",
+          "description": "Spans with status_code=2 (ERROR) per histogram bucket.",
+          "config": {
+            "show_legends": true,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT histogram(_timestamp) AS \"x_axis_1\", count(*) AS \"y_axis_1\" FROM \"default\" WHERE status_code = 2 GROUP BY x_axis_1 ORDER BY x_axis_1 ASC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": " ",
+                    "alias": "x_axis_1",
+                    "column": "_timestamp",
+                    "color": null,
+                    "aggregationFunction": "histogram",
+                    "sortBy": "ASC",
+                    "args": [ { "value": null } ]
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "Errors",
+                    "alias": "y_axis_1",
+                    "column": "*",
+                    "color": "#e53e3e",
+                    "aggregationFunction": "count"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "line",
+                "weight_fixed": 1,
+                "limit": 0,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 0, "y": 18, "w": 24, "h": 9, "i": 5 },
+          "htmlContent": "",
+          "markdownContent": ""
+        },
+        {
+          "id": "Panel_ID6",
+          "type": "bar",
+          "title": "Request Volume by Model",
+          "description": "Total ChatOpenAI spans per model (gen_ai_response_model).",
+          "config": {
+            "show_legends": false,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT gen_ai_response_model AS \"x_axis_1\", count(*) AS \"y_axis_1\" FROM \"default\" WHERE operation_name = 'ChatOpenAI' AND gen_ai_response_model IS NOT NULL GROUP BY x_axis_1 ORDER BY y_axis_1 DESC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": "Model",
+                    "alias": "x_axis_1",
+                    "column": "gen_ai_response_model",
+                    "color": null,
+                    "aggregationFunction": null
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "Requests",
+                    "alias": "y_axis_1",
+                    "column": "*",
+                    "color": "#5960b2",
+                    "aggregationFunction": "count"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "bar",
+                "weight_fixed": 1,
+                "limit": 10,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 24, "y": 18, "w": 24, "h": 9, "i": 6 },
+          "htmlContent": "",
+          "markdownContent": ""
+        },
+        {
+          "id": "Panel_ID7",
+          "type": "line",
+          "title": "RAG Pipeline Span Rate",
+          "description": "RunnableSequence (full RAG chain) invocations over time.",
+          "config": {
+            "show_legends": true,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT histogram(_timestamp) AS \"x_axis_1\", operation_name AS \"x_axis_2\", count(*) AS \"y_axis_1\" FROM \"default\" WHERE operation_name IN ('RunnableSequence', 'ChatOpenAI', 'ScoredRetriever') GROUP BY x_axis_1, x_axis_2 ORDER BY x_axis_1 ASC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": " ",
+                    "alias": "x_axis_1",
+                    "column": "_timestamp",
+                    "color": null,
+                    "aggregationFunction": "histogram",
+                    "sortBy": "ASC",
+                    "args": [ { "value": null } ]
+                  },
+                  {
+                    "label": "Operation",
+                    "alias": "x_axis_2",
+                    "column": "operation_name",
+                    "color": null
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "Count",
+                    "alias": "y_axis_1",
+                    "column": "*",
+                    "color": "#5960b2",
+                    "aggregationFunction": "count"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "line",
+                "weight_fixed": 1,
+                "limit": 0,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 0, "y": 27, "w": 24, "h": 9, "i": 7 },
+          "htmlContent": "",
+          "markdownContent": ""
+        },
+        {
+          "id": "Panel_ID8",
+          "type": "line",
+          "title": "RAG Retrieval Latency (ms)",
+          "description": "ScoredRetriever span duration percentiles.",
+          "config": {
+            "show_legends": true,
+            "legends_position": null,
+            "decimals": 0,
+            "axis_border_show": false,
+            "legend_width": { "unit": "px" },
+            "base_map": { "type": "osm" },
+            "map_view": { "zoom": 1, "lat": 0, "lng": 0 },
+            "map_symbol_style": {
+              "size": "by Value",
+              "size_by_value": { "min": 1, "max": 100 },
+              "size_fixed": 2
+            },
+            "drilldown": [],
+            "connect_nulls": false
+          },
+          "queryType": "sql",
+          "queries": [
+            {
+              "query": "SELECT histogram(_timestamp) AS \"x_axis_1\", approx_percentile_cont(duration / 1000.0, 0.50) AS \"y_axis_1\", approx_percentile_cont(duration / 1000.0, 0.95) AS \"y_axis_2\" FROM \"default\" WHERE operation_name = 'ScoredRetriever' GROUP BY x_axis_1 ORDER BY x_axis_1 ASC",
+              "customQuery": false,
+              "fields": {
+                "stream": "default",
+                "stream_type": "traces",
+                "x": [
+                  {
+                    "label": " ",
+                    "alias": "x_axis_1",
+                    "column": "_timestamp",
+                    "color": null,
+                    "aggregationFunction": "histogram",
+                    "sortBy": "ASC",
+                    "args": [ { "value": null } ]
+                  }
+                ],
+                "y": [
+                  {
+                    "label": "p50 (ms)",
+                    "alias": "y_axis_1",
+                    "column": "duration",
+                    "color": "#38a169",
+                    "aggregationFunction": "p50"
+                  },
+                  {
+                    "label": "p95 (ms)",
+                    "alias": "y_axis_2",
+                    "column": "duration",
+                    "color": "#dd6b20",
+                    "aggregationFunction": "p95"
+                  }
+                ],
+                "z": [],
+                "filter": []
+              },
+              "config": {
+                "promql_legend": "",
+                "layer_type": "line",
+                "weight_fixed": 1,
+                "limit": 0,
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "layout": { "x": 24, "y": 27, "w": 24, "h": 9, "i": 8 },
+          "htmlContent": "",
+          "markdownContent": ""
+        }
+      ]
+    }
+  ]
+}

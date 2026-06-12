@@ -24,11 +24,20 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels -r requirements.t
     rm -rf /wheels
 
 COPY app ./app
-COPY scripts ./scripts
+
+# Only copy scripts required by the worker process — not dev/CLI tools
+RUN mkdir scripts
+COPY scripts/worker.py \
+     scripts/online_eval_worker.py \
+     scripts/sync_feedback.py \
+     scripts/build_dataset.py \
+     scripts/seed_score_configs.py \
+     scripts/utils.py \
+     scripts/
 
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "-m", "scripts.worker"]
+CMD ["watchfiles", "--filter", "python", "python -m scripts.worker", "/app/app", "/app/scripts"]

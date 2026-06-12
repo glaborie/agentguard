@@ -120,6 +120,10 @@ class TestLiteLLMGuardrails:
 
     # ── Threats of violence / insults (built-in guardrail, pre_call) ─────
 
+    @pytest.mark.skipif(
+        not __import__("os").environ.get("TOXICITY_GUARD_ENABLED", "false").lower() == "true",
+        reason="TOXICITY_GUARD_ENABLED=false — toxicity guard not active",
+    )
     @pytest.mark.parametrize(
         "text",
         [
@@ -189,13 +193,15 @@ class TestRagApi:
         ids = {m["id"] for m in resp.json()["data"]}
         assert "agentguard-rag" in ids
         assert "agentguard-rag-mistral" in ids
+        assert "agentguard-rag-claude-haiku" in ids
+        assert "agentguard-agent-claude-haiku" in ids
 
     def test_chat_completion_returns_answer(self):
         resp = requests.post(
             f"{self._base}/v1/chat/completions",
             json={
                 "model": "agentguard-rag",
-                "messages": [{"role": "user", "content": "What is tracing in Langfuse?"}],
+                "messages": [{"role": "user", "content": "What is NorthstarCRM?"}],
             },
             timeout=60,
         )
@@ -226,7 +232,11 @@ class TestEndToEndRAG:
         assert any(s for s in sources)  # sources are relative paths within mock_corpus
 
 
+_semantic_cache_enabled = __import__("os").environ.get("SEMANTIC_CACHE_ENABLED", "false").lower() == "true"
+
+
 @pytest.mark.integration
+@pytest.mark.skipif(not _semantic_cache_enabled, reason="SEMANTIC_CACHE_ENABLED=false — semantic cache not active")
 class TestSemanticCache:
     """Verify semantic cache works end-to-end against live LiteLLM proxy.
 

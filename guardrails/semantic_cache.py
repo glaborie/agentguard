@@ -12,8 +12,10 @@ import os
 from typing import Any, Optional
 from uuid import uuid4
 
+import json
 import httpx
 import redis.asyncio as aioredis
+from pathlib import Path
 try:
     from litellm.caching.base_cache import BaseCache
 except ImportError:
@@ -23,6 +25,11 @@ from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
 logger = logging.getLogger(__name__)
+if not logger.handlers:
+    _handler = logging.StreamHandler()
+    _handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s:%(levelname)s - %(message)s"))
+    logger.addHandler(_handler)
+    logger.setLevel(logging.WARNING)
 
 _COLLECTION = os.environ.get("SEMANTIC_CACHE_COLLECTION", "semantic-cache")
 _THRESHOLD = float(os.environ.get("SEMANTIC_CACHE_THRESHOLD", "0.85"))
@@ -33,6 +40,20 @@ _REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
 _REDIS_PORT = int(os.environ.get("REDIS_PORT", "6379"))
 _REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", "")
 _VECTOR_SIZE = 768  # nomic-embed-text output dimension
+
+
+
+_RUNTIME_CONFIG_PATH = Path(os.environ.get("RUNTIME_CONFIG_PATH", "/app/runtime_config.json"))
+
+
+def _cache_cfg() -> dict:
+    """Read runtime_config.json — cheap, OS-cached."""
+    if _RUNTIME_CONFIG_PATH.exists():
+        try:
+            return json.loads(_RUNTIME_CONFIG_PATH.read_text())
+        except Exception:
+            pass
+    return {}
 
 
 def _messages_to_text(messages: list[dict]) -> str:
@@ -90,7 +111,8 @@ class QdrantSemanticCache(BaseCache):
         return resp.json()["embedding"]
 
     async def async_get_cache(self, key: str = "", **kwargs) -> Optional[Any]:
-        if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
+        cfg = _cache_cfg()
+        if not cfg.get("semantic_cache_enabled", os.environ.get("SEMANTIC_CACHE_ENABLED", "true") == "true"):
             return None
         if kwargs.get("tools"):  # tool-calling responses are live-data-dependent — skip cache
             return None
@@ -105,7 +127,7 @@ class QdrantSemanticCache(BaseCache):
                 collection_name=_COLLECTION,
                 query=vector,
                 limit=1,
-                score_threshold=_THRESHOLD,
+                score_threshold=float(cfg.get("semantic_cache_threshold", _THRESHOLD)),
                 with_payload=True,
             )
             results = result.points
@@ -117,7 +139,7 @@ class QdrantSemanticCache(BaseCache):
             raw = await self._redis.get(f"semantic_cache:{cache_key}")
             if raw is None:
                 return None
-            logger.info("semantic_cache: HIT score=%.3f key=%s", results[0].score, cache_key)
+            logger.warning("semantic_cache: HIT score=%.3f key=%s", results[0].score, cache_key)
             import litellm
             parsed = json.loads(raw)
             if isinstance(parsed, str):
@@ -128,7 +150,8 @@ class QdrantSemanticCache(BaseCache):
             return None
 
     async def async_set_cache(self, key: str = "", value: Any = None, **kwargs) -> None:
-        if os.environ.get("SEMANTIC_CACHE_ENABLED", "true").lower() != "true":
+        cfg = _cache_cfg()
+        if not cfg.get("semantic_cache_enabled", os.environ.get("SEMANTIC_CACHE_ENABLED", "true") == "true"):
             return
         if kwargs.get("tools"):  # don't cache tool-calling responses
             return
@@ -152,10 +175,10 @@ class QdrantSemanticCache(BaseCache):
             )
             await self._redis.setex(
                 f"semantic_cache:{cache_key}",
-                _TTL,
+                int(cfg.get("semantic_cache_ttl", _TTL)),
                 self._serialize(value),
             )
-            logger.info("semantic_cache: SET key=%s", cache_key)
+            logger.warning("semantic_cache: SET key=%s", cache_key)
         except Exception:
             logger.warning("semantic_cache: set_cache error", exc_info=True)
 

@@ -62,30 +62,17 @@ services:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
     environment:
       LANGFUSE_OTEL_AUTH: "${LANGFUSE_OTEL_AUTH:-Basic cGstbGYtZGV2OnNrLWxmLWRldg==}"
+      # OpenObserve: endpoint uses host.docker.internal so collector reaches host port 5080.
+      # Auth = Basic base64(email:password). Default self-hosted: admin@example.com:admin123
+      OPENOBSERVE_OTLP_ENDPOINT: "${OPENOBSERVE_OTLP_ENDPOINT:-http://openobserve:5080/api/default}"
+      OPENOBSERVE_AUTH: "${OPENOBSERVE_AUTH:-Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4cGFzcyMxMjM=}"
       TZ: UTC
     ports:
       - "4317:4317"
       - "4318:4318"
-      - "8888:8888"
     depends_on:
       jaeger:
         condition: service_started
-    networks:
-      - langfuse
-
-  dozzle:
-    image: amir20/dozzle:v10.6.0
-    restart: always
-    logging: *default-logging
-    deploy: *deploy-limits
-    pull_policy: if_not_present
-    ports:
-      - "8080:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      DOZZLE_NO_ANALYTICS: "true"
-      TZ: UTC
     networks:
       - langfuse
 
@@ -134,6 +121,7 @@ services:
       - "3300:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD:-admin}
       GF_SECURITY_ADMIN_USER: admin
@@ -143,10 +131,92 @@ services:
     networks:
       - langfuse
 
+  loki:
+    image: grafana/loki:3.3.2
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-otel
+    pull_policy: if_not_present
+    user: "root"
+    entrypoint:
+      - sh
+      - -c
+      - mkdir -p /tmp/loki/chunks /tmp/loki/rules && chmod -R 777 /tmp/loki && exec /usr/bin/loki -config.file=/etc/loki/config.yml
+    volumes:
+      - ./loki-config.yml:/etc/loki/config.yml:ro
+      - loki_data:/tmp/loki
+    ports:
+      - "127.0.0.1:3101:3100"
+    environment:
+      TZ: UTC
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3100/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - langfuse
+
+  promtail:
+    image: grafana/promtail:3.3.2
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-otel
+    pull_policy: if_not_present
+    command: -config.file=/etc/promtail/config.yml -config.expand-env=true
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      TZ: UTC
+      ZO_ROOT_USER_EMAIL: "${ZO_ROOT_USER_EMAIL:-root@example.com}"
+      ZO_ROOT_USER_PASSWORD: "${ZO_ROOT_USER_PASSWORD:-Complexpass#123}" 
+    depends_on:
+      loki:
+        condition: service_healthy
+    networks:
+      - langfuse
+
+  dockge:
+    image: louislam/dockge:1
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-otel
+    pull_policy: if_not_present
+    ports:
+      - "5001:5001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - dockge_data:/app/data
+      - /opt/stacks:/opt/stacks
+    environment:
+      DOCKGE_STACKS_DIR: /opt/stacks
+      TZ: UTC
+    networks:
+      - langfuse
+
+  scout:
+    image: docker/scout-cli:latest
+    pull_policy: if_not_present
+    profiles: [tools]
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.docker:/root/.docker
+    environment:
+      DOCKER_SCOUT_HUB_USER: ${DOCKER_SCOUT_HUB_USER:-}
+      DOCKER_SCOUT_HUB_PASSWORD: ${DOCKER_SCOUT_HUB_PASSWORD:-}
+      TZ: UTC
+    networks:
+      - langfuse
+
 volumes:
   portainer_data:
   prometheus_data:
+  loki_data:
   grafana_data:
+  dockge_data:
 
 networks:
   langfuse:

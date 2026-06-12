@@ -30,6 +30,11 @@ exporters:
     endpoint: http://langfuse-web:3000/api/public/otel
     headers:
       Authorization: "${env:LANGFUSE_OTEL_AUTH}"
+  otlphttp/openobserve:
+    # OpenObserve OTLP HTTP ingestion — runs on host at port 5080.
+    endpoint: "${env:OPENOBSERVE_OTLP_ENDPOINT}"
+    headers:
+      Authorization: "${env:OPENOBSERVE_AUTH}"
 
 service:
   telemetry:
@@ -40,4 +45,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [resource, batch]
-      exporters: [otlp/jaeger, otlphttp/langfuse]
+      exporters: [otlp/jaeger, otlphttp/langfuse, otlphttp/openobserve]

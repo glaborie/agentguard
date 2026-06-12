@@ -74,9 +74,13 @@ def _create_trace(
     *,
     chat_id: Optional[str],
     user_id: Optional[str],
+    request_id: Optional[str] = None,
 ) -> str:
     """POST a minimal trace to Langfuse ingestion API. Returns the trace ID."""
     trace_id = str(uuid.uuid4())
+    metadata: dict = {"guardrail_type": guardrail_type}
+    if request_id:
+        metadata["request_id"] = request_id
     body: dict = {
         "batch": [
             {
@@ -87,7 +91,9 @@ def _create_trace(
                     "name": "guardrail_block",
                     "input": query,
                     "output": "[blocked]",
-                    "tags": [guardrail_type, "guardrail"],
+                    "level": "ERROR",
+                    "tags": [guardrail_type, "guardrail", "blocked"],
+                    "metadata": metadata,
                     **({"sessionId": chat_id} if chat_id else {}),
                     **({"userId": user_id} if user_id else {}),
                 },
@@ -114,6 +120,7 @@ def score_guardrail_block(
     *,
     chat_id: Optional[str] = None,
     user_id: Optional[str] = None,
+    request_id: Optional[str] = None,
 ) -> None:
     """Record a guardrail block as Langfuse scores.
 
@@ -122,9 +129,16 @@ def score_guardrail_block(
     """
     try:
         if not trace_id:
-            trace_id = _create_trace(query, guardrail_type, chat_id=chat_id, user_id=user_id)
+            trace_id = _create_trace(
+                query, guardrail_type,
+                chat_id=chat_id, user_id=user_id, request_id=request_id,
+            )
         _post_score(trace_id, f"guardrail_{guardrail_type}", 1.0, f"blocked by {guardrail_type}")
         _post_score(trace_id, "guardrail_triggered", 1.0, guardrail_type)
+        logger.warning(
+            "guardrail block | type=%s request_id=%s trace_id=%s",
+            guardrail_type, request_id, trace_id,
+        )
     except Exception as exc:
         logger.warning("guardrail_scoring: score_guardrail_block failed: %s", exc)
 
