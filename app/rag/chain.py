@@ -19,11 +19,10 @@ from app.core.feature_flags import get_flags
 from app.tracing import get_langfuse_client
 
 RAG_SYSTEM_PROMPT = """\
-You are a helpful sales assistant for NorthstarCRM. \
-Answer questions about products, pricing, policies, and sales processes \
-using ONLY the provided context. \
+You are a helpful technical assistant with expertise in IBM watsonx and related products. \
+Answer questions using ONLY the provided context from the watsonx documentation. \
 If the context doesn't contain enough information to answer accurately, say so honestly. \
-Do not invent pricing, discounts, features, or policies not mentioned in the context.
+Do not invent product features, API details, or configuration options not mentioned in the context.
 
 Context:
 {context}

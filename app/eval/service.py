@@ -1,5 +1,5 @@
 from app.eval.deepeval_runner import run_deepeval_evaluation
-from app.eval.experiments import print_comparison_table, run_experiment
+from app.eval.experiments import print_comparison_table, run_experiment, run_ragas_experiment
 
 
 def evaluate(
@@ -31,6 +31,24 @@ def experiment(
 
 def show_experiment_table(results, run_names: dict, dataset_name: str) -> None:
     print_comparison_table(results, run_names, dataset_name)
+
+
+def ragas_experiment(
+    dataset_name: str,
+    models: list[str],
+    run_prefix: str = "ragas-experiment",
+    metric_names: list[str] | None = None,
+    judge_model: str | None = None,
+    limit: int | None = None,
+) -> tuple:
+    return run_ragas_experiment(
+        dataset_name=dataset_name,
+        models=models,
+        run_prefix=run_prefix,
+        metric_names=metric_names,
+        judge_model=judge_model,
+        limit=limit,
+    )
 
 
 def regression_gate(

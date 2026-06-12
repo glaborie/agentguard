@@ -35,10 +35,10 @@ x-deploy-ollama: &deploy-ollama
   resources:
     limits:
       cpus: "4"
-      memory: 12g
+      memory: 6g
     reservations:
       cpus: "2"
-      memory: 10g
+      memory: 5g
       devices:
         - driver: nvidia
           count: all
@@ -176,7 +176,14 @@ services:
     init: true
     restart: always
     logging: *default-logging
-    deploy: *deploy-clickhouse
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4g
+        reservations:
+          cpus: "1"
+          memory: 2g
     pull_policy: if_not_present
     user: "101:101"
     env_file: .env
@@ -190,6 +197,7 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_logs:/var/log/clickhouse-server
+      - ./config/clickhouse_dev.xml:/etc/clickhouse-server/config.d/dev_memory.xml:ro
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
       interval: 5s
@@ -204,7 +212,14 @@ services:
     init: true
     restart: always
     logging: *default-logging
-    deploy: *deploy-limits
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2g
+        reservations:
+          cpus: "1"
+          memory: 1g
     pull_policy: if_not_present
     env_file: .env
     command: server /data --console-address ":9001"
@@ -260,8 +275,9 @@ services:
       --requirepass ${REDIS_PASSWORD:-redissecret}
     environment:
       TZ: UTC
-    ports:
-      - "127.0.0.1:6300:6379"
+    # ports no longer needed - redis accessed internally only
+    # ports:
+    #   - "6301:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -430,7 +446,14 @@ services:
     init: true
     restart: always
     logging: *default-logging
-    deploy: *deploy-limits
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 1.5g
+        reservations:
+          cpus: "1"
+          memory: 1g
     pull_policy: if_not_present
     ports:
       - "3100:8080"
@@ -517,7 +540,14 @@ services:
     image: public.ecr.aws/zinclabs/openobserve:latest
     restart: unless-stopped
     logging: *default-logging
-    deploy: *deploy-limits
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 1.5g
+        reservations:
+          cpus: "1"
+          memory: 1g
     pull_policy: if_not_present
     ports:
       - "5080:5080"
@@ -554,7 +584,7 @@ services:
       - mcp
 
   traefik:
-    image: traefik:v3.2
+    image: traefik:v3.7.5
     restart: always
     logging: *default-logging
     deploy: *deploy-limits

@@ -120,6 +120,10 @@ class TestLiteLLMGuardrails:
 
     # ── Threats of violence / insults (built-in guardrail, pre_call) ─────
 
+    @pytest.mark.skipif(
+        not __import__("os").environ.get("TOXICITY_GUARD_ENABLED", "false").lower() == "true",
+        reason="TOXICITY_GUARD_ENABLED=false — toxicity guard not active",
+    )
     @pytest.mark.parametrize(
         "text",
         [
@@ -228,7 +232,11 @@ class TestEndToEndRAG:
         assert any(s for s in sources)  # sources are relative paths within mock_corpus
 
 
+_semantic_cache_enabled = __import__("os").environ.get("SEMANTIC_CACHE_ENABLED", "false").lower() == "true"
+
+
 @pytest.mark.integration
+@pytest.mark.skipif(not _semantic_cache_enabled, reason="SEMANTIC_CACHE_ENABLED=false — semantic cache not active")
 class TestSemanticCache:
     """Verify semantic cache works end-to-end against live LiteLLM proxy.
 

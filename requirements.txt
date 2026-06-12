@@ -16,6 +16,8 @@ langgraph>=0.3,<0.4
 langgraph-prebuilt>=0.1,<0.2
 langchain-mcp-adapters>=0.1,<0.2
 deepeval>=2.0
+ragas>=0.2
+datasets>=2.0
 
 fastapi>=0.115
 uvicorn>=0.30

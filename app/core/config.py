@@ -42,6 +42,12 @@ class Settings(BaseSettings):
     # DeepEval judge model — defaults to Gemini Flash via OpenRouter for stable evaluation
     deepeval_model: str = "openrouter-gemini-flash"
 
+    # RAGAS judge model — leave empty to fall back to default_model
+    ragas_model: str = ""
+
+    # Qdrant collection for watsonx corpus (separate from northstar_crm)
+    watsonx_collection: str = "watsonx_docs"
+
     # Open WebUI — used by sync_feedback worker
     openwebui_base_url: str = "http://localhost:3001"
     openwebui_email: str = ""

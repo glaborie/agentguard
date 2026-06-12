@@ -22,7 +22,12 @@ def query(
     session_id: str | None = None,
     user_id: str | None = None,
 ) -> str:
-    with propagate_attributes(session_id=session_id, user_id=user_id):
+    with propagate_attributes(
+        trace_name="rag-query",
+        session_id=session_id,
+        user_id=user_id,
+        tags=["rag", "cli"],
+    ):
         return _query(question=question, model=model, callbacks=callbacks)
 
 
