@@ -138,3 +138,28 @@ In `app/eval/experiments.py`, the `run_experiment()` function compares multiple 
 - Keep backward compatibility: `run_experiment()` signature unchanged, cost data is additive
 
 **Files to touch:** `app/eval/experiments.py`, `app/main.py`, `tests/test_evaluators.py` (or new `tests/test_experiments.py`)
+
+
+### [done] #14 Quality drift monitoring notebook for AgentGuard**
+
+Add `notebooks/quality_drift.ipynb` that pulls historical eval scores from Langfuse and surfaces metric trends with regression alerting.
+
+**What to do:**
+
+1. **Fetch scores from Langfuse** using the Langfuse SDK (`langfuse.get_scores()` with pagination). Filter by score name: `faithfulness`, `answer_relevancy`, `contextual_relevancy`, `hallucination`. Return a flat DataFrame with columns: `timestamp`, `trace_id`, `metric`, `value`, `model`.
+
+2. **Trend plot** — one line per metric over time, x-axis is date bucketed by day. Use matplotlib or plotly (plotly preferred, already in the stack via Langfuse). Overlay a 7-day rolling mean. One subplot per metric, shared x-axis.
+
+3. **Regression detection** — for each metric, compare the last 7-day window mean against the prior 7-day window mean. Flag as regression if delta exceeds a configurable threshold (default: -0.05 for faithfulness/relevancy, +0.05 for hallucination since higher = worse). Print a clear summary table: metric | baseline_mean | current_mean | delta | status (✅ / ⚠️ REGRESSION).
+
+4. **Alerting stub** — a `check_drift(threshold_overrides: dict) -> list[DriftAlert]` Python function at the bottom of the notebook, callable from CI or the CLI. Returns a list of dataclass objects so `app/main.py` can import and run it as `python -m app.main drift-check --fail-on-regression` (exit code 1 if any regression detected).
+
+5. **Seed data** — if Langfuse has fewer than 14 days of scores (fresh install), generate synthetic score history so the notebook renders meaningfully. Gate behind a `USE_SYNTHETIC_DATA = True` flag at the top.
+
+**Constraints:**
+- Langfuse connection via existing `app/tracing.py` and `app/config.py` — don't hardcode credentials
+- No new Python dependencies unless unavoidable; plotly is already present
+- The `check_drift()` function must be importable without running the full notebook (extract to `app/eval/drift.py`, import into notebook)
+- Add unit tests for `check_drift()` in `tests/test_drift.py` covering: no regression, single regression, threshold override, empty scores edge case
+
+**Files to create/touch:** `notebooks/quality_drift.ipynb`, `app/eval/drift.py`, `app/main.py` (add `drift-check` command), `tests/test_drift.py`
