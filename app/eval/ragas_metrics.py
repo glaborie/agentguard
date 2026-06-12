@@ -75,6 +75,9 @@ def _get_metric_objects(names: list[str], model: str | None = None) -> list:
         m.llm = llm
         if hasattr(m, "embeddings"):
             m.embeddings = emb
+        # OpenRouter does not support n>1; suppress "returned 1 instead of 3" warnings
+        if hasattr(m, "n"):
+            m.n = 1
 
     return selected
 
