@@ -151,6 +151,7 @@ python -m app.main debug-retrieval "discount approval policy" --mode hybrid --js
 - [Local deployment](docs/deployment/local.md)
 - [Evaluation](docs/evaluation.md)
 - [Repository conventions](docs/repository-conventions.md)
+- [Recruiter documentation pack](docs/recruiter/README.md)
 - [Agent workflow](docs/agent-workflow.md)
 - [TODO / SOTA gaps](TODO.md)
 
