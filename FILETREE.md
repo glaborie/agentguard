@@ -19,14 +19,11 @@ _Auto-maintained by `/filetree:update`. Each entry carries a content hash; misma
 - `LICENSE` — Apache License 2.0 full terms granting worldwide copyright and patent licenses for derivative works <!--hash:49cea315-->
 - `Makefile` — Test target aliases for unit, integration, module-specific, and parallel test execution with coverage reporting <!--hash:d9014444-->
 - `NOTICE` — Copyright notice attributing AgentGuard to Guillaume Laborie <!--hash:222201ef-->
-- `PLAN.md` — Implementation backlog covering low-effort (semantic cache, prompt management), medium-effort, and high-effort architectural features <!--hash:d4334f7b-->
 - `README.md` — Project overview describing AgentGuard as self-hosted AI reliability platform with observability, protection, evaluation, and red-teaming <!--hash:7dce56f1-->
 - `SECURITY.md` — Security policy covering vulnerability reporting via private disclosure, scope definition, response process, and user best practices <!--hash:1425099c-->
 - `SETUP_POSTMORTEM.md` — Post-mortem documenting Docker setup challenges on Windows (port exclusion, service networking, database requirements, credential management) <!--hash:087168b8-->
 - `SHOWCASE.md` — Manual testing scenarios for RAG (plans, features, policies) and guardrails with Langfuse trace inspection instructions <!--hash:dd7d5102-->
-- `STATUS.md` — Status tracking document listing completed infrastructure, API security, CLI, testing, documentation, and agent work <!--hash:744748d7-->
 - `TODO.md` — SOTA gaps and technical debt backlog with implemented items (#1-9) covering semantic detection, CI/CD, toxicity, red-teaming <!--hash:cf65523e-->
-- `TODO_GPT.md` — Performance audit report identifying bottlenecks in benchmarking, semantic cache, async/sync boundaries, red-teaming, and backend polling. <!--hash:01258721-->
 - `VALIDATION.md` — End-to-end validation guide covering ingestion, retrieval, tracing, and troubleshooting across Docker stack. <!--hash:cbca5062-->
 - `compose-litellm.yml` — Legacy compatibility alias for the LiteLLM-only compose file. Prefer `docker-compose.litellm.yml` for new references. <!--hash:9786e9d1-->
 - `docker-compose.litellm.yml` — LiteLLM-only compose file (canonical naming) with config mount and guardrails module. <!--hash:9786e9d1-->
@@ -303,6 +300,10 @@ _Auto-maintained by `/filetree:update`. Each entry carries a content hash; misma
 
 - `google-cloud.md` — Production GCP deployment guide covering VPC setup, Cloud SQL/Redis/Storage, GCE VMs for Qdrant/ClickHouse, Cloud Run services, and cost estimates. <!--hash:b7181918-->
 - `local.md` — Local development setup guide covering Docker prerequisites, quick-start steps, model routing via LiteLLM, and Windows-specific port configuration. <!--hash:99d400c9-->
+
+## docs/superpowers/
+
+- `performance-audit.md` — One-off performance audit identifying bottlenecks in benchmarking serial execution, semantic cache overhead, async/sync boundaries, and backend polling. <!--hash:01258721-->
 
 ## docs/superpowers/plans/
 
