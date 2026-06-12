@@ -119,21 +119,24 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 
 | Component | Port(s) | Role in the platform |
 |---|---|---|
-| **langfuse-web** | 3000 | Observability UI and API for traces, scores, and datasets |
+| **langfuse-web** | 3200 -> 3000 (container) | Observability UI and API for traces, scores, and datasets |
 | **langfuse-worker** | 3030 (local only) | Background processing for trace and event ingestion |
-| **postgres** | 5432 (local only) | Relational storage for Langfuse and supporting services |
-| **clickhouse** | 8123, 9000 (local only) | Analytics store for high-volume observability data |
-| **redis** | 6300 (host) -> 6379 (container) | Cache and queue backend |
-| **minio** | 9090 (API), 9091 (console, local only) | S3-compatible object storage |
+| **postgres** | 5500 -> 5432 (container) | Relational storage for Langfuse and supporting services |
+| **clickhouse** | 8123 (HTTP), 9350 -> 9000 (native) | Analytics store for high-volume observability data |
+| **redis** | internal only (6379) | Cache and queue backend |
+| **minio** | 9299 -> 9000 (API), 9300 -> 9001 (console) | S3-compatible object storage |
 | **ollama** | 11434 | Local model runtime to support local LLMs and embeddings |
 | **litellm** | 4000 | OpenAI-compatible model gateway and protection enforcement layer |
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector store for retrieval |
 | **rag-api** | 8001 | OpenAI-compatible API surface for the RAG application |
-| **openwebui** | 3001 | End-user chat interface for interacting with the application |
-| **otel-collector** | 4317, 4318, 13133 | OpenTelemetry collection and fan-out to observability backends |
-| **jaeger** | 16686 | Trace visualization UI for end-to-end OpenTelemetry traces |
-| **portainer** | 9443 | Container administration UI |
-| **dozzle** | 8080 | Real-time container log viewer |
+| **openwebui** | 3100 -> 8080 (container) | End-user chat interface for interacting with the application |
+| **agentguard-worker** | internal only | Feedback sync, online eval, and dataset build background loops |
+| **openobserve** | 5080 | Log and trace analytics UI |
+| **github-mcp** | 8091 -> 8080 (profile: mcp) | GitHub MCP sidecar for agent tool access |
+| **traefik** | 80, 8090 | Local reverse proxy and dashboard |
+| **otel-collector** | 4317, 4318 (docker-compose.infra.yml) | OpenTelemetry collection and fan-out to observability backends |
+| **jaeger** | 16686 (docker-compose.infra.yml) | Trace visualization UI for end-to-end OpenTelemetry traces |
+| **portainer** | 9443 (docker-compose.infra.yml) | Container administration UI |
 | **minio-init** | — | One-time initialization of object storage buckets |
 | **litellm-init** | — | One-time initialization of LiteLLM configuration |
 
@@ -141,7 +144,8 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 
 ```
 .
-├── docker-compose.yml        # 14 services + 2 init containers
+├── docker-compose.yml        # Core app stack services + init containers
+├── docker-compose.infra.yml  # Optional infra stack (otel-collector, jaeger, grafana, etc.)
 ├── litellm_config.yaml       # LiteLLM model routing + guardrails config
 ├── requirements.txt          # Python dependencies
 ├── pyproject.toml            # pytest configuration
@@ -161,11 +165,14 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 │   │       ├── ingest.py     # ingest
 │   │       ├── query.py      # query, chat
 │   │       ├── agent.py      # agent, agent-chat
-│   │       ├── evaluate.py   # evaluate, online-eval
+│   │       ├── evaluate.py   # evaluate, ragas-experiment, online-eval
 │   │       ├── experiment.py # experiment
 │   │       ├── dataset.py    # seed-dataset
 │   │       ├── regression.py # regression-gate
-│   │       └── benchmark.py  # benchmark
+│   │       ├── benchmark.py  # benchmark
+│   │       ├── red_team.py   # red-team
+│   │       ├── retrieval_debug.py # debug-retrieval
+│   │       └── drift.py      # drift-check
 │   ├── api/
 │   │   ├── app.py            # create_app() FastAPI factory
 │   │   ├── schemas.py        # Message, ChatRequest Pydantic models
@@ -174,13 +181,16 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 │   │   │   ├── health.py
 │   │   │   ├── models.py
 │   │   │   ├── webhook.py
-│   │   │   └── chat.py
+│   │   │   ├── chat.py
+│   │   │   ├── config.py     # /dashboard, /api/config, /api/config/reset
+│   │   │   └── retrieval.py  # /api/retrieval/debug
 │   │   └── services/         # Business logic, one file per concern
 │   │       ├── models_service.py   # MODELS, DIRECT_MODELS, get_model_list()
 │   │       ├── health_service.py   # _probe(), check_all()
 │   │       ├── feedback_service.py # parse_feedback(), push_score(), handle_webhook()
 │   │       ├── direct_llm.py       # Direct LiteLLM call with error mapping
 │   │       ├── rag_llm.py          # RAG chain invocation via rag_service
+│   │       ├── agent_llm.py        # Agent model execution path
 │   │       └── chat_service.py     # Dispatch orchestrator + response builder
 │   ├── rag/
 │   │   ├── service.py        # Stable interface: ingest(), query(), build_chain()

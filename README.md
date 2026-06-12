@@ -111,7 +111,13 @@ GITHUB_MCP_URL=http://localhost:8091/mcp
 GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...   # repo + read:org scopes
 ```
 
-The `github-mcp` container starts automatically with `docker compose up -d`. No extra steps needed.
+The `github-mcp` container is profile-gated (`mcp`) in Compose. Start it with either:
+
+```bash
+docker compose --profile mcp up -d
+# or only the MCP sidecar
+docker compose --profile mcp up -d github-mcp
+```
 
 **Try it** in Open WebUI — select `agentguard-agent-claude-haiku` and ask:
 
@@ -120,6 +126,23 @@ Summarize the open issues in glaborie/agentguard
 ```
 
 **URL split:** CLI uses `localhost:8091`; the `rag-api` container reaches the sidecar via `http://github-mcp:8080/mcp` (set in `docker-compose.yml` environment block, overriding `.env`).
+
+## Runtime Controls and Debugging
+
+AgentGuard includes runtime controls and retrieval diagnostics exposed by the API:
+
+- Control panel UI: `http://localhost:8001/dashboard`
+- Read feature flags: `GET http://localhost:8001/api/config`
+- Update feature flags: `PATCH http://localhost:8001/api/config`
+- Reset feature flags: `POST http://localhost:8001/api/config/reset`
+- Retrieval debug API: `POST http://localhost:8001/api/retrieval/debug`
+
+CLI equivalent for retrieval diagnostics:
+
+```bash
+python -m app.main debug-retrieval "Does the Starter plan include SAML SSO?"
+python -m app.main debug-retrieval "discount approval policy" --mode hybrid --json
+```
 
 ## Documentation
 

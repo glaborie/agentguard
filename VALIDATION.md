@@ -1,6 +1,6 @@
 # Validation Guide
 
-How to verify the RAG pipeline works end-to-end: ingestion, retrieval, generation, and tracing.
+How to verify the NorthstarCRM RAG pipeline works end-to-end: ingestion, retrieval, generation, and tracing.
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ You should see 14 services up (plus 2 init containers that exit after running). 
 curl -s -H "Authorization: Bearer sk-litellm-dev-key" http://localhost:4000/health | python -m json.tool
 
 # Qdrant — should return collection info after ingestion
-curl -s http://localhost:6333/collections/langfuse_docs | python -m json.tool
+curl -s http://localhost:6333/collections/northstar_crm | python -m json.tool
 
 # Langfuse — open http://localhost:3200, log in with admin@local.dev / admin
 ```
@@ -39,27 +39,21 @@ Expected output:
 
 ```
 Loading documents...
-  Scraping https://langfuse.com/academy/ai-engineering-loop
-  Scraping https://langfuse.com/academy/tracing
-  Scraping https://langfuse.com/academy/monitoring
-  Scraping https://langfuse.com/academy/datasets
-  Scraping https://langfuse.com/academy/experiments
-  Scraping https://langfuse.com/academy/evaluate
-  Loaded 6 documents
+  Loaded N documents from corpus
 Chunking...
-  Created 66 chunks
-  ...
-  Stored 66 chunks in Qdrant
+  Created N chunks
+Embedding and storing in Qdrant...
+  Stored N chunks in Qdrant
 Done.
 ```
 
 Verify in Qdrant:
 
 ```bash
-curl -s http://localhost:6333/collections/langfuse_docs | python -m json.tool
+curl -s http://localhost:6333/collections/northstar_crm | python -m json.tool
 ```
 
-Look for `"points_count"` — should be ~66.
+Look for `"points_count"` — it should be non-zero and roughly match the number of chunks reported by `ingest`.
 
 ## 3. Test retrieval quality
 
@@ -73,7 +67,7 @@ from dotenv import load_dotenv; load_dotenv()
 from app.rag.chain import get_retriever
 
 retriever = get_retriever(k=4)
-docs = retriever.invoke('What is tracing in Langfuse?')
+docs = retriever.invoke('Does the Starter plan include SAML SSO?')
 
 for i, doc in enumerate(docs):
     print(f'--- Chunk {i+1} (source: {doc.metadata.get(\"source\", \"unknown\")})')
@@ -83,30 +77,30 @@ for i, doc in enumerate(docs):
 ```
 
 **What to look for:**
-- Chunks should come from relevant source URLs (e.g., the tracing page for a tracing question)
-- Content should contain actual information, not navigation fragments ("Was this page helpful?", "Previous", "Next")
-- If chunks look like UI noise, the scraper or chunking needs adjustment
+- Chunks should come from relevant corpus files in `mock_corpus/` (for example `02_products/` or `04_policies/` depending on the query)
+- Content should contain policy/product/support details, not malformed JSONL rendering or empty chunks
+- If chunks are irrelevant, check corpus quality and query wording before adjusting retrieval settings
 
 ## 4. Test a query
 
 ```bash
-python -m app.main query "What are the five phases of the AI Engineering Loop?"
+python -m app.main query "Does the Starter plan include SAML SSO?"
 ```
 
-Expected: a clear answer naming Trace, Monitor, Build Datasets, Experiment, and Evaluate.
+Expected: a grounded answer describing that SAML SSO is available in higher tiers, not Starter.
 
 Try a few more to test different pages:
 
 ```bash
-python -m app.main query "What is the difference between a trace and a session?"
-python -m app.main query "How does LLM-as-a-judge evaluation work?"
-python -m app.main query "What are the variables you can change in an experiment?"
+python -m app.main query "Can a sales rep approve a 20% discount on their own?"
+python -m app.main query "What are the main differences between Business and Enterprise plans?"
+python -m app.main query "What is NorthstarCRM's refund policy for annual contracts?"
 ```
 
 **What to look for:**
-- Answers should be grounded in the Langfuse docs, not generic LLM knowledge
-- Responses should reference specific concepts from the academy pages
-- The model should say "the context doesn't cover this" for questions outside the docs, not hallucinate
+- Answers should be grounded in the NorthstarCRM corpus, not generic LLM knowledge
+- Responses should reference concrete product/policy/support details present in `mock_corpus/`
+- The model should say the context does not cover it for off-topic questions, not hallucinate
 
 ## 5. Verify traces in Langfuse
 
@@ -141,7 +135,7 @@ curl -s -u "pk-lf-dev:sk-lf-dev" "http://localhost:3200/api/public/traces?limit=
 Switch to Mistral via OpenRouter to confirm model routing works:
 
 ```bash
-python -m app.main query "What is monitoring in Langfuse?" --model openrouter-mistral
+python -m app.main query "What SLA is offered for Business plan customers?" --model openrouter-mistral
 ```
 
 Check Langfuse — the new trace should show `openrouter-mistral` as the model in the `ChatOpenAI` observation.
@@ -193,7 +187,7 @@ Confirm that a normal request still passes through:
 curl -s -X POST http://localhost:4000/v1/chat/completions \
   -H "Authorization: Bearer sk-litellm-dev-key" \
   -H "Content-Type: application/json" \
-  -d '{"model":"openrouter-gemini-flash","messages":[{"role":"user","content":"What is tracing in Langfuse?"}]}' | python -m json.tool
+  -d '{"model":"openrouter-gemini-flash","messages":[{"role":"user","content":"What plans does NorthstarCRM offer?"}]}' | python -m json.tool
 ```
 
 **Expected:** a normal completion response with the model's answer.
@@ -263,7 +257,7 @@ Send a non-streaming chat completion directly to the RAG API:
 ```bash
 curl -s -X POST http://localhost:8001/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -d '{"model":"agentguard-rag","messages":[{"role":"user","content":"What is tracing in Langfuse?"}]}' \
+  -d '{"model":"agentguard-rag","messages":[{"role":"user","content":"Does the Starter plan include SAML SSO?"}]}' \
   | python -m json.tool
 ```
 
@@ -282,7 +276,7 @@ You should see `POST /v1/embeddings` — confirming the RAG chain embedded the q
 ```bash
 curl -s -X POST http://localhost:8001/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -d '{"model":"agentguard-rag-mistral","messages":[{"role":"user","content":"What is monitoring in Langfuse?"}]}' \
+  -d '{"model":"agentguard-rag-mistral","messages":[{"role":"user","content":"What is the SLA for the Business plan?"}]}' \
   | python -m json.tool
 ```
 
@@ -291,7 +285,7 @@ curl -s -X POST http://localhost:8001/v1/chat/completions \
 ```bash
 curl -s -X POST http://localhost:8001/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -d '{"model":"agentguard-rag","messages":[{"role":"user","content":"What are datasets in Langfuse?"}],"stream":true}'
+  -d '{"model":"agentguard-rag","messages":[{"role":"user","content":"How does NorthstarCRM handle discount approvals?"}],"stream":true}'
 ```
 
 **Expected:** A stream of `data: {...}` SSE lines ending with `data: [DONE]`.
@@ -303,7 +297,7 @@ Open [http://localhost:3100](http://localhost:3100) in your browser.
 On first visit, create an admin account. Then:
 
 1. Select **agentguard-rag** from the model dropdown (top centre)
-2. Ask any question about Langfuse — e.g. *"What are the five phases of the AI Engineering Loop?"*
+2. Ask any question about NorthstarCRM — e.g. *"Can a sales rep approve a 20% discount on their own?"*
 3. The response is generated by the full RAG pipeline: query → embedding → Qdrant retrieval → LLM generation
 
 **Verify the trace appeared in Langfuse** ([http://localhost:3200](http://localhost:3200) → Traces):

@@ -85,13 +85,13 @@ python -m app.main agent-chat --session my-session
 
 ### 9. Use the web chat UI
 
-Open [http://localhost:3001](http://localhost:3001), create an admin account on first visit, then select **agentguard-rag** from the model dropdown.
+Open [http://localhost:3100](http://localhost:3100), create an admin account on first visit, then select **agentguard-rag** from the model dropdown.
 
 Every message you send goes through the full application stack, including retrieval, model routing, tracing, and protection layers.
 
 ### 10. Inspect traces and scores
 
-Open [http://localhost:3000](http://localhost:3000) and sign in with:
+Open [http://localhost:3200](http://localhost:3200) and sign in with:
 
 - **Email:** admin@local.dev
 - **Password:** admin123456
