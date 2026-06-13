@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     # Qdrant
     qdrant_url: str = "http://localhost:6333"
-    qdrant_collection: Annotated[str, Field(min_length=1)] = "northstar_crm"
+    qdrant_collection: Annotated[str, Field(min_length=1)] = "watsonx_docs"
 
     # OpenRouter (optional)
     openrouter_api_key: str = ""

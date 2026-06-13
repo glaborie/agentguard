@@ -60,7 +60,7 @@ def load_from_corpus(path: str | Path | None = None) -> list[Document]:
 
         rel = filepath.relative_to(root).as_posix()
 
-        if filepath.suffix == ".md":
+        if filepath.suffix in {".md", ".txt"}:
             text = filepath.read_text(encoding="utf-8").strip()
             if text:
                 docs.append(Document(page_content=text, metadata={"source": rel}))

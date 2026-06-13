@@ -127,10 +127,16 @@ def get_retriever(k: int = 6) -> BaseRetriever:
     )
 
 
+_MIN_CHUNK_CHARS = 150
+
+
 def format_docs(docs) -> str:
+    useful = [d for d in docs if len(d.page_content.strip()) >= _MIN_CHUNK_CHARS]
+    if not useful:
+        useful = docs  # fallback: keep all if everything is short
     return "\n\n---\n\n".join(
         f"[Source: {doc.metadata.get('source', 'unknown')} | Score: {doc.metadata.get('retrieval_score', 'n/a')}]\n{doc.page_content}"
-        for doc in docs
+        for doc in useful
     )
 
 
@@ -150,7 +156,7 @@ def _get_prompt_template() -> ChatPromptTemplate:
 
 def build_rag_chain(
     model: str | None = None,
-    k: int = 4,
+    k: int = 10,
     guardrails_enabled: bool = True,
 ) -> Any:
     retriever = get_retriever(k=k)

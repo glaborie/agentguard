@@ -134,12 +134,12 @@ class TestLoadFromCorpus:
         with pytest.raises(FileNotFoundError):
             load_from_corpus(tmp_path / "nonexistent")
 
-    def test_ignores_non_md_non_jsonl_files(self, tmp_path):
-        (tmp_path / "notes.txt").write_text("ignore me", encoding="utf-8")
+    def test_ignores_non_supported_files(self, tmp_path):
         (tmp_path / "data.csv").write_text("a,b", encoding="utf-8")
         (tmp_path / "real.md").write_text("keep me", encoding="utf-8")
+        (tmp_path / "notes.txt").write_text("also keep me", encoding="utf-8")
         docs = load_from_corpus(tmp_path)
-        assert len(docs) == 1
+        assert len(docs) == 2  # .md and .txt both loaded; .csv ignored
 
 
 class TestLoadFromDirectory:

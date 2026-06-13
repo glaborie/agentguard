@@ -31,5 +31,5 @@ def query(
         return _query(question=question, model=model, callbacks=callbacks)
 
 
-def build_chain(model: str | None = None, k: int = 4) -> Any:
+def build_chain(model: str | None = None, k: int = 10) -> Any:
     return build_rag_chain(model=model, k=k)
