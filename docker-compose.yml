@@ -418,7 +418,6 @@ services:
       - ./runtime_config.json:/app/runtime_config.json
     env_file: .env
     environment:
-      WATCHFILES_FORCE_POLLING: "true"
       LITELLM_BASE_URL: http://litellm:4000
       QDRANT_URL: http://qdrant:6333
       LANGFUSE_BASE_URL: http://langfuse-web:3000
@@ -503,7 +502,6 @@ services:
       QDRANT_URL: http://qdrant:6333
       OPENWEBUI_BASE_URL: http://openwebui:8080
       PYTHONUNBUFFERED: "1"
-      WATCHFILES_FORCE_POLLING: "true"
       TZ: UTC
     depends_on:
       langfuse-web:
