@@ -10,6 +10,11 @@ It helps teams detect, evaluate, and prevent costly AI incidents before they bec
 [![CI](https://github.com/glaborie/agentguard/actions/workflows/ci.yml/badge.svg)](https://github.com/glaborie/agentguard/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/glaborie/agentguard/branch/main/graph/badge.svg)](https://codecov.io/gh/glaborie/agentguard)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13%2B-blue)](https://www.python.org/downloads/)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://glaborie.github.io/agentguard/)
+[![Docker Compose](https://img.shields.io/badge/deploy-Docker%20Compose-2496ED?logo=docker&logoColor=white)](docs/deployment/local.md)
+[![MCP](https://img.shields.io/badge/MCP-enabled-green)](https://modelcontextprotocol.io)
+[![DeepEval](https://img.shields.io/badge/DeepEval-powered-orange)](https://github.com/confident-ai/deepeval)
+[![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-observability-8A2BE2)](https://opentelemetry.io/)
 [![Last Commit](https://img.shields.io/github/last-commit/glaborie/agentguard)](https://github.com/glaborie/agentguard/commits/main)
 
 ## Why AgentGuard
