@@ -1,0 +1,7 @@
+# Extension Output node #
+
+With the Extension Output node, you can run R scripts or Python for Spark scripts to produce output\.
+
+After adding the node to your canvas, double\-click the node to open its properties\.
+
+<!-- </article "role="article" "> -->

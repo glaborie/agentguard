@@ -1,0 +1,14 @@
+# Converting continuous data #
+
+Treating categorical data as continuous can have a serious impact on the quality of a model, especially if it's the target field (for example, producing a regression model rather than a binary model)\. To prevent this, you can convert integer ranges to categorical types such as `Ordinal` or `Flag`\.
+
+<!-- <ol> -->
+
+1.  Double\-click a Type node to open its properties\. Expand the Type Operations section\.
+2.  Specify a value for  Set continuous integer field to ordinal if range less than or equal to\.
+3.  Click  Apply to convert the affected ranges\.
+4.  If desired, you can also specify a value for  Set categorical fields to None if they exceed this many values to automatically ignore large sets with many members\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

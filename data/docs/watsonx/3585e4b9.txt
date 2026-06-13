@@ -1,0 +1,91 @@
+# Object storage for workspaces #
+
+You must choose an IBM Cloud Object Storage instance when you create a project, catalog, or deployment space workspace\. Information that is stored in IBM Cloud Object Storage is encrypted and resilient\. Each workspace has its own dedicated bucket\.
+
+You can encrypt the Cloud Object Storage instance that you use for workspaces with your own key\. See [Encrypt IBM Cloud Object Storage with your own key](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html#byok)\. The Locations in each user's Profile must include the **Global** location to allow access to Cloud Object Storage\.
+
+When you create a workspace, the Cloud Object Storage bucket defaults to Regional resiliency\. Regional buckets distribute data across several data centers that are within the same metropolitan area\. If one of these data centers suffers an outage or destruction, availability and performance are not affected\.
+
+If you are the account owner or administrator, you administer Cloud Object Storage from the **Resource list > Storage** page on the IBM Cloud dashboard\. For example, you can upload and download assets, manage buckets, and configure credentials and other security settings for the Cloud Object Storage instance\.
+
+Follow these steps to manage the Cloud Object Storage instance on IBM Cloud:
+
+<!-- <ol> -->
+
+1.  Select a project from the Project list\.
+2.  Click the **Manage** tab\.
+3.  On the **General** page, locate the **Storage** section that displays the bucket name for the project\.
+4.  Select **Manage in IBM Cloud** to open the Cloud Object Storage **Buckets** list\.
+5.  Select the bucket name for the project to display a list of assets\.
+6.  Checkmark an asset to download it or perform other tasks as needed\.
+
+<!-- </ol> -->
+
+Watch this video to see how to manage an object storage instance\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+<!-- <ul> -->
+
+ *  Transcript
+    
+     Synchronize transcript with video
+    
+    <!-- <table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+    | Time  | Transcript                                                                                                                                                                                        |
+    | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | 00:00 | This video shows how to manage an IBM Cloud Object Storage instance.                                                                                                                             |
+    | 00:06 | When you create a Watson Studio project, an IBM Cloud Object Storage instance is associated with the project.                                                                                    |
+    | 00:15 | On the Manage tab, you'll see the associated object storage instance and have the option to manage it in IBM Cloud.                                                                              |
+    | 00:24 | IBM Cloud Object Storage uses buckets to organize your data.                                                                                                                                     |
+    | 00:30 | You can see that this instance contains a bucket with the "jupyternotebooks" prefix, which was created when the "Jupyter Notebooks" project was created.                                         |
+    | 00:41 | If you open that bucket, you'll see all of the files that you added to that project.                                                                                                             |
+    | 00:47 | From here, you can download an object or delete it from the bucket.                                                                                                                              |
+    | 00:53 | You can also view the object SQL URL to access that object from your application.                                                                                                                |
+    | 01:00 | You can add objects to the bucket from here.                                                                                                                                                     |
+    | 01:03 | Just browse to select the file and wait for it to upload to storage.                                                                                                                             |
+    | 01:10 | And then that file will be available in the Files slide-out panel in the project.                                                                                                               |
+    | 01:16 | Let's create a bucket.                                                                                                                                                                           |
+    | 01:20 | You can create a Standard or Archive bucket, based on predefined settings, or create a custom bucket.                                                                                            |
+    | 01:28 | Provide a bucket name, which must be unique across the IBM Cloud Object Storage system.                                                                                                          |
+    | 01:35 | Select a resiliency.                                                                                                                                                                             |
+    | 01:38 | Cross Region provides higher availability and durability and Regional provides higher performance.                                                                                               |
+    | 01:45 | The Single Site option will only distribute data across devices within a single site.                                                                                                            |
+    | 01:52 | Then select the location based on workload proximity.                                                                                                                                            |
+    | 01:57 | Next, select a storage class, which defines the cost of storing data based on frequency of access.                                                                                               |
+    | 02:05 | Smart Tier provides automatic cost optimization for your storage.                                                                                                                                |
+    | 02:11 | Standard indicates frequent access.                                                                                                                                                              |
+    | 02:14 | Vault is for less frequent access.                                                                                                                                                               |
+    | 02:18 | And Cold Vault is for rare access.                                                                                                                                                               |
+    | 02:21 | There are other, optional settings to add rules, keys, and services.                                                                                                                             |
+    | 02:27 | Refer to the documentation for more details on these options.                                                                                                                                    |
+    | 02:32 | When you're ready, create the bucket.                                                                                                                                                            |
+    | 02:35 | And, from here, you could add files to that bucket.                                                                                                                                              |
+    | 02:40 | On the Access policies panel, you can manage access to buckets using IAM policies - that's Identity and Access Management.                                                                      |
+    | 02:50 | On the Configuration panel, you'll find information about Key Protect encryption keys, as well as the bucket instance CRN and endpoints to access the data in the buckets from your application. |
+    | 03:01 | You can also find some of the same information on the Endpoints panel.                                                                                                                           |
+    | 03:06 | On the Service credentials panel, you'll find the API and access keys to authenticate with your instance from your application.                                                                  |
+    | 03:15 | You can also connect the object storage to a Cloud Foundry application, check usage details, and view your plan details.                                                                         |
+    | 03:26 | Find more videos in the Cloud Pak for Data as a Service documentation.                                                                                                                           |
+    
+    <!-- </table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Setting up IBM Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html)
+ *  [IBM Cloud docs: Getting started with IBM Cloud Object Storage](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage)
+ *  [IBM Cloud docs: Endpoints and storage locations](https://cloud.ibm.com/docs/cloud-object-storage/basics?topic=cloud-object-storage-endpoints)
+ *  [Troubleshooting Cloud Object Storage for projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/troubleshoot-cos.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)
+
+<!-- </article "role="article" "> -->

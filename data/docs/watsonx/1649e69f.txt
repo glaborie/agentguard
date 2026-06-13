@@ -1,0 +1,20 @@
+# Linguistic resources #
+
+SPSS Modeler uses an extraction process that relies on linguistic resources\. These resources serve as the basis for how to process the text data and extract information to get the concepts, types, and sometimes patterns\.
+
+The linguistic resources can be divided into different types:
+
+Category sets
+:   Categories are a group of closely related ideas and patterns that the text data is assigned to through a scoring process\.
+
+Libraries
+:   Libraries are used as building blocks for both TAPs and templates\. Each library is made up of several dictionaries, which are used to define and manage terms, synonyms, and exclude lists\. While libraries are also delivered individually, they are prepackaged together in templates and TAPs\.
+
+Templates
+:   Templates are made up of a set of libraries and some advanced linguistic and nonlinguistic resources\. These resources form a specialized set that is adapted to a particular domain or context, such as product opinions\.
+
+Text analysis packages (TAP)
+:   A text analysis package is a predefined template that is bundled with one or more sets of predefined category sets\. TAPs bundle together these resources so that the categories and the resources that were used to generate them are both stored together and reusable\.
+
+Note: During extraction, some compiled internal resources are also used\. These compiled resources contain many definitions that complement the types in the Core library\. These compiled resources cannot be edited\.
+<!-- </article "role="article" "> -->

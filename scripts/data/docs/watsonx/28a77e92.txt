@@ -1,0 +1,11 @@
+# Reading in text data #
+
+<!-- <ol> -->
+
+1.  You can read in delimited text data using a Data Asset import node\. From the  Palette, under  Import, add a Data Asset node to your flow\.
+2.  Double\-click the node to display its properties and select the data file  drug1n\.csv\.
+3.  Now that you've added the data file, you may want to glance at the values for some of the records\. One way to do this is by building a flow that includes a Table node\. An easier way is to simply right\-click the Data Asset node you just added and select  Preview\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,63 @@
+# Adding data to Data Refinery #
+
+After you [create a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html) and you [create connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html) or you [add data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html) to the project, you can then add data to Data Refinery and start prepping that data for analysis\.
+
+You can add data to Data Refinery in one of several ways:
+
+<!-- <ul> -->
+
+ *  Select **Prepare data** from the overflow menu (![overflow menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/actions.png)) of a data asset in the **All assets** list for the project
+ *  Preview a data asset in the project and then click **Prepare data**
+ *  Navigate to Data Refinery first and then add data to it
+
+<!-- </ul> -->
+
+## Navigate to Data Refinery ##
+
+<!-- <ol> -->
+
+1.  Access Data Refinery from within a project\. Click the **Assets** tab\.
+2.  Click **New asset > Prepare and visualize data**\.
+3.  Select the data that you want to work with from **Data assets** or from **Connections**\.  
+    
+    From **Data assets**:
+    
+    <!-- <ul> -->
+    
+     *  Select a data file (the selection includes data files that were already shaped with Data Refinery)
+     *  Select a connected data asset
+    
+    <!-- </ul> -->
+    
+    From **Connections**:
+    
+    <!-- <ul> -->
+    
+     *  Select a connection and file
+     *  Select a connection, folder, and file
+     *  Select a connection, schema, and table or view  
+          
+    <!-- </ul> -->
+    
+    Data Refinery supports these file types: Avro, CSV, delimited text files, JSON, Microsoft Excel (xls and xlsx formats. First sheet only, except for connections and connected data assets.), Parquet, SAS with the "sas7bdat" extension (read only), TSV (read only)
+    
+    Data Refinery operates on a sample subset of rows in the data set. The sample size is 1 MB or 10,000 rows, whichever comes first. However, when you run a job for the Data Refinery flow, the entire data set is processed. If the Data Refinery flow fails with a large data asset, see workarounds in [Troubleshooting Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/ts_index.html).
+    
+    Data connections marked with a key icon (![the key symbol for private connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/privatekey.png)) are locked. If you are authorized to access the data source, you are asked to enter your personal credentials the first time you select it. This one-time step permanently unlocks the connection for you. After you have unlocked the connection, the key icon is no longer displayed. See [Adding connections to projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html).
+4.  Click **Add** to load the data into Data Refinery\.
+
+<!-- </ol> -->
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  [Refine your data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+ *  [Validate your data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/metrics.html)
+ *  [Use visualizations to gain insights into your data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/visualizations.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Refining data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+
+<!-- </article "role="article" "> -->

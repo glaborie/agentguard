@@ -1,0 +1,7 @@
+# Candlestick charts #
+
+Candlestick charts are a style of financial charts that are used to describe price movements of a security, derivative, or currency\. Each candlestick element typically shows one day\. A one\-month chart might show the 20 trading days as 20 candlesticks elements\. Candlestick charts are most often used in the analysis of equity and currency price patterns and are similar to box plots\.
+
+The data set that is used to create a candlestick chart must contain open, high, low, and close values for each time period you want to display\.
+
+<!-- </article "role="article" "> -->

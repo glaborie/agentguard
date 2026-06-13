@@ -1,0 +1,5 @@
+# Chart types #
+
+The gallery contains a collection of the most commonly used charts\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,19 @@
+# Tips for maximizing SQL pushback #
+
+To get the best performance boost from SQL optimization, pay attention to the items in this section\.
+
+Flow order\. SQL generation may be halted when the function of the node has no semantic equivalent in SQL because  SPSS Modeler’s data\-mining functionality is richer than the traditional data\-processing operations supported by standard SQL\. When this happens, SQL generation is also suppressed for any downstream nodes\. Therefore, you may be able to significantly improve performance by reordering nodes to put operations that halt SQL as far downstream as possible\. The SQL optimizer can do a certain amount of reordering automatically, but further improvements may be possible\. A good candidate for this is the Select node, which can often be brought forward\. See [Nodes supporting SQL pushback](https://dataplatform.cloud.ibm.com/docs/content/wsd/sql_nodes.html) for more information\.
+
+CLEM expressions\. If a flow can't be reordered, you may be able to change node options or CLEM expressions or otherwise recast the way the operation is performed, so that it no longer inhibits SQL generation\. Derive, Select, and similar nodes can commonly be rendered into SQL, provided that all of the CLEM expression operators have SQL equivalents\. Most operators can be rendered, but there are a number of operators that inhibit SQL generation (in particular, the sequence functions \[“@ functions”\])\. Sometimes generation is halted because the generated query has become too complex for the database to handle\. See [CLEM expressions and operators supporting SQL pushback](https://dataplatform.cloud.ibm.com/docs/content/wsd/sql_clem.html) for more information\.
+
+Multiple input nodes\. Where a flow has multiple data import nodes, SQL generation is applied to each import branch independently\. If generation is halted on one branch, it can continue on another\. Where two branches merge (and both branches can be expressed in SQL up to the merge), the merge itself can often be replaced with a database join, and generation can be continued downstream\.
+
+Scoring models\. In\-database scoring is supported for some models by rendering the generated model into SQL\. However, some models generate extremely complex SQL expressions that aren't always evaluated effectively within the database\. For this reason, SQL generation must be enabled separately for each generated model nugget\. If you find that a model nugget is inhibiting SQL generation, open the model nugget's settings and select  Generate SQL for this model (with some models, you may have additional options controlling generation)\. Run tests to confirm that the option is beneficial for your application\. See [Nodes supporting SQL pushback](https://dataplatform.cloud.ibm.com/docs/content/wsd/sql_nodes.html) for more information\.
+
+When testing modeling nodes to see if SQL generation for models works effectively, we recommend first saving all flows from  SPSS Modeler\. Note that some database systems may hang while trying to process the (potentially complex) generated SQL\.
+
+Database caching\. If you are using a node cache to save data at critical points in the flow (for example, following a Merge or Aggregate node), make sure that database caching is enabled along with SQL optimization\. This will allow data to be cached to a temporary table in the database (rather than the file system) in most cases\.
+
+Vendor\-specific SQL\. Most of the generated SQL is standards\-conforming (SQL\-92), but some nonstandard, vendor\-specific features are exploited where practical\. The degree of SQL optimization can vary, depending on the database source\.
+
+<!-- </article "role="article" "> -->

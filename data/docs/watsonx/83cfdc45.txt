@@ -1,0 +1,4 @@
+# Pie charts #
+
+A pie chart is useful for comparing proportions\. For example, you can use a pie chart to demonstrate that a greater proportion of Europeans is enrolled in a certain class\.
+<!-- </article "role="article" "> -->

@@ -1,0 +1,35 @@
+# Filler node #
+
+Filler nodes are used to replace field values and change storage\. You can choose to replace values based on a specified CLEM condition, such as `@BLANK(FIELD)`\. Alternatively, you can choose to replace all blanks or null values with a specific value\. Filler nodes are often used in conjunction with the Type node to replace missing values\.
+
+Fill in fields\. Select fields from the dataset whose values will be examined and replaced\. The default behavior is to replace values depending on the specified  Condition and  Replace with expressions\. You can also select an alternative method of replacement using the  Replace options\.
+
+Note: When selecting multiple fields to replace with a user\-defined value, it is important that the field types are similar (all numeric or all symbolic)\.
+
+Replace\. Select to replace the values of the selected field(s) using one of the following methods:
+
+<!-- <ul> -->
+
+ *  Based on condition\. This option activates the Condition field and Expression Builder for you to create an expression used as a condition for replacement with the value specified\.
+ *  Always\. Replaces all values of the selected field\. For example, you could use this option to convert the storage of income to a string using the following CLEM expression: `(to_string(income))`\.
+ *  Blank values\. Replaces all user\-specified blank values in the selected field\. The standard condition `@BLANK(@FIELD)` is used to select blanks\. *Note*: You can define blanks using the Types tab of the source node or with a Type node\.
+ *  Null values\. Replaces all system null values in the selected field\. The standard condition `@NULL(@FIELD)` is used to select nulls\.
+ *  Blank and null values\. Replaces both blank values and system nulls in the selected field\. This option is useful when you are unsure whether or not nulls have been defined as missing values\.
+
+<!-- </ul> -->
+
+Condition\. This option is available when you have selected the  Based on condition option\. Use this text box to specify a CLEM expression for evaluating the selected fields\. Click the calculator button to open the Expression Builder\.
+
+Replace with\. Specify a CLEM expression to give a new value to the selected fields\. You can also replace the value with a null value by typing undef in the text box\. Click the calculator button to open the Expression Builder\.
+
+Note: When the field(s) selected are string, you should replace them with a string value\. Using the default 0 or another numeric value as the replacement value for string fields will result in an error\.Note that use of the following may change row order:
+
+<!-- <ul> -->
+
+ *  Running in a database via SQL pushback
+ *  Deriving a list
+ *  Calling any of the CLEM spatial functions
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

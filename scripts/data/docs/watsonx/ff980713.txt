@@ -1,0 +1,20 @@
+# Evaluation node #
+
+The Evaluation node offers an easy way to evaluate and compare predictive models to choose the best model for your application\. Evaluation charts show how models perform in predicting particular outcomes\. They work by sorting records based on the predicted value and confidence of the prediction, splitting the records into groups of equal size (quantiles), and then plotting the value of the business criterion for each quantile, from highest to lowest\. Multiple models are shown as separate lines in the plot\.
+
+Outcomes are handled by defining a specific value or range of values as a hit\. Hits usually indicate success of some sort (such as a sale to a customer) or an event of interest (such as a specific medical diagnosis)\. You can define hit criteria under the  OPTIONS section of the node properties, or you can use the default hit criteria as follows:
+
+<!-- <ul> -->
+
+ *  Flag output fields are straightforward; hits correspond to true values\.
+ *  For  Nominal output fields, the first value in the set defines a hit\.
+ *  For  Continuous output fields, hits equal values greater than the midpoint of the field's range\.
+
+<!-- </ul> -->
+
+There are six types of evaluation charts, each of which emphasizes a different evaluation criterion\.
+
+Evaluation charts can also be cumulative, so that each point equals the value for the corresponding quantile plus all higher quantiles\. Cumulative charts usually convey the overall performance of models better, whereas noncumulative charts often excel at indicating particular problem areas for models\.
+
+Note: The Evaluation node doesn't support the use of commas in field names\. If you have field names containing commas, you must either remove the commas or surround the field name in quotes\.
+<!-- </article "role="article" "> -->

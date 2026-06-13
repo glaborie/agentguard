@@ -1,0 +1,18 @@
+# applyfeatureselectionnode properties #
+
+You can use Feature Selection modeling nodes to generate a Feature Selection model nugget\. The scripting name of this model nugget is *applyfeatureselectionnode*\. For more information on scripting the modeling node itself, see [featureselectionnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/featureselectionnodeslots.html#featureselectionnodeslots)\.
+
+<!-- <table "summary="applyfeatureselectionnode properties" id="featureselectionnuggetnodeslots__table_u2v_kcj_cdb" class="defaultstyle" "> -->
+
+applyfeatureselectionnode properties  
+
+Table 1\. applyfeatureselectionnode properties
+
+| `applyfeatureselectionnode` Properties | Values | Property description                                               |
+| -------------------------------------- | ------ | ------------------------------------------------------------------ |
+| `ranked_values`                        |        | Specifies which ranked fields are checked in the model browser\.   |
+| `screened_values`                      |        | Specifies which screened fields are checked in the model browser\. |
+
+<!-- </table "summary="applyfeatureselectionnode properties" id="featureselectionnuggetnodeslots__table_u2v_kcj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,13 @@
+# TwoStep cluster node #
+
+The TwoStep Cluster node provides a form of cluster analysis\. It can be used to cluster the dataset into distinct groups when you don't know what those groups are at the beginning\. As with Kohonen nodes and K\-Means nodes, TwoStep Cluster models do *not* use a target field\. Instead of trying to predict an outcome, TwoStep Cluster tries to uncover patterns in the set of input fields\. Records are grouped so that records within a group or cluster tend to be similar to each other, but records in different groups are dissimilar\.
+
+TwoStep Cluster is a two\-step clustering method\. The first step makes a single pass through the data, during which it compresses the raw input data into a manageable set of subclusters\. The second step uses a hierarchical clustering method to progressively merge the subclusters into larger and larger clusters, without requiring another pass through the data\. Hierarchical clustering has the advantage of not requiring the number of clusters to be selected ahead of time\. Many hierarchical clustering methods start with individual records as starting clusters and merge them recursively to produce ever larger clusters\. Though such approaches often break down with large amounts of data, TwoStep's initial preclustering makes hierarchical clustering fast even for large datasets\.
+
+Note: The resulting model depends to a certain extent on the order of the training data\. Reordering the data and rebuilding the model may lead to a different final cluster model\.
+
+Requirements\. To train a TwoStep Cluster model, you need one or more fields with the role set to `Input`\. Fields with the role set to `Target`, `Both`, or `None` are ignored\. The TwoStep Cluster algorithm does not handle missing values\. Records with blanks for any of the input fields will be ignored when building the model\.
+
+Strengths\. TwoStep Cluster can handle mixed field types and is able to handle large datasets efficiently\. It also has the ability to test several cluster solutions and choose the best, so you don't need to know how many clusters to ask for at the outset\. TwoStep Cluster can be set to automatically exclude outliers, or extremely unusual cases that can contaminate your results\.
+
+<!-- </article "role="article" "> -->

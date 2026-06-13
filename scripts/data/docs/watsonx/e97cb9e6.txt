@@ -1,0 +1,90 @@
+# Compute resource options for Data Refinery in projects #
+
+When you create or edit a Data Refinery flow in a project, you use the `Default Data Refinery XS` runtime environment\. However, when you run a Data Refinery flow in a job, you choose an environment template for the runtime environment\. The environment template specifies the type, size, and power of the hardware configuration, plus the software template\.
+
+<!-- <ul> -->
+
+ *  [Types of environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html?context=cdpaas&locale=en#types)
+ *  [Default environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html?context=cdpaas&locale=en#default)
+ *  [Compute usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html?context=cdpaas&locale=en#compute)
+ *  [Changing the runtime](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html?context=cdpaas&locale=en#change-env)
+ *  [Runtime logs for jobs](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html?context=cdpaas&locale=en#logs)
+
+<!-- </ul> -->
+
+## Types of environments ##
+
+You can use these types of environments with Data Refinery:
+
+<!-- <ul> -->
+
+ *  `Default Data Refinery XS` runtime environment for running jobs on small data sets\.
+ *  Spark environments for running jobs on larger data sets\. The Spark environments have [default environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html?context=cdpaas&locale=en#default) so you can get started quickly\. Otherwise, you can [create custom environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-customize-env-definition.html) for Spark environments\. You should use a Spark & R environment only if you are working on a large data set\. If your data set is small, you should select the `Default Data Refinery XS` runtime\. The reason is that, although the SparkR cluster in a Spark & R environment is fast and powerful, it requires time to create, which is noticeable when you run a Data Refinery job on small data set\.
+
+<!-- </ul> -->
+
+## Default environment templates ##
+
+When you work in Data Refinery, the `Default Data Refinery XS` environment runtime is started and appears as an active runtime under **Tool runtimes** on the **Environments** page on the **Manage** tab of your project\. This runtime stops after an hour of inactivity in the Data Refinery interface\. However, you can stop it manually under **Tool runtimes** on the **Environments** page\.
+
+When you create a job to run a Data Refinery flow in a project, you select an environment template\. After a runtime for a job is started, it is listed as an active runtime under **Tool runtimes** on the **Environments** page on the **Manage** tab of your project\. The runtime for a job stops when the Data Refinery job stops running\.
+
+Compute usage is tracked by capacity unit hours (CUH)\.
+
+<!-- <table> -->
+
+Preset environment templates available in projects for Data Refinery
+
+| Name                        | Hardware configuration                                                  | Capacity units per hour (CUH) |
+| --------------------------- | ----------------------------------------------------------------------- | ----------------------------- |
+| Default Data Refinery XS    | 3 vCPU and 12 GB RAM                                                    | 1\.5                          |
+| Default Spark 3\.3 & R 4\.2 | 2 Executors each: 1 vCPU and 4 GB RAM;  <br>Driver: 1 vCPU and 4 GB RAM | 1\.5                          |
+
+<!-- </table ""> -->
+
+All default environment templates for Data Refinery are HIPAA ready\.
+
+The Spark default environment templates are listed under **Templates** on the **Environments** page on the **Manage** tab of your project\.
+
+## Compute usage in projects ##
+
+You can monitor the Watson Studio CUH consumption on the **Resource usage** page on the **Manage** tab of your project\.
+
+## Changing the runtime ##
+
+You can't change the runtime for working in Data Refinery\.
+
+You can change the runtime for a Data Refinery flow job by editing the job template\. See [Creating jobs in Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html#create-jobs-in-dr)\.
+
+## Runtime logs for jobs ##
+
+To view the accumulated logs for a Data Refinery job:
+
+<!-- <ol> -->
+
+1.  From the project's **Jobs** page, click the job that ran the Data Refinery flow for which you want to see logs\.
+2.  Click the job run\. You can view the log tail or download the complete log file\.
+
+<!-- </ol> -->
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  [Creating your own environment template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-customize-env-definition.html)
+ *  [Creating jobs in Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html#create-jobs-in-dr)
+ *  [Stopping active runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html#stop-active-runtimes)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Monitoring account resource usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Choosing compute resources for tools](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/environments-parent.html)
+
+<!-- </article "role="article" "> -->

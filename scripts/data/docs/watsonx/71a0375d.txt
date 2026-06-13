@@ -1,0 +1,11 @@
+# Adding attributes to a class instance #
+
+Unlike in Java, in Python clients can add attributes to an instance of a class\. Only the one instance is changed\. For example, to add attributes to an instance `x`, set new values on that instance:
+
+    x.attr1 = 1
+    x.attr2 = 2
+        .
+        .
+    x.attrN = n
+
+<!-- </article "role="article" "> -->

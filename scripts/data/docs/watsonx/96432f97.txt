@@ -1,0 +1,5 @@
+# Automated modeling for a flag target #
+
+With the Auto Classifier node, you can automatically create and compare a number of different models for either flag (such as whether or not a given customer is likely to default on a loan or respond to a particular offer) or nominal (set) targets\.
+
+<!-- </article "role="article" "> -->

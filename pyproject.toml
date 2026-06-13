@@ -9,12 +9,18 @@ dependencies = []
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:Use `streamable_http_client` instead:DeprecationWarning",
+    "ignore::langchain_core._api.deprecation.LangChainPendingDeprecationWarning",
+    "ignore::Warning:langgraph.checkpoint.base",
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.:Warning",
+]
 markers = [
     "integration: requires live Docker stack (deselect with '-m not integration')",
 ]
 
 [tool.pyright]
-pythonVersion = "3.11"
+pythonVersion = "3.13"
 typeCheckingMode = "basic"
 # Third-party libs (langchain, langfuse, litellm) have incomplete stubs;
 # ignore missing-import noise so errors reflect our own code only.
@@ -41,4 +47,4 @@ exclude_lines = [
     "raise NotImplementedError",
 ]
 show_missing = true
-fail_under = 60
+fail_under = 80

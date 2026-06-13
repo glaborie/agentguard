@@ -1,0 +1,158 @@
+# Overview of IBM watsonx as a Service #
+
+IBM watsonx\.ai is a studio of integrated tools for working with generative AI capabilities that are powered by foundation models and for building machine learning models\. The IBM watsonx\.ai component provides a secure and collaborative environment where you can access your organization's trusted data, automate AI processes, and deliver AI in your applications\. The IBM watsonx\.governance component provides end\-to\-end monitoring for machine learning and generative AI models to accelerate responsible, transparent, and explainable AI workflows\.
+
+Watch this short video that introduces watsonx\.ai\.
+
+Looking for watsonx\.data? Go to [IBM watsonx\.data documentation](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)\.
+
+You can accomplish the following goals with watsonx:
+
+<!-- <ul> -->
+
+ *  **Build machine learning models**  
+    Build models by using open source frameworks and code-based, automated, or visual data science tools.
+ *  **Experiment with foundation models**  
+    Test prompts to generate, classify, summarize, or extract content from your input text. Choose from IBM models or open source models from Hugging Face.
+ *  **Manage the AI lifecycle**  
+    Manage and automate the full AI model lifecycle with all the integrated tools and runtimes to train, validate, and deploy AI models.
+ *  **Govern AI**  
+    Track and document the detailed history of AI models to help ensure compliance.
+
+<!-- </ul> -->
+
+Watsonx\.ai provides these tools for working with data and models:
+
+<!-- <table> -->
+
+Tools for working with data and models
+
+| What you can use             | What you can do                                                                                                                                                                                                                                                                                                                                                                                           | Best to use when                                                                                                                                                                                         |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)            | Access and refine data from diverse data source connections\.  <br>  <br>Materialize the resulting data sets as snapshots in time that might combine, join, or filter data for other data scientists to analyze and explore\.                                                                                                                                                                             | You need to visualize the data when you want to shape or cleanse it\.  <br>  <br>You want to simplify the process of preparing large amounts of raw data for analysis\.                                  |
+| [Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html)               | Experiment with IBM and open source foundation models by inputting prompts\.                                                                                                                                                                                                                                                                                                                              | You want to engineer prompts for your generative AI solution\.                                                                                                                                           |
+| [Tuning Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-studio.html)            | Tailor the output that a foundation model returns to better meet your needs\.                                                                                                                                                                                                                                                                                                                             | You want to adjust foundation model outputs for use in your generative AI solution\.                                                                                                                     |
+| [AutoAI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html)                   | Use AutoAI to automatically select algorithms, engineer features, generate pipeline candidates, and train machine learning model pipeline candidates\.  <br>  <br>Then, evaluate the ranked pipelines and save the best as models\.  <br>  <br>Deploy the trained models to a space, or export the model training pipeline that you like from AutoAI into a notebook to refine it\.                       | You want an advanced and automated way to build a good set of training pipelines and machine learning models quickly\.  <br>  <br>You want to be able to export the generated pipelines to refine them\. |
+| [Notebooks and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebooks-and-scripts.html)    | Prompt foundation models with the Python library\.  <br>  <br>Use notebooks and scripts to write your own feature engineering, model training, and evaluation code in Python or R\. Use training data sets that are available in the project, or connections to data sources such as databases, data lakes, or object storage\.  <br>  <br>Code with your favorite open source frameworks and libraries\. | You want to use Python or R coding skills to have full control over the code that you use to work with models\.                                                                                          |
+| [SPSS Modeler flows](https://dataplatform.cloud.ibm.com/docs/content/wsd/spss-modeler.html)       | Use SPSS Modeler flows to create your own machine learning model training, evaluation, and scoring flows\. Use training data sets that are available in the project, or connections to data sources such as databases, data lakes, or object storage\.                                                                                                                                                    | You want a simple way to explore data and define machine learning model training, evaluation, and scoring flows\.                                                                                        |
+| [RStudio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/rstudio-overview.html)                  | Analyze data and build and test machine learning models by working with R in RStudio\.                                                                                                                                                                                                                                                                                                                    | You want to use a development environment to work in R\.                                                                                                                                                 |
+| [Decision Optimization](https://dataplatform.cloud.ibm.com/docs/content/DO/DOWS-Cloud_home.html)    | Prepare data, import models, solve problems and compare scenarios, visualize data, find solutions, produce reports, and save models to deploy with Watson Machine Learning\.                                                                                                                                                                                                                              | You need to evaluate millions of possibilities to find the best solution to a prescriptive analytics problem\.                                                                                           |
+| [Federated learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fed-lea.html)       | Train a common machine learning model that uses distributed data\.                                                                                                                                                                                                                                                                                                                                        | You need to train a machine learning model without moving, combining, or sharing data that is distributed across multiple locations\.                                                                    |
+| [Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-overview.html)         | Use pipelines to create repeatable and scheduled flows that automate notebook, Data Refinery, and machine learning pipelines, from data ingestion to model training, testing, and deployment\.                                                                                                                                                                                                            | You want to automate some or all of the steps in an MLOps flow\.                                                                                                                                         |
+| [Synthetic Data Generator](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/synthetic_data_overview_sd.html) | Generate synthetic tabular data based on production data or a custom data schema using visual flows and modeling algorithms\.                                                                                                                                                                                                                                                                             | You want to mask or mimic production data or you want to generate synthetic data from a custom data schema\.                                                                                             |
+
+<!-- </table ""> -->
+
+Watsonx\.governance provides these tools for governing models\.
+
+<!-- <table> -->
+
+Tools for governing models
+
+| What you can use     | What you can do                                                                                                               | Best to use when                                                                |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [Factsheets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-create-use-case.html)       | View model lifecycle status, general model and deployment details, training information and metrics, and deployment metrics\. | You want to make sure that your model is compliant and performing as expected\. |
+| [Watson OpenScale](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/getting-started.html) | Monitor model output and explain model predictions\.                                                                          | You need to keep your models fair and be able to explain model predictions\.    |
+
+<!-- </table ""> -->
+
+## Security and privacy of your data and models ##
+
+Your work on watsonx, including your data and the models that you create, are private to your account:
+
+<!-- <ul> -->
+
+ *  Your data is accessible only by you\. Your data is used to train only your models\. Your data will never be accessible or used by IBM or any other person or organization\. Your data is stored in dedicated storage buckets from your IBM Cloud Object Storage service instance\. Data is encrypted at rest and in motion\.
+ *  The models that you create are accessible only by you\. Your models will never be accessible or used by IBM or any other person or organization\. Your models are secured in the same way as your data\.
+
+<!-- </ul> -->
+
+Learn more about security and your options:
+
+<!-- <ul> -->
+
+ *  [Security and privacy of foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-security.html)
+ *  [Data security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-data.html)
+ *  [Security of watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-overview.html)
+
+<!-- </ul> -->
+
+## Underlying architecture ##
+
+Watsonx includes the following functionality as the secure and scalable foundation for your organization to collaborate efficiently:
+
+<!-- <ul> -->
+
+ *  **Software and hardware**  
+    Watsonx is fully managed by IBM on IBM Cloud. Software updates are automatic. Scaling of compute resources and storage is automatic.
+ *  **Storage**  
+    A IBM Cloud Object Storage service instance is automatically provisioned for you to provide storage.
+ *  **Compute resources**  
+    You can choose the appropriate runtime for your jobs. Compute resource usage is billed based on the rate for the runtime environment and its active duration.
+ *  **Security, compliance, and isolation**  
+    The data security, network security, security standards compliance, and isolation of watsonx are managed by IBM Cloud. You can set up extra security and encryption options.
+ *  **User management**  
+    You add users and user groups and manage their account roles and permissions with IBM Cloud Identity and Access Management. You assign roles within each collaborative workspace across the platform.
+ *  **Global search**  
+    You can search for assets across the platform.
+ *  **Shared connections to data sources**  
+    You can share connections with others across the platform in the Platform assets catalog.
+ *  **Samples**  
+    You can experiment with IBM-curated sample data sets, notebooks, projects, and models.
+
+<!-- </ul> -->
+
+Watsonx\.ai on the watsonx platform includes the Watson Studio, Watson Machine Learning, and IBM Cloud Object Storage services\. Watsonx\.governance on the watsonx platform includes the watsonx\.governance service\.
+
+## Workspaces and assets ##
+
+Watsonx is organized as a set of collaborative workspaces where you can work with your team or organization\. Each workspace has a set of members with roles that provide permissions to perform actions\. Most users work with assets, which are the items that users add to the platform\. Data assets contain metadata that represents data, while assets that you create in tools, such as models, run code to work with data\. You build assets in projects, and manage the deployment of completed assets in deployment spaces\.
+
+### Projects and tools ###
+
+Projects are where your data science and model builder teams work with data to create assets, such as, saved prompts, notebooks, models, or pipelines\. Your first project, which is known as your sandbox project, is created automatically when you sign up for watsonx\.ai\.
+
+The following image shows what the **Overview** page of a project might look like\.
+
+![Overview page for a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-project-overview.png)
+
+### Deployment spaces ###
+
+Deployment spaces are where your ModelOps team deploys models and other deployable assets to production and then tests and manages deployments in production\. After you build models and deployable assets in projects, you promote them to deployment spaces\.
+
+The following image shows what the **Overview** page of a deployment space might look like\.
+
+![Overview page for a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-deployment-overview.png)
+
+## Samples ##
+
+The platform includes an integrated collection of samples that provides models, data assets, prompts, notebooks, and sample projects\. Sample notebooks provide examples of data science and machine learning code\. Sample projects contain sets of data, models, other assets, and detailed instructions on how to solve a particular business problem\.
+
+The following image shows what Samples looks like\.
+
+![Samples page](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-samples.png)
+
+<!-- <ul> -->
+
+ *  See a tour of the samples collection
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+ *  [Asset types and properties](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assets.html)
+ *  [AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+ *  [Your sandbox project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/sandbox.html)
+ *  [Deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html)
+ *  [Foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-overview.html)
+ *  [Foundation models Python library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-python-lib.html)
+ *  [Comparison of IBM watsonx as a Service and Cloud Pak for Data as a Service](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/compare-platforms.html)
+ *  [Feature differences between watsonx deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/feature-matrix.html)
+ *  [IBM watsonx\.data documentation](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

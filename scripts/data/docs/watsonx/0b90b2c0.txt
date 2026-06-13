@@ -1,0 +1,42 @@
+# Creating Synthetic data #
+
+Use the graphical flow editor tool *Synthetic Data Generator* to generate synthetic tabular data based on production data or a custom data schema using visual flows and modeling algorithms\.
+
+To create synthetic data, the first option is to use the *Synthetic Data Generator* graphical flow editor tool to *mask* and *mimic* production data, and then to load the result into a different location\.
+
+The second option is to use the *Synthetic Data Generator* graphical flow editor to *generate* synthetic data from a custom data schema using visual flows and modeling algorithms\.
+
+This image shows an overview of the *Synthetic Data Generator* graphical flow editor\. ![Synthetic Data Generator overview](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-overview.png)
+
+**Data format** Learn more about [Creating synthetic data from imported data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/import_data_sd.html)\.
+
+**Data size** : The *Synthetic Data Generator* environment can import up to ~2\.5GB of data\.
+
+## Prerequisites ##
+
+Before you can create synthetic data, you need [to create a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)\.
+
+## Create synthetic data ##
+
+1\. Access the *Synthetic Data Generator* tool from within a project\. To select a new asset, open a tool, and create an asset, click **New asset**\.
+
+2\. Select **All > Prepare Data > Generate synthetic tabular data** from the *What do you want to do?* window\. ![What do you want to do window](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-what-do-you-want.png)
+
+3\. The **Generate synthetic tabular data** window opens\. Add a name for the asset and a description (optional)\. Click **Create**\. The flow will open and it might take a minute to create a new session for the flow\. ![Generate synthetic tabular data flow asset](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-generate-synthetic-tabular-data-flow-asset.png)
+
+4\. The **Welcome to Synthetic Data Generator** wizard opens\. You can choose to get started as a first time or experienced user\.  
+![Synthetic Data Generator Get started wizard](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-wizard.png)
+
+5\. If you choose to get started as a first time user, the **Generate synthetic tabular data flow** window opens\. ![Generate synthetic tabular data flow window](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-mimic-mask-flow.png)
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Creating synthetic data from production data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/mask_mimic_data_sd.html)
+ *  [Creating synthetic data from a custom data schema](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/generate_data_sd.html)
+ *  Try the [Generate synthetic tabular data tutorial](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,97 @@
+# Creating a custom component for use in the pipeline #
+
+A custom pipeline component runs a script that you write\. You can use custom components to share reusable scripts between pipelines\.
+
+You create custom components as project assets\. You can then use the components in pipelines you create in that project\. You can create as many custom components for pipelines as needed\. Currently, to create a custom component you must create one programmatically, using a Python function\.
+
+## Creating a component as a project asset ##
+
+To create a custom component, use the Python client to authenticate with IBM Watson Pipelines, code the component, then publish the component to the specified project\. After it is available in the project, you can assign it to a node in a pipeline and run it as part of a pipeline flow\.
+
+This example demonstrates the process of publishing a component that adds two numbers together, then assigning the component to a pipeline node\.
+
+<!-- <ol> -->
+
+1.  Publish a function as a component with the latest Python client\. Run the following code in a Jupyter Notebook in a project of IBM watsonx\.
+    
+        # Install libraries
+         ! pip install ibm-watson-pipelines
+        
+         # Authentication
+         from ibm_watson_pipelines import WatsonPipelines
+        
+         apikey = ''
+         project_id = 'your_project_id'
+        
+         client = WatsonPipelines.from_apikey(apikey)
+        
+         # Define the function of the component
+        
+         # If you define the input parameters, users are required to 
+         # input them in the UI
+        
+         def add_two_numbers(a: int, b: int) -> int:
+             print('Adding numbers: {} + {}.'.format(a, b))
+             return a + b + 10
+        
+         # Other possible functions might be sending a Slack message,
+         # or listing directories in a storage volume, and so on.
+        
+         # Publish the component    
+         client.publish_component(
+             name='Add numbers', # Appears in UI as component name 
+             func=add_two_numbers,
+             description='Custom component adding numbers', # Appears in UI as component description 
+             project_id=project_id,
+             overwrite=True, # Overwrites an existing component with the same name 
+         )
+    
+    To generate a new API key:
+    
+    <!-- <ol> -->
+    
+    1.  Go to the [IBM Cloud home page](https://cloud.ibm.com/)
+    2.  Click Manage > Access (IAM)
+    3.  Click API keys
+    4.  Click Create
+    
+    <!-- </ol> -->
+    
+<!-- </ol> -->
+
+<!-- <ol> -->
+
+1.  Drag the node called *Run Pipelines component* under **Run** to the canvas\.  
+    ![Retrieving the custom component node](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ml-orch-custom-comp-1.png)
+2.  Choose the name of the component that you want to use\.  
+    ![Choosing the actual component function](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ml-orch-custom-comp-2.png)
+3.  Connect and run the node as part of a pipeline job\.  
+    ![Connecting the component](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ml-orch-custom-comp-3.png)  
+    
+<!-- </ol> -->
+
+## Manage pipeline components ##
+
+To manage your components, use the Python client to manage them\.
+
+<!-- <table> -->
+
+Table 1\. Manage pipeline components
+
+| Method                                                                      | Function                       |
+| --------------------------------------------------------------------------- | ------------------------------ |
+| `client.get_components(project_id=project_id)`                              | List components from a project |
+| `client.get_component(project_id=project_id, component_id=component_id)`    | Get a component by ID          |
+| `client.get_component(project_id=project_id, name=component_name)`          | Get a component by name        |
+| `client.publish_component(component name)`                                  | Publish a new component        |
+| `client.delete_component(project_id=project_id, component_id=component_id)` | Delete a component by ID       |
+
+<!-- </table ""> -->
+
+### Import and export ###
+
+IBM Watson Pipelines can be imported and exported with pipelines only\.
+
+**Parent topic:**[Creating a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-create.html)
+
+<!-- </article "role="article" "> -->

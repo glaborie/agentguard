@@ -1,0 +1,19 @@
+# Exporting synthetic data #
+
+Using *Synthetic Data Generator*, you can export synthetic data to remote data sources using connections or write data to a project (**Delimited** or **SAV**)\.
+
+Double\-click the node to open its properties\. Various options are available, described as follows\. After running the node, you can find the data at the export location you specified\.
+
+## Exporting to a project ##
+
+Under **Export to**, select **This project** and then select the project path\. For **File type**, select either **Delimited** or **SAV**\.
+
+## Exporting to a connection ##
+
+Under **Export to**, select **Save to a connection** to open the Asset Browser and then select the connection to export to\. For a list of supported data sources, see [Creating synthetic data from imported data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/import_data_sd.html)\.
+
+## Setting the field delimiter, quote character, and decimal symbol ##
+
+Different countries use different symbols to separate the integer part from the fractional part of a number and to separate fields in data\. For example, you might use a comma instead of a period to separate the integer part from the fractional part of numbers\. And, rather than using commas to separate fields in your data, you might use colons or tabs\. With a Data Asset import or export node, you can specify these symbols and other options\. Double\-click the node to open its properties and specify data formats as desired\. ![Export data field delimiters](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-export-data-field-delimiters.png)
+
+<!-- </article "role="article" "> -->

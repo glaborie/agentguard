@@ -1,0 +1,208 @@
+# Asset contents or previews #
+
+In projects and other workspaces, you can see a preview of data assets that contain relational data\.
+
+<!-- <ul> -->
+
+ *  [Requirements and restrictions](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#require)
+ *  [Previews of data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#data)
+
+<!-- </ul> -->
+
+## Requirements and restrictions ##
+
+You can view the contents or previews of assets under the following conditions and restrictions\.
+
+<!-- <ul> -->
+
+ *  **Workspaces**  
+    You can view the preview or contents of assets in these workspaces:
+    
+    <!-- <ul> -->
+    
+     *  Projects
+     *  Deployment spaces
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  **Types of assets**  
+    
+    <!-- <ul> -->
+    
+     *  Data assets from files
+     *  Connected data assets
+     *  Models
+     *  Notebooks
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  **Required permissions**  
+    To see the asset contents or preview, these conditions must be true:
+    
+    <!-- <ul> -->
+    
+     *  You have any collaborator role in the workspace.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  **Restrictions for data assets**
+    
+    Additional requirements apply to connected data assets and data assets from files. See [Requirements for data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#require-data). Previews are not available for data assets that were added as managed assets by using the [Watson Data API](https://cloud.ibm.com/apidocs/watson-data-api#createattachmentnewv2).
+
+<!-- </ul> -->
+
+## Previews of data assets ##
+
+The previews of data assets show a view of the data\.
+
+You can see when the data in the preview was last fetched and refresh the preview data by clicking the refresh icon\.
+
+<!-- <ul> -->
+
+ *  [Requirements for data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#require-data)
+ *  [Preview information for data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#preview-info)
+ *  [File extensions and mime types of previewed files](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#files)
+
+<!-- </ul> -->
+
+### Requirements for data assets ###
+
+The additional requirements for viewing previews of data assets depend on whether the data is accessed through a connection or from a file\.
+
+#### Connected data assets ####
+
+You can see previews of data assets that are accessed through a connection if all these conditions are true:
+
+<!-- <ul> -->
+
+ *  You have access to the data asset and its associated connection\. See [Requirements and restrictions](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#require)\.
+ *  The data asset contains structured data\. Structured data resides in fixed fields within a record or file, for example, relational database data or spreadsheets\.
+ *  You have credentials for the connection:
+    
+    <!-- <ul> -->
+    
+     *  For connections with shared credentials, the username in the connection details has access to the object at the data source.
+     *  For connections with personal credentials, you must enter your personal credentials when you see a key icon (![the key symbol for private connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/privatekey.png)). This is a one-time step that permanently unlocks the connection for you. See [Adding connections to projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html).
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+#### Data assets from files ####
+
+You can see previews of data assets from files if the following conditions are true:
+
+<!-- <ul> -->
+
+ *  You have access to the data asset\. See [Requirements and restrictions](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#require)\.
+ *  The file is stored in IBM Cloud Object Storage\. For preview of text or image files from an IBM Cloud Object Storage connection to work, the connection credentials must include an access key and a secret key\. If you’re using an existing Cloud Object Storage connection that doesn’t have these keys, edit the connection asset and add them\. See [IBM Cloud Object Storage connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cos.html)\.
+ *  The file type is supported\. See [File extensions and mime types of previewed files](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html?context=cdpaas&locale=en#files)\.
+
+<!-- </ul> -->
+
+### Preview information for data assets ###
+
+For structured data, the preview displays a limited number of rows and columns:
+
+<!-- <ul> -->
+
+ *  The number of rows in the preview is limited to 1,000\.
+ *  The amount of data is limited to 800 KB\. The more columns the data asset has, the fewer rows that appear in the preview\.
+
+<!-- </ul> -->
+
+Previews show different information for different types of data assets and files\.
+
+#### Structured data ####
+
+For structured data, the preview shows column names, data types, and a subset of columns and rows of data\. The supported formats of structured data area: Relational data, CSV, TSV, Avro, partitioned data, and Parquet (projects)\.
+
+Assets from file based connections like Apache Kafka and Apache Cassandra are not supported\.
+
+#### Unstructured data ####
+
+Unstructured data files must be stored in IBM Cloud Object Storage to have previews\.
+
+For these unstructured data files, the preview shows the whole document: Text, JSON, HTML, PDF, images, and Microsoft Excel documents\. HTML files are supported in text format\. Images stored in IBM Cloud Object Storage support JPG, JPEG, PNG, GIF, BMP, and BMP1\. Microsoft Excel document previews show the first sheet\.
+
+For connected folder assets, the preview shows the files and subfolders, which you can also preview\.
+
+### File extensions and mime types of previewed files ###
+
+These types of files that contain structured data have previews:
+
+<!-- <table> -->
+
+Structured data files
+
+| Extension | Mime type                                                             |
+| --------- | --------------------------------------------------------------------- |
+| AVRO      |                                                                       |
+| CSV       | text/csv                                                              |
+| CSV1      | application/csv                                                       |
+| JSON      | application/json                                                      |
+| PARQ      |                                                                       |
+| TSV       |                                                                       |
+| TXT       | text/plain                                                            |
+| XLSX      | application/vnd\.openxmlformats\-officedocument\.spreadsheetml\.sheet |
+| XLS       | application/vnd\.ms\-excel                                            |
+| XLSM      | application/vnd\.ms\-excel\.sheet\.macroEnabled\.12                   |
+
+<!-- </table ""> -->
+
+These types of image files have previews:
+
+<!-- <table> -->
+
+Image files
+
+| Extension | Mime type  |
+| --------- | ---------- |
+| BMP       | image/bmp  |
+| GIF       | image/gif  |
+| JPG       | image/jpeg |
+| JPEG      | image/jpeg |
+| PNG       | image/png  |
+
+<!-- </table ""> -->
+
+These types of document files have previews:
+
+<!-- <table> -->
+
+Document files
+
+| Extension | Mime type       |
+| --------- | --------------- |
+| HTML      | text/html       |
+| PDF       | application/pdf |
+| TXT       | text/plain      |
+
+<!-- </table ""> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Searching for assets across the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/search-assets.html)
+ *  [Profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html)
+ *  [Activities](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/asset-activities.html)
+ *  [Visualizations](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/visualizations.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Asset types and properties](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assets.html)
+
+<!-- </article "role="article" "> -->

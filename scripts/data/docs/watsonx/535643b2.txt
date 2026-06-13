@@ -1,0 +1,404 @@
+# Activity Tracker events #
+
+You can see the events for actions for your provisioned services in the IBM Cloud Activity Tracker\. You can use the information that is registered through the IBM Cloud Activity Tracker service to identify security incidents, detect unauthorized access, and comply with regulatory and internal auditing requirements\.
+
+To get started, provision an instance of the IBM Cloud Activity Tracker service\. See [IBM Cloud Activity Tracker](https://cloud.ibm.com/docs/activity-tracker?topic=activity-tracker-getting-started)\.
+
+View events in the Activity Tracker in the same IBM Cloud region where you provisioned your services\. To view the account and user management events and other global platform events, you must provision an instance of the IBM Cloud Activity Tracker service in the **Frankfurt (eu\-de)** region\. See [Platform services](https://cloud.ibm.com/docs/activity-tracker?topic=activity-tracker-cloud_services_locations#cloud_services_locations_core_integrated)\.
+
+<!-- <ul> -->
+
+ *  [Events for account and user management](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/at-events.html?context=cdpaas&locale=en#acct)
+ *  [Events for Watson Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/at-events.html?context=cdpaas&locale=en#ws)
+ *  [Events for Watson Machine Learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/at-events.html?context=cdpaas&locale=en#wml)
+ *  [Events for model evaluation (Watson OpenScale)](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/at-events.html?context=cdpaas&locale=en#wos)
+
+<!-- </ul> -->
+
+## Events for account and user management ##
+
+You can audit account and user management events in Activity Tracker, including:
+
+<!-- <ul> -->
+
+ *  Billing events
+ *  Global catalog events
+ *  IAM and user management events
+
+<!-- </ul> -->
+
+For the complete list of account and user management events, see [IBM Cloud docs: Auditing events for account management](https://cloud.ibm.com/docs/activity-tracker?topic=activity-tracker-at_events_acc_mgt)\.
+
+## Events for Watson Studio ##
+
+<!-- <table> -->
+
+Events in Activity Tracker for Watson Studio
+
+| Action                                      | Description                                                         |
+| ------------------------------------------- | ------------------------------------------------------------------- |
+| data\-science\-experience\.project\.create  | Create a project\.                                                  |
+| data\-science\-experience\.project\.delete  | Delete a project\.                                                  |
+| data\-science\-experience\.notebook\.create | Create a Notebook\.                                                 |
+| data\-science\-experience\.notebook\.delete | Delete a Notebook\.                                                 |
+| data\-science\-experience\.notebook\.update | Change the runtime service of a Notebook by selecting another one\. |
+| data\-science\-experience\.rstudio\.start   | Open RStudio\.                                                      |
+| data\-science\-experience\.rstudio\.stop    | RStudio session timed out\.                                         |
+
+<!-- </table ""> -->
+
+### Events for Decision Optimization ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for Decision Optimization
+
+| Action                     | Description                                             |
+| -------------------------- | ------------------------------------------------------- |
+| domodel\.decision\.create  | Create experiments                                      |
+| domodel\.decision\.update  | Update experiments                                      |
+| domodel\.decision\.delete  | Delete experiments                                      |
+| domodel\.container\.create | Create scenarios                                        |
+| domodel\.container\.update | Update scenarios                                        |
+| domodel\.container\.delete | Delete scenarios                                        |
+| domodel\.notebook\.import  | Update a scenario from a notebook                       |
+| domodel\.notebook\.export  | Generate a model notebook from a scenario               |
+| domodel\.wml\.export       | Generate Watson Machine Learning models from a scenario |
+| domodel\.solve\.start      | Solve a scenario                                        |
+| domodel\.solve\.stop       | Cancel a solve                                          |
+
+<!-- </table ""> -->
+
+### Events for feature groups ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for feature groups (Watson Studio)
+
+| Action                                              | Description              |
+| --------------------------------------------------- | ------------------------ |
+| data\_science\_experience\.feature\-group\.retrieve | Retrieve a feature group |
+| data\_science\_experience\.feature\-group\.create   | Create a feature group   |
+| data\_science\_experience\.feature\-group\.update   | Update a feature group   |
+| data\_science\_experience\.feature\-group\.delete   | Delete a feature group   |
+
+<!-- </table ""> -->
+
+### Events for asset management ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for asset management in Watson Studio
+
+| Action                               | Description                                      |
+| ------------------------------------ | ------------------------------------------------ |
+| datacatalog\.asset\.clone            | Copy an asset\.                                  |
+| datacatalog\.asset\.create           | Create an asset\.                                |
+| datacatalog\.data\-asset\.create     | Create a data asset\.                            |
+| datacatalog\.folder\-asset\.create   | Create a folder asset\.                          |
+| datacatalog\.type\.create            | Create an asset type\.                           |
+| datacatalog\.asset\.purge            | Delete an asset from the trash\.                 |
+| datacatalog\.asset\.restore          | Restore an asset from the trash\.                |
+| datacatalog\.asset\.trash            | Send an asset to the trash\.                     |
+| datacatalog\.asset\.update           | Update an asset\.                                |
+| datacatalog\.promoted\-asset\.create | Create a project asset in a space\.              |
+| datacatalog\.promoted\-asset\.update | Update a space asset that started in a project\. |
+| datacatalog\.asset\.promote          | Promote an asset from project to space\.         |
+
+<!-- </table ""> -->
+
+### Events for asset attachments ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for attachments
+
+| Action                                       | Description                               |
+| -------------------------------------------- | ----------------------------------------- |
+| datacatalog\.attachment\.create              | Create an attachment\.                    |
+| datacatalog\.attachment\.delete              | Delete an attachment\.                    |
+| datacatalog\.attachment\-resources\.increase | Increase resources for an attachment\.    |
+| datacatalog\.complete\.transfer              | Mark an attachment as transfer complete\. |
+| datacatalog\.attachment\.update              | Update attachment metadata\.              |
+
+<!-- </table ""> -->
+
+### Events for asset attributes ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for attributes
+
+| Action                         | Description           |
+| ------------------------------ | --------------------- |
+| datacatalog\.attribute\.create | Create an attribute\. |
+| datacatalog\.attribute\.delete | Delete an attribute\. |
+| datacatalog\.attribute\.update | Update an attribute\. |
+
+<!-- </table ""> -->
+
+### Events for connections ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for connections
+
+| Action                                          | Description                 |
+| ----------------------------------------------- | --------------------------- |
+| wdp\-connect\-connection\.connection\.read      | Read a connection\.         |
+| wdp\-connect\-connection\.connection\.get       | Retrieve a connection\.     |
+| wdp\-connect\-connection\.connection\.get\.list | Get a list of connections\. |
+| wdp\-connect\-connection\.connection\.create    | Create a connection\.       |
+| wdp\-connect\-connection\.connection\.delete    | Delete a connection\.       |
+
+<!-- </table ""> -->
+
+### Events for scheduling ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for scheduling
+
+| Action                                      | Description                         |
+| ------------------------------------------- | ----------------------------------- |
+| wdp\.scheduling\.schedule\.update\.failed   | An update to a schedule failed\.    |
+| wdp\.scheduling\.schedule\.create\.failed   | The creation of a schedule failed\. |
+| wdp\.scheduling\.schedule\.read             | Read a schedule\.                   |
+| wdp\.scheduling\.schedule\.update           | Update a schedule\.                 |
+| wdp\.scheduling\.schedule\.delete\.multiple | Delete multiple schedules\.         |
+| wdp\.scheduling\.schedule\.list             | List all schedules\.                |
+| wdp\.scheduling\.schedule\.create           | Create a schedule\.                 |
+
+<!-- </table ""> -->
+
+### Events for Data Refinery flows ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for Data Refinery flows
+
+| Action                                                             | Description                            |
+| ------------------------------------------------------------------ | -------------------------------------- |
+| data\-science\-experience\.datarefinery\-flow\.read                | Read a Data Refinery flow              |
+| data\-science\-experience\.datarefinery\-flow\.create              | Create a Data Refinery flow            |
+| data\-science\-experience\.datarefinery\-flow\.delete              | Delete a Data Refinery flow            |
+| data\-science\-experience\.datarefinery\-flow\.update              | Update (save) a Data Refinery flow     |
+| data\-science\-experience\.datarefinery\-flow\.backup              | Clone (duplicate) a Data Refinery flow |
+| data\-science\-experience\.datarefinery\-flowrun\.create           | Create a Data Refinery flow job run    |
+| data\-science\-experience\.datarefinery\-flowrun\-complete\.update | Complete a Data Refinery flow job run  |
+| data\-science\-experience\.datarefinery\-flowrun\-cancel\.update   | Cancel a Data Refinery flow job run    |
+
+<!-- </table ""> -->
+
+### Events for profiling ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for profiling
+
+| Action                                                          | Description                                                 |
+| --------------------------------------------------------------- | ----------------------------------------------------------- |
+| wdp\-profiling\.profile\.start                                  | Initiate profiling\.                                        |
+| wdp\-profiling\.profile\.create                                 | Create a profile\.                                          |
+| wdp\-profiling\.profile\.delete                                 | Delete a profile\.                                          |
+| wdp\-profiling\.profile\.read                                   | Read a profile\.                                            |
+| wdp\-profiling\.profile\.list                                   | List the profiles of a data asset\.                         |
+| wdp\-profiling\.profile\.update                                 | Update a profile\.                                          |
+| wdp\-profiling\.profile\.asset\-classification\.update          | Update the asset classification of a profile\.              |
+| wdp\-profiling\.profile\.column\-classification\.update         | Update the column classification of a profile\.             |
+| wdp\-profiling\.profile\.create\.failed                         | Profile could not be created\.                              |
+| wdp\-profiling\.profile\.delete\.failed                         | Profile could not be deleted\.                              |
+| wdp\-profiling\.profile\.read\.failed                           | Profile could not be read\.                                 |
+| wdp\-profiling\.profile\.list\.failed                           | Profiles could not be listed\.                              |
+| wdp\-profiling\.profile\.update\.failed                         | Profile could not be updated\.                              |
+| wdp\-profiling\.profile\.asset\-classification\.update\.failed  | Asset classification of the profile could not be updated\.  |
+| wdp\-profiling\.profile\.column\-classification\.update\.failed | Column classification of the profile could not be updated\. |
+
+<!-- </table ""> -->
+
+### Events for profiling options ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for profiling options
+
+| Action                                           | Description                              |
+| ------------------------------------------------ | ---------------------------------------- |
+| wdp\-profiling\.profile\_options\.create         | Create profiling options\.               |
+| wdp\-profiling\.profile\_options\.read           | Read profiling options\.                 |
+| wdp\-profiling\.profile\_options\.update         | Update profiling options\.               |
+| wdp\-profiling\.profile\_options\.delete         | Delete profiling options                 |
+| wdp\-profiling\.profile\_options\.create\.failed | Profiling options could not be created\. |
+| wdp\-profiling\.profile\_options\.read\.failed   | Profiling options could not be read\.    |
+| wdp\-profiling\.profile\_options\.update\.failed | Profiling options could not be updated\. |
+| wdp\-profiling\.profile\_options\.delete\.failed | Profiling options could not be deleted\. |
+
+<!-- </table ""> -->
+
+### Events for feature groups ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for feature groups (IBM Knowledge Catalog)
+
+| Action                                  | Description              |
+| --------------------------------------- | ------------------------ |
+| data\_catalog\.feature\-group\.retrieve | Retrieve a feature group |
+| data\_catalog\.feature\-group\.create   | Create a feature group   |
+| data\_catalog\.feature\-group\.update   | Update a feature group   |
+| data\_catalog\.feature\-group\.delete   | Delete a feature group   |
+
+<!-- </table ""> -->
+
+## Events for Watson Machine Learning ##
+
+### Event for Prompt Lab ###
+
+<!-- <table> -->
+
+Event in Activity Tracker for Prompt Lab
+
+| Action                          | Description                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------------- |
+| pm\-20\.foundation\-model\.send | Send a prompt to a foundation model or tuned foundation model for inferencing\. |
+
+<!-- </table ""> -->
+
+### Events for Watson Machine Learning deployments ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for Watson Machine Learning deployments
+
+| Action                          | Description                                       |
+| ------------------------------- | ------------------------------------------------- |
+| pm\-20\.deployment\.create      | Create a Watson Machine Learning deployment\.     |
+| pm\-20\.deployment\.read        | Get a Watson Machine Learning deployment\.        |
+| pm\-20\.deployment\.update      | Update a Watson Machine Learning deployment\.     |
+| pm\-20\.deployment\.delete      | Delete a Watson Machine Learning deployment\.     |
+| pm\-20\.deployment\_job\.create | Create a Watson Machine Learning deployment job\. |
+| pm\-20\.deployment\_job\.read   | Get a Watson Machine Learning deployment job\.    |
+| pm\-20\.deployment\_job\.delete | Delete a Watson Machine Learning deployment job\. |
+
+<!-- </table ""> -->
+
+### Events for SPSS Modeler flows ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for SPSS Modeler flows
+
+| Action                                                    | Description                                               |
+| --------------------------------------------------------- | --------------------------------------------------------- |
+| data\-science\-experience\.modeler\-session\.create       | Create a new SPSS Modeler session\.                       |
+| data\-science\-experience\.modeler\-flow\.send            | Store the current SPSS Modeler flow\.                     |
+| data\-science\-experience\.modeler\-flows\-user\.receive  | Get the current user information\.                        |
+| data\-science\-experience\.modeler\-flow\-preview\.create | Preview a node in an SPSS Modeler flow\.                  |
+| data\-science\-experience\.modeler\-examples\.receive     | Get the list of example SPSS Modeler flows\.              |
+| data\-science\-experience\.modeler\-runtimes\.receive     | Get the list of available SPSS Modeler runtimes\.         |
+| data\-science\-experience\.lock\-modeler\-flow\.enable    | Allocate the lock for the SPSS Modeler flow to the user\. |
+| data\-science\-experience\.project\-name\.receive         | Get the name of the project\.                             |
+
+<!-- </table ""> -->
+
+### Event for model visualizations ###
+
+<!-- <table> -->
+
+Event in Activity Tracker for modeler visualizations
+
+| Action                   | Description                                                                                                                                                                                                                       |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pm\-20\.model\.visualize | Visualize model output\. The model output can have a single model, ensemble models, or a time\-series model\. The visualization type can be single, auto, or time\-series\. This visualization type is in requestedData section\. |
+
+<!-- </table ""> -->
+
+### Events for Watson Machine Learning training assets ###
+
+<!-- <table> -->
+
+Event in Activity Tracker for Watson Machine Learning training assets
+
+| Action                         | Description            |
+| ------------------------------ | ---------------------- |
+| pm\-20\.training\.authenticate | Authenticate user\.    |
+| pm\-20\.training\.authorize    | Authorize user\.       |
+| pm\-20\.training\.list         | List all of training\. |
+| pm\-20\.training\.get          | Get one training\.     |
+| pm\-20\.training\.create       | Start a training\.     |
+| pm\-20\.training\.delete       | Stop a training\.      |
+
+<!-- </table ""> -->
+
+### Events for Watson Machine Learning repository assets ###
+
+The deployment events are tracked for these Watson Machine Learning repository assets:
+
+<!-- <table> -->
+
+Event in Activity Tracker for Watson Machine Learning repository assets
+
+| Asset type                       | Description                                                                                                                                                                                                                                                                                                                  |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| wml\_model                       | Represents a machine learning model asset\.                                                                                                                                                                                                                                                                                  |
+| wml\_model\_definition           | Represents the code that is used to train one or more models\.                                                                                                                                                                                                                                                               |
+| wml\_pipeline                    | Represents a hybrid\-pipeline, a SparkML pipeline or a sklearn pipeline that is represented as a JSON document that is used to train one or more models\.                                                                                                                                                                    |
+| wml\_experiment                  | Represents the assets that capture a set of wml\_pipeline or wml\_model\_definition assets that are trained at the same time on the same data set\.                                                                                                                                                                          |
+| wml\_function                    | Represents a Python function (code is packaged in a compressed file) that will be deployed as online deployment in Watson Machine Learning\. This code needs to contain a score(\.\.\.) python function\.                                                                                                                    |
+| wml\_training\_definition        | Represents the training metadata necessary to start a training job\.                                                                                                                                                                                                                                                         |
+| wml\_deployment\_job\_definition | Represents the deployment metadata information to create a batch job in WML\. This asset type contains the same metadata that is used by the /ml/v4/deployment\_jobs endpoint\. When you submit batch deployment jobs, you can either provide the job definition inline or reference a job definition in a query parameter\. |
+
+<!-- </table ""> -->
+
+These activities are tracked for each asset type:
+
+<!-- <table> -->
+
+Event in Activity Tracker for Watson Machine Learning repository assets
+
+| Action                               | Description                               |
+| ------------------------------------ | ----------------------------------------- |
+| pm\-20\.`<asset_type>`\.list   | List all of the specified asset type\.    |
+| pm\-20\.`<asset_type>`\.create | Create one of the specified asset types\. |
+| pm\-20\.`<asset_type>`\.delete | Delete one of the specified asset types\. |
+| pm\-20\.`<asset_type>`\.update | Update a specified asset type\.           |
+| pm\-20\.`<asset_type>`\.read   | View a specified asset type\.             |
+| pm\-20\.`<asset_type>`\.add    | Add a specified asset type\.              |
+
+<!-- </table ""> -->
+
+## Events for model evaluation (Watson OpenScale) ##
+
+### Events for public APIs ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for Watson OpenScale public APIs
+
+| Action                       | Description                                   |
+| ---------------------------- | --------------------------------------------- |
+| aiopenscale\.metrics\.create | Store metric in the Watson OpenScale instance |
+| aiopenscale\.payload\.create | Log payload in the Watson OpenScale instance  |
+
+<!-- </table ""> -->
+
+### Events for private APIs ###
+
+<!-- <table> -->
+
+Events in Activity Tracker for Watson OpenScale private APIs
+
+| Action                            | Description                                               |
+| --------------------------------- | --------------------------------------------------------- |
+| aiopenscale\.datamart\.configure  | Configure the Watson OpenScale instance                   |
+| aiopenscale\.datamart\.delete     | Delete the Watson OpenScale instance                      |
+| aiopenscale\.binding\.create      | Add service binding to the Watson OpenScale instance      |
+| aiopenscale\.binding\.delete      | Delete service binding from the Watson OpenScale instance |
+| aiopenscale\.subscription\.create | Add subscription to the Watson OpenScale instance         |
+| aiopenscale\.subscription\.delete | Delete subscription from the Watson OpenScale instance    |
+
+<!-- </table ""> -->
+
+**Parent topic:**[Administration](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/administer-accounts.html)
+
+<!-- </article "role="article" "> -->

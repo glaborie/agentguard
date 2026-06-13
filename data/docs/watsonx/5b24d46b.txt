@@ -1,0 +1,193 @@
+# Configuring global objects for Watson Pipelines #
+
+Use global objects to create configurable constants to configure your pipeline at run time\. Use parameters or user variables in pipelines to specify values at run time, rather than hardcoding the values\. Unlike pipeline parameters, user variables can be dynamically set during the flow\.
+
+Learn about creating:
+
+<!-- <ul> -->
+
+ *  [Pipeline parameters](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-flow-param.html?context=cdpaas&locale=en#flow)
+ *  [Parameter sets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-flow-param.html?context=cdpaas&locale=en#param-set)
+ *  [User variables](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-flow-param.html?context=cdpaas&locale=en#user)
+
+<!-- </ul> -->
+
+## Pipeline parameters ##
+
+Use pipeline parameters to specify a value at pipeline runtime\. For example, if you want a user to enter a deployment space for pipeline output, use a parameter to prompt for the space name to use when the pipeline runs\. Specifying the value of the parameter each time that you run the job helps you use the correct resources\.
+
+About pipeline parameters:
+
+<!-- <ul> -->
+
+ *  can be assigned as a node value or assign it for the pipeline job\.
+ *  can be assigned to any node, and a status indicator alerts you\.
+ *  can be used for multiple nodes\.
+
+<!-- </ul> -->
+
+### Defining a pipeline parameter ###
+
+<!-- <ol> -->
+
+1.  Create a pipeline parameter from the node configuration panel from the toolbar\.
+2.  Enter a name and an optional description\. The name must be lower *snake* case with lowercase letters, numbers, and underscores\. For example, `lower_snake_case_with_numbers_123` is a valid name\. The name must begin with a letter\. If the name does not comply, you get a 404 error when you try to run the pipeline\.
+3.  Assign a parameter type\. Depending on the parameter type, you might need to provide more details or assign a default value\.
+4.  Click **Add to list** to save the pipeline parameter\.
+
+<!-- </ol> -->
+
+Note:
+
+### Parameter types ###
+
+Parameter types are categorized as:
+
+<!-- <ul> -->
+
+ *  **Basic:** including data types to structure input to a pipeline or options for handling the creation of a duplicate space or asset\.
+ *  **Resource:** for selecting a project, catalog, space, or asset\.
+ *  **Instance:** for selecting a machine learning instance or a Cloud Object Storage instance\.
+ *  **Other:** for specifying details, such as creation mode or error policy\.
+
+<!-- </ul> -->
+
+#### Example of using pipeline types ####
+
+To create a parameter of the type **Path**:
+
+<!-- <ol> -->
+
+1.  Create a parameter set called **MASTER\_PARAMETER\_SET**\.
+2.  Create a parameter called `file_path` and set the type to **Path**\.
+3.  Set the value of `file_path` to `mnts/workspace/masterdir`\.
+4.  Drag the node **Wait for file** onto the canvas and set the *File location* value to `MASTER_PARAMETER_SET.file_path`\.
+5.  Connect the **Wait for file** with the **Run Bash script** node so that the latter node runs after the former\.
+6.  *Optional:* Test your parameter variable:
+    
+    <!-- <ol> -->
+    
+    1.  Add the environment variable parameter to your **MASTER\_PARAMETER\_SET** parameter set, for example `FILE_PATH`.
+    2.  Paste the following command into the *Script code* of the **Run Bash script**:
+        
+            echo File: $FILE_PATH
+            cat $FILE_PATH
+    
+    <!-- </ol> -->
+    
+7.  Run the pipeline\. The path `mnts/workspace/masterdir` is in both of the nodes' execution logs to see they passed successfully\.
+
+<!-- </ol> -->
+
+## Configuring a node with a pipeline parameter ##
+
+When you configure a node with a pipeline parameter, you can choose an existing pipeline parameter or create a new one as part of configuring a node\.
+
+For example:
+
+<!-- <ol> -->
+
+1.  Create a pipeline parameter called *creationmode* and save it to the parameter list\.
+2.  Configure a *Create deployment space* node and click to open the configuration panel\.
+3.  Choose the **Pipeline parameter** as the input for the **Creation mode** option\.
+4.  Choose the *creationmode* pipeline parameter and save the configuration\.
+
+<!-- </ol> -->
+
+When you run the flow, the pipeline parameter is assigned when the space is created\.
+
+## Parameter sets ##
+
+Parameter sets are a group of related parameters to use in a pipeline\. For example, you might create one set of parameters to use in a test environment and another for use in a production environment\.
+
+Parameter sets can be created as a project asset\. Parameter sets created in the project are then available for use in pipelines in that project\.
+
+### Creating a parameter set as a project asset ###
+
+You can create a parameter set as a reusable project asset to use in pipelines\.
+
+<!-- <ol> -->
+
+1.  Open an existing project or create a project\.
+2.  Click **New task > Collect multiple job parameters with specified values to reuse in jobs** from the available tasks\.
+3.  Assign a name for the set, and specify the details for each parameter in the set, including:
+    
+    <!-- <ul> -->
+    
+     *  Name for the parameter
+     *  Data type
+     *  Prompt
+     *  Default value
+    
+    <!-- </ul> -->
+    
+4.  Optionally create value sets for the parameters in the parameter set\. The value sets can be the different values for different contexts\. For example, you can create a Test value set with values for a test environment, and a production set for production values\.
+5.  Save the parameter set after you create all the parameters, s\. It becomes available for use in pipelines that are created in that project\.
+
+<!-- </ol> -->
+
+### Adding a parameter set for use in a pipeline ###
+
+To add a parameter set from a project:
+
+<!-- <ol> -->
+
+1.  Click the global objects icon and switch to the **Parameter sets tab**\.
+2.  Click **Add parameter set** to add parameter sets from your project that you want to use in your pipeline\.
+3.  You can add or remove parameter sets from the list\. The parameter sets you specify for use in your pipeline becomes available when you assign parameters as input in the pipeline\.
+
+<!-- </ol> -->
+
+### Creating a parameter set from the parameters list in your pipeline ###
+
+You can create a parameter set from the parameters list for your pipeline
+
+<!-- <ol> -->
+
+1.  Click the global objects icon and open the Pipeline Parameters\.
+2.  Select the parameters that you want in the set, then click the **Save as parameter set** icon\.
+3.  Enter a name and optional description for the set\.
+4.  Save to add the parameter set for use in your pipeline\.
+
+<!-- </ol> -->
+
+### Using a parameter set in a pipeline ###
+
+To use a parameter set:
+
+<!-- <ol> -->
+
+1.  Choose **Assign pipeline parameter** as an input type from a node property sheet\.
+2.  Choose the parameter to assign\. A list displays all available parameters of the type for that input\. Available parameters can be individual parameters, and parameters defined as part of a set\. The parameter set name precedes the name of the parameter\. For example, *Parameter\_set\_name\.Parameter\_name*\.
+3.  Run the pipeline and select a value set for the corresponding value (if available), assign a value for the parameter, or accept the default value\.
+
+<!-- </ol> -->
+
+Note:You can use a parameter set in the expression builder by using the format `param_sets.<MyParamSet.BRParam>`\. If a parameter set value contains an environment variable, you must use this syntax in the expression builder: `param_sets.MyParamSet["$ICU_DATA"]`\. Attention: If you delete a parameter, make sure that you remove the references to the parameter from your job design\. If you do not remove the references, your job might fail\.
+
+### Editing a parameter set in a job ###
+
+If you use a parameter set when you define a job, you can choose a value set to populate variables with the values in that set\. If you change and save the values, then edit the job and save changes, the parameter set values reset to the defaults\.
+
+## User variables ##
+
+Create user variables to assign values when the flow runs\. Unlike pipeline parameters, user variables can be modified during processing\.
+
+### Defining a user variable ###
+
+You can create user variables for use in your pipeline\. User variables, like parameters, are defined on the global level and are not specific to any node\. The initial value for a user variable must be set when you define it and cannot be set dynamically as the result of any node output\. When you define a user variable, you can use the **Set user variables** node to update it with node output\.
+
+To create a user variable:
+
+<!-- <ol> -->
+
+1.  Create a variable from the **Update variable** node configuration panel or from the toolbar\.
+2.  Enter a name and an optional description\. The name must be lower *snake* case with lowercase letters, numbers, and underscores\. For example, lower\_snake\_case\_with\_numbers\_123 is a valid name\. The name must begin with a letter\. If the name does not comply, you get a 404 error when you try to run the pipeline\.
+3.  Complete the definition of the variable, including choosing a variable type and input type\.
+4.  Click **Add** to add the variable to the list\. It is now available for use in a node\.
+
+<!-- </ol> -->
+
+**Parent topic:**[Creating a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-create.html)
+
+<!-- </article "role="article" "> -->

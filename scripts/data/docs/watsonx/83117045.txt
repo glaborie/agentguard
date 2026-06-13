@@ -1,0 +1,424 @@
+# AutoAI libraries for Python #
+
+The `autoai-lib` library for Python contains a set of functions that help you to interact with IBM Watson Machine Learning AutoAI experiments\. Using the `autoai-lib` library, you can review and edit the data transformations that take place in the creation of the pipeline\. Similarly, you can use the `autoai-ts-libs` library to interact with pipeline notebooks for time series experiments\.
+
+## Installing autoai\-lib or autoai\-ts\-libs for Python ##
+
+Follow the instructions in [Installing custom libraries](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/install-cust-lib.html) to install `autoai-lib` or `autoai-ts-libs`\.
+
+### Using autoai\-lib and autoai\-ts\-libs for Python ###
+
+The `autoai-lib` and `autoai-ts-libs` library for Python contain functions that help you to interact with IBM Watson Machine Learning AutoAI experiments\. Using the `autoai-lib` library, you can review and edit the data transformations that take place in the creation of classification and regression pipelines\. Using the `autoai-ts-libs` library, you can review the data transformations that take place in the creation of time series (forecast) pipelines\.
+
+### Installing autoai\-lib and autoai\-ts\-libs for Python ###
+
+Follow the instructions in [Installing custom libraries](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/install-cust-lib.html) to install [autoai\-lib](https://pypi.org/project/autoai-libs/) and [autoai\-ts\-libs](https://pypi.org/project/autoai-ts-libs/)\.
+
+## The autoai\-lib functions ##
+
+The instantiated project object that is created after you import the `autoai-lib` library exposes these functions:
+
+#### autoai\_libs\.transformers\.exportable\.NumpyColumnSelector() ####
+
+Selects a subset of columns of a numpy array
+
+Usage:
+
+    autoai_libs.transformers.exportable.NumpyColumnSelector(columns=None)
+
+<!-- <table> -->
+
+| Option  | Description                      |
+| ------- | -------------------------------- |
+| columns | list of column indexes to select |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.CompressStrings() ####
+
+Removes spaces and special characters from string columns of an input numpy array X\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.CompressStrings(compress_type='string', dtypes_list=None, misslist_list=None, missing_values_reference_list=None, activate_flag=True)
+
+<!-- <table> -->
+
+| Option                          | Description                                                                                                                                                                                                                                                                  |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `compress_type`                 | type of string compression\. 'string' for removing spaces from a string and 'hash' for creating an int hash\. Default is 'string'\. 'hash' is used for columns with strings and cat\_imp\_strategy='most\_frequent'                                                          |
+| `dtypes_list`                   | list containing strings that denote the type of each column of the input numpy array X (strings are among 'char\_str','int\_str','float\_str','float\_num', 'float\_int\_num','int\_num','Boolean','Unknown')\. If None, the column types are discovered\. Default is None\. |
+| `misslist_list`                 | list contains lists of missing values of each column of the input numpy array X\. If None, the missing values of each column are discovered\. Default is None\.                                                                                                              |
+| `missing_values_reference_list` | reference list of missing values in the input numpy array X                                                                                                                                                                                                                  |
+| `activate_flag`                 | flag that indicates that this transformer is active\. If False, transform(X) outputs the input numpy array X unmodified\.                                                                                                                                                    |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.NumpyReplaceMissingValues() ####
+
+Given a numpy array and a reference list of missing values for it, replaces missing values with a special value (typically a special missing value such as np\.nan)\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.NumpyReplaceMissingValues(missing_values, filling_values=np.nan)
+
+<!-- <table> -->
+
+| Option           | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| `missing_values` | reference list of missing values                 |
+| `filling_values` | special value that is assigned to unknown values |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.NumpyReplaceUnknownValues() ####
+
+Given a numpy array and a reference list of known values for each column, replaces values that are not part of a reference list with a special value (typically np\.nan)\. This method is typically used to remove labels for columns in a test data set that has not been seen in the corresponding columns of the training data set\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.NumpyReplaceUnknownValues(known_values_list=None, filling_values=None, missing_values_reference_list=None)
+
+<!-- <table> -->
+
+| Option                          | Description                                             |
+| ------------------------------- | ------------------------------------------------------- |
+| `known_values_list`             | reference list of lists of known values for each column |
+| `filling_values`                | special value that is assigned to unknown values        |
+| `missing_values_reference_list` | reference list of missing values                        |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.boolean2float() ####
+
+Converts a 1\-D numpy array of strings that represent booleans to floats and replaces missing values with np\.nan\. Also changes type of array from 'object' to 'float'\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.boolean2float(activate_flag=True)
+
+<!-- <table> -->
+
+| Option          | Description                                                                                                               |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `activate_flag` | flag that indicates that this transformer is active\. If False, transform(X) outputs the input numpy array X unmodified\. |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.CatImputer() ####
+
+This transformer is a wrapper for categorical imputer\. Internally it currently uses sklearn SimpleImputer\]([https://scikit\-learn\.org/stable/modules/generated/sklearn\.impute\.SimpleImputer\.html](https://scikit-learn.org/stable/modules/generated/sklearn.impute.SimpleImputer.html))
+
+Usage:
+
+    autoai_libs.transformers.exportable.CatImputer(strategy, missing_values, sklearn_version_family=global_sklearn_version_family, activate_flag=True)
+
+<!-- <table> -->
+
+| Option                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `strategy`               | string, optional, default=”mean”\. The imputation strategy for missing values\.  <br>\-`mean`: replace by using the mean along each column\. Can be used only with numeric data\.  <br>\- `median`:replace by using the median along each column\. Can only be used with numeric data\.  <br>\- `most_frequent`:replace by using most frequent value each column\. Used with strings or numeric data\.  <br>\- `constant`:replace with fill\_value\. Can be used with strings or numeric data\. |
+| `missing_values`         | number, string, np\.nan (default) or None\. The placeholder for the missing values\. All occurrences of missing\_values are imputed\.                                                                                                                                                                                                                                                                                                                                                           |
+| `sklearn_version_family` | str indicating the sklearn version for backward compatibiity with versions 019, and 020dev\. Currently unused\. Default is None\.                                                                                                                                                                                                                                                                                                                                                               |
+| `activate_flag`          | flag that indicates that this transformer is active\. If False, transform(X) outputs the input numpy array X unmodified\.                                                                                                                                                                                                                                                                                                                                                                       |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.CatEncoder() ####
+
+This method is a wrapper for categorical encoder\. If encoding parameter is 'ordinal', internally it currently uses sklearn [OrdinalEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OrdinalEncoder.html?highlight=ordinalencoder)\. If encoding parameter is 'onehot', or 'onehot\-dense' internally it uses sklearn [OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder)
+
+Usage:
+
+    autoai_libs.transformers.exportable.CatEncoder(encoding, categories, dtype, handle_unknown, sklearn_version_family=global_sklearn_version_family, activate_flag=True)
+
+<!-- <table> -->
+
+| Option                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `encoding`               | str, 'onehot', 'onehot\-dense' or 'ordinal'\. The type of encoding to use (default is 'ordinal')  <br>'onehot': encode the features by using a one\-hot aka one\-of\-K scheme (or also called 'dummy' encoding)\. This encoding creates a binary column for each category and returns a sparse matrix\.  <br>'onehot\-dense': the same as 'onehot' but returns a dense array instead of a sparse matrix\.  <br>'ordinal': encode the features as ordinal integers\. The result is a single column of integers (0 to n\_categories \- 1) per feature\. |
+| `categories`             | 'auto' or a list of lists/arrays of values\. Categories (unique values) per feature:  <br>'auto' : Determine categories automatically from the training data\.  <br>`list` : `categories[i]` holds the categories that are expected in the ith column\. The passed categories must be sorted and can not mix strings and numeric values\. The used categories can be found in the `encoder.categories_` attribute\.                                                                                                                                   |
+| `dtype`                  | number type, default np\.float64 Desired dtype of output\.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `handle_unknown`         | 'error' (default) or 'ignore'\. Whether to raise an error or ignore if a unknown categorical feature is present during transform (default is to raise)\. When this parameter is set to 'ignore' and an unknown category is encountered during transform, the resulting one\-hot encoded columns for this feature are all zeros\. In the inverse transform, an unknown category are denoted as None\. Ignoring unknown categories is not supported for `encoding='ordinal'`\.                                                                          |
+| `sklearn_version_family` | str indicating the sklearn version for backward compatibiity with versions 019, and 020dev\. Currently unused\. Default is None\.                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `activate_flag`          | flag that indicates that this transformer are active\. If False, transform(X) outputs the input numpy array X unmodified\.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.float32\_transform() ####
+
+Transforms a float64 numpy array to float32\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.float32_transform(activate_flag=True)
+
+<!-- <table> -->
+
+| Option          | Description                                                                                                               |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `activate_flag` | flag that indicates that this transformer is active\. If False, transform(X) outputs the input numpy array X unmodified\. |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.FloatStr2Float() ####
+
+Given numpy array X and dtypes\_list that denotes the types of its columns, it replaces columns of strings that represent floats (type 'float\_str' in dtypes\_list) to columns of floats and replaces their missing values with np\.nan\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.FloatStr2Float(dtypes_list, missing_values_reference_list=None, activate_flag=True)
+
+<!-- <table> -->
+
+| Option                          | Description                                                                                                                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dtypes_list`                   | list contains strings that denote the type of each column of the input numpy array X (strings are among 'char\_str','int\_str','float\_str','float\_num', 'float\_int\_num','int\_num','Boolean','Unknown')\. |
+| `missing_values_reference_list` | reference list of missing values                                                                                                                                                                              |
+| `activate_flag`                 | flag that indicates that this transformer is active\. If False, transform(X) outputs the input numpy array X unmodified\.                                                                                     |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.NumImputer() ####
+
+This method is a wrapper for numerical imputer\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.NumImputer(strategy, missing_values, activate_flag=True)
+
+<!-- <table> -->
+
+| Option           | Description                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `strategy`       | num\_imp\_strategy: string, optional (default=”mean”)\. The imputation strategy:  <br>\- If “mean”, then replace missing values by using the mean along the axis\.  <br>\- If “median”, then replace missing values by using the median along the axis\.  <br>\- If “most\_frequent”, then replace missing by using the most frequent value along the axis\.         |
+| `missing_values` | integer or “NaN”, optional (default=”NaN”)\. The placeholder for the missing values\. All occurrences of missing\_values are imputed:  <br>\- For missing values encoded as np\.nan, use the string value “NaN”\.  <br>\- `activate_flag`: flag that indicates that this transformer is active\. If False, transform(X) outputs the input numpy array X unmodified\. |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.OptStandardScaler() ####
+
+This parameter is a wrapper for scaling of numerical variables\. It currently uses sklearn [StandardScaler](http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) internally\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.OptStandardScaler(use_scaler_flag=True, num_scaler_copy=True, num_scaler_with_mean=True, num_scaler_with_std=True)
+
+<!-- <table> -->
+
+| Option                 | Description                                                                                                                                                                                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `num_scaler_copy`      | Boolean, optional, default True\. If False, try to avoid a copy and do in\-place scaling instead\. This action is not guaranteed to always work\. With in\-place, for example, if the data is not a NumPy array or scipy\.sparse CSR matrix, a copy might still be returned\. |
+| `num_scaler_with_mean` | Boolean, True by default\. If True, center the data before scaling\. An exception is raised when attempted on sparse matrices because centering them entails building a dense matrix, which in common use cases is likely to be too large to fit in memory\.                  |
+| `num_scaler_with_std`  | Boolean, True by default\. If True, scale the data to unit variance (or equivalently, unit standard deviation)\.                                                                                                                                                              |
+| `use_scaler_flag`      | Boolean, flag that indicates that this transformer is active\. If False, transform(X) outputs the input numpy array X unmodified\. Default is True\.                                                                                                                          |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.transformers\.exportable\.NumpyPermuteArray() ####
+
+Rearranges columns or rows of a numpy array based on a list of indexes\.
+
+Usage:
+
+    autoai_libs.transformers.exportable.NumpyPermuteArray(permutation_indices=None, axis=None)
+
+<!-- <table> -->
+
+| Option                | Description                                           |
+| --------------------- | ----------------------------------------------------- |
+| `permutation_indices` | list of indexes based on which columns are rearranged |
+| `axis`                | 0 permute along columns\. 1 permute along rows\.      |
+
+<!-- </table ""> -->
+
+### Feature transformation ###
+
+These methods apply to the feature transformations described in [AutoAI implementation details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html)\.
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.TA1(fun, name=None, datatypes=None, feat\_constraints=None, tgraph=None, apply\_all=True, col\_names=None, col\_dtypes=None) ####
+
+For unary stateless functions, such as square or log, use TA1\.
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.TA1(fun, name=None, datatypes=None, feat_constraints=None, tgraph=None, apply_all=True, col_names=None, col_dtypes=None)
+
+<!-- <table> -->
+
+| Option             | Description                                                                                                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fun`              | the function pointer                                                                                                                                                                             |
+| `name`             | a string name that uniquely identifies this transformer from others                                                                                                                              |
+| `datatypes`        | a list of datatypes either of which are valid input to the transformer function (numeric, float, int, and so on)                                                                                 |
+| `feat_constraints` | all constraints, which must be satisfied by a column to be considered a valid input to this transform                                                                                            |
+| `tgraph`           | tgraph object must be the starting TGraph( ) object\. This parameter is optional and you can pass None, but that can result in some failure to detect some inefficiencies due to lack of caching |
+| `apply_all`        | only use applyAll = True\. It means that the transformer enumerates all features (or feature sets) that match the specified criteria and apply the provided function to each\.                   |
+| `col_names`        | names of the feature columns in a list                                                                                                                                                           |
+| `col_dtypes`       | list of the datatypes of the feature columns                                                                                                                                                     |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.TA2() ####
+
+For binary stateless functions, such as sum, product, use TA2\.
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.TA2(fun, name, datatypes1, feat_constraints1, datatypes2, feat_constraints2, tgraph=None, apply_all=True, col_names=None, col_dtypes=None)
+
+<!-- <table> -->
+
+| Option                                                                      | Description                                                                                                                                                                         |
+| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fun`                                                                       | the function pointer                                                                                                                                                                |
+| `name`: a string name that uniquely identifies this transformer from others |
+| `datatypes1`                                                                | a list of datatypes either of which are valid inputs (first parameter) to the transformer function (numeric, float, int, and so on)                                                 |
+| `feat_constraints1`                                                         | all constraints, which must be satisfied by a column to be considered a valid input (first parameter) to this transform                                                             |
+| `datatypes2`                                                                | a list of data types either of which are valid inputs (second parameter) to the transformer function (numeric, float, int, and so on)                                               |
+| `feat_constraints2`                                                         | all constraints, which must be satisfied by a column to be considered a valid input (second parameter) to this transform                                                            |
+| `tgraph`                                                                    | tgraph object must be the invoking TGraph( ) object\. Note this parameter is optional and you can pass None, but that results in some missing inefficiencies due to lack of caching |
+| `apply_all`                                                                 | only use applyAll = True\. It means that the transformer enumerates all features (or feature sets) that match the specified criteria and apply the provided function to each\.      |
+| `col_names`                                                                 | names of the feature columns in a list                                                                                                                                              |
+| `col_dtypes`                                                                | list of the data types of the feature columns                                                                                                                                       |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.TB1() ####
+
+For unary state\-based transformations (with fit/transform) use, such as frequent count\.
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.TB1(tans_class, name, datatypes, feat_constraints, tgraph=None, apply_all=True, col_names=None, col_dtypes=None)
+
+<!-- <table> -->
+
+| Option             | Description                                                                                                                                                                      |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tans_class`       | a class that implements `fit( )` and `transform( )` in accordance with the transformation function definition                                                                    |
+| `name`             | a string name that uniquely identifies this transformer from others                                                                                                              |
+| `datatypes`        | list of datatypes either of which are valid input to the transformer function (numeric, float, int, and so on)                                                                   |
+| `feat_constraints` | all constraints, which must be satisfied by a column to be considered a valid input to this transform                                                                            |
+| `tgraph`           | tgraph object must be the invoking TGraph( ) object\. Note that this is optional and you might pass None, but that results in some missing inefficiencies due to lack of caching |
+| `apply_all`        | only use applyAll = True\. It means that the transformer enumerates all features (or feature sets) that match the specified criteria and apply the provided function to each\.   |
+| `col_names`        | names of the feature columns in a list\.                                                                                                                                         |
+| `col_dtypes`       | list of the data types of the feature columns\.                                                                                                                                  |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.TB2() ####
+
+For binary state\-based transformations (with fit/transform) use, such as group\-by\.
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.TB2(tans_class, name, datatypes1, feat_constraints1, datatypes2, feat_constraints2, tgraph=None, apply_all=True)
+
+<!-- <table> -->
+
+| Option              | Description                                                                                                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tans_class`        | a class that implements fit( ) and transform( ) in accordance with the transformation function definition                                                                        |
+| `name`              | a string name that uniquely identifies this transformer from others                                                                                                              |
+| `datatypes1`        | a list of data types either of which are valid inputs (first parameter) to the transformer function (numeric, float, int, and so on)                                             |
+| `feat_constraints1` | all constraints, which must be satisfied by a column to be considered a valid input (first parameter) to this transform                                                          |
+| `datatypes2`        | a list of data types either of which are valid inputs (second parameter) to the transformer function (numeric, float, int, and so on)                                            |
+| `feat_constraints2` | all constraints, which must be satisfied by a column to be considered a valid input (second parameter) to this transform                                                         |
+| `tgraph`            | tgraph object must be the invoking TGraph( ) object\. This parameter is optional and you might pass None, but that results in some missing inefficiencies due to lack of caching |
+| `apply_all`         | only use applyAll = True\. It means that the transformer enumerates all features (or feature sets) that match the specified criteria and apply the provided function to each\.   |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.TAM() ####
+
+For a transform that applies at the data level, such as PCA, use TAM\.
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.TAM(tans_class, name, tgraph=None, apply_all=True, col_names=None, col_dtypes=None)
+
+<!-- <table> -->
+
+| Option       | Description                                                                                                                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `tans_class` | a class that implements `fit( )` and `transform( )` in accordance with the transformation function definition                                                                  |
+| `name`       | a string name that uniquely identifies this transformer from others                                                                                                            |
+| `tgraph`     | tgraph object must be the invoking TGraph( ) object\. This parameter is optional and you can pass None, but that results in some missing inefficiencies due to lack of caching |
+| `apply_all`  | only use applyAll = True\. It means that the transformer enumerates all features (or feature sets) that match the specified criteria and apply the provided function to each\. |
+| `col_names`  | names of the feature columns in a list                                                                                                                                         |
+| `col_dtypes` | list of the datatypes of the feature columns                                                                                                                                   |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.TGen() ####
+
+TGen is a general wrapper and can be used for most functions (might not be most efficient though)\.
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.TGen(fun, name, arg_count, datatypes_list, feat_constraints_list, tgraph=None, apply_all=True, col_names=None, col_dtypes=None)
+
+<!-- <table> -->
+
+| Option                  | Description                                                                                                                                                                                                                                                                                                                             |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fun`                   | the function pointer                                                                                                                                                                                                                                                                                                                    |
+| `name`                  | a string name that uniquely identifies this transformer from others                                                                                                                                                                                                                                                                     |
+| `arg_count`             | number of inputs to the function, in this example it is 1, for binary, it is 2, and so on                                                                                                                                                                                                                                               |
+| `datatypes_list`        | a list of arg\_count lists that correspond to the acceptable input data types for each parameter\. In the previous example, since \`arg\_count=1\`\`, the result is one list within the outer list, and it contains a single type called 'numeric'\. In another case, it might be a specific case 'int' or even more specific 'int64'\. |
+| `feat_constraints_list` | a list of arg\_count lists that correspond to some constraints that can be imposed on selection of the input features                                                                                                                                                                                                                   |
+| `tgraph`                | tgraph object must be the invoking TGraph( ) object\. Note this parameter is optional and you can pass None, but that results in some missing inefficiencies due to lack of caching                                                                                                                                                     |
+| `apply_all`             | only use applyAll = True\. It means that the transformer enumerates all features (or feature sets) that match the specified criteria and apply the provided function to each\.                                                                                                                                                          |
+| `col_names`             | names of the feature columns in a list                                                                                                                                                                                                                                                                                                  |
+| `col_dtypes`            | list of the data types of the feature columns                                                                                                                                                                                                                                                                                           |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.FS1() ####
+
+Feature selection, type 1 (using pairwise correlation between each feature and target\.)
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.FS1(cols_ids_must_keep, additional_col_count_to_keep, ptype)
+
+<!-- <table> -->
+
+| Option                         | Description                                                                              |
+| ------------------------------ | ---------------------------------------------------------------------------------------- |
+| `cols_ids_must_keep`           | serial numbers of the columns that must be kept irrespective of their feature importance |
+| `additional_col_count_to_keep` | how many columns need to be retained                                                     |
+| `ptype`                        | classification or regression                                                             |
+
+<!-- </table ""> -->
+
+#### autoai\_libs\.cognito\.transforms\.transform\_utils\.FS2() ####
+
+Feature selection, type 2\.
+
+Usage:
+
+    autoai_libs.cognito.transforms.transform_utils.FS2(cols_ids_must_keep, additional_col_count_to_keep, ptype, eval_algo)
+
+<!-- <table> -->
+
+| Option                         | Description                                                                              |
+| ------------------------------ | ---------------------------------------------------------------------------------------- |
+| `cols_ids_must_keep`           | serial numbers of the columns that must be kept irrespective of their feature importance |
+| `additional_col_count_to_keep` | how many columns need to be retained                                                     |
+| `ptype`                        | classification or regression                                                             |
+
+<!-- </table ""> -->
+
+## The autoai\-ts\-libs functions ##
+
+The combination of transformers and estimators are designed and chosen for each pipeline by the AutoAI Time Series system\. Changing the transformers or the estimators in the generated pipeline notebook can cause unexpected results or even failure\. We do not recommend you change the notebook for generated pipelines, thus we do not currently offer the specification of the functions for the `autoai-ts-libs` library\.
+
+## Learn more ##
+
+[Selecting an AutoAI model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-view-results.html)
+
+**Parent topic:**[Saving an AutoAI generated notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-notebook.html)
+
+<!-- </article "role="article" "> -->

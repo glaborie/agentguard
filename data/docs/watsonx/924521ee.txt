@@ -1,0 +1,21 @@
+# sortnode properties #
+
+![Sort node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/sortnodeicon.png) The Sort node sorts records into ascending or descending order based on the values of one or more fields\.
+
+<!-- <table "summary="sortnode properties" id="sortnodeslots__table_d4z_vwy_ddb" class="defaultstyle" "> -->
+
+sortnode properties  
+
+Table 1\. sortnode properties
+
+| `sortnode` properties | Data type                     | Property description                                                                                                                    |
+| --------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `keys`                | *list*                        | Specifies the fields you want to sort against\. If no direction is specified, the default is used\.                                     |
+| `default_ascending`   | *flag*                        | Specifies the default sort order\.                                                                                                      |
+| `use_existing_keys`   | *flag*                        | Specifies whether sorting is optimized by using the previous sort order for fields that are already sorted\.                            |
+| `existing_keys`       |                               | Specifies the fields that are already sorted and the direction in which they are sorted\. Uses the same format as the `keys` property\. |
+| `default_sort_order`  | `Ascending`  <br>`Descending` | Specify whether, by default, records are sorted in ascending or descending order of the sort key values\.                               |
+
+<!-- </table "summary="sortnode properties" id="sortnodeslots__table_d4z_vwy_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,31 @@
+# Validating your data in Data Refinery #
+
+At any time after you've added data to Data Refinery, you can validate your data\. Typically, you'll want to do this at multiple points in the refinement process\.
+
+To validate your data:
+
+<!-- <ol> -->
+
+1.  From Data Refinery, click the **Profile** tab\.
+2.  Review the metrics for each column\.
+3.  Take appropriate actions, as described in the following sections, depending on what you learn\.
+
+<!-- </ol> -->
+
+## Frequency ##
+
+Frequency is the number of times that a value, or a value in a specified range, occurs\. Each frequency distribution (bar) shows the count of unique values in a column\.
+
+Review the frequency distribution to find anomalies in your data\. If you want to cleanse your data of those anomalies, simply remove the values\.
+
+For Integer and Date/Time columns, you can customize the number of bins (groupings) that you want to see\. In the default multi\-column view, the maximum is 20\. If you expand the frequency chart row, the maximum is 50\.
+
+## Statistics ##
+
+Statistics are a collection of quantitative data\. The statistics for each column show the minimum, maximum, mean, and number of unique values in that column\.
+
+Depending on a column's data type, the statistics for each column will vary slightly\. For example, statistics for a column of data type integer have minimum, maximum, and mean values while statistics for a column of data type string have minimum length, maximum length, and mean length values\.
+
+**Parent topic:**[Refining data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+
+<!-- </article "role="article" "> -->

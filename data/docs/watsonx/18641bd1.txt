@@ -1,0 +1,21 @@
+# Logical functions #
+
+CLEM expressions can be used to perform logical operations\.
+
+<!-- <table "summary="CLEM logical functions" id="clem_function_ref_logical__table_bct_5k3_cdb" class="defaultstyle" "> -->
+
+CLEM logical functions  
+
+Table 1\. CLEM logical functions
+
+| Function                                                        | Result    | Description                                                                                                                                                                                                                                                                                                                          |
+| --------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `COND1 and COND2`                                               | *Boolean* | This operation is a logical conjunction and returns a true value if both *COND1* and *COND2* are true\. If *COND1* is false, then *COND2* is not evaluated; this makes it possible to have conjunctions where *COND1* first tests that an operation in *COND2* is legal\. For example, `length(Label) >=6` and `Label(6) = 'x'`\. |
+| `COND1 or COND2`                                                | *Boolean* | This operation is a logical (inclusive) disjunction and returns a true value if either *COND1* or *COND2* is true or if both are true\. If *COND1* is true, *COND2* is not evaluated\.                                                                                                                                               |
+| `not(COND)`                                                     | *Boolean* | This operation is a logical negation and returns a true value if *COND* is false\. Otherwise, this operation returns a value of 0\.                                                                                                                                                                                                  |
+| `if COND then EXPR1 else EXPR2 endif`                           | *Any*     | This operation is a conditional evaluation\. If *COND* is true, this operation returns the result of *EXPR1*\. Otherwise, the result of evaluating *EXPR2* is returned\.                                                                                                                                                             |
+| `if COND1 then EXPR1 elseif COND2 then EXPR2 else EXPR_N endif` | *Any*     | This operation is a multibranch conditional evaluation\. If *COND1* is true, this operation returns the result of *EXPR1*\. Otherwise, if *COND2* is true, this operation returns the result of evaluating *EXPR2*\. Otherwise, the result of evaluating *EXPR\_N* is returned\.                                                     |
+
+<!-- </table "summary="CLEM logical functions" id="clem_function_ref_logical__table_bct_5k3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

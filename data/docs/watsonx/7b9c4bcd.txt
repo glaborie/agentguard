@@ -1,0 +1,16 @@
+# How does SQL pushback work? #
+
+The initial fragments of a flow leading from the data import nodes are the main targets for SQL generation\. When a node is encountered that can't be compiled to SQL, the data is extracted from the database and subsequent processing is performed\.
+
+During flow preparation and prior to running, the SQL generation process happens as follows:
+
+<!-- <ul> -->
+
+ *  The software reorders flows to move downstream nodes into the “SQL zone” where it can be proven safe to do so\.
+ *  Working from the import nodes toward the terminal nodes, SQL expressions are constructed incrementally\. This phase stops when a node is encountered that can't be converted to SQL or when the terminal node (for example, a Table node or a Graph node) is converted to SQL\. At the end of this phase, each node is labeled with an SQL statement if the node and its predecessors have an SQL equivalent\.
+ *  Working from the nodes with the most complicated SQL equivalents back toward the import nodes, the SQL is checked for validity\. The SQL that was successfully validated is chosen for execution\.
+ *  Nodes for which all operations have generated SQL are highlighted with a  SQL icon next to the node on the flow canvas\. Based on the results, you may want to further reorganize your flow where appropriate to take full advantage of database execution\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

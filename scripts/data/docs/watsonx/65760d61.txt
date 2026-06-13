@@ -1,0 +1,30 @@
+# XML content model #
+
+The XML content model provides access to XML\-based content\.
+
+The XML content model supports the ability to access components based on XPath expressions\. XPath expressions are strings that define which elements or attributes are required by the caller\. The XML content model hides the details of constructing various objects and compiling expressions that are typically required by XPath support\. It is simpler to call from Python scripting\.
+
+The XML content model includes a function that returns the XML document as a string, so Python script users can use their preferred Python library to parse the XML\.
+
+<!-- <table "summary="Methods for the XML content model" class="defaultstyle" "> -->
+
+Methods for the XML content model  
+
+Table 1\. Methods for the XML content model
+
+| Method                                                                                                      | Return types                                    | Description                                                                                                                                        |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `getXMLAsString()`                                                                                          | `String`                                        | Returns the XML as a string\.                                                                                                                      |
+| `getNumericValue(String xpath)`                                                                             | `number`                                        | Returns the result of evaluating the path with return type of numeric (for example, count the number of elements that match the path expression)\. |
+| `getBooleanValue(String xpath)`                                                                             | `boolean`                                       | Returns the boolean result of evaluating the specified path expression\.                                                                           |
+| `getStringValue(String xpath, String attribute)`                                                            | `String`                                        | Returns either the attribute value or XML node value that matches the specified path\.                                                             |
+| `getStringValues(String xpath, String attribute)`                                                           | `List of strings`                               | Returns a list of all attribute values or XML node values that match the specified path\.                                                          |
+| `getValuesList(String xpath, <List of strings> attributes, boolean includeValue)`                     | `List of lists of strings`                      | Returns a list of all attribute values that match the specified path along with the XML node value if required\.                                   |
+| `getValuesMap(String xpath, String keyAttribute, <List of strings> attributes, boolean includeValue)` | `Hash table (key:string, value:list of string)` | Returns a hash table that uses either the key attribute or XML node value as key, and the list of specified attribute values as table values\.     |
+| `isNamespaceAware()`                                                                                        | `boolean`                                       | Returns whether the XML parsers should be aware of namespaces\. Default is `False`\.                                                               |
+| `setNamespaceAware(boolean value)`                                                                          | `void`                                          | Sets whether the XML parsers should be aware of namespaces\. This also calls `reset()` to ensure changes are picked up by subsequent calls\.       |
+| `reset()`                                                                                                   | `void`                                          | Flushes any internal storage associated with this content model (for example, a cached DOM object)\.                                               |
+
+<!-- </table "summary="Methods for the XML content model" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

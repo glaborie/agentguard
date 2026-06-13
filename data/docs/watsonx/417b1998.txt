@@ -1,0 +1,25 @@
+# IBM Watson Pipelines #
+
+The Watson Pipelines editor provides a graphical interface for orchestrating an end\-to\-end flow of assets from creation through deployment\. Assemble and configure a pipeline to create, train, deploy, and update machine learning models and Python scripts\.
+
+To design a pipeline that you drag nodes onto the canvas, specify objects and parameters, then run and monitor the pipeline\.
+
+## Automating the path to production ##
+
+Putting a model into a product is a multi\-step process\. Data must be loaded and processed, models must be trained and tuned before they are deployed and tested\. Machine learning models require more observation, evaluation, and updating over time to avoid bias or drift\.
+
+![Automating the AI lifecycle](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/oflow-cycle-3.svg)
+
+Automating the pipeline makes it simpler to build, run, and evaluate a model in a cohesive way, to shorten the time from conception to production\. You can assemble the pipeline, then rapidly update and test modifications\. The Pipelines canvas provides tools to visualize the pipeline, customize it at run time with pipeline parameter variables, and then run it as a trial job or on a schedule\.
+
+The Pipelines editor also allows for more cohesive collaboration between a data scientist and a ModelOps engineer\. A data scientist can create and train a model\. A ModelOps engineer can then automate the process of training, deploying, and evaluating the model after it is published to a production environment\.
+
+## Next steps ##
+
+[Add a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-get-started.html) to your project and get to know the canvas tools\.
+
+## Additional resources ##
+
+For more information, see this blog post about [automating the AI lifecycle with a pipeline flow](https://yairschiff.medium.com/automating-the-ai-lifecycle-with-ibm-watson-studio-orchestration-flow-4450f1d725d6)\.
+
+<!-- </article "role="article" "> -->

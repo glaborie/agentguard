@@ -1,0 +1,108 @@
+# Visualizing your data in Data Refinery #
+
+Visualizing information in graphical ways gives you insights into your data\. You can add steps to your Data Refinery flow while you visualize you data and see the changes\. By exploring data from different perspectives with visualizations, you can identify patterns, connections, and relationships within that data as well as quickly understand large amounts of information\.
+
+You can also visualize your data with these same charts in an SPSS Modeler flow\. Use the Charts node, which is available under the Graphs section on the node palette\. Double\-click the Charts node to open the properties pane\. Then click **Launch Chart Builder** to open the chart builder and create one or more chart definitions to associate with the node\.
+
+![Chart examples](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/viz_animated.gif)
+
+To visualize your data:
+
+<!-- <ol> -->
+
+1.  From Data Refinery, click the **Visualizations** tab\.
+2.  Start with a chart or select columns:
+    
+    <!-- <ul> -->
+    
+     *  Click any of the available charts. Then, add columns in the **DETAILS** pane that opens on the left side of the page.
+     *  Select the columns that you want to work with. Suggested charts are indicated with a dot next to the chart name. Click a chart to visualize your data.
+    
+    <!-- </ul> -->
+    
+<!-- </ol> -->
+
+Important: Available chart types are ordered from most relevant to least relevant, based on the selected columns\. If there are no columns in the data set with a data type that is supported for a chart type, that chart will not be available\. If a column's data type is not supported for a chart, that column is not available for selection for that chart\. Dots next to the charts' names suggest the best charts for your data\.
+
+## Charts ##
+
+The following charts are included:
+
+<!-- <ul> -->
+
+ *  3D charts display data in a 3\-D coordinate system by drawing each column as a cuboid to create a 3D effect\.
+ *  Bar charts are handy for displaying and comparing categories of data side by side\. The bars can be in any order\. You can also arrange them from high to low or from low to high\.
+ *  Box plot charts compare distributions between many groups or data sets\. They display the variation in groups of data: the spread and skew of that data and the outliers\.
+ *  Bubble charts display each category in the groups as a bubble\.
+ *  Candlestick charts are a type of financial chart that displays price movements of a security, derivative, or currency\.
+ *  Circle packing charts display hierarchical data as a set of nested areas\.
+ *  Customized charts give you the ability to render charts based on JSON input\.
+ *  Dual Y\-axes charts use two Y\-axis variables to show relationships between data\.
+ *  Error bars indicate the error or uncertainty in a value\. They give a general idea of how precise a value is or conversely, how far a value might be from the true value\.
+ *  Evaluation charts are combination charts that measure the quality of a binary classifier\. You need three columns for input: actual (target) value, predict value, and confidence (0 or 1)\. Move the slider in the Cutoff chart to dynamically update the other charts\. The ROC and other charts are standard measurements of the classifier\.
+ *  Heat map charts display data as color to convey activity levels or density\. Typically low values are displayed as cooler colors and high values are displayed as warmer colors\.
+ *  Histogram charts show the frequency distribution of data\.
+ *  Line charts show trends in data over time by calculating a summary statistic for one column for each value of another column and then drawing a line that connects the values\.
+ *  Map charts show geographic point data, so you can compare values and show categories across geographical regions\.
+ *  Math curve charts display a group of curves based on equations that you enter\. You do not use a data set with this chart\. Instead, you use it to compare the results with the data set in another chart, like the scatter plot chart\.
+ *  Multi\-charts display up to four combinations of Bar, Line, Pie, and Scatter plot charts\. You can show the same kind of chart more than once with different data\. For example, two pie charts with data from different columns\.
+ *  Multi\-series charts display data from multiple data sets or multiple columns as a series of points that are connected by straight lines or bars\.
+ *  Parallel coordinate charts display and compare rows of data (called profiles) to find similarities\. Each row is a line and the value in each column of the row is represented by a point on that line\.
+ *  Pie charts show proportion\. Each value in a series is displayed as a proportional slice of the pie\. The pie represents the total sum of the values\.
+ *  Population pyramid charts show the frequency distribution of a variable across categories\. They are typically used to show changes in demographic data\.
+ *  Quantile\-quantile (Q\-Q) plot charts compare the expected distribution values with the observed values by plotting their quantiles\.
+ *  Radar charts integrate three or more quantitative variables that are represented on axes (radii) into a single radial figure\. Data is plotted on each axis and joined to adjacent axes by connecting lines\. Radar charts are useful to show correlations and compare categorized data\.
+ *  Relationship charts show how columns of data relate to one another and what the strength of that relationship is by using varying types of lines\.
+ *  Scatter matrix charts map columns against each other and display their scatter plots and correlation\. Use to compare multiple columns and how strong their correlation is with one another\.
+ *  Scatter plot charts show correlation (how much one variable is affected by another) by displaying and comparing the values in two columns\.
+ *  Sunburst charts are similar to layered pie charts, in which different proportions of different categories are shown at once on multiple levels\.
+ *  Theme river charts use a specialized flow graph that shows changes over time\.
+ *  Time plot charts illustrate data points at successive intervals of time\.
+ *  t\-SNE charts help you visualize high\-dimensional data sets\. They're useful for embedding high\-dimensional data into a space of two or three dimensions, which can then be visualized in a scatter plot\.
+ *  Tree charts display hierarchical data, categorically splitting into different branches\. Use to sort different data sets under different categories\. The Tree chart consists of a root node, line connections called branches that represent the relationships and connections between the members, and leaf nodes that do not have child nodes\.
+ *  Treemap charts display hierarchical data as a set of nested areas\. Use to compare sizes between groups and single elements that are nested in the groups\.
+ *  Word cloud charts display how frequently words appear in text by making the size of each word proportional to its frequency\.
+
+<!-- </ul> -->
+
+## Actions ##
+
+You can take any of the following actions:
+
+<!-- <ul> -->
+
+ *  Start over: Clears the visualization and the **DETAILS** pane, and returns you to the starting page for visualizations
+ *  Specify whether to display the field value or the field label\. This option applies only to SPSS Modeler when you define labels\. For example, if you have a "Gender" field and you have defined a label as female with the value 0, and then the label male for value 1\. If there is no label defined, the value is displayed\.
+ *  Download visualization:
+    
+    <!-- <ul> -->
+    
+     *  Download chart image: Download a PNG file that contains an image of the current chart.
+     *  Download chart details: Download a JSON file that contains the details for the current chart.
+    
+    <!-- </ul> -->
+    
+ *  Set global preferences that apply to all charts
+
+<!-- </ul> -->
+
+## Chart actions ##
+
+Available chart actions depend on the chart\. Chart actions include:
+
+<!-- <ul> -->
+
+ *  Zoom
+ *  Restore: View the chart at normal scale
+ *  Select data: Highlight data in the Data tab that you select in the chart
+ *  Clear selection: Remove highlighting from the data in the Data tab
+
+<!-- </ul> -->
+
+## Learn more ##
+
+[Data Visualization – How to Pick the Right Chart Type?](https://eazybi.com/blog/data_visualization_and_chart_types/)
+
+**Parent topic:**[Refining data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+
+<!-- </article "role="article" "> -->

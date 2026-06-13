@@ -1,0 +1,31 @@
+# anomalydetectionnode properties #
+
+![Anomaly node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/anomalydetectionnodeicon.png)The Anomaly node identifies unusual cases, or outliers, that don't conform to patterns of "normal" data\. With this node, it's possible to identify outliers even if they don't fit any previously known patterns and even if you're not exactly sure what you're looking for\.
+
+<!-- <table "summary="anomalydetectionnode properties" id="anomalydetectionnodeslots__table_zgs_cj3_cdb" class="defaultstyle" "> -->
+
+anomalydetectionnode properties  
+
+Table 1\. anomalydetectionnode properties
+
+| `anomalydetectionnode` Properties | Values                               | Property description                                                                                                                                                                                                         |
+| --------------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `inputs`                          | *\[field1 \.\.\. fieldN\]*           | Anomaly Detection models screen records based on the specified input fields\. They don't use a target field\. Weight and frequency fields are also not used\. See [Common modeling node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/modelingnodeslots_common.html#modelingnodeslots_common) for more information\. |
+| `mode`                            | `Expert``Simple`                     |                                                                                                                                                                                                                              |
+| `anomaly_method`                  | `IndexLevel``PerRecords``NumRecords` | Specifies the method used to determine the cutoff value for flagging records as anomalous\.                                                                                                                                  |
+| `index_level`                     | *number*                             | Specifies the minimum cutoff value for flagging anomalies\.                                                                                                                                                                  |
+| `percent_records`                 | *number*                             | Sets the threshold for flagging records based on the percentage of records in the training data\.                                                                                                                            |
+| `num_records`                     | *number*                             | Sets the threshold for flagging records based on the number of records in the training data\.                                                                                                                                |
+| `num_fields`                      | *integer*                            | The number of fields to report for each anomalous record\.                                                                                                                                                                   |
+| `impute_missing_values`           | *flag*                               |                                                                                                                                                                                                                              |
+| `adjustment_coeff`                | *number*                             | Value used to balance the relative weight given to continuous and categorical fields in calculating the distance\.                                                                                                           |
+| `peer_group_num_auto`             | *flag*                               | Automatically calculates the number of peer groups\.                                                                                                                                                                         |
+| `min_num_peer_groups`             | *integer*                            | Specifies the minimum number of peer groups used when `peer_group_num_auto` is set to `True`\.                                                                                                                               |
+| `max_num_per_groups`              | *integer*                            | Specifies the maximum number of peer groups\.                                                                                                                                                                                |
+| `num_peer_groups`                 | *integer*                            | Specifies the number of peer groups used when `peer_group_num_auto` is set to `False`\.                                                                                                                                      |
+| `noise_level`                     | *number*                             | Determines how outliers are treated during clustering\. Specify a value between 0 and 0\.5\.                                                                                                                                 |
+| `noise_ratio`                     | *number*                             | Specifies the portion of memory allocated for the component that should be used for noise buffering\. Specify a value between 0 and 0\.5\.                                                                                   |
+
+<!-- </table "summary="anomalydetectionnode properties" id="anomalydetectionnodeslots__table_zgs_cj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,76 @@
+# Microsoft Azure Blob Storage connection #
+
+To access your data in Microsoft Azure Blob Storage, create a connection asset for it\.
+
+Azure Blob Storage is used for storing large amounts of data in the cloud\.
+
+## Create a connection to Microsoft Azure Blob Storage ##
+
+To create the connection asset, you need these connection details:
+
+Connection string: Authentication is managed by the Azure portal access keys\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Azure Blob Storage connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Azure Blob Storage connection string setup ##
+
+Set up blob storage and access keys on the Microsoft Azure portal\. For instructions see:
+
+<!-- <ul> -->
+
+ *  [Quickstart: Upload, download, and list blobs with the Azure portal](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-portal)
+ *  [Manage storage account access keys](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage)
+
+<!-- </ul> -->
+
+Example connection string, which you can find in the **ApiKeys** section of the container:
+
+`DefaultEndpointsProtocol=https;AccountName=sampleaccount;AccountKey=samplekey;EndpointSuffix=core.windows.net`
+
+## Supported file types ##
+
+The Azure Blob Storage connection supports these file types: Avro, CSV, Delimited text, Excel, JSON, ORC, Parquet, SAS, SAV, SHP, and XML\.
+
+## Learn more ##
+
+[Microsoft Azure](https://azure.microsoft.com)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

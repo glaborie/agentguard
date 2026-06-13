@@ -1,0 +1,58 @@
+# Building the flow #
+
+<!-- <ol> -->
+
+1.  Add a Data Asset node that points to  pm\_customer\_train1\.csv\.
+    
+    Figure 1. SLRM example flow
+    
+    ![SLRM example flow](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_selflearn_slrm.png)
+2.  Attach a Filler node to the Data Asset node\. Double\-click the node to open its properties and, under  Fill in fields, select `campaign`\.
+3.  Select a  Replace type of  Always\.
+4.  In the  Replace with text box, enter to\_string(campaign) and click  Save\.
+    
+    Figure 2. Derive a campaign field
+    
+    ![Derive a campaign field](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_selflearn_derive.png)
+5.  Add a Type node and set the  Role to `None` for the following fields:
+    
+    <!-- <ul> -->
+    
+     *  `customer_id`
+     *  `response_date`
+     *  `purchase_date`
+     *  `product_id`
+     *  `Rowid`
+     *  `X_random`
+    
+    <!-- </ul> -->
+    
+6.  Set the  Role to `Target` for the `campaign` and `response` fields\. These are the fields on which you want to base your predictions\. Set the  Measurement to `Flag` for the `response` field\.
+7.  Click  Read Values then click  Save\. Because the campaign field data shows as a list of numbers (1, 2, 3, and 4), you can reclassify the fields to have more meaningful titles\.
+8.  Add a Reclassify node after the Type node and open its properties\.
+9.  Under  Reclassify Into, select  Existing field\.
+10. Under  Reclassify Field, select `campaign`\.
+11. Click  Get values\. The campaign values are added to the `ORIGINAL VALUE` column\.
+12. In the `NEW VALUE` column, enter the following campaign names in the first four rows:
+    
+    <!-- <ul> -->
+    
+     *  Mortgage
+     *  Car loan
+     *  Savings
+     *  Pension
+    
+    <!-- </ul> -->
+    
+13. Click  Save\.
+    
+    Figure 3. Reclassify the campaign names
+    
+    ![Reclassify the campaign names](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_selflearn_reclassify.png)
+14. Attach an SLRM modeling node to the Reclassify node\. Select `campaign` for the  Target field, and `response` for the  Target response field\.
+15. Under  MODEL OPTIONS, for  Maximum number of predictions per record, reduce the number to 2\. This means that for each customer there will be two offers identified that have the highest probability of being accepted\.
+16. Make sure  Take account of model reliability is selected, then click  Save and run the flow\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

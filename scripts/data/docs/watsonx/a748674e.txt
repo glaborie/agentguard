@@ -1,0 +1,27 @@
+# Administering your accounts and services #
+
+For most administration tasks, you must be the IBM Cloud account owner or administrator\. If you log in to your own account, you are the account owner\. If you log in to someone else's account or an enterprise account, you might not be the account owner or administrator\.
+
+Tasks for all users:
+
+<!-- <ul> -->
+
+ *  [Managing your personal settings](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/personal-settings.html)
+ *  [Determining your roles](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/your-roles.html)
+ *  [Understanding accessibility features](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/accessibility.html)
+
+<!-- </ul> -->
+
+Tasks for IBM Cloud account owners or administrators in IBM watsonx and in IBM Cloud:
+
+<!-- <ul> -->
+
+ *  [Managing IBM watsonx services](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html)
+ *  [Securing IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-overview.html)
+ *  [Managing your IBM Cloud account](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/manage-account.html)
+ *  [Adding and managing IBM Cloud services](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/create-services.html)
+ *  [Reading notices](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/notices.html)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

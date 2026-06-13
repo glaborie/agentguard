@@ -1,0 +1,65 @@
+# Deployments dashboard #
+
+The deployments dashboard provides an aggregate view of deployment activity available to you, across spaces\. You can get a broad view of deployment activity such as the status of job runs or a list of online deployments\. You can also use filters and views to focus on specific job runs or category of runs such as failed runs\. ModelOps or DevOps users can review and monitor the activity for an organization\.
+
+## Accessing the Deployments dashboard ##
+
+From the navigation menu, click **Deployments**\. If you don't have any deployment spaces, you are prompted to create a space\. This following illustration shows an example of the Deployments dashboard:
+
+![Deployments dashboard](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/deployment-dashboard.png)
+
+The dashboard view has two tabs:
+
+<!-- <ul> -->
+
+ *  [**Activity**](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/operator-view.html?context=cdpaas&locale=en#activity): Use the **Activity** tab to review all of the deployment activity across spaces\. You can sort and filter this view to focus on a particular type of activity, such as failed deployments, or jobs with active runs\. You can also review metrics such as the number of deployment spaces with active deployments\.
+ *  [**Spaces**](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/operator-view.html?context=cdpaas&locale=en#spaces): Use the **Spaces** tab to list all the spaces that you can access\. You can read the overview information, such as the number of deployments and job runs in a space, or click a space name to view details and create deployments or jobs\.
+
+<!-- </ul> -->
+
+## Viewing activity ##
+
+View the overview information for finished runs, active runs, or online deployments, or drill down to view details\.
+
+### Finished runs ###
+
+The **Finished runs** section shows activity in jobs over a specified time interval\. The default is to view finished jobs for the last 8 hours\. It shows jobs that are completed, canceled, or failed across all of your deployment spaces within the specified time frame\. Click **View finished runs** to view a list of runs\.
+
+The view provides more detail on the finished runs and a visualization that shows run times\.
+
+![Viewing detail for finished jobs](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/operator-view3.png)
+
+Filter the view to focus on a particular type of activity:
+
+![Filtering job detail](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/operator-view4.png)
+
+<!-- <ul> -->
+
+ *  **Jobs with active runs** \- Shows jobs that have active runs (running, started, or queued) across all spaces you can access\.
+ *  **Active runs** \- Shows runs that are in the running, started, or queued state across all jobs you can access\.
+ *  **Jobs with finished runs** \- Shows jobs with runs that are completed, canceled, or failed\.
+ *  **Finished runs** \- Shows runs that are completed, canceled, or failed\.
+
+<!-- </ul> -->
+
+### Active runs ###
+
+The **Active runs** section displays runs that are currently running or are in the starting or queued state\. Click **View active runs** to view a list of the runs\.
+
+### Online deployments ###
+
+The **Deployments** section shows all online and R\-Shiny deployments, which are sorted into categories for by status\. Click **View deployments** to view the list of deployments that you can access\.
+
+From any view, you can start from the overview and drill down to see the details for a particular job or run\. You can also filter the view to focus on a particular type of deployment\.
+
+## Viewing spaces ##
+
+View a list of spaces that you can access, with overview information such as number of deployments and collaborators\. Click the name of a space to view details or add assets, and to create new deployments or jobs\. Use *filters* to modify the view from the default list of all spaces to show **Active spaces**, with deployments or jobs, or **Inactive spaces**, with no deployments or jobs\.
+
+## Next steps ##
+
+[Use spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html) to organize your deployment activity\.
+
+**Parent topic:**[Deploying and managing models and functions](https://dataplatform.cloud.ibm.com/docs/content/wsj/wmls/wmls-deploy-overview.html)
+
+<!-- </article "role="article" "> -->

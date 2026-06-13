@@ -1,0 +1,20 @@
+# Creating a distribution chart #
+
+During data mining, it is often useful to explore the data by creating visual summaries\.  Watson Studio offers many different types of charts to choose from, depending on the kind of data you want to summarize\. For example, to find out what proportion of the patients responded to each drug, use a Distribution node\.
+
+Figure 1\. Distribution node
+
+![Distribution node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_distribution.png)
+
+<!-- <ol> -->
+
+1.  Under  Graphs on the Palette, add a  Distribution node to the flow and connect it to the  drug1n\.csv Data Asset node\. Then double\-click the node to edit its options\.
+2.  Select  Drug as the target field whose distribution you want to show\. Then click  Save, right\-click the Distribution node, and select  Run\. A distribution chart is added to the  Outputs panel\.
+
+<!-- </ol> -->
+
+The chart helps you see the shape of the data\. It shows that patients responded to drug `Y` most often and to drugs `B` and `C` least often\.
+
+Alternatively, you can attach and run a Data Audit node for a quick glance at distributions and histograms for all fields at once\. The Data Audit node is available under Outputs on the Palette\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,12 @@
+# Structured properties #
+
+There are two ways in which scripting uses structured properties for increased clarity when parsing:
+
+<!-- <ul> -->
+
+ *  To give structure to the names of properties for complex nodes, such as Type, Filter, or Balance nodes\.
+ *  To provide a format for specifying multiple properties at once\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

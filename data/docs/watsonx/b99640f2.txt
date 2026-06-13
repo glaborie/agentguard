@@ -1,0 +1,43 @@
+# Importing a project #
+
+You can create a project that is preloaded with assets by importing the project\.
+
+## Requirements ##
+
+**A local file of a previously exported project** : Importing a project from a local file is a method of copying a project\. You can import a project from a file on your local system only if the ZIP file that you select was exported from a IBM watsonx project as a compressed file\. You can import only projects that you exported from watsonx\.ai\. You cannot import a compressed file that was exported from a Cloud Pak for Data as a Service project\.
+
+: If the exported file that you select to import was encrypted, you must enter the password that was used for encryption to enable decrypting sensitive connection properties\.
+
+**A sample project from Samples** : You can create a project [from a project sample](https://dataplatform.cloud.ibm.com/samples?context=wx) to learn how to work with data in tools, such as notebooks to prepare data, analyze data, build and train models, and visualize analysis results\.
+
+: The sample projects show how to accomplish goals, for example, to load and explore data, to create and train machine learning models for predictive analysis\. Each project includes the required assets, such as notebooks, and all the data sets that you need to complete the example use case\.
+
+## Importing a project from a local file or sample ##
+
+To import a project:
+
+<!-- <ol> -->
+
+1.  Click **New project** on the home page or on your **Projects** page\.
+2.  Choose whether to create a project based on an exported project file or a sample project\.
+3.  Upload a project file or select a sample project\.
+4.  On the **New project** screen, add a name and optional description for the project\.
+5.  If the project file that you select to import is encrypted, you must enter the password that was used for encryption to enable decrypting sensitive connection properties\. If you enter an incorrect password, the project file imports successfully, but sensitive connection properties are falsely decrypted\.
+6.  Select the **Restrict who can be a collaborator** checkbox to restrict collaborators to members of your organization\. You can't change this setting after you create the project\.
+7.  Choose an existing [object storage service instance](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/storage-options.html) or create a new one\.
+8.  Click **Create**\. You can start adding resources if your project is empty, or begin working with the resources you imported\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Administering a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/admin-project.html)
+ *  [Exporting project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/export-project.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)
+
+<!-- </article "role="article" "> -->

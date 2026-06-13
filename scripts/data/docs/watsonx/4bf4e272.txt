@@ -1,0 +1,91 @@
+# Collaboration roles for governance #
+
+Review the collaboration roles for managing access to governance tools such as inventories, AI use cases, and evaluations\.
+
+## User roles and permissions for governance ##
+
+The permissions that you allow you to work with governance artifacts depend on your watsonx roles:
+
+<!-- <ul> -->
+
+ *  IAM Platform access roles determine your permissions for the IBM Cloud account\. At least the Viewer role is required to work with services\.
+ *  IAM Service access roles determine your permissions within services\.
+ *  Workspace collaborator roles determine what actions you have permission to perform within workspaces in IBM watsonx\.
+
+<!-- </ul> -->
+
+For details, see [Levels of user access roles in IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/roles.html)\.
+
+## Roles for governance ##
+
+If you have the IAM Platform Admin role, you can:
+
+<!-- <ul> -->
+
+ *  Provision watsonx\.governance
+ *  Create inventory
+ *  Create platform assets catalog
+ *  Enable external model tracking
+ *  Create attachment fact definitions
+ *  Customize report templates
+
+<!-- </ul> -->
+
+If you have these workspace roles for an inventory, you can:
+
+<!-- <table> -->
+
+Governance permissions for inventories
+
+| Enabled permission                                                                     | Viewer | Editor | Admin/Owner |
+| -------------------------------------------------------------------------------------- | ------ | ------ | ----------- |
+| Create and edit AI use cases                                                           |        | ✓      | ✓           |
+| View AI use cases                                                                      | ✓      | ✓      | ✓           |
+| Add collaborators to an inventory                                                      |        |        | ✓           |
+| Delete inventory                                                                       |        |        | ✓           |
+| Evaluate model deployment                                                              |        | ✓      | ✓           |
+| Add collaborators to a use case                                                        |        | ✓      | ✓           |
+| Generate reports                                                                       | ✓      | ✓      | ✓           |
+| Add attachments to a use case                                                          |        | ✓      | ✓           |
+| Update asset type definitions  <br>(For example: model\_entry\_user, modelfacts\_user) |        |        | ✓           |
+
+<!-- </table ""> -->
+
+If you have these workspace roles for an AI use case, you can:
+
+<!-- <table> -->
+
+Governance permissions for AI use cases
+
+| Enabled permission                | Editor/Collaborator | Admin/Owner |
+| --------------------------------- | ------------------- | ----------- |
+| Delete AI use cases               |                     | ✓           |
+| Add collaborators to the use case |                     | ✓           |
+| Edit AI use case                  | ✓                   | ✓           |
+| Edit use case                     | ✓                   | ✓           |
+| Add values to custom facts        | ✓                   | ✓           |
+| Upload attachments to use case    | ✓                   | ✓           |
+
+<!-- </table ""> -->
+
+If you have these workspace roles for a project or space, you can:
+
+<!-- <table> -->
+
+Governance permissions for project and space roles
+
+| Enabled permission             | Viewer | Editor/Collaborator | Admin/Owner |
+| ------------------------------ | ------ | ------------------- | ----------- |
+| Track/untrack prompt template  |        | ✓                   | ✓           |
+| Upload attachments to use case |        | ✓                   | ✓           |
+| Add values to custom facts     |        | ✓                   | ✓           |
+| View AI factsheet              | ✓      | ✓                   | ✓           |
+| Generate report                | ✓      | ✓                   | ✓           |
+
+<!-- </table ""> -->
+
+## Learn more ##
+
+**Parent topic:**[Governing assets in AI use cases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-use-cases.html)
+
+<!-- </article "role="article" "> -->

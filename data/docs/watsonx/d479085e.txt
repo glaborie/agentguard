@@ -1,0 +1,18 @@
+# Forecasting with the Time Series node #
+
+This example uses the flow  Forecasting Bandwidth Utilization, available in the example project \. The data file is  broadband\_1\.csv\.
+
+In SPSS Modeler, you can produce multiple time series models in a single operation\. The  broadband\_1\.csv data file has monthly usage data for each of 85 local markets\. For the purposes of this example, only the first five series will be used; a separate model will be created for each of these five series, plus a total\.
+
+The file also includes a date field that indicates the month and year for each record\. This field will be used to label records\. The date field reads into SPSS Modeler as a string, but to use the field in SPSS Modeler you will convert the storage type to numeric Date format using a Filler node\.
+
+Figure 1\. Example flow to show Time Series modeling
+
+![Example flow to show Time Series modeling](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast.png)
+
+The Time Series node requires that each series be in a separate column, with a row for each interval\.  Watson Studio provides methods for transforming data to match this format if necessary\.
+
+Figure 2\. Monthly subscription data for broadband local markets
+
+![Monthly subscription data for broadband local markets](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_table.png)
+<!-- </article "role="article" "> -->

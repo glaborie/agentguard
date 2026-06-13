@@ -1,0 +1,4 @@
+# Custom charts #
+
+The custom charts option provides options for pasting or editing JSON code to create the wanted chart\.
+<!-- </article "role="article" "> -->

@@ -1,0 +1,44 @@
+# Methods for tuning foundation models #
+
+Learn more about different tuning methods and how they work\.
+
+Models can be tuned in the following ways:
+
+<!-- <ul> -->
+
+ *  **Fine\-tuning**: Changes the parameters of the underlying foundation model to guide the model to generate output that is optimized for a task\.
+    
+    Note: You currently cannot fine-tune models in Tuning Studio.
+ *  **Prompt\-tuning**: Adjusts the content of the prompt that is passed to the model to guide the model to generate output that matches a pattern you specify\. The underlying foundation model and its parameters are not edited\. Only the prompt input is altered\.
+    
+    When you prompt-tune a model, the underlying foundation model can be used to address different business needs without being retrained each time. As a result, you reduce computational needs and inference costs.
+
+<!-- </ul> -->
+
+## How prompt\-tuning works ##
+
+Foundation models are sensitive to the input that you give them\. Your input, or how you *prompt* the model, can introduce context that the model will use to tailor its generated output\. Prompt engineering to find the *right* prompt often works well\. However, it can be time\-consuming, error\-prone, and its effectiveness can be restricted by the context window length that is allowed by the underlying model\.
+
+Prompt\-tuning a model in the Tuning Studio applies machine learning to the task of prompt engineering\. Instead of adding words to the input itself, prompt\-tuning is a method for finding a sequence of values that, when added as a prefix to the input text, improve the model's ability to generate the output you want\. This sequence of values is called a *prompt vector*\.
+
+Normally, words in the prompt are vectorized by the model\. Vectorization is the process of converting text to tokens, and then to numbers defined by the model's tokenizer to identify the tokens\. Lastly, the token IDs are encoded, meaning they are converted into a vector representation, which is the input format that is expected by the embedding layer of the model\. Prompt\-tuning bypasses the model's text\-vectorization process and instead crafts a prompt vector directly\. This changeable prompt vector is concatenated to the vectorized input text and the two are passed as one input to the embedding layer of the model\. Values from this crafted prompt vector affect the word embedding weights that are set by the model and influence the words that the model chooses to add to the output\.
+
+To find the best values for the prompt vector, you run a tuning experiment\. You demonstrate the type of output that you want for a corresponding input by providing the model with input and output example pairs in training data\. With each training run of the experiment, the generated output is compared to the training data output\. Based on what it learns from differences between the two, the experiment adjusts the values in the prompt vector\. After many runs through the training data, the model finds the prompt vector that works best\.
+
+You can choose to start the training process by providing text that is vectorized by the experiment\. Or you can let the experiment use random values in the prompt vector\. Either way, unless the initial values are exactly right, they will be changed repeatedly as part of the training process\. Providing your own initialization text can help the experiment reach a good result more quickly\.
+
+The result of the experiment is a tuned version of the underlying model\. You submit input to the tuned model for inferencing and the model generates output that follows the tuned\-for pattern\.
+
+For more information about this tuning method, read the research paper named [The Power of Scale for Parameter\-Efficient Prompt Tuning](https://arxiv.org/abs/2104.08691)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Tuning parameters](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-parameters.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Tuning Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-studio.html)
+
+<!-- </article "role="article" "> -->

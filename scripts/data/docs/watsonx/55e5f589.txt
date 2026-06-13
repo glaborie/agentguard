@@ -1,0 +1,33 @@
+# transformnode properties #
+
+![Table node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/transformnodeicon.png)The Transform node allows you to select and visually preview the results of transformations before applying them to selected fields\.
+
+<!-- <table "summary="transformnode properties" id="transformnodeslots__table_jn4_vyy_ddb" class="defaultstyle" "> -->
+
+transformnode properties  
+
+Table 1\. transformnode properties
+
+| `transformnode` properties | Data type                            | Property description                                                                                 |
+| -------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `fields`                   | \[ *field1… fieldn*\]                | The fields to be used in the transformation\.                                                        |
+| `formula`                  | `All``Select`                        | Indicates whether all or selected transformations should be calculated\.                             |
+| `formula_inverse`          |  *flag*                              | Indicates if the inverse transformation should be used\.                                             |
+| `formula_inverse_offset`   |  *number*                            | Indicates a data offset to be used for the formula\. Set as 0 by default, unless specified by user\. |
+| `formula_log_n`            |  *flag*                              | Indicates if the log~n~ transformation should be used\.                                              |
+| `formula_log_n_offset`     |  *number*                            |                                                                                                      |
+| `formula_log_10`           |  *flag*                              | Indicates if the log~10~ transformation should be used\.                                             |
+| `formula_log_10_offset`    |  *number*                            |                                                                                                      |
+| `formula_exponential`      |  *flag*                              | Indicates if the exponential transformation (e^x^) should be used\.                                  |
+| `formula_square_root`      |  *flag*                              | Indicates if the square root transformation should be used\.                                         |
+| `use_output_name`          |  *flag*                              | Specifies whether a custom output name is used\.                                                     |
+| `output_name`              |  *string*                            | If `use_output_name` is true, specifies the name to use\.                                            |
+| `output_mode`              | `Screen``File`                       | Used to specify target location for output generated from the output node\.                          |
+| `output_format`            | `HTML` (\.*html*) `Output` (\.*cou*) | Used to specify the type of output\.                                                                 |
+| `paginate_output`          | *flag*                               | When the `output_format` is `HTML`, causes the output to be separated into pages\.                   |
+| `lines_per_page`           | *number*                             | When used with `paginate_output`, specifies the lines per page of output\.                           |
+| `full_filename`            |  *string*                            | Indicates the file name to be used for the file output\.                                             |
+
+<!-- </table "summary="transformnode properties" id="transformnodeslots__table_jn4_vyy_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,86 @@
+# IBM Planning Analytics connection #
+
+To access your data in Planning Analytics, create a connection asset for it\.
+
+Planning Analytics (formerly known as "TM1") is an enterprise performance management database that stores data in in\-memory multidimensional OLAP cubes\.
+
+## Supported versions ##
+
+IBM Planning Analytics, version 2\.0\.5 or later
+
+## Create a connection to Planning Analytics ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  TM1 server API root URL
+ *  Authentication type (Basic or CAM Credentials)
+ *  Username and password
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+For authentication setup information, see [Authenticating and managing sessions](https://www.ibm.com/docs/SSD29G_2.0.0/com.ibm.swg.ba.cognos.tm1_rest_api.2.0.0.doc/dg_tm1_odata_auth.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Planning Analytics connections in the following workspaces and tools:
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization experiments
+ *  Notebooks\. Click **Read data** on the **Code snippets** pane to get the connection credentials and load the data into a data structure\. See [Load data from data source connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/load-and-access-data.html#conns)\.
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Planning Analytics setup ##
+
+Enable TM1 REST APIs on the TM1 Server\. See TMI REST API [Installation and configuration](https://www.ibm.com/docs/SSD29G_2.0.0/com.ibm.swg.ba.cognos.tm1_rest_api.2.0.0.doc/dg_tm1_odata_install.html)\.
+
+## Cube dimension order ##
+
+**Versions earlier than TM1 11\.4**  
+For best performance, do not combine string and numeric data in a single cube\. However, if the cube does include both string and numeric data, the string elements must be in the last dimension when the cube is created\. Reordering dimensions later is ignored\.
+
+**Version TM1 11\.4 or later**  
+The default setting in Planning Analytics for cube creation is `current`\. This setting might cause errors or unexpected results when you use the Planning Analytics connection\. Instead, set the interaction property `use_creation_order` value to `true`\.
+
+## Restriction ##
+
+For Data Refinery, you can use this connection only as a source\. You cannot use this connection as a target connection or as a target connected data asset\.
+
+## Learn more ##
+
+[Planning Analytics product documentation](https://www.ibm.com/docs/planning-analytics/2.0.0)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

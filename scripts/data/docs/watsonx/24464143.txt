@@ -1,0 +1,13 @@
+# Historical data #
+
+This example uses the data file  pm\_customer\_train1\.csv, which contains historical data that tracks the offers made to specific customers in past campaigns, as indicated by the value of the `campaign` field\. The largest number of records fall under the `Premium account` campaign\.
+
+The values of the `campaign` field are actually coded as integers in the data (for example `2 = Premium account`)\. Later, you'll define labels for these values that you can use to give more meaningful output\.
+
+Figure 1\. Data about previous promotions
+
+![Data about previous promotions](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_autoflag_historical.png)
+
+The file also includes a `response` field that indicates whether the offer was accepted (`0 = no`, and `1 = yes`)\. This will be the target field, or value, that you want to predict\. A number of fields containing demographic and financial information about each customer are also included\. These can be used to build or "train" a model that predicts response rates for individuals or groups based on characteristics such as income, age, or number of transactions per month\.
+
+<!-- </article "role="article" "> -->

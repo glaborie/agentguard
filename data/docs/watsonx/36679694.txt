@@ -1,0 +1,228 @@
+# SPSS predictive analytics forecasting using data preparation for time series data in notebooks #
+
+Data preparation for time series data (TSDP) provides the functionality to convert raw time data (in Flattened multi\-dimensional format, which includes transactional (event) based and column\-based data) into regular time series data (in compact row\-based format) which is required by the subsequent time series analysis methods\.
+
+The main job of TSDP is to generate time series in terms of the combination of each unique value in the dimension fields with metric fields\. In addition, it sorts the data based on the timestamp, extracts metadata of time variables, transforms time series with another time granularity (interval) by applying an aggregation or distribution function, checks the data quality, and handles missing values if needed\.
+
+**Python example code:**
+
+    from spss.ml.forecasting.timeseriesdatapreparation import TimeSeriesDataPreparation
+    
+    tsdp = TimeSeriesDataPreparation(). \
+        setMetricFieldList(["Demand"]). \
+        setDateTimeField("Date"). \
+        setEncodeSeriesID(True). \
+        setInputTimeInterval("MONTH"). \
+        setOutTimeInterval("MONTH"). \
+        setQualityScoreThreshold(0.0). \
+        setConstSeriesThreshold(0.0)
+    
+    tsdpOut = tsdp.transform(data)
+
+## TimeSeriesDataPreparationConvertor ##
+
+This is the date/time convertor API that's used to provide some functionalities of the date/time convertor inside TSDP for applications to use\. There are two use cases for this component:
+
+<!-- <ul> -->
+
+ *  Compute the time points between a specified start and end time\. In this case, the start and end time both occur after the first observation in the previous TSDP\\'s output\.
+ *  Compute the time points between a start index and end index referring to the last observation in the previous TSDP\\'s output\.
+
+<!-- </ul> -->
+
+## Temporal causal modeling ##
+
+Temporal causal modeling (TCM) refers to a suite of methods that attempt to discover key temporal relationships in time series data by using a combination of Granger causality and regression algorithms for variable selection\.
+
+**Python example code:**
+
+    from spss.ml.forecasting.timeseriesdatapreparation import TimeSeriesDataPreparation
+    from spss.ml.common.wrapper import LocalContainerManager
+    from spss.ml.forecasting.temporalcausal import TemporalCausal
+    from spss.ml.forecasting.params.predictor import MaxLag, MaxNumberOfPredictor, Predictor
+    from spss.ml.forecasting.params.temporal import FieldNameList, FieldSettings, Forecast, Fit
+    from spss.ml.forecasting.reversetimeseriesdatapreparation import ReverseTimeSeriesDataPreparation
+    
+    tsdp = TimeSeriesDataPreparation().setDimFieldList(["Demension1", "Demension2"]). \
+        setMetricFieldList(["m1", "m2", "m3", "m4"]). \
+        setDateTimeField("date"). \
+        setEncodeSeriesID(True). \
+        setInputTimeInterval("MONTH"). \
+        setOutTimeInterval("MONTH")
+    tsdpOutput = tsdp.transform(changedDF)
+    
+    lcm = LocalContainerManager()
+    lcm.exportContainers("TSDP", tsdp.containers)
+    
+    estimator = TemporalCausal(lcm). \
+        setInputContainerKeys(["TSDP"]). \
+        setTargetPredictorList([Predictor(
+        targetList="", "", ""]],
+        predictorCandidateList="", "", ""]])]). \
+        setMaxNumPredictor(MaxNumberOfPredictor(False, 4)). \
+        setMaxLag(MaxLag("SETTING", 5)). \
+        setTolerance(1e-6)
+    
+    tcmModel = estimator.fit(tsdpOutput)
+    transformer = tcmModel.setDataEncoded(True). \
+        setCILevel(0.95). \
+        setOutTargetValues(False). \
+        setTargets(FieldSettings(fieldNameList=FieldNameList(seriesIDList=["da1", "db1", "m1"]]))). \
+        setReestimate(False). \
+        setForecast(Forecast(outForecast=True, forecastSpan=5, outCI=True)). \
+        setFit(Fit(outFit=True, outCI=True, outResidual=True))
+    
+    predictions = transformer.transform(tsdpOutput)
+    rtsdp = ReverseTimeSeriesDataPreparation(lcm). \
+        setInputContainerKeys(["TSDP"]). \
+        setDeriveFutureIndicatorField(True)
+    
+    rtsdpOutput = rtsdp.transform(predictions)
+    rtsdpOutput.show()
+
+## Temporal Causal Auto Regressive Model ##
+
+Autoregressive (AR) models are built to compute out\-of\-sample forecasts for predictor series that aren't target series\. These predictor forecasts are then used to compute out\-of\-sample forecasts for the target series\.
+
+**Model produced by TemporalCausal**
+
+TemporalCausal exports outputs:
+
+<!-- <ul> -->
+
+ *  a JSON file that contains TemporalCausal model information
+ *  an XML file that contains multi series model
+
+<!-- </ul> -->
+
+**Python example code:**
+
+    from spss.ml.common.wrapper import LocalContainerManager
+    from spss.ml.forecasting.temporalcausal import TemporalCausal, TemporalCausalAutoRegressiveModel
+    from spss.ml.forecasting.params.predictor import MaxLag, MaxNumberOfPredictor, Predictor
+    from spss.ml.forecasting.params.temporal import FieldNameList, FieldSettingsAr, ForecastAr
+    
+    lcm = LocalContainerManager()
+    arEstimator = TemporalCausal(lcm). \
+        setInputContainerKeys([tsdp.uid]). \
+        setTargetPredictorList([Predictor(
+            targetList = "da1", "db1", "m2"]],
+            predictorCandidateList = "da1", "db1", "m1"],
+                                      "da1", "db2", "m1"],
+                                      "da1", "db2", "m2"],
+                                      "da1", "db3", "m1"],
+                                      "da1", "db3", "m2"],
+                                      "da1", "db3", "m3"]])]). \
+        setMaxNumPredictor(MaxNumberOfPredictor(False, 5)). \
+        setMaxLag(MaxLag("SETTING", 5))
+    
+    arEstimator.fit(df)
+    
+    tcmAr = TemporalCausalAutoRegressiveModel(lcm).\
+        setInputContainerKeys([arEstimator.uid]).\
+        setDataEncoded(True).\
+        setOutTargetValues(True). \
+        setTargets(FieldSettingsAr(FieldNameList(
+            seriesIDList=["da1", "db1", "m1"],
+                          "da1", "db2", "m2"],
+                          "da1", "db3", "m3"]]))).\
+        setForecast(ForecastAr(forecastSpan = 5))
+    
+    scored = tcmAr.transform(df)
+    scored.show()
+
+## Temporal Causal Outlier Detection ##
+
+One of the advantages of building TCM models is the ability to detect model\-based outliers\. Outlier detection refers to a capability to identify the time points in the target series with values that stray too far from their expected (fitted) values based on the TCM models\.
+
+## Temporal Causal Root Cause Analysis ##
+
+The root cause analysis refers to a capability to explore the Granger causal graph in order to analyze the key/root values that resulted in the outlier in question\.
+
+## Temporal Causal Scenario Analysis ##
+
+Scenario analysis refers to a capability of the TCM models to "play\-out" the repercussions of artificially setting the value of a time series\. A scenario is the set of forecasts that are performed by substituting the values of a root time series by a vector of substitute values\.
+
+## Temporal Causal Summary ##
+
+TCM Summary selects Top N models based on one model quality measure\. There are five model quality measures: Root Mean Squared Error (RMSE), Root Mean Squared Percentage Error (RMSPE), Bayesian Information Criterion (BIC), Akaike Information Criterion (AIC), and R squared (RSQUARE)\. Both N and the model quality measure can be set by the user\.
+
+## Time Series Exploration ##
+
+Time Series Exploration explores the characteristics of time series data based on some statistics and tests to generate preliminary insights about the time series before modeling\. It covers not only analytic methods for expert users (including time series clustering, unit root test, and correlations), but also provides an automatic exploration process based on a simple time series decomposition method for business users\.
+
+**Python example code:**
+
+    from spss.ml.forecasting.timeseriesexploration import TimeSeriesExploration
+    
+    tse = TimeSeriesExploration(). \
+        setAutoExploration(True). \
+        setClustering(True)
+    
+    tseModel = tse.fit(data)
+    predictions = tseModel.transform(data)
+    predictions.show()
+
+## Reverse Data preparation for time series data ##
+
+Reverse Data preparation for time series data (RTSDP) provides functionality that converts the compact row based (CRB) format that's generated by TimeSeriesDataPreperation (TSDP) or TemporalCausalModel (TCM Score) back to the flattened multidimensional (FMD) format\.
+
+**Python example code:**
+
+    from spss.ml.common.wrapper import LocalContainerManager
+    from spss.ml.forecasting.params.temporal import GroupType
+    from spss.ml.forecasting.reversetimeseriesdatapreparation import ReverseTimeSeriesDataPreparation
+    from spss.ml.forecasting.timeseriesdatapreparation import TimeSeriesDataPreparation
+    
+    manager = LocalContainerManager()
+    tsdp = TimeSeriesDataPreparation(manager). \
+        setDimFieldList(["Dimension1", "Dimension2", "Dimension3"]). \
+        setMetricFieldList(
+        ["Metric1", "Metric2", "Metric3", "Metric4", "Metric5", "Metric6", "Metric7", "Metric8", "Metric9", "Metric10"]). \
+        setDateTimeField("TimeStamp"). \
+        setEncodeSeriesID(False). \
+        setInputTimeInterval("WEEK"). \
+        setOutTimeInterval("WEEK"). \
+        setMissingImputeType("LINEAR_INTERP"). \
+        setQualityScoreThreshold(0.0). \
+        setConstSeriesThreshold(0.0). \
+        setGroupType(
+        GroupType([("Metric1", "MEAN"), ("Metric2", "SUM"), ("Metric3", "MODE"), ("Metric4", "MIN"), ("Metric5", "MAX")]))
+    
+    tsdpOut = tsdp.transform(changedDF)
+    rtsdp = ReverseTimeSeriesDataPreparation(manager). \
+        setInputContainerKeys([tsdp.uid]). \
+        setDeriveFutureIndicatorField(True)
+    
+    rtdspOut = rtsdp.transform(tsdpOut)
+
+    import com.ibm.spss.ml.forecasting.traditional.TimeSeriesForecastingModelReEstimate
+    
+    val tsdp = TimeSeriesDataPreparation().
+       setDimFieldList(Array("da", "db")).
+       setMetricFieldList(Array("metric")).
+       setDateTimeField("date").
+       setEncodeSeriesID(false).
+       setInputTimeInterval("MONTH").
+       setOutTimeInterval("MONTH")
+    
+    val lcm = LocalContainerManager()
+    lcm.exportContainers("k", tsdp.containers)
+    
+    val reestimate = TimeSeriesForecastingModelReEstimate(lcm).
+      setForecast(ForecastEs(outForecast = true, forecastSpan = 4, outCI = true)).
+      setFitSettings(Fit(outFit = true, outCI = true, outResidual = true)).
+      setOutInputData(true).
+      setInputContainerKeys(Seq("k"))
+    
+    val rtsdp = ReverseTimeSeriesDataPreparation(tsdp.manager).
+      setInputContainerKeys(List(tsdp.uid)).
+      setDeriveFutureIndicatorField(true)
+    
+    val pipeline = new Pipeline().setStages(Array(tsdp, reestimate, rtsdp))
+    val scored = pipeline.fit(data).transform(data)
+    scored.show()
+
+**Parent topic:**[SPSS predictive analytics algorithms](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-algorithms.html)
+
+<!-- </article "role="article" "> -->

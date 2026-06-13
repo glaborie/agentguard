@@ -1,0 +1,133 @@
+# Saving an AutoAI generated notebook #
+
+To view the code that created a particular experiment, or interact with the experiment programmatically, you can save an experiment as a notebook\. You can also save an individual pipeline as a notebook so that you can review the code that is used in that pipeline\.
+
+## Working with AutoAI\-generated notebooks ##
+
+When you save an experiment or a pipeline as notebook, you can:
+
+<!-- <ul> -->
+
+ *  Access the saved notebooks from the *Notebooks* section on the *Assets* tab\.
+ *  Review the code to understand the transformations applied to build the model\. This increases confidence in the process and contributes to explainable AI practices\.
+ *  Enter your own authentication credentials by using the template provided\.
+ *  Use and run the code within Watson Studio, or download the notebook code to use in another notebook server\. No matter where you use the notebook, it automatically installs all required dependencies, including libraries for:
+    
+    <!-- <ul> -->
+    
+     *  `xgboost`
+     *  `lightgbm`
+     *  `scikit-learn`
+     *  `autoai-libs`
+     *  `ibm-watson-machine-learning`
+     *  `snapml`
+    
+    <!-- </ul> -->
+    
+ *  View the training data used to train the experiment and the test (holdout) data used to validate the experiment\.  
+    
+<!-- </ul> -->
+
+**Notes:**
+
+<!-- <ul> -->
+
+ *  Auto\-generated notebook code excutes successfully as written\. Modifying the code or changing the input data can adversely affect the code\. If you want to make a significant change, consider retraining the experiment by using AutoAI\.
+ *  For more information on the estimators, or algorithms, and transformers that are applied to your data to train an experiment and create pipelines, refer to [Implementation details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html)\.
+
+<!-- </ul> -->
+
+## Saving an experiment as a notebook ##
+
+Save all of the code for an experiment to view the transformations and optimizations applied to create the model pipelines\.
+
+### What is included with the experiment notebook ###
+
+The experiment notebook provides annotated code so you can:
+
+<!-- <ul> -->
+
+ *  Interact with trained model pipelines
+ *  Access model details programmatically (including feature importance and machine learning metrics)\.
+ *  Visualize each pipeline as a graph, with each node documented, to provide transparency
+ *  Compare pipelines
+ *  Download selected pipelines and test locally
+ *  Create a deployment and score the model
+ *  Get the experiment definition or configuration in Python API, which you can use for automation or integration with other applications\.
+
+<!-- </ul> -->
+
+### Saving the code for an experiment ###
+
+To save an entire experiment as a notebook:
+
+<!-- <ol> -->
+
+1.  After the experiment completes, click **Save code** from the Progress map panel\.
+2.  Name your notebook, add an optional description, choose a runtime environment, and save\.
+3.  Click the link in the notification to open the notebook and review the code\. You can also open the notebook from the *Notebooks* section of the *Assets* tab of your project\.
+
+<!-- </ol> -->
+
+## Saving an individual pipeline as a notebook ##
+
+Save an individual pipeline as a notebook so you can review the Scikit\-Learn source code for the trained model in a notebook\.  
+
+Note: Currently, you cannot generate a pipeline notebook for an experiment with joined data sources\.
+
+### What is included with the pipeline notebook ###
+
+The experiment notebook provides annotated code that you can use to complete these tasks:
+
+<!-- <ul> -->
+
+ *  View the Scikit\-learn pipeline definition
+ *  See the transformations applied for pipeline training
+ *  Review the pipeline evaluation
+
+<!-- </ul> -->
+
+### Saving a pipeline as a notebook ###
+
+To save a pipeline as a notebook:
+
+<!-- <ol> -->
+
+1.  Complete your AutoAI experiment\.
+2.  Select the pipeline that you want to save in the leaderboard, and click **Save** from the action menu for the pipeline, then **Save as notebook**\.
+3.  Name your notebook, add an optional description, choose a runtime environment, and save\.
+4.  Click the link in the notification to open the notebook and review the code\. You can also open the notebook from the *Notebooks* section of the *Assets* tab\.
+
+<!-- </ol> -->
+
+## Create sample notebooks ##
+
+To see for yourself what AutoAI\-generated notebooks look like:
+
+<!-- <ol> -->
+
+1.  Follow the steps in [AutoAI tutorial](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai_example_binary_classifier.html) to create a binary classification experiment from sample data\.
+2.  After the experiment runs, click **Save code** in the experiment details panel\.
+3.  Name and save the experiment notebook\.
+4.  To save a pipeline as a model, select a pipeline from the leaderboard, then click **Save** and **Save as notebook**\.
+5.  Name and save the pipeline notebook\.
+6.  From *Assets* tab, open the resulting notebooks in the notebook editor and review the code\.
+
+<!-- </ol> -->
+
+## Additional resources ##
+
+<!-- <ul> -->
+
+ *  For details on the methods used in the code, see [Using AutoAI libraris with Python](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-lib-python.html)\.
+ *  For more information on AutoAI notebooks, see this [blog post](https://lukasz-cmielowski.medium.com/watson-autoai-can-i-get-the-model-88a0fbae128a)\.
+
+<!-- </ul> -->
+
+## Next steps ##
+
+[Using autoai\-lib for Python](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-lib-python.html)
+
+**Parent topic:**[AutoAI overview](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html)
+
+<!-- </article "role="article" "> -->

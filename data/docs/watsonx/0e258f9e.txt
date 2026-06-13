@@ -1,0 +1,92 @@
+# Set up your system #
+
+Before you can use IBM Federated Learning, ensure that you have the required hardware, software, and dependencies\.
+
+## Core requirements by role ##
+
+Each entity that participates in a Federated Learning experiment must meet the requirements for their role\.
+
+### Admin software requirements ###
+
+Designate an admin for the Federated Learning experiment\. The admin must have:
+
+<!-- <ul> -->
+
+ *  Access to the platform with Watson Studio and Watson Machine Learning enabled\.  
+    You must [create a Watson Machine Learning service instance](https://cloud.ibm.com/catalog/services/machine-learning).
+ *  A [project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html) for assembling the global model\. You must [associate the Watson Machine Learning service instance with your project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assoc-services.html)\.
+
+<!-- </ul> -->
+
+### Party hardware and software requirements ###
+
+Each party must have a system that meets these minimum requirements\.
+
+Note: Remote parties participating in the same Federated Learning experiment can use different hardware specs and architectures, as long as they each meet the minimum requirement\.
+
+#### Supported architectures ####
+
+<!-- <ul> -->
+
+ *  x86 64\-bit
+ *  PPC
+ *  Mac M\-series
+ *  4 GB memory or greater
+
+<!-- </ul> -->
+
+#### Supported environments ####
+
+<!-- <ul> -->
+
+ *  Linux
+ *  Mac OS/Unix
+ *  Windows
+
+<!-- </ul> -->
+
+#### Software dependencies ####
+
+<!-- <ul> -->
+
+ *  A supported [Python version and a machine learning framework](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-frames.html)\.
+ *  The Watson Machine Learning Python client\.
+    
+    <!-- <ol> -->
+    
+    1.  If you are using Linux, run `pip install 'ibm-watson-machine-learning[fl-rt22.2-py3.10]'`.
+    2.  If you are using Mac OS with M-series CPU and Conda, download the installation script and then run `./install_fl_rt22.2_macos.sh <name for new conda environment>`.
+    
+    <!-- </ol> -->
+    
+<!-- </ul> -->
+
+## Network requirements ##
+
+An outbound connection from the remote party to aggregator is required\. Parties can use firewalls that restrict internal connections with each other\.
+
+## Data sources requirements ##
+
+Data must comply with these requirements\.
+
+<!-- <ul> -->
+
+ *  Data must be in a directory or storage repository that is accessible to the party that uses them\.
+ *  Each data source for a federate model must have the same features\. IBM Federated Learning supports horizontal federated learning only\.
+ *  Data must be in a readable format, but the formats can vary by data source\. Suggested formats include:
+    
+    <!-- <ul> -->
+    
+     *  Hive
+     *  Excel
+     *  CSV
+     *  XML
+     *  Database
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+**Parent topic:**[Creating a Federated Learning experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-start.html)
+
+<!-- </article "role="article" "> -->

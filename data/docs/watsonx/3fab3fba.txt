@@ -1,0 +1,17 @@
+# dataassetexport properties #
+
+![Data Asset Export node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/dataassetexportnode.png)You can use the Data Asset Export node to write to remove data sources using connections, write to a data file on your local computer, or write data to a project\.
+
+<!-- <table "summary="dataassetexport properties" class="defaultstyle" "> -->
+
+dataassetexport properties  
+
+Table 1\. dataassetexport properties
+
+| `dataassetexport` properties | Data type | Property description                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `user_settings`              | *string*  | Escaped JSON string containing the interaction properties for the connection\. Contact IBM for details about available interaction points\.<br><br>Example:<br><br>`user_settings: "{\"interactionProperties\":{\"write_mode\":\"write\",\"file_name\":\"output.csv\",\"file_format\":\"csv\",\"quote_numerics\":true,\"encoding\":\"utf-8\",\"first_line_header\":true,\"include_types\":false}}"`<br><br>Note that these values will change based on the type of connection you're using\. |
+
+<!-- </table "summary="dataassetexport properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

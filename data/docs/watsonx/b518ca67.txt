@@ -1,0 +1,22 @@
+# applytcmnode properties #
+
+You can use Temporal Causal Modeling (TCM) modeling nodes to generate a TCM model nugget\. The scripting name of this model nugget is *applytcmnode*\. For more information on scripting the modeling node itself, see [tcmnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/tcmnodeslots.html#tcmnodeslots)\.
+
+<!-- <table "summary="applytcmnode properties" class="defaultstyle" "> -->
+
+applytcmnode properties  
+
+Table 1\. applytcmnode properties
+
+| `applytcmnode` Properties | Values    | Property description |
+| ------------------------- | --------- | -------------------- |
+| `ext_future`              | *boolean* |                      |
+| `ext_future_num`          | *integer* |                      |
+| `noise_res`               | *boolean* |                      |
+| `conf_limits`             | *boolean* |                      |
+| `target_fields`           | *list*    |                      |
+| `target_series`           | *list*    |                      |
+
+<!-- </table "summary="applytcmnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

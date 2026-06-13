@@ -1,0 +1,16 @@
+# SVM node #
+
+The SVM node uses a support vector machine to classify data\. SVM is particularly suited for use with wide datasets, that is, those with a large number of predictor fields\. You can use the default settings on the node to produce a basic model relatively quickly, or you can use the Expert settings to experiment with different types of SVM models\.
+
+After the model is built, you can:
+
+<!-- <ul> -->
+
+ *  Browse the model nugget to display the relative importance of the input fields in building the model\.
+ *  Append a Table node to the model nugget to view the model output\.
+
+<!-- </ul> -->
+
+Example\. A medical researcher has obtained a dataset containing characteristics of a number of human cell samples extracted from patients who were believed to be at risk of developing cancer\. Analysis of the original data showed that many of the characteristics differed significantly between benign and malignant samples\. The researcher wants to develop an SVM model that can use the values of similar cell characteristics in samples from other patients to give an early indication of whether their samples might be benign or malignant\.
+
+<!-- </article "role="article" "> -->

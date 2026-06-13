@@ -1,0 +1,22 @@
+# applyapriorinode properties #
+
+You can use Apriori modeling nodes to generate an Apriori model nugget\. The scripting name of this model nugget is *applyapriorinode*\. For more information on scripting the modeling node itself, see [apriorinode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/apriorinodeslots.html#apriorinodeslots)\.
+
+<!-- <table "summary="applyapriorinode properties" id="apriorinuggetnodeslots__table_czw_jj3_cdb" class="defaultstyle" "> -->
+
+applyapriorinode properties  
+
+Table 1\. applyapriorinode properties
+
+| `applyapriorinode` Properties | Values                                                  | Property description                                                                                                                             |
+| ----------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `max_predictions`             | *number (integer)*                                      |                                                                                                                                                  |
+| `ignore_unmatached`           | *flag*                                                  |                                                                                                                                                  |
+| `allow_repeats`               | *flag*                                                  |                                                                                                                                                  |
+| `check_basket`                | `NoPredictions``Predictions``NoCheck`                   |                                                                                                                                                  |
+| `criterion`                   | `Confidence``Support``RuleSupport``Lift``Deployability` |                                                                                                                                                  |
+| `enable_sql_generation`       | `udf``native`                                           | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applyapriorinode properties" id="apriorinuggetnodeslots__table_czw_jj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

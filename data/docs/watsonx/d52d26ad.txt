@@ -1,0 +1,25 @@
+# Generating SQL from model nuggets #
+
+When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. For some nodes, SQL for the model nugget can be generated, pushing back the model scoring stage to the database\. This allows flows containing these nuggets to have their full SQL pushed back\.
+
+For a generated model nugget that supports SQL pushback:
+
+<!-- <ol> -->
+
+1.  Double\-click the model nugget to open its settings\.
+2.  Depending on the node type, one or more of the following options is available\. Choose one of these options to specify how SQL generation is performed\.
+    
+    Generate SQL for this model
+    
+    <!-- <ul> -->
+    
+     *  Default: Score using Server Scoring Adapter (if installed) otherwise in process. This is the default option. If connected to a database with a scoring adapter installed, this option generates SQL using the scoring adapter and associated user defined functions (UDF) and scores your model within the database. When no scoring adapter is available, this option fetches your data back from the database and scores it in  SPSS Modeler.
+     *  Score by converting to native SQL without Missing Value Support. This option generates native SQL to score the model within the database, without the overhead of handling missing values. This option simply sets the prediction to null (`$null$`) when a missing value is encountered while scoring a case.
+     *  Score by converting to native SQL with Missing Value Support. For CHAID, QUEST, and C&R Tree models, you can generate native SQL to score the model within the database with full missing value support. This means that SQL is generated so that missing values are handled as specified in the model. For example, C&R Trees use surrogate rules and biggest child fallback.
+     *  Score outside of the Database. This option fetches your data back from the database and scores it in  SPSS Modeler.
+    
+    <!-- </ul> -->
+    
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,68 @@
+# Language support for the product and the documentation #
+
+IBM watsonx is translated into multiple languages\.
+
+## Supported languages ##
+
+The IBM watsonx user interface is translated into these languages:
+
+<!-- <ul> -->
+
+ *  Brazilian Portuguese
+ *  Simplified Chinese
+ *  Traditional Chinese
+ *  French
+ *  German
+ *  Italian
+ *  Japanese
+ *  Korean
+ *  Spanish
+ *  Swedish
+
+<!-- </ul> -->
+
+The documentation is automatically translated into these languages:
+
+<!-- <ul> -->
+
+ *  Brazilian Portuguese
+ *  Simplified Chinese
+ *  French
+ *  German
+ *  Italian
+ *  Japanese
+ *  Korean
+ *  Spanish
+
+<!-- </ul> -->
+
+IBM is not responsible for any damages or losses resulting from the use of automatically (machine) translated content\.
+
+When the translated documentation is not as current as the English content, you see a message and have the option of switching to the English content\.
+
+## Changing languages ##
+
+To change the language for this documentation, scroll to the end of any documentation page, and select a language from the language selector\.
+
+![Screen capture of the language switcher](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lang-switcher.png)
+
+To change the language for both the product user interface and this documentation, select a different language for your browser:
+
+<!-- <ul> -->
+
+ *  In the Google Chrome browser, you can change the language in the advanced settings\.
+ *  In the Mozilla Firefox browser, you can change the language in the general settings\.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Browser support](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/browser-support.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[FAQ](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/faq.html)
+
+<!-- </article "role="article" "> -->

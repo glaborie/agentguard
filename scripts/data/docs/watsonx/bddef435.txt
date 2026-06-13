@@ -1,0 +1,25 @@
+# Kohonen node #
+
+Kohonen networks are a type of neural network that perform clustering, also known as a knet or a self\-organizing map\. This type of network can be used to cluster the dataset into distinct groups when you don't know what those groups are at the beginning\. Records are grouped so that records within a group or cluster tend to be similar to each other, and records in different groups are dissimilar\.
+
+The basic units are neurons, and they are organized into two layers: the input layer and the output layer (also called the output map)\. All of the input neurons are connected to all of the output neurons, and these connections have strengths, or weights, associated with them\. During training, each unit competes with all of the others to "win" each record\.
+
+The output map is a two\-dimensional grid of neurons, with no connections between the units\.
+
+Input data is presented to the input layer, and the values are propagated to the output layer\. The output neuron with the strongest response is said to be the winner and is the answer for that input\.
+
+Initially, all weights are random\. When a unit wins a record, its weights (along with those of other nearby units, collectively referred to as a neighborhood) are adjusted to better match the pattern of predictor values for that record\. All of the input records are shown, and weights are updated accordingly\. This process is repeated many times until the changes become very small\. As training proceeds, the weights on the grid units are adjusted so that they form a two\-dimensional "map" of the clusters (hence the term self\-organizing map)\.
+
+When the network is fully trained, records that are similar should be close together on the output map, whereas records that are vastly different will be far apart\.
+
+Unlike most learning methods in  watsonx\.ai, Kohonen networks do *not* use a target field\. This type of learning, with no target field, is called unsupervised learning\. Instead of trying to predict an outcome, Kohonen nets try to uncover patterns in the set of input fields\. Usually, a Kohonen net will end up with a few units that summarize many observations (strong units), and several units that don't really correspond to any of the observations (weak units)\. The strong units (and sometimes other units adjacent to them in the grid) represent probable cluster centers\.
+
+Another use of Kohonen networks is in dimension reduction\. The spatial characteristic of the two\-dimensional grid provides a mapping from the `k` original predictors to two derived features that preserve the similarity relationships in the original predictors\. In some cases, this can give you the same kind of benefit as factor analysis or PCA\.
+
+Note that the method for calculating default size of the output grid is different from older versions of  SPSS Modeler\. The method will generally produce smaller output layers that are faster to train and generalize better\. If you find that you get poor results with the default size, try increasing the size of the output grid on the Expert tab\.
+
+Requirements\. To train a Kohonen net, you need one or more fields with the role set to `Input`\. Fields with the role set to `Target`, `Both`, or `None` are ignored\.
+
+Strengths\. You do not need to have data on group membership to build a Kohonen network model\. You don't even need to know the number of groups to look for\. Kohonen networks start with a large number of units, and as training progresses, the units gravitate toward the natural clusters in the data\. You can look at the number of observations captured by each unit in the model nugget to identify the strong units, which can give you a sense of the appropriate number of clusters\.
+
+<!-- </article "role="article" "> -->

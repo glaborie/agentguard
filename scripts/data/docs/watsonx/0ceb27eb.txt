@@ -1,0 +1,23 @@
+# Object\-oriented programming #
+
+Object\-oriented programming is based on the notion of creating a model of the target problem in your programs\. Object\-oriented programming reduces programming errors and promotes the reuse of code\. Python is an object\-oriented language\. Objects defined in Python have the following features:
+
+<!-- <ul> -->
+
+ *  Identity\. Each object must be distinct, and this must be testable\. The `is` and `is not` tests exist for this purpose\.
+ *  State\. Each object must be able to store state\. Attributes, such as fields and instance variables, exist for this purpose\.
+ *  Behavior\. Each object must be able to manipulate its state\. Methods exist for this purpose\.
+
+<!-- </ul> -->
+
+Python includes the following features for supporting object\-oriented programming:
+
+<!-- <ul> -->
+
+ *  Class\-based object creation\. Classes are templates for the creation of objects\. Objects are data structures with associated behavior\.
+ *  Inheritance with polymorphism\. Python supports single and multiple inheritance\. All Python instance methods are polymorphic and can be overridden by subclasses\.
+ *  Encapsulation with data hiding\. Python allows attributes to be hidden\. When hidden, you can access attributes from outside the class only through methods of the class\. Classes implement methods to modify the data\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

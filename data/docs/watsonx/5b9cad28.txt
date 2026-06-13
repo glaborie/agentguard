@@ -1,0 +1,11 @@
+# K\-Means\-AS node #
+
+K\-Means is one of the most commonly used clustering algorithms\. It clusters data points into a predefined number of clusters\. The K\-Means\-AS node in  SPSS Modeler is implemented in Spark\.
+
+See [K\-Means Algorithms](https://spark.apache.org/docs/2.2.0/ml-clustering.html) for more details\.^1^
+
+Note that the K\-Means\-AS node performs one\-hot encoding automatically for categorical variables\.
+
+^1^ "Clustering\." *Apache Spark*\. MLlib: Main Guide\. Web\. 3 Oct 2017\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,42 @@
+# Creating advanced custom constraints with Python #
+
+This  Decision Optimization Modeling Assistant example shows you how to create advanced custom constraints that use Python\.
+
+## Procedure ##
+
+To create a new advanced custom constraint:
+
+<!-- <ol> -->
+
+1.  In the   Build model view of your open  Modeling Assistant model, look at the  Suggestions pane\. If you have  Display by category selected, expand the  Others section to locate  New custom constraint, and click it to add it to your model\. Alternatively, without categories displayed, you can enter, for example, custom in the search field to find the same suggestion and click it to add it to your model\.A new custom constraint is added to your model\.
+    
+    ![New custom constraint in model, with elements highlighted to be completed by user.](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/images/newcustomconstraint.jpg)
+2.  Click  Enter your constraint\. Use \[brackets\] for data, concepts, variables, or parameters  and enter the constraint you want to specify\. For example, type No \[employees\] has \[onCallDuties\] for more than \[2\] consecutive days and press enter\.The specification is displayed with default parameters (`parameter1, parameter2, parameter3`) for you to customize\. These parameters will be passed to the Python function that implements this custom rule\.
+    
+    ![Custom constraint expanded to show default parameters and function name.](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/images/customconstraintFillParameters.jpg)
+3.  Edit the default parameters in the specification to give them more meaningful names\. For example, change the parameters to `employees, on_call_duties`, and `limit` and click enter\.
+4.  Click function name and enter a name for the function\. For example, type limitConsecutiveAssignments and click enter\.Your function name is added and an  Edit Python button appears\.
+    
+    ![Custom rule showing customized parameters and Edit Python button.](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/images/customconstraintParameters.jpg)
+5.  Click the  Edit Python button\.A new window opens showing you Python code that you can edit to implement your custom rule\. You can see your customized parameters in the code as follows:
+    
+    ![Python code showing block to be customized](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/images/CustomRulePythoncode.jpg)
+    
+    Notice that the code is documented with corresponding data frames and table column names as you have defined in the custom rule. The limit is not documented as this is a numerical value.
+6.  Optional: You can edit the Python code directly in this window, but you might find it useful to edit and debug your code in a notebook before using it here\. In this case, close this window for now and in the  Scenario pane, expand the three vertical dots and select  Generate a notebook for this scenario that contains the custom rule\. Enter a name for this notebook\.The notebook is created in your project assets ready for you to edit and debug\. Once you have edited, run and debugged it you can copy the code for your custom function back into this  Edit Python window in the Modeling Assistant\.
+7.  Edit the Python code in the  Modeling Assistant custom rule  Edit Python window\. For example, you can define the rule for consecutive days in Python as follows:
+    
+        def limitConsecutiveAssignments(self, mdl, employees, on_call_duties, limit):
+                global helper_add_labeled_cplex_constraint, helper_get_index_names_for_type, helper_get_column_name_for_property
+                print('Adding constraints for the custom rule')
+                for employee, duties in employees.associated(on_call_duties):
+                    duties_day_idx = duties.join(Day)  # Retrieve Day index from Day label
+                    for d in Day['index']:
+                        end = d + limit + 1  # One must enforce that there are no occurence of (limit + 1) working consecutive days
+                        duties_in_win = duties_day_idx[((duties_day_idx'index'] >= d) & (duties_day_idx'index'] <= end)) | (duties_day_idx'index'] <= end - 7)]
+                        mdl.add_constraint(mdl.sum(duties_in_win.onCallDutyVar) <= limit)
+8.  Click the  Run button to run your model with your custom constraint\.When the run is completed you can see the results in the **Explore solution** view\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

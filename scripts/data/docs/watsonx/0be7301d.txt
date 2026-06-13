@@ -1,0 +1,21 @@
+# applyanomalydetectionnode properties #
+
+You can use Anomaly Detection modeling nodes to generate an Anomaly Detection model nugget\. The scripting name of this model nugget is *applyanomalydetectionnode*\. For more information on scripting the modeling node itself, see [anomalydetectionnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/anomalydetectionnodeslots.html#anomalydetectionnodeslots)\.
+
+<!-- <table "summary="applyanomalydetectionnode properties" id="anomalydetectionnuggetnodeslots__table_otk_dj3_cdb" class="defaultstyle" "> -->
+
+applyanomalydetectionnode properties  
+
+Table 1\. applyanomalydetectionnode properties
+
+| `applyanomalydetectionnode` Properties | Values                              | Property description                                                                                                                                                                                                                                                                           |
+| -------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `anomaly_score_method`                 | `FlagAndScore``FlagOnly``ScoreOnly` | Determines which outputs are created for scoring\.                                                                                                                                                                                                                                             |
+| `num_fields`                           | *integer*                           | Fields to report\.                                                                                                                                                                                                                                                                             |
+| `discard_records`                      | *flag*                              | Indicates whether records are discarded from the output or not\.                                                                                                                                                                                                                               |
+| `discard_anomalous_records`            | *flag*                              | Indicator of whether to discard the anomalous or *non*\-anomalous records\. The default is `off`, meaning that *non*\-anomalous records are discarded\. Otherwise, if `on`, anomalous records will be discarded\. This property is enabled only if the `discard_records` property is enabled\. |
+| `enable_sql_generation`                | `udf``native`                       | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\.                                                                                                                                               |
+
+<!-- </table "summary="applyanomalydetectionnode properties" id="anomalydetectionnuggetnodeslots__table_otk_dj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,26 @@
+# Terminology #
+
+Terminology that is used in IBM Federated Learning training processes\.
+
+## Terminology ##
+
+<!-- <table> -->
+
+Federated Learning terminology
+
+| Term                   | Definition                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Party                  | Users that contribute different sources of data to train a model collaboratively\. Federated Learning ensures that the training occurs with no data exposure risk across the different parties\.  <br>A party must have at least *Viewer* permission in the Watson Studio Federated Learning project\.                                                         |
+| Admin                  | A party member that configures the Federated Learning experiment to specify how many parties are allowed, which frameworks to use, and sets up the Remote Training Systems (RTS)\. They start the Federated Learning experiment and see it to the end\.  <br>An admin must have at least *Editor* permission in the Watson Studio Federated Learning project\. |
+| Remote Training System | An asset that is used to authenticate a party to the aggregator\. Project members register in the Remote Training System (RTS) before training\. Only one of the members can use one RTS to participate in an experiment as a party\. Multiple contributing parties must each authenticate with one RTS for an experiment\.                                    |
+| Aggregator             | The aggregator fuses the model results between the parties to build one model\.                                                                                                                                                                                                                                                                                |
+| Fusion method          | The algorithm that is used to combine the results that the parties return to the aggregator\.                                                                                                                                                                                                                                                                  |
+| Data handler           | In IBM Federated Learning, data handler is a class that is used to load and pre\-process data\. It also helps to ensure that data that is collected from multiple sources are formatted uniformly to be trained\. More details about the data handler can be found in [Data Handler](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-handler.html)\.                                                                       |
+| Global model           | The resulting model that is fused between different parties\.                                                                                                                                                                                                                                                                                                  |
+| Training round         | A training round is the process of local data training, global model fusion, and update\. Training is iterative\. The admin can choose the number of training rounds\.                                                                                                                                                                                         |
+
+<!-- </table ""> -->
+
+**Parent topic:**[Get started](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-get-started.html)
+
+<!-- </article "role="article" "> -->

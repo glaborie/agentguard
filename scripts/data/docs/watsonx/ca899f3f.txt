@@ -1,0 +1,27 @@
+# Deploying and managing assets #
+
+Use Watson Machine Learning to deploy models and solutions so that you can put them into productive use, then monitor the deployed assets for fairness and explainability\. You can also automate the AI lifecycle to keep your deployed assets current\.
+
+## Completing the AI lifecycle ##
+
+After you prepare your data and build then train models or solutions, you complete the AI lifecycle by deploying and monitoring your assets\.
+
+![Overview of model workflow](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ml-engineer-overview-wx.svg)
+
+Deployment is the final stage of the lifecycle of a model or script, where you run your models and code\. Watson Machine Learning provides the tools that you need to deploy an asset, such as a predictive model, Python function\. You can also deploy foundation model assets, such as prompt templates, to put them into production\.
+
+Following deployment, you can use model management tools to evaluate your models\. IBM Watson OpenScale tracks and measures outcomes from your AI models, and helps ensure they remain fair, explainable, and compliant\. Watson OpenScale also detects and helps correct the drift in accuracy when an AI model is in production\.
+
+Finally, you can use IBM Watson Pipelines to manage your ModelOps processes\. Create a pipeline that automates parts of the AI lifecycle, such as training and deploying a machine learning model\.
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  To learn more about how to manage assets in a deployment space, see [Manage assets in a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html)\.
+ *  To learn more about how to deploy assets from a deployment space, see [Deploy assets from a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)\.
+ *  To learn more how to deploy by using [Python client](https://ibm.github.io/watson-machine-learning-sdk/) or , see [Sample notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-samples-overview.html)\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,14 @@
+# TCM node #
+
+Use this node to create a temporal causal model (TCM)\.
+
+Temporal causal modeling attempts to discover key causal relationships in time series data\. In temporal causal modeling, you specify a set of target series and a set of candidate inputs to those targets\. The procedure then builds an autoregressive time series model for each target and includes only those inputs that have a causal relationship with the target\. This approach differs from traditional time series modeling where you must explicitly specify the predictors for a target series\. Since temporal causal modeling typically involves building models for multiple related time series, the result is referred to as a model system\.
+
+In the context of temporal causal modeling, the term causal refers to Granger causality\. A time series X is said to "Granger cause" another time series Y if regressing for Y in terms of past values of both X and Y results in a better model for Y than regressing only on past values of Y\.
+
+Note: To build a temporal causal model, you need enough data points\. The product uses the constraint:
+
+    m>(L + KL + 1)
+
+where `m` is the number of data points, `L` is the number of lags, and `K` is the number of predictors\. Make sure your data set is big enough so that the number of data points (`m`) satisfies the condition\.
+<!-- </article "role="article" "> -->

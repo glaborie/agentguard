@@ -1,0 +1,7 @@
+# CLEM examples #
+
+The example expressions in this section illustrate correct syntax and the types of expressions possible with CLEM\.
+
+Additional examples are discussed throughout this CLEM documentation\. See [CLEM (legacy) language reference](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/clem_reference/clem_language_reference.html#clem_language_reference) for more information\.
+
+<!-- </article "role="article" "> -->

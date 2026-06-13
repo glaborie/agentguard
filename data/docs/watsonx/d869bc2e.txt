@@ -1,0 +1,13 @@
+# Partition node #
+
+Partition nodes are used to generate a partition field that splits the data into separate subsets or samples for the training, testing, and validation stages of model building\. By using one sample to generate the model and a separate sample to test it, you can get a good indication of how well the model will generalize to larger datasets that are similar to the current data\.
+
+The Partition node generates a nominal field with the role set to  Partition\. Alternatively, if an appropriate field already exists in your data, it can be designated as a partition using a Type node\. In this case, no separate Partition node is required\. Any instantiated nominal field with two or three values can be used as a partition, but flag fields cannot be used\.
+
+Multiple partition fields can be defined in a flow, but if so, a single partition field must be selected in each modeling node that uses partitioning\. (If only one partition is present, it is automatically used whenever partitioning is enabled\.)
+
+To create a partition field based on some other criterion such as a date range or location, you can also use a Derive node\. See [Derive node](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/derive.html#derive) for more information\.
+
+Example\. When building an RFM flow to identify recent customers who have positively responded to previous marketing campaigns, the marketing department of a sales company uses a Partition node to split the data into training and test partitions\.
+
+<!-- </article "role="article" "> -->

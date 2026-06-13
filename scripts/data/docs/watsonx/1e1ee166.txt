@@ -1,0 +1,21 @@
+# isotonicasnode properties #
+
+![Isotonic\-AS node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/sparkisotonicasnodeicon.png)Isotonic Regression belongs to the family of regression algorithms\. The Isotonic\-AS node in SPSS Modeler is implemented in Spark\. For details about Isotonic Regression algorithms, see [https://spark\.apache\.org/docs/2\.2\.0/mllib\-isotonic\-regression\.html](https://spark.apache.org/docs/2.2.0/mllib-isotonic-regression.html)\.
+
+<!-- <table "summary="isotonicasnode properties" id="isotonicasnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+isotonicasnode properties  
+
+Table 1\. isotonicasnode properties
+
+| `isotonicasnode` properties | Data type | Property description                                                                                 |
+| --------------------------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| `label`                     | *string*  | This property is a dependent variable for which isotonic regression is calculated\.                  |
+| `features`                  | *string*  | This property is an independent variable\.                                                           |
+| `weightCol`                 | *string*  | The weight represents a number of measures\. Default is `1`\.                                        |
+| `isotonic`                  | *Boolean* | This property indicates whether the type is `isotonic` or `antitonic`\.                              |
+| `featureIndex`              | *integer* | This property is for the index of the feature if `featuresCol` is a vector column\. Default is `0`\. |
+
+<!-- </table "summary="isotonicasnode properties" id="isotonicasnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

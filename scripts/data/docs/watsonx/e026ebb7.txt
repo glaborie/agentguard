@@ -1,0 +1,31 @@
+# gmm properties #
+
+![Gaussian Mixture node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/pythongmmnodeicon.png)A Gaussian Mixture© model is a probabilistic model that assumes all the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters\. One can think of mixture models as generalizing k\-means clustering to incorporate information about the covariance structure of the data as well as the centers of the latent Gaussians\. The Gaussian Mixture node in SPSS Modeler exposes the core features and commonly used parameters of the Gaussian Mixture library\. The node is implemented in Python\.
+
+<!-- <table "summary="gmm properties" id="gmmnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+gmm properties  
+
+Table 1\. gmm properties
+
+| `gmm` properties     | Data type | Property description                                                                                                                                                                            |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `custom_fields`      | *boolean* | This option tells the node to use field information specified here instead of that given in any upstream Type node(s)\. After selecting this option, specify the following fields as required\. |
+| `inputs`             | *field*   | List of the field names for input\.                                                                                                                                                             |
+| `target`             | *field*   | One field name for target\.                                                                                                                                                                     |
+| `fast_build`         | *boolean* | Utilize multiple CPU cores to improve model building\.                                                                                                                                          |
+| `use_partition`      | *boolean* | Set to `True` or `False` to specify whether to use partitioned data\. Default is `False`\.                                                                                                      |
+| `covariance_type`    | *string*  | Specify `Full`, `Tied`, `Diag`, or `Spherical` to set the covariance type\.                                                                                                                     |
+| `number_component`   | *integer* | Specify an integer for the number of mixture components\. Minimum value is `1`\. Default value is `2`\.                                                                                         |
+| `component_lable`    | *boolean* | Specify `True` to set the cluster label to a string or `False` to set the cluster label to a number\. Default is `False`\.                                                                      |
+| `label_prefix`       | *string*  | If using a string cluster label, you can specify a prefix\.                                                                                                                                     |
+| `enable_random_seed` | *boolean* | Specify `True` if you want to use a random seed\. Default is `False`\.                                                                                                                          |
+| `random_seed`        | *integer* | If using a random seed, specify an integer to be used for generating random samples\.                                                                                                           |
+| `tol`                | *Double*  | Specify the convergence threshold\. Default is `0.000.1`\.                                                                                                                                      |
+| `max_iter`           | *integer* | Specify the maximum number of iterations to perform\. Default is `100`\.                                                                                                                        |
+| `init_params`        | *string*  | Set the initialization parameter to use\. Options are `Kmeans` or `Random`\.                                                                                                                    |
+| `warm_start`         | *boolean* | Specify `True` to use the solution of the last fitting as the initialization for the next call of fit\. Default is `False`\.                                                                    |
+
+<!-- </table "summary="gmm properties" id="gmmnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

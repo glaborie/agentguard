@@ -1,0 +1,177 @@
+# Quick start: Automate the lifecycle for a model with pipelines #
+
+You can create an end\-to\-end pipeline to deliver concise, pre\-processed, and up\-to\-date data stored in an external data source\. Read about Watson Pipelines, then watch a video and take a tutorial\.
+
+**Required services** : Watson Studio : Watson Machine Learning
+
+Your basic workflow includes these tasks:
+
+<!-- <ol> -->
+
+1.  Open your sandbox project\. Projects are where you can collaborate with others to work with data\.
+2.  Add connections and data to the project\. You can add CSV files or data from a remote data source through a connection\.
+3.  Create a pipeline in the project\.
+4.  Add nodes to the pipeline to perform tasks\.
+5.  Run the pipeline and view the results\.
+
+<!-- </ol> -->
+
+## Read about pipelines ##
+
+The Watson Pipelines editor provides a graphical interface for orchestrating an end\-to\-end flow of assets from creation through deployment\. Assemble and configure a pipeline to create, train, deploy, and update machine learning models and Python scripts\. Putting a model into production is a multi\-step process\. Data must be loaded and processed, models must be trained and tuned before they are deployed and tested\. Machine learning models require more observation, evaluation, and updating over time to avoid bias or drift\.
+
+[Read more about pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-overview.html)
+
+[Learn about other ways to build models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-science.html)
+
+## Watch a video about pipelines ##
+
+![Watch Video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) Watch this video to preview the steps in this tutorial\. You might notice slight differences in the user interface that is shown in the video\. The video is intended to be a companion to the written tutorial\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Try a tutorial to create a model with Pipelines ##
+
+This tutorial guides you through exploring and running an AI pipeline to build and deploy a model\. The model predicts if a customer is likely subscribe to a term deposit based on a marketing campaign\.
+
+In this tutorial, you will complete these tasks:
+
+<!-- <ul> -->
+
+ *  [Task 1: Open a project\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step01)
+ *  [Task 2: Create a deployment space\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step02)
+ *  [Task 3: Create the sample pipeline\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step03)
+ *  [Task 4: Explore an existing pipeline\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step04)
+ *  [Task 5: Run the pipeline\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step05)
+ *  [Task 6: View the assets, deployed model, and online deployment\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step06)
+
+<!-- </ul> -->
+
+This tutorial takes approximately 30 minutes to complete\.
+
+### Sample data ###
+
+The sample data that is used in the guided experience is UCI: Bank marketing data used to predict whether a customer enrolls in a marketing promotion\.
+
+![Spreadsheet of the Bank marketing data set](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_bank_sample_description.png)
+
+Expand all sections
+
+<!-- <ul> -->
+
+ *  Tips for completing this tutorial
+    
+    \#\#\# Use the video picture-in-picture Tip: Start the video, then as you scroll through the tutorial, the video moves to picture-in-picture mode. Close the video table of contents for the best experience with picture-in-picture. You can use picture-in-picture mode so you can follow the video as you complete the tasks in this tutorial. Click the timestamps for each task to follow along.The following animated image shows how to use the video picture-in-picture and table of contents features: ![How to use picture-in-picture and chapters](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/pip-and-chapters.gif)\{: width="560px" height="315px" data-tearsheet="this"\} \#\#\# Get help in the community If you need help with this tutorial, you can ask a question or find an answer in the [Cloud Pak for Data Community discussion forum](https://community.ibm.com/community/user/cloudpakfordata/communities/community-home/digestviewer?communitykey=c0c16ff2-10ef-4b50-ae4c-57d769937235)\{: new\_window\}. \#\#\# Set up your browser windows For the optimal experience completing this tutorial, open Cloud Pak for Data in one browser window, and keep this tutorial page open in another browser window to switch easily between the two applications. Consider arranging the two browser windows side-by-side to make it easier to follow along. ![Side-by-side tutorial and UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/tutorial-side-by-side.png)\{: width="560px" height="315px" data-tearsheet="this"\} Tip: If you encounter a guided tour while completing this tutorial in the user interface, click **Maybe later**.  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 1: Open a project
+    
+    You need a project to store Prompt Lab assets. Watch a video to see how to create a sandbox project and associate a service. Then follow the steps to verify that you have an existing project or create a sandbox project.
+    
+    This video provides a visual method to learn the concepts and tasks in this documentation.
+    
+    1. From the watsonx home screen, scroll to the *Projects* section. If you see any projects listed, then skip to [Task 2](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step02). If you don't see any projects, then follow these steps to create a project. 1. Click **Create a sandbox project**. When the project is created, you will see the sandbox project in the *Projects* section. For more information or to watch a video, see [Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)\{: new\_window\}. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the home screen with the sandbox listed in the Projects section. You are now ready to open the Prompt Lab.  
+      
+    ![Home screen with sandbox project listed.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-home-screen.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 2: Create a deployment space
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:16. Deployment spaces help you to organize supporting resources such as input data and environments; deploy models or functions to generate predictions or solutions; and view or edit deployment details. Follow these steps to create a deployment space. 1. From the watsonx navigation menu ![Navigation menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/navigation-menu.svg)\{: iih\}, choose **Deployments**. If you have an existing deployment space, you can skip to [Task 2](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step02). 1. Click **New deployment space**. 1. Type a name for your deployment space. 1. Select a storage service from the list. 1. Select your provisioned machine learning service from the list. 1. Click **Create**. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the empty deployment space:  
+      
+    ![The following image shows the empty deployment space.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-pipeline-deployment-space.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 3: Create the sample pipeline
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:08. You create and run pipelines in a project. Follow these steps to create a pipeline based on a sample in a project: 1. On the watsonx home page, select your sandbox or a different existing project from the drop down list. ![Project list drop down](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-project-dropdown.png)\{: biw\} 1. Click **Customize my journey**, and then select **View all tasks**. 1. Select **Automate model lifecycle**. 1. Click **Samples**. 1. Select **Orchestrate an AutoAI experiment**, and click **Next**. 1. Optional: Change the name for the pipeline. 1. Click **Create**. The sample pipeline gets training data, trains a machine learning model by using the AutoAI tool, and selects the best pipeline to save as a model. The model is deployed to a space. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the sample pipeline.  
+      
+    ![The following image shows the sample pipeline.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-pipeline-start.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 4: Explore the existing pipeline
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:30. The sample pipeline includes several nodes to create assets and use those assets to build a model. Follow these steps to view the nodes: 1. Click the **Global objects**![Global objects icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/settings-adjust.svg)\{: iih\} icon to view the pipeline parameters. Expand the **deployment\_space** parameter. This pipeline includes a parameter to specify a deployment space where the best model from the AutoAI experiment is stored and deployed. Click the **X** to close the window. 1. Double-click the **Create data file** node to see that it is configured to access the data set for the experiment. Click **Cancel** to close the properties pane. 1. Double-click the **Create AutoAI experiment** node. View the experiment name, the scope, which is where the experiment is stored, the prediction type (binary classification, multiclass classification, or regression), the prediction column, and positive class. The rest of the parameters are all optional. Click **Cancel** to close the properties pane. 1. Double-click the **Run AutoAI experiment** node. This node runs the AutoAI experiment onboarding-bank-marketing-prediction, trains the pipelines, then saves the best model. The first two parameters are required. The first parameter takes the output from the *Create AutoAI experiment* node as the input to run the experiment. The second parameter takes the output from the *Create data file* node as the training data input for the experiment. The rest of the parameters are all optional. Click **Cancel** to close the properties pane. 1. Double-click the **Create Web service** node. This node creates a deployment with the name `onboarding-bank-marketing-prediction-deployment`. The first parameter takes the best model output from the Run AutoAI experiment node as the input to create the deployment with the specified name. The rest of the parameters are all optional. Click **Cancel** to close the properties pane. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the properties for the Create web service node. You are now ready to run the sample pipeline.  
+      
+    ![The following image the properties for the Create web service node.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-pipeline-properties.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 5: Run the pipeline
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 03:43. Now that the pipeline is complete, follow these steps to run the pipeline: 1. From the toolbar, click **Run pipeline > Trial run**. 1. In the *Values for pipeline parameters* section, select your deployment space: 1. Click **Select Space**. 1. Click **Spaces**. 1. Select your deployment space from [Task 1](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#step01). 1. Click **Choose**. 1. Provide an API key if this occasion is your first time running a pipeline. Pipeline assets use your personal IBM Cloud API key to run operations securely without disruption. - If you have an existing API key, click **Use existing API key**, paste the API key, and click **Save**. - If you don't have an existing API key, click **Generate new API key**, provide a name, and click **Save**. Copy the API key, and then save the API key for future use. When you're done, click **Close**. 1. Click **Run** to start running the pipeline. 1. Monitor the pipeline progress. 1. Scroll through consolidated logs while the pipeline is running. The trial run might take up to 10 minutes to complete. 1. As each operation completes, select the node for that operation on the canvas. 1. On the **Node Inspector** tab, view the details of the operation. 1. Click the **Node output** tab to see a summary of the output for each node operation. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the pipeline after it completed the trial run. You are now ready to review the assets that the pipeline created.  
+      
+    ![Completed run of pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-pipeline-completed-run.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 6: View the assets, deployed model, and online deployment
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 04:27. The pipeline created several assets in the deployment space. Follow these steps to view the assets: 1. From the watsonx navigation menu ![Navigation menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/navigation-menu.svg)\{: iih\}, choose **Deployments**. 1. Click the name for your deployment space. 1. On the *Assets* tab, view **All assets**. 1. Click the **bank-marketing-data.csv** data asset. The *Create data file* node created this asset. 1. Click the model beginning with the name **onboarding-bank-marketing-prediction**. The *Run AutoAI experiment* node generated several model candidates, and chose this as the best model. 1. Click the **Model details** tab, and scroll through the model and training information. 1. Click the **Deployments** tab, and open the **onboarding-bank-marketing-prediction-deployment**. 1. Click the **Test** tab. 1. Click the **JSON input** tab. 1. Replace the sample text with the following JSON text, and click **Predict**.`JSON { "input_data": [ { "fields":  "age", "job", "marital", "education", "default", "balance", "housing", "loan", "contact", "day", "month", "duration", "campaign", "pdays", "previous", "poutcome" ], "values":   35, "management", "married", "tertiary", "no", 0, "yes", "no", "cellular", 1, "jun", 850, 10, -1, 4, "unknown" ] ] } ] }`\#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the results of the test; the prediction is to approve the applicant. The confidence scores for your test might be different from the scores that are shown in the image.  
+      
+    ![Test results predictions](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-pipeline-results.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Try these other methods to build models:
+    
+    <!-- <ul> -->
+    
+     *  [Build and deploy a model with AutoAI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html)
+     *  [Build and deploy a model in a Jupyter notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build-notebook.html)
+     *  [Build and deploy a model with SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build-spss.html)
+     *  [Build and deploy a Decision Optimization model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html)
+    
+    <!-- </ul> -->
+    
+ *  View more [videos](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html)\.
+ *  Find sample data sets, projects, models, prompts, and notebooks in the Samples to gain hands\-on experience:
+    
+    ![Notebook icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook.svg)[Notebooks](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=notebook) that you can add to your project to get started analyzing data and building models.
+    
+    ![Project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/ibm-cloud--projects.svg)[Projects](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=project-template) that you can import containing notebooks, data sets, prompts, and other assets.
+    
+    ![Data set icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/data--set.svg)[Data sets](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=dataset) that you can add to your project to refine, analyze, and build models.
+    
+    ![Prompt icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/prompt.svg)[Prompts](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=example-prompt) that you can use in the Prompt Lab to prompt a foundation model.
+    
+    ![Model icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/model.svg)[Foundation models](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=foundation-model) that you can use in the Prompt Lab.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-overview.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Quick start tutorials](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html)
+
+<!-- </article "role="article" "> -->

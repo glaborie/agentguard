@@ -1,0 +1,10 @@
+# The Resource editor tab #
+
+Text Analytics rapidly and accurately captures key concepts from text data by using an extraction process\. This process relies on linguistic resources to dictate how large amounts of unstructured, textual data should be analyzed and interpreted\.
+
+You can use the  Resource editor tab to view the linguistic resources used in the extraction process\. These resources are stored in the form of templates and libraries, which are used to extract concepts, group them under types, discover patterns in the text data, and other processes\. Text Analytics offers several preconfigured resource templates, and in some languages, you can also use the resources in text analysis packages\.
+
+Figure 1\. Resource editor tab
+
+![Resource editor tab in the Text Analytics Workbench](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tmwb_resourceeditor.png)
+<!-- </article "role="article" "> -->

@@ -1,0 +1,44 @@
+# Monitoring the experiment and saving the model #
+
+Any party or admin with collaborator access to the experiment can monitor the experiment and save a copy of the model\.
+
+As the experiment runs, you can check the progress of the experiment\. After the training is complete, you can view your results, save and deploy the model, and then test the model with new data\.
+
+## Monitoring the experiment ##
+
+When all parties run the party connector script, the experiment starts training automatically\. As the training runs, you can view a dynamic diagram of the training progress\. For each round of training, you can view the four stages of a training round:
+
+<!-- <ul> -->
+
+ *  **Sending model**: Federated Learning sends the model metrics to each party\.
+ *  **Training**: The process of training the data locally\. Each party trains to produce a local model that is fused\. No data is exchanged between parties\.
+ *  **Receiving models**: After training is complete, each party sends its local model to the aggregator\. The data is not sent and remains private\.
+ *  **Aggregating**: The aggregator combines the models that are sent by each of the remote parties to create an aggregated model\.
+
+<!-- </ul> -->
+
+## Saving your model ##
+
+When the training is complete, a chart that displays the model accuracy over each round of training is drawn\. Hover over the points on the chart for more information on a single point's exact metrics\.
+
+A **Training rounds** table shows details for each training round\. The table displays the participating parties' average accuracy of their model training for each round\.
+
+![Screenshot of View Setup Information](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl-display.png)
+
+When you are done with the viewing, click **Save model to project** to save the Federated Learning model to your project\.
+
+### Rerun the experiment ###
+
+You can rerun the experiment as many times as you need in your project\.
+
+Note:If you encounter errors when rerunning an experiment, see [Troubleshoot](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-troubleshoot.html) for more details\.
+
+### Deploying your model ###
+
+After you save your Federated Learning model, you can deploy and score the model like other machine learning models in a Watson Studio platform\.
+
+See [Deploying models](https://dataplatform.cloud.ibm.com/docs/content/wsj/wmls/wmls-deploy-overview.html) for more details\.
+
+**Parent topic:**[Creating a Federated Learning experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-start.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,119 @@
+# Governing external models #
+
+Enable governance for models that are created in notebooks or outside of Cloud Pak for Data\. Track the results of model evaluations and model details in factsheets\.
+
+In addition to governing models trained by using Watson Machine Learning, you can govern models that are created by using third\-party tools such as Amazon Web Services or Microsoft Azure\. For a list of supported providers, see [Supported machine learning providers](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-frameworks-ovr.html)\. Additionally, models that are developed in notebooks are considered external models, so you can use AI Factsheets to govern models that you develop, deploy, and monitor on platforms other than Cloud Pak for Data\.
+
+Use the model evaluations provided with watsonx\.governance to measure performance metrics for a model you imported from an external provider\. Capture the facts in factsheets for the model and the evaluation metrics as part of an AI use case\. Use the tracked data as part of your governance and compliance strategy\.
+
+## Before you begin ##
+
+Before you can begin, make sure that you, or a user with an Admin role, does the following:
+
+<!-- <ul> -->
+
+ *  Enable the tracking of external models in an inventory\.
+ *  Assign an owner for the inventory\.
+
+<!-- </ul> -->
+
+For details, see [Managing inventories](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-inventory-manage.html)\.
+
+## Preparing to track external models ##
+
+These points are an overview of the process for preserving facts for an external model\.
+
+<!-- <ul> -->
+
+ *  Tracked external models are listed under **AI use cases** in the main navigation menu\.
+ *  You can use the API in a model notebook to save an external model asset to an inventory\.
+ *  Associate the external model asset with an AI use case in the inventory to start preserving the facts\. Along with model metadata, new fields `External model identifier` and `External deployment identifier` describe how the models and deployments are identified in external systems, for example: AWS or Azure\.
+ *  You can also automatically add external models to an inventory when they are evaluated in watsonx\.governance\. The destination inventory is established following these rules:
+    
+    <!-- <ul> -->
+    
+     *  The external model is created in the Platform assets catalog if its corresponding development-time model exists in the Platform assets catalog or if there is no development-time model that is created in any inventory.
+     *  If the corresponding development-time model is created in an inventory by using the Python client, then the model is created in that inventory.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+## Associating an external model asset with an AI use case ##
+
+Automatic external model tracking adds any external models that are evaluated in watsonx\.governance to the inventory where the development\-time model exists\. After the model is in the inventory, you can associate an external model asset with a use case in the following ways:
+
+<!-- <ul> -->
+
+ *  Use the API to save the external model asset to any inventory programmatically from a notebook\. The external model asset can then be associated with an AI use case\.
+ *  Associate the external model that is created with Watson OpenScale evaluation with an AI use case\.
+
+<!-- </ul> -->
+
+### Creating an external model asset with the API ###
+
+<!-- <ol> -->
+
+1.  Create a model in a notebook\.
+2.  Save the model\. For example, you can save to an S3 bucket\.
+3.  Use the API to create an external model asset (a representation of the external model) in an inventory\. For more information on API commands that interact with the inventory, see the [IBM\_AIGOV\_FACTS\_CLIENT documentation](https://s3.us.cloud-object-storage.appdomain.cloud/factsheets-client/index.html#externalmodelfactselements)\.
+
+<!-- </ol> -->
+
+### Registering an external model asset with an inventory ###
+
+<!-- <ol> -->
+
+1.  Open the **Assets** tab in the inventory where you want to track the model\.
+2.  Select the External model asset that you want to track\.
+3.  Return to the **Assets** tab in the Inventory and click **Add to AI use case**\.
+4.  Select an existing AI use case or create a new one\.
+5.  Follow the prompts to save the details to the inventory\.
+
+<!-- </ol> -->
+
+### Registering an external model from Watson OpenScale ###
+
+If you are validating an external model in Watson OpenScale, you can associate an external model with an AI use case to track the lifecycle facts\.
+
+<!-- <ol> -->
+
+1.  Add an external model to the OpenScale dashboard\.
+2.  If you already defined an AI use case with the API, the system recognizes the use case association\.
+3.  As you create and monitor a deployment, the facts are registered with the associated use case\. These facts display in the Validate or Operate stage, depending on how you classified the machine learning provider for the model\.
+
+<!-- </ol> -->
+
+## Populating the AI use case ##
+
+When facts are saved for an external model asset, they are associated with the pillar that represents their phase in the lifecycle, as follows:
+
+<!-- <ul> -->
+
+ *  If the external model asset is created from a notebook without deployment, it displays in the Develop pillar\.
+ *  If the external model asset is created from a notebook with deployment, it displays in the Test pillar\.
+ *  When the external model deployment is evaluated in OpenScale, it displays in the Validate or Operate stage, depending on how you classified the machine learning provider for the model\.
+
+<!-- </ul> -->
+
+## Example: tracking a Sagemaker model ##
+
+This sample model, created in Sagemaker, is registered for tracking and moves through the Test, Validate, and Operate phases\.
+
+![Sample external model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/factsheet-external1.png)
+
+## Viewing facts for an external model ##
+
+Viewing facts for an external model is slightly different from viewing facts for a Watson Machine Learning model\. These rules apply:
+
+<!-- <ul> -->
+
+ *  Click the **Assets** tab of the inventory containing the external model assets to view facts\.
+ *  Unlike Watson Machine Learning model use cases, which have different fact sheets for models and deployments, fact sheets for external models combine information for the model and deployments on the same page\.
+ *  Multiple assets with the same name can be created in an inventory\. To differentiate them the tags *development*, *pre\-production* and *production* are assigned automatically to reflect their state\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Governing assets in AI use cases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-use-cases.html)
+
+<!-- </article "role="article" "> -->

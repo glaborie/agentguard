@@ -1,0 +1,37 @@
+# Compute resource options for Tuning Studio experiments in projects #
+
+A Tuning Studio experiment has a single hardware configuration\.
+
+The following table shows the hardware configuration that is used when tuning foundation models in a tuning experiment\.
+
+<!-- <table> -->
+
+Hardware configuration available in projects for Tuning Studio
+
+| Capacity type | Capacity units per hour |
+| ------------- | ----------------------- |
+
+<!-- </table ""> -->
+
+NVIDIA A100 80GB GPU\|43\|
+
+## Compute usage in projects ##
+
+Tuning Studio consumes compute resources as CUH from the Watson Machine Learning service\.
+
+You can monitor the total monthly amount of CUH consumption for the Watson Machine Learning service on the **Resource usage** page on the **Manage** tab of your project\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Tuning Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-studio.html)
+ *  [Watson Machine Learning plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html)
+ *  [Compute resource options for assets and deployments in spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-cuh-deploy-spaces.html)
+ *  [Monitoring account resource usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Choosing compute resources for tools](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/environments-parent.html)
+
+<!-- </article "role="article" "> -->

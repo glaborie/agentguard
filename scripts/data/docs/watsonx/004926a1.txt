@@ -1,0 +1,22 @@
+# Creating a scatterplot #
+
+Now let's take a look at what factors might influence `Drug`, the target variable\. As a researcher, you know that the concentrations of sodium and potassium in the blood are important factors\. Since these are both numeric values, you can create a scatterplot of sodium versus potassium, using the drug categories as a color overlay\.
+
+Figure 1\. Plot node
+
+![Plot node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_scatterplot_flow.png)
+
+<!-- <ol> -->
+
+1.  Place a Plot node on the canvas and connect it to the  drug1n\.csv Data Asset node\. Then double\-click the Plot node to edit its properties\.
+2.  Select `Na` as the X field, `K` as the Y field, and `Drug` as the Color (overlay) field\. Click  Save, then right\-click the Plot node and select  Run\. A plot chart is added to the Outputs pane\.
+    
+    The plot clearly shows a threshold above which the correct drug is always drug `Y` and below which the correct drug is never drug `Y`. This threshold is a ratio -- the ratio of sodium (`Na`) to potassium (`K`).
+    
+    Figure 2. Scatterplot of drug distribution
+    
+    ![Scatterplot of drug distribution](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_scatterplot.png)
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,27 @@
+# Drug treatment \- exploratory graphs #
+
+In this example, imagine you're a medical researcher compiling data for a study\. You've collected data about a set of patients, all of whom suffered from the same illness\. During their course of treatment, each patient responded to one of five medications\. Part of your job is to use data mining to find out which drug might be appropriate for a future patient with the same illness\.
+
+This example uses the flow named  Drug Treatment \- Exploratory Graphs, available in the example project \. The data file is  drug1n\.csv\.
+
+Figure 1\. Drug treatment example flow
+
+![Drug treatment example flow](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_data.png)
+
+The data fields used in this example are:
+
+<!-- <table "summary="" class="defaultstyle" "> -->
+
+| Data field    | Description                                    |
+| ------------- | ---------------------------------------------- |
+| `Age`         | Age of patient (number)                        |
+| `Sex`         | `M` or `F`                                     |
+| `BP`          | Blood pressure: `HIGH`, `NORMAL`, or `LOW`     |
+| `Cholesterol` | Blood cholesterol: `NORMAL` or `HIGH`          |
+| `Na`          | Blood sodium concentration                     |
+| `K`           | Blood potassium concentration                  |
+| `Drug`        | Prescription drug to which a patient responded |
+
+<!-- </table "summary="" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

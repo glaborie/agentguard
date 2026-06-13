@@ -1,0 +1,92 @@
+# Microsoft SQL Server connection #
+
+You can create a connection asset for Microsoft SQL Server\.
+
+Microsoft SQL Server is a relational database management system\.
+
+## Supported versions ##
+
+<!-- <ul> -->
+
+ *  Microsoft SQL Server 2000\+
+ *  Microsoft SQL Server 2000 Desktop Engine (MSDE 2000)
+ *  Microsoft SQL Server 7\.0
+
+<!-- </ul> -->
+
+## Create a connection to Microsoft SQL Server ##
+
+To create the connection asset, you need the following connection details:
+
+<!-- <ul> -->
+
+ *  Database name
+ *  Hostname or IP address
+ *  Either the Port number or the Instance name\. If the server is configured for dynamic ports, use the Instance name\.
+ *  Username and password
+ *  Select **Use Active Directory** if the Microsoft SQL Server has been set up in a domain that uses NTLM (New Technology LAN Manager) authentication\. Then enter the name of the domain that is associated with the username and password
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Microsoft SQL Server connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization
+ *  Notebooks\. Click **Read data** on the **Code snippets** pane to get the connection credentials and load the data into a data structure\. See [Load data from data source connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/load-and-access-data.html#conns)\.
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Microsoft SQL Server setup ##
+
+[Microsoft SQL Server installation](https://docs.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server?view=sql-server-ver15)
+
+## Restriction ##
+
+Except for NTLM authentication, Windows Authentication is not supported\.
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [Transact\-SQL Reference](https://docs.microsoft.com/en-us/sql/t-sql/language-reference?view=sql-server-ver15) for the correct syntax\.
+
+## Learn more ##
+
+[Microsoft SQL Server documentation](https://docs.microsoft.com/en-us/sql/sql-server/?view=sql-server-ver15)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

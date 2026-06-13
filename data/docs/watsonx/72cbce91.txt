@@ -1,0 +1,32 @@
+# Deriving a new field #
+
+Figure 1\. Scatterplot of drug distribution
+
+![Scatterplot of drug distribution](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_scatterplot.png)
+
+Since the ratio of sodium to potassium seems to predict when to use drug `Y`, you can derive a field that contains the value of this ratio for each record\. This field might be useful later when you build a model to predict when to use each of the five drugs\.
+
+<!-- <ol> -->
+
+1.  To simplify your flow layout, start by deleting all the nodes except the  drug1n\.csv Data Asset node\.
+2.  Place a Derive node on the canvas and connect it to the  drug1n\.csv Data Asset node\.
+    
+    Figure 2. Derive node
+    
+    ![Derive node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_newfield_flow.png)
+3.  Double\-click the Derive node to edit its properties\.
+4.  Name the new field Na\_to\_K\. Since you obtain the new field by dividing the sodium value by the potassium value, enter Na/K for the expression\. You can also create an expression by clicking the calculator icon\. This opens the Expression Builder, a way to interactively create expressions using built\-in lists of functions, operands, and fields and their values\.
+5.  You can check the distribution of your new field by attaching a Histogram node to the Derive node\. In the Histogram node properties, specify `Na_to_K` as the field to be plotted and `Drug` as the color overlay field\.
+    
+    Figure 3. Histogram node
+    
+    ![Histogram node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_newfield_histogram_flow.png)
+6.  Right\-click the Histogram node and select  Run\. A histogram chart is added to the Outputs pane\. Based on the chart, you can conclude that when the `Na_to_K` value is around 15 or more, drug `Y` is the drug of choice\.
+    
+    Figure 4. Histogram chart output
+    
+    ![Histogram chart output](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_histogram.png)
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

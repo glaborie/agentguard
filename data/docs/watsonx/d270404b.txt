@@ -1,0 +1,90 @@
+# Emotion classification #
+
+The Emotion model in the Watson Natural Language Processing classification workflow classifies the emotion in the input text\.
+
+**Workflow name**`ensemble_classification-workflow_en_emotion-stock`
+
+**Supported languages**
+
+<!-- <ul> -->
+
+ *  English and French
+
+<!-- </ul> -->
+
+**Capabilities**
+
+The Emotion classification model is a pre\-trained document classification model for the task of classifying the emotion in the input document\. The model identifies the emotion of a document, and classifies it as:
+
+<!-- <ul> -->
+
+ *  Anger
+ *  Disgust
+ *  Fear
+ *  Joy
+ *  Sadness
+
+<!-- </ul> -->
+
+Unlike the Sentiment model, which classifies each individual sentence, the Emotion model classifies the entire input document\. As such, the Emotion model works optimally when the input text to classify is no longer than 1000 characters\. If you would like to classify texts longer than 1000 characters, split the text into sentences or paragraphs for example and apply the Emotion model on each sentence or paragraph\.
+
+A document may be classified into multiple categories or into no category\.
+
+<!-- <table> -->
+
+Capabilities of emotion classification based on an example
+
+| Capabilities                                           | Example                                                          |
+| ------------------------------------------------------ | ---------------------------------------------------------------- |
+| Identifies the emotion of a document and classifies it | "I'm so annoyed that this code won't run \-\-> anger, sadness |
+
+<!-- </table ""> -->
+
+**Dependencies on other blocks**
+
+None
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load the Emotion workflow model for English
+    emotion_model = watson_nlp.load('ensemble_classification-workflow_en_emotion-stock')
+    
+    # Run the Emotion model 
+    emotion_result = emotion_model.run("I'm so annoyed that this code won't run")
+    print(emotion_result)
+
+Output of the code sample:
+
+    {
+      "classes": [
+        {
+          "class_name": "anger",
+          "confidence": 0.6074999913276445
+        },
+        {
+          "class_name": "sadness",
+          "confidence": 0.2913303280964709
+        },
+        {
+          "class_name": "fear",
+          "confidence": 0.10266377929247113
+        },
+        {
+          "class_name": "disgust",
+          "confidence": 0.018745421312542355
+        },
+        {
+          "class_name": "joy",
+          "confidence": 0.0020577122567564804
+        }
+      ],
+      "producer_id": {
+        "name": "Voting based Ensemble",
+        "version": "0.0.1"
+      }
+
+**Parent topic:**[Watson Natural Language Processing task catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)
+
+<!-- </article "role="article" "> -->

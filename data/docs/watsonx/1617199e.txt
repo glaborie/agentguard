@@ -1,0 +1,4 @@
+# Relationship charts #
+
+A relationship chart is useful for determining how variables relate to each other\.
+<!-- </article "role="article" "> -->

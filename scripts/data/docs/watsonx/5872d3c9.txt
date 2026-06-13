@@ -1,0 +1,71 @@
+# IBM Cloud Databases for MySQL connection #
+
+To access your data in IBM Cloud Databases for MySQL, create a connection asset for it\.
+
+IBM Cloud Databases for MySQL extends the capabilities of MySQL by offering an auto\-scaling deployment system managed on IBM Cloud that delivers high availability, redundancy, and automated backups\. IBM Cloud Databases for MySQL was formerly known as *IBM Cloud Compose for MySQL*\.
+
+## Create a connection to IBM Cloud Databases for MySQL ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  Database name
+ *  Hostname or IP address
+ *  Port number
+ *  Username and password
+
+<!-- </ul> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use IBM Cloud Databases for MySQL connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## IBM Cloud Databases for MySQL setup ##
+
+[IBM Cloud Databases for MySQL](https://cloud.ibm.com/catalog/services/compose-for-mysql)
+
+## Restriction ##
+
+For SPSS Modeler, you can use this connection only to import data\. You cannot export data to this connection or to an IBM Cloud Databases for MySQL connected data asset\.
+
+## Learn more ##
+
+[IBM Cloud Databases for MySQL Help](https://help.compose.com/docs/mysql-compose-for-mysql#section-compose-for-mysql-for-all)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

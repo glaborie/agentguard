@@ -1,0 +1,15 @@
+# Decision Optimization #
+
+IBM®  Decision Optimization gives you access to IBM's industry\-leading solution engines for mathematical programming and constraint programming\. You can build  Decision Optimization models either with  notebooks or by using the powerful  Decision Optimization experiment UI (Beta version)\. Here you can import, or create and edit models in Python, in OPL or with natural language expressions provided by the intelligent  Modeling Assistant (Beta version)\. You can also deploy models with  Watson Machine Learning\.
+
+Data format
+:   Tabular: `.csv`, `.xls`, `.json` files\. See [Prepare data view](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/modelbuilderUI.html#ModelBuilderInterface__section_preparedata)
+    
+    Data from [Connected data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)
+    
+    For deployment see [Model input and output data file formats](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/ModelIOFileFormats.html)
+
+Data size
+:   Any
+
+<!-- </article "role="article" "> -->

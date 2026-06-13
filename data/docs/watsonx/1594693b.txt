@@ -1,0 +1,86 @@
+# IBM Db2 connection #
+
+To access your data in an IBM Db2 database, you must create a connection asset for it\.
+
+IBM Db2 is a database that contains relational data\.
+
+## Supported versions ##
+
+IBM Db2 10\.1 and later
+
+## Create a connection to Db2 ##
+
+To create the connection asset, you need the following connection details:
+
+<!-- <ul> -->
+
+ *  **Database**
+ *  **Hostname or IP address**
+ *  **Username and password** See [Credentials](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-db2.html?context=cdpaas&locale=en#creds)\.
+ *  **Port**
+ *  **Application name** (optional): The name of the application that is currently using the connection\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client accounting information** (optional): The value of the accounting string from the client information that is specified for the connection\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client hostname** (optional): The hostname of the machine on which the application that is using the connection is running\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client user** (optional): The name of the user on whose behalf the application that is using the connection is running\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  **SSL certificate** (if required by your database server)
+
+<!-- </ul> -->
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Db2 connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization
+ *  Notebooks\. Click **Read data** on the **Code snippets** pane to get the connection credentials and load the data into a data structure\. See [Load data from data source connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/load-and-access-data.html#conns)\.
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [Structured Query Language (SQL)](https://www.ibm.com/docs/SSEPGG_11.5.0/com.ibm.db2.luw.sql.ref.doc/doc/c0004100.html) topic in the IBM Db2 product documentation for the correct syntax\.
+
+## Learn more ##
+
+[IBM Db2 product documentation](https://www.ibm.com/docs/db2)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,74 @@
+# Watson OpenScale offering plan options #
+
+The Watson OpenScale enables responsible, transparent, and explainable AI\.
+
+With Watson OpenScale you can:
+
+<!-- <ul> -->
+
+ *  Evaluate machine learning models for dimensions such as fairness, quality, or drift\.
+ *  Explore transactions to gain insights about your model\.
+
+<!-- </ul> -->
+
+## Watson OpenScale legacy offering plans ##
+
+Important:The legacy offering plan for Watson OpenScale is available only in the Frankfurt region\. In the Dallas region, the [watsonx\.governance plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-plan-options.html) are available instead\.
+
+### Watson OpenScale Standard v2 plan ###
+
+Watson OpenScale offers a Standard v2 plan that charge users on a per model basis\.
+
+There are no restrictions or limitations on payload data, feedback rows, or explanations under the Standard v2 instance\.
+
+### Regional limitations ###
+
+Watson OpenScale is not available in some regions\. See [Regional availability for services and features](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/regional-datactr.html) for more details\.
+
+Note:The regional availability for every service can also be found in the [IBM watsonx catalog](https://dataplatform.cloud.ibm.com/data/catalog?target=services&context=cpdaas)\.
+
+### Quota limits ###
+
+To avoid performance issues and manage resources efficiently, Watson OpenScale sets the following quota limits:
+
+<!-- <table> -->
+
+| Asset              | Limit                    |
+| ------------------ | ------------------------ |
+| DataMart           | 100 per instance         |
+| Service providers  | 100 per instance         |
+| Integrated systems | 100 per instance         |
+| Subscriptions      | 100 per service provider |
+| Monitor instances  | 100 per subscription     |
+
+<!-- </table ""> -->
+
+Every asset in Watson OpenScale has a hard limitation of 10000 instances of the asset per service instance\.
+
+### PostgreSQL databases for Watson OpenScale ###
+
+You can use a PostgreSQL database for your Watson OpenScale instance\. PostgreSQL is a powerful, open source object\-relational database that is highly customizable and compliant with many security standards\.
+
+If your model processes personally identifiable information (PII), use a PostgreSQL database for your model\. PostgreSQL is compliant with:
+
+<!-- <ul> -->
+
+ *  GDPR
+ *  HIPAA
+ *  PCI\-DSS
+ *  SOC 1 Type 2
+ *  SOC 2 Type 2
+ *  ISO 27001
+ *  ISO 27017
+ *  ISO 27018
+ *  ISO 27701
+
+<!-- </ul> -->
+
+## Next steps ##
+
+[Managing the Watson OpenScale service](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-provision-launch.html)
+
+**Parent topic:**[watsonx\.governance](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/aiopenscale.html)
+
+<!-- </article "role="article" "> -->

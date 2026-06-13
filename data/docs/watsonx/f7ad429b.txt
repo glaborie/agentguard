@@ -1,0 +1,5 @@
+# Graph node properties #
+
+Refer to this section for a list of available properties for Graph nodes\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,140 @@
+# Tuning a foundation model #
+
+To tune a foundation model, create a tuning experiment that guides the foundation model to return the output you want in the format you want\.
+
+## Requirements ##
+
+If you signed up for watsonx\.ai and specified the Dallas region, all requirements are met and you're ready to use the Tuning Studio\.
+
+The Tuning Studio is available from a project that is created for you automatically when you sign up for watsonx\.ai\. The project is named *sandbox* and you can use it to get started with testing and customizing foundation models\.
+
+## Before you begin ##
+
+Experiment with the Prompt Lab to determine the best model to use for your task\. Craft and try prompts until you find the input and output patterns that generate the best results from the model\. For more information, see [Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html)\.
+
+Create a set of example prompts that follow the patterns that generate the best results based on your prompt engineering work\. For more information, see [Data formats](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-data.html)\.
+
+## Tune a model ##
+
+<!-- <ol> -->
+
+1.  Click the **Tune a foundation model with labeled data** task\.
+2.  Name the tuning experiment\.
+3.  **Optional**: Add a description and tags\. Add a description as a reminder to yourself and to help collaborators understand the goal of the tuned model\. Assigning a tag gives you a way to filter your tuning assets later to show only the assets associated with a tag\.
+4.  Click **Create**\.
+5.  The **flan\-t5\-xl** foundation model is selected for you to tune\.
+    
+    To read more about the model, click the **Preview** icon (![Preview icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai-preview-icon.png)) that is displayed from the drop-down list.
+    
+    For more information, see the [model card](https://huggingface.co/google/flan-t5-xl)
+6.  Choose how to initialize the prompt from the following options:
+    
+    **Text** : Uses text that you specify.
+    
+    **Random** : Uses values that are generated for you as part of the tuning experiment.
+    
+    These options are related to the prompt tuning method for tuning models. For more information about how each option affects the tuning experiment, see [How prompt-tuning works](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-methods.html##how-prompt-tuning-works).
+7.  **Required for the *Text* initialization method only**: Add the initialization text that you want to include with the prompt\.
+    
+    <!-- <ul> -->
+    
+     *  For a classification task, give an instruction that describes what you want to classify and lists the class labels to be used. For example, *Classify whether the sentiment of each comment is Positive or Negative*.
+     *  For a generative task, describe what you want the model to provide in the output. For example, *Make the case for allowing employees to work from home a few days a week*.
+     *  For a summarization task, give an instruction such as, *Summarize the main points from a meeting transcript*.
+    
+    <!-- </ul> -->
+    
+8.  Choose a task type\.
+    
+    Choose the task type that most closely matches what you want the model to do:
+    
+    **Classification** : Predicts categorical labels from features. For example, given a set of customer comments, you might want to label each statement as a question or a problem. By separating out customer problems, you can find and address them more quickly.
+    
+    **Generation** : Generates text. For example, writes a promotional email.
+    
+    **Summarization** : Generates text that describes the main ideas that are expressed in a body of text. For example, summarizes a research paper.
+    
+    Whichever task you choose, the input is submitted to the underlying foundation model as a generative request type during the experiment. For classification tasks, class names are taken into account in the prompts that are used to tune the model. As models and tuning methods evolve, task-specific enhancements are likely to be added that you can leverage if tasks are represented accurately.
+9.  **Required for classification tasks only**: In the **Classification output (verbalizer)** field, add the class labels that you want the model to use one at a time\.
+    
+    Important: Specify the same labels that are used in your training data.
+    
+    During the tuning experiment, class label information is submitted along with the input examples from the training data.
+10. Add the training data that will be used to tune the model\. You can upload a file or use an asset from your project\.
+    
+    To see examples of how to format your file, expand *What should your data look like?*, and then click **Preview template**. For more information, see [Data formats](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-data.html).
+11. **Optional**: If you want to limit the size of the input or output examples that are used during training, adjust the maximum number of tokens that are allowed\. Expand *What should your data look like?*, and then drag the sliders to change the values\. Limiting the size can reduce the time that it takes to run the tuning experiment\. For more information, see [Controlling the number of tokens used](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-tune.html?context=cdpaas&locale=en#tuning-tokens)\.
+12. **Optional**: Click *Configure parameters* to edit the parameters that are used by the tuning experiment\.
+    
+    The tuning run is configured with parameter values that represent a good starting point for tuning a model. You can adjust them if you want.
+    
+    For more information about the available parameters and what they do, see [Tuning parameters](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-parameters.html).
+    
+    After you change parameter values, click **Save**.
+13. Click **Start tuning**\.
+
+<!-- </ol> -->
+
+The tuning experiment begins\. It might take a few minutes to a few hours depending on the size of your training data and the availability of compute resources\. When the experiment is finished, the status shows as completed\.
+
+A tuned model asset is not created until after you create a deployment from a completed tuning experiment\. For more information, see [Deploying a tuned model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-deploy.html)\.
+
+### Controlling the number of tokens used ###
+
+You can change the number of tokens that are allowed in the model input and output during a tuning experiment\.
+
+<!-- <table> -->
+
+Table 1: Token number parameters
+
+| Parameter name        | Value options | Default value |
+| --------------------- | ------------- | ------------- |
+| Maximum input tokens  | 1 \- 256      | 256           |
+| Maximum output tokens | 1 \- 128      | 128           |
+
+<!-- </table ""> -->
+
+You already have some control over the input size\. The input text that is used during a tuning experiment comes from your training data\. So, you can manage the input size by keeping your example inputs to a set length\. However, you might be getting training data that isn't curated from another team or process\. In that case, you can use the **Maximum input tokens** slider to manage the input size\. If you set the parameter to 200 and the training data has an example input with 1,000 tokens, for example, the example is truncated\. Only the first 200 tokens of the example input are used\.
+
+The **Max output tokens** value is important because it controls the number of tokens that the model is allowed to generate as output at training time\. You can use the slider to limit the output size, which helps the model to generate concise output\.
+
+For classification tasks, minimizing the size of the output is a good way to force a generative model to return the class label only, without repeating the classification pattern in the output\.
+
+For natural language models, words are converted to tokens\. 256 tokens is equal to approximately 130—170 words\. 128 tokens is equal to approximately 65—85 words\. However, token numbers are difficult to estimate and can differ by model\. For more information, see [Tokens and tokenization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tokens.html)\.
+
+## Evaluating the tuning experiment ##
+
+When the experiment is finished, a loss function graph is displayed that illustrates the improvement in the model output over time\. The epochs are shown on the x\-axis and a measure of the difference between predicted and actual results per epoch is shown on the y\-axis\. The value that is shown per epoch is calculated from the average gradient value from all of the accumulation steps in the epoch\.
+
+The best experiment outcome is represented by a downward\-sloping curve\. A decreasing curve means that the model gets better at generating the expected outputs in the expected format over time\.
+
+If the gradient value for the last epoch remains too high, you can run another experiment\. To help improve the results, try one of the following approaches:
+
+<!-- <ul> -->
+
+ *  Augment or edit the training data that you're using\.
+ *  Adjust the experiment parameters\.
+
+<!-- </ul> -->
+
+When you're satisfied with the results from the tuning experiment, deploy the tuned foundation model\. For more information, see [Deploying a tuned model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-deploy.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Data formats](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-data.html)
+ *  [Tuning parameters](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-parameters.html)
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  [Quick start: Tune a foundation model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-tuning-studio.html)
+ *  [Sample notebook: Tune a model to classify CFPB documents in watsonx](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/bf57e8896f3e50c638b5a378780f7502)
+
+<!-- </ul> -->
+
+**Parent topic:**[Tuning Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-studio.html)
+
+<!-- </article "role="article" "> -->

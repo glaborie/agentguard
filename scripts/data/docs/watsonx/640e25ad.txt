@@ -1,0 +1,137 @@
+# Setting up an AI use case #
+
+Create an AI use case to define a business problem and track the related AI assets through their lifecycle\. View details about governed assets or generate reports to help meet governance and compliance goals\.
+
+## Creating AI use cases in an inventory ##
+
+An inventory presents a view of all the AI use cases that you can access that are assigned to that inventory\. Use multiple inventories to manage groups of AI use cases\. For example, you might create an inventory for governing prompt templates and another for governing machine learning assets\. Add collaborators to inventories so they can view or contribute to AI uses cases\.
+
+### Before you begin ###
+
+<!-- <ul> -->
+
+ *  Enable watsonx\.governance and provision Watson OpenScale\.
+ *  You must have access to an existing inventory or have sufficient access to [create a new inventory](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-inventory-manage.html)\.
+
+<!-- </ul> -->
+
+For details on watsonx\.governance roles and managing access for governance, see [Collaboration roles for governance](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-collab-roles.html)\. If you do not have sufficient access to create or contribute to an inventory, contact your administrator\.
+
+## Viewing AI use cases ##
+
+<!-- <ol> -->
+
+1.  Click **AI use cases** from the navigation menu to view all existing AI use cases you can access, or click **Request a model with an AI use case** from the home page\. From the primary view, you can search for a specific use case or filter the view to focus on certain use cases\. For example, filter the view by *Inventory* to view all the AI use cases in a particular inventory\.
+    
+    ![Viewing AI use cases in an inventory](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-inv-use-cases.png)
+2.  Click the name of an AI use case to open it and view the details on these tabs:
+    
+    <!-- <ul> -->
+    
+     *  **Overview** shows the essential details for the use case.
+     *  **Lifecycle** shows the assets that are tracked in the use case, which is organized by the phases of the AI lifecycle.
+     *  **Access** lists collaborators for the use case and assigned roles.
+    
+    <!-- </ul> -->
+    
+3.  Click the name of an asset to view the associated factsheet\.
+
+<!-- </ol> -->
+
+## Generating a report from a use case ##
+
+You can generate reports from use cases or factsheets to share or preserve records\. By default, the reports generate these default reports:
+
+<!-- <ul> -->
+
+ *  **Basic report** contains the set of facts visible on the Overview and Lifecycle tabs\.
+ *  **Full report** contains all facts about the use case and the models, prompt templates, and deployments it contains\.
+
+<!-- </ul> -->
+
+The inventory admin can customize reports to include custom branding or to change the fields included in reports\. For details, see [Customizing report templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-manage-reports.html)\. To create a report:
+
+<!-- <ol> -->
+
+1.  Open a use case in an inventory\.
+2.  Click the **Export report** icon to generate a PDF record of the use case\.
+3.  Choose a format option and export the report\.
+
+<!-- </ol> -->
+
+## Creating an AI use case ##
+
+<!-- <ol> -->
+
+1.  Click **AI use cases** from the navigation menu\.
+2.  Click **New AI use case**\.
+3.  Enter a name and choose an inventory for the use case\. If you do not have access to an inventory, you must create one before you can define a use case\. See [Managing an inventory for AI use cases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-inventory-manage.html) for details\.
+4.  Complete optional fields as needed:
+
+<!-- </ol> -->
+
+<!-- <table> -->
+
+| Option          | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Description     | Define the business problem and provide any details about the proposed solution\.                                                                                                                                                                                                                                                                                                                                                                 |
+| Risk level      | Assign a risk level that reflects the nature of the business problem and the anticipated solution according to your governance policies\. For example, assign a risk level of *High* for a model that processes sensitive personal data\.                                                                                                                                                                                                         |
+| Supporting data | Enter links to supporting documents that support or clarify the purpose of the use case                                                                                                                                                                                                                                                                                                                                                           |
+| Owner           | For a use case with multiple owners, you can edit ownership                                                                                                                                                                                                                                                                                                                                                                                       |
+| Status          | By default, a new AI use case is assigned a status of default, as it is typically waiting for assets to be added for tracking\. You can manually change the status\. For example, change to *Awaiting development* if you do not require any additional review or approval for a requested model\. Change to *Developed* if you already have a model to add to governance\. Review the complete list of status options in the following section\. |
+| Tags            | Assign or create tags to make your AI use cases easier to find or group\.                                                                                                                                                                                                                                                                                                                                                                         |
+
+<!-- </table ""> -->
+
+### Use case status details ###
+
+Update the status field to provide users of the use case an immediate reflection of the current state\.
+
+<!-- <table> -->
+
+| Status                        | Description                                             |
+| ----------------------------- | ------------------------------------------------------- |
+| Ready for use case approval   | Use case is defined and ready for review                |
+| Use case approved             | Use case ready for model or prompt template development |
+| Use case rejected             | Use case not ready for model or prompt development      |
+| Awaiting development          | Awaiting delivery of AI asset (model or prompt)         |
+| Development in progress       | AI asset (model or prompt) in development               |
+| Developed                     | Trained model or prompt template added to use case      |
+| Ready for AI asset validation | AI asset ready for testing or evaluation                |
+| Validation complete           | AI asset is tested or evaluated                         |
+| Ready for AI asset approval   | Waiting for approval to move AI asset to production     |
+| Promote to production space   | AI asset is promoted to a production environment        |
+| Deployed for operation        | AI asset deployed for production                        |
+| In operation                  | AI asset is live in a production environment            |
+| Under revision                | AI asset requires updating                              |
+| Decommissioned                | AI asset removed from production environment            |
+
+<!-- </table ""> -->
+
+## Adding collaborators to an AI use case ##
+
+Add collaborators so they can view or contribute to the AI use case\.
+
+<!-- <ol> -->
+
+1.  From the **Access** tab of the AI use case, click **Add members**\.
+2.  Search for a member by name or email address\.
+3.  Assign an access level and click **Add\.** For details on permissions, see [Collaboration roles for governance](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-collab-roles.html)\.
+
+<!-- </ol> -->
+
+## Next steps ##
+
+After you create an AI use case, use it to track assets\. Depending on your governance strategy, your next step might be to:
+
+<!-- <ul> -->
+
+ *  Send a link to the use case to a reviewer for approval\.
+ *  Send a link to a data scientist to create the requested asset\.
+ *  [Add an asset](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-tracking-overview.html) for tracking in the use case\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Governing assets in AI use cases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-use-cases.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,43 @@
+# Working with multiple\-response data #
+
+You can analyze multiple\-response data using a number of comparison functions\.
+
+Available comparison functions include:
+
+<!-- <ul> -->
+
+ *  `value_at`
+ *  `first_index / last_index`
+ *  `first_non_null / last_non_null`
+ *  `first_non_null_index / last_non_null_index`
+ *  `min_index / max_index`
+
+<!-- </ul> -->
+
+For example, suppose a multiple\-response question asked for the first, second, and third most important reasons for deciding on a particular purchase (for example, price, personal recommendation, review, local supplier, other)\. In this case, you might determine the importance of price by deriving the index of the field in which it was first included:
+
+    first_index("price", [Reason1 Reason2 Reason3])
+
+Similarly, suppose you asked customers to rank three cars in order of likelihood to purchase and coded the responses in three separate fields, as follows:
+
+<!-- <table "summary="Car ranking example" id="clem_overview_multiple_response_data__table_w55_brz_ddb" class="defaultstyle" "> -->
+
+Car ranking example  
+
+Table 1\. Car ranking example
+
+| customer id | car1 | car2 | car3 |
+| ----------- | ---- | ---- | ---- |
+| 101         | 1    | 3    | 2    |
+| 102         | 3    | 2    | 1    |
+| 103         | 2    | 3    | 1    |
+
+<!-- </table "summary="Car ranking example" id="clem_overview_multiple_response_data__table_w55_brz_ddb" class="defaultstyle" "> -->
+
+In this case, you could determine the index of the field for the car they like most (ranked \#1, or the lowest rank) using the `min_index` function:
+
+    min_index(['car1' 'car2' 'car3'])
+
+See [Comparison functions](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/clem_reference/clem_function_ref_comparison.html#clem_function_ref_comparison) for more information\.
+
+<!-- </article "role="article" "> -->

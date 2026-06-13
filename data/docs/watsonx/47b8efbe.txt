@@ -1,0 +1,15 @@
+# Defining the targets #
+
+<!-- <ol> -->
+
+1.  Add a Type node after the Filler node, then double\-click the Type node to open its properties\.
+2.  Set the role to  None for the `DATE_` field\. Set the role to  Target for all other fields (the `Market_n` fields plus the `Total` field)\.
+3.  Click  Read Values to populate the  Values column\.
+    
+    Figure 1. Setting the role for fields
+    
+    ![Setting the role for fields](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_targets.png)
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,27 @@
+# reclassifynode properties #
+
+![Reclassify node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/reclassifynodeicon.png)The Reclassify node transforms one set of categorical values to another\. Reclassification is useful for collapsing categories or regrouping data for analysis\.
+
+<!-- <table "summary="reclassifynode properties" id="reclassifynodeslots__table_cst_mvs_ddb" class="defaultstyle" "> -->
+
+reclassifynode properties  
+
+Table 1\. reclassifynode properties
+
+| `reclassifynode` properties | Data type                         | Property description                                                                                                                             |
+| --------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `mode`                      | `Single``Multiple`                | `Single` reclassifies the categories for one field\. `Multiple` activates options enabling the transformation of more than one field at a time\. |
+| `replace_field`             | *flag*                            |                                                                                                                                                  |
+| `field`                     | *string*                          | Used only in Single mode\.                                                                                                                       |
+| `new_name`                  | *string*                          | Used only in Single mode\.                                                                                                                       |
+| `fields`                    | *\[field1 field2 \.\.\. fieldn\]* | Used only in Multiple mode\.                                                                                                                     |
+| `name_extension`            | *string*                          | Used only in Multiple mode\.                                                                                                                     |
+| `add_as`                    | `Suffix``Prefix`                  | Used only in Multiple mode\.                                                                                                                     |
+| `reclassify`                | *string*                          | Structured property for field values\.                                                                                                           |
+| `use_default`               | *flag*                            | Use the default value\.                                                                                                                          |
+| `default`                   | *string*                          | Specify a default value\.                                                                                                                        |
+| `pick_list`                 | *\[string string … string\]*      | Allows a user to import a list of known new values to populate the drop\-down list in the table\.                                                |
+
+<!-- </table "summary="reclassifynode properties" id="reclassifynodeslots__table_cst_mvs_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

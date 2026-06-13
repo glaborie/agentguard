@@ -1,0 +1,16 @@
+# Sample models and notebooks for  Decision Optimization #
+
+Several examples are presented in this documentation as tutorials\. You can also use many other examples that are provided in the  Decision Optimization GitHub, and in the  Samples\.
+
+Quick links:
+
+<!-- <ul> -->
+
+ *  [Examples used in this documentation](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/docExamples.html?context=cdpaas&locale=en#Examples__docexamples)
+ *  [Decision Optimization experiment samples (Modeling Assistant, Python, OPL)](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/docExamples.html?context=cdpaas&locale=en#Examples__section_modelbuildersamples)
+ *  [Jupyter notebook samples](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/docExamples.html?context=cdpaas&locale=en#Examples__section_xrg_fdj_cgb)
+ *  [Python notebooks in the Samples](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/docExamples.html?context=cdpaas&locale=en#Examples__section_pythoncommunity)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

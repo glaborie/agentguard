@@ -1,0 +1,86 @@
+# Adding platform connections #
+
+You can add connections to the Platform assets catalog to share them across your organization\. All collaborators in the Platform assets catalog can see the connections in the catalog\. However, only users with the credentials for the data source can use a platform connection in a project to create a connected data asset\.
+
+**Required permissions** : To create a platform connection, you must be a collaborator in the Platform assets catalog with one of these roles:
+
+<!-- <ul> -->
+
+ *  **Editor**
+ *  **Admin**
+
+<!-- </ul> -->
+
+If you're not a collaborator in the Platform assets catalog, ask someone who is a collaborator to add you or tell you who has the **Admin** role in the catalog\.
+
+You create connections to these types of data sources:
+
+<!-- <ul> -->
+
+ *  IBM Cloud services
+ *  Other cloud services
+ *  On\-premises databases
+
+<!-- </ul> -->
+
+See [Connectors](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html) for a full list of data sources\. Watch this video to see how to add platform connections\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+To create a platform connection:
+
+<!-- <ol> -->
+
+1.  From the main menu, choose **Data > Platform connections**\.
+2.  Click **New connection**\.
+3.  Choose a data source\.
+4.  If necessary, enter the connection information required for your data source\. Typically, you need to provide information like the host, port number, username, and password\.
+5.  If prompted, specify whether you want to use personal or shared credentials\. You cannot change this option after you create the connection\. The credentials type for the connection, either Personal or Shared, is set by the account owner on the [Account page](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html)\. The default setting is **Shared**\.
+    
+    <!-- <ul> -->
+    
+     *  **Personal**: With personal credentials, each user must specify their own credentials to access the connection. Each user's credentials are saved but are not shared with any other users. Use personal credentials instead of shared credentials to protect credentials. For example, if you use personal credentials and another user changes the connection properties (such as the hostname or port number), the credentials are invalidated to prevent malicious redirection.
+     *  **Shared**: With shared credentials, all users access the connection with the credentials that you provide.
+    
+    <!-- </ul> -->
+    
+6.  To connect to a database that is not externalized to the internet (for example, behind a firewall), see [Connecting to data behind a firewall](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+7.  Click **Create\.** The connection appears on the **Connections** page\. You can edit the connection by clicking the connection name\.
+
+<!-- </ol> -->
+
+Alternatively, you can create a connection in a project and then publish it to the Platform assets catalog\.
+
+To publish a connection from a project to the Platform assets catalog:
+
+<!-- <ol> -->
+
+1.  Locate the connection in the project's **Assets** tab in the **Data assets** section\.
+2.  From the Actions menu (![Actions icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/actions.png)), select **Publish to catalog**\.
+3.  Select **Platform assets catalog** and click **Publish**\.
+
+<!-- </ol> -->
+
+## Next step ##
+
+<!-- <ul> -->
+
+ *  [Add a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Connectors](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+ *  [Creating the Platform assets catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/catalog/platform-assets.html)
+ *  [Set the credentials for connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html#set-the-credentials-for-connections)
+
+<!-- </ul> -->
+
+**Parent topic:**[Preparing data](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/get-data.html)
+
+<!-- </article "role="article" "> -->

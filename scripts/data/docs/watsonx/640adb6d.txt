@@ -1,0 +1,23 @@
+# Example: Searching for nodes using a custom filter #
+
+The section [Finding nodes](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/jython/clementine/python_node_find.html#python_node_find) includes an example of searching for a node in a flow using the type name of the node as the search criterion\. In some situations, a more generic search is required and this can be accomplished by using the `NodeFilter` class and the flow `findAll()` method\. This type of search involves the following two steps:
+
+<!-- <ol> -->
+
+1.  Creating a new class that extends `NodeFilter` and that implements a custom version of the `accept()` method\.
+2.  Calling the flow `findAll()` method with an instance of this new class\. This returns all nodes that meet the criteria defined in the `accept()` method\.
+
+<!-- </ol> -->
+
+The following example shows how to search for nodes in a flow that have the node cache enabled\. The returned list of nodes can be used to either flush or disable the caches of these nodes\.
+
+    import modeler.api
+    
+    class CacheFilter(modeler.api.NodeFilter):
+    	"""A node filter for nodes with caching enabled"""
+    	def accept(this, node):
+    		return node.isCacheEnabled()
+    
+    cachingnodes = modeler.script.stream().findAll(CacheFilter(), False)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,9 @@
+# Isotonic\-AS node #
+
+Isotonic Regression belongs to the family of regression algorithms\. The Isotonic\-AS node in  watsonx\.ai is implemented in Spark\.
+
+For details, see [Isotonic regression](https://spark.apache.org/docs/2.2.0/mllib-isotonic-regression.html)\. ^1^
+
+^1^ "Regression \- RDD\-based API\." *Apache Spark*\. MLlib: Main Guide\. Web\. 3 Oct 2017\.
+
+<!-- </article "role="article" "> -->

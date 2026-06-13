@@ -1,0 +1,590 @@
+# Entity extraction #
+
+The Watson Natural Language Processing Entity extraction models extract entities from input text\.
+
+For details, on available extraction types, refer to these sections:
+
+<!-- <ul> -->
+
+ *  [Machine\-learning\-based extraction for general entities](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html?context=cdpaas&locale=en#machine-learning-general)
+ *  [Machine\-learning\-based extraction for PII entities](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html?context=cdpaas&locale=en#machine-learning-pii)
+ *  [Rule\-based extraction for general entities](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html?context=cdpaas&locale=en#rule-based-general)
+ *  [Rule\-based extraction for PII entities](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html?context=cdpaas&locale=en#rule-based-pii)
+
+<!-- </ul> -->
+
+## Machine\-learning\-based extraction for general entities ##
+
+The machine\-learning\-based extraction models are trained on labeled data for the more complex entity types such as person, organization and location\.
+
+**Capabilities**
+
+The entity models extract entities from the input text\. The following types of entities are recognized:
+
+<!-- <ul> -->
+
+ *  Date
+ *  Duration
+ *  Facility
+ *  Geographic feature
+ *  Job title
+ *  Location
+ *  Measure
+ *  Money
+ *  Ordinal
+ *  Organization
+ *  Person
+ *  Time
+
+<!-- </ul> -->
+
+<!-- <table> -->
+
+Capabilities of machine\-learning\-based extraction based on an example
+
+| Capabilities                            | Examples                                                                                                                          |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Extracts entities from the input text\. | `IBM\'s CEO Arvind Krishna is based in the US` \-> `IBM\Organization` , `CEO\JobTitle`, `Arvind Krishna\Person`, `US\Location` |
+
+<!-- </table ""> -->
+
+Available workflows and blocks differ, depending on the runtime used\.
+
+<!-- <table> -->
+
+Blocks and workflows for handling general entities with their corresponding runtimes
+
+| Block or workflow name                                                       | Available in runtime           |
+| ---------------------------------------------------------------------------- | ------------------------------ |
+| `entity-mentions_transformer-workflow_multilingual_slate.153m.distilled`     | [Runtime 23\.1](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html?context=cdpaas&locale=en#runtime-231) |
+| `entity-mentions_transformer-workflow_multilingual_slate.153m.distilled-cpu` | [Runtime 23\.1](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html?context=cdpaas&locale=en#runtime-231) |
+| `entity-mentions_bert_multi_stock`                                           | [Runtime 22\.2](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html?context=cdpaas&locale=en#runtime-222) |
+
+<!-- </table ""> -->
+
+### Machine\-learning\-based workflows for general entities in Runtime 23\.1 ###
+
+**Workflow names**
+
+<!-- <ul> -->
+
+ *  `entity-mentions_transformer-workflow_multilingual_slate.153m.distilled`: this workflow can be used on both CPUs and GPUs\.
+ *  `entity-mentions_transformer-workflow_multilingual_slate.153m.distilled-cpu`: this workflow is optimized for CPU\-based runtimes\.
+
+<!-- </ul> -->
+
+**Supported languages**
+
+Entity extraction is available for the following languages\.
+
+For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes):
+
+ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pt, ro, ru, sk, sv, tr, zh\-cn
+
+**Code sample**
+
+    import watson_nlp
+    # Load the workflow model
+    entities_workflow = watson_nlp.load('entity-mentions_transformer-workflow_multilingual_slate.153m.distilled')
+    # Run the entity extraction workflow on the input text
+    entities = entities_workflow.run('IBM\'s CEO Arvind Krishna is based in the US', language_code="en")
+    print(entities.get_mention_pairs())
+
+**Output of the code sample:**
+
+    [('IBM', 'Organization'), ('CEO', 'JobTitle'), ('Arvind Krishna', 'Person'), ('US', 'Location')]
+
+### Machine\-learning\-based blocks for general entities in Runtime 22\.2 ###
+
+**Block names**`entity-mentions_bert_multi_stock`
+
+**Supported languages**
+
+Entity extraction is available for the following languages\. For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes)\.
+
+ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pt, ro, ru, sk, sv, tr, zh\-cn
+
+**Dependencies on other blocks**
+
+The following block must run before you can run the Entity extraction block:
+
+<!-- <ul> -->
+
+ *  `syntax_izumo_<language>_stock`
+
+<!-- </ul> -->
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load Syntax Model for English, and the multilingual BERT Entity model 
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    bert_entity_model = watson_nlp.load('entity-mentions_bert_multi_stock')
+    
+    # Run the syntax model on the input text
+    syntax_prediction = syntax_model.run('IBM\'s CEO Arvind Krishna is based in the US')
+    
+    # Run the entity mention model on the result of syntax model
+    bert_entity_mentions = bert_entity_model.run(syntax_prediction)
+    print(bert_entity_mentions.get_mention_pairs())
+
+**Output of the code sample:**
+
+    [('IBM', 'Organization'), ('CEO', 'JobTitle'), ('Arvind Krishna', 'Person'), ('US', 'Location')]
+
+## Machine\-learning\-based extraction for PII entities ##
+
+**Block names**`entity-mentions_bilstm_en_pii`
+
+<!-- <table> -->
+
+Blocks for handling Personal Identifiable Information (PII) entities with their corresponding runtimes
+
+| Block name                      | Available in runtime         |
+| ------------------------------- | ---------------------------- |
+| `entity-mentions_bilstm_en_pii` | Runtime 22\.2, Runtime 23\.1 |
+
+<!-- </table ""> -->
+
+The `entity-mentions_bilstm_en_pii` machine\-learning based extraction model is trained on labeled data for types *person* and *location*\.
+
+**Capabilities**
+
+The `entity-mentions_bilstm_en_pii` block recognizes the following types of entities:
+
+<!-- <table> -->
+
+Entities extracted by the entity\-mentions\_bilstm\_en\_pii block
+
+| Entity type name | Description                                                                                                        | Supported languages |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
+| Location         | All geo\-political regions, continents, countries, and street names, states, provinces, cities, towns or islands\. | en                  |
+| Person           | Any being; living, nonliving, fictional or real\.                                                                  | en                  |
+
+<!-- </table ""> -->
+
+**Dependencies on other blocks**
+
+The following block must run before you can run the `entity-mentions_bilstm_en_pii` block:
+
+<!-- <ul> -->
+
+ *  `syntax_izumo_en_stock`
+
+<!-- </ul> -->
+
+**Code sample**
+
+    import os
+    
+    import watson_nlp
+    
+    # Load Syntax and a Entity Mention BiLSTM model for English
+    
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    
+    entity_model = watson_nlp.load('entity-mentions_bilstm_en_pii')
+    
+    text = 'Denver is the capital of Colorado. The total estimated government spending in Colorado in fiscal year 2016 was $36.0 billion. IBM office is located in downtown Denver. Michael Hancock is the mayor of Denver.'
+    
+    # Run the syntax model on the input text
+    
+    syntax_prediction = syntax_model.run(text)
+    
+    # Run the entity mention model on the result of the syntax analysis
+    
+    entity_mentions = entity_model.run(syntax_prediction)
+    
+    print(entity_mentions)
+
+**Output of the code sample:**
+
+    {
+      "mentions": [
+        {
+          "span": {
+            "begin": 0,
+            "end": 6,
+            "text": "Denver"
+          },
+          "type": "Location",
+          "producer_id": {
+            "name": "BiLSTM Entity Mentions",
+            "version": "1.0.0"
+          },
+          "confidence": 0.6885626912117004,
+          "mention_type": "MENTT_UNSET",
+          "mention_class": "MENTC_UNSET",
+          "role": ""
+        },
+        {
+          "span": {
+            "begin": 25,
+            "end": 33,
+            "text": "Colorado"
+          },
+          "type": "Location",
+          "producer_id": {
+            "name": "BiLSTM Entity Mentions",
+            "version": "1.0.0"
+          },
+          "confidence": 0.8509215116500854,
+          "mention_type": "MENTT_UNSET",
+          "mention_class": "MENTC_UNSET",
+          "role": ""
+        },
+        {
+          "span": {
+            "begin": 78,
+            "end": 86,
+            "text": "Colorado"
+          },
+          "type": "Location",
+          "producer_id": {
+            "name": "BiLSTM Entity Mentions",
+            "version": "1.0.0"
+          },
+          "confidence": 0.9928259253501892,
+          "mention_type": "MENTT_UNSET",
+          "mention_class": "MENTC_UNSET",
+          "role": ""
+        },
+        {
+          "span": {
+            "begin": 151,
+            "end": 166,
+            "text": "downtown Denver"
+          },
+          "type": "Location",
+          "producer_id": {
+            "name": "BiLSTM Entity Mentions",
+            "version": "1.0.0"
+          },
+          "confidence": 0.48378944396972656,
+          "mention_type": "MENTT_UNSET",
+          "mention_class": "MENTC_UNSET",
+          "role": ""
+        },
+        {
+          "span": {
+            "begin": 168,
+            "end": 183,
+            "text": "Michael Hancock"
+          },
+          "type": "Person",
+          "producer_id": {
+            "name": "BiLSTM Entity Mentions",
+            "version": "1.0.0"
+          },
+          "confidence": 0.9972871541976929,
+          "mention_type": "MENTT_UNSET",
+          "mention_class": "MENTC_UNSET",
+          "role": ""
+        }
+      ],
+      "producer_id": {
+        "name": "BiLSTM Entity Mentions",
+        "version": "1.0.0"
+      }
+    }
+
+## Rule\-based extraction for general entities ##
+
+The rule\-based model `entity-mentions_rbr_xx_stock` identifies syntactically regular entities\.
+
+**Block name**`entity-mentions_rbr_xx_stock`
+
+**Capabilities**
+
+Rule\-based extraction handles syntactically regular entity types\. The entity block extract entities from the input text\. The following types of entities are recognized:
+
+<!-- <ul> -->
+
+ *  PhoneNumber
+ *  EmailAddress
+ *  Number
+ *  Percent
+ *  IPAddress
+ *  HashTag
+ *  TwitterHandle
+ *  URLDate
+
+<!-- </ul> -->
+
+<!-- <table> -->
+
+Capabilities of rule\-based extraction based on an example
+
+| Capabilities                                                      | Examples                                                            |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Extracts syntactically regular entity types from the input text\. | `My email is john@us.ibm.com` \-> `john@us.ibm.com\EmailAddress` |
+
+<!-- </table ""> -->
+
+**Supported languages**
+
+Entity extraction is available for the following languages\. For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes)\.
+
+ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pt, ro, ru, sk, sv, tr, zh\-cn, zh\-tw
+
+**Dependencies on other blocks**
+
+None
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load a rule-based Entity Mention model for English
+    rbr_entity_model = watson_nlp.load('entity-mentions_rbr_en_stock')
+    
+    # Run the entity model on the input text
+    rbr_entity_mentions = rbr_entity_model.run('My email is john@us.ibm.com')
+    print(rbr_entity_mentions)
+
+Output of the code sample:
+
+    {
+      "mentions": [
+        {
+          "span": {
+            "begin": 12,
+            "end": 27,
+            "text": "john@us.ibm.com"
+          },
+          "type": "EmailAddress",
+          "producer_id": {
+            "name": "RBR mentions",
+            "version": "0.0.1"
+          },
+          "confidence": 0.8,
+          "mention_type": "MENTT_UNSET",
+          "mention_class": "MENTC_UNSET",
+          "role": ""
+        }
+      ],
+      "producer_id": {
+        "name": "RBR mentions",
+        "version": "0.0.1"
+      }
+    }
+
+## Rule\-based extraction for PII entities ##
+
+The rule\-based model `entity-mentions_rbr_multi_pii` handles the majority of the types by identifying common formats of PII entities and performing possible checksum or validations as appropriate for each entity type\. For example, credit card number candidates are validated using the Luhn algorithm\.
+
+**Block name**`entity-mentions_rbr_multi_pii`
+
+**Capabilities**
+
+The entity block `entity-mentions_rbr_multi_pii` recognizes the following types of entities:
+
+<!-- <table> -->
+
+Entities extracted by the entity\-mentions\_rbr\_multi\_pii block
+
+| Entity type name                            | Description                                                                                      | Supported languages                                                                                |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| BankAccountNumber\.CreditCardNumber\.Amex   | Credit card number for card types AMEX (15 digits)\. Checked through the Luhn algorithm\.        | All                                                                                                |
+| BankAccountNumber\.CreditCardNumber\.Master | Credit card number for card types Master card (16 digits)\. Checked through the Luhn algorithm\. | All                                                                                                |
+| BankAccountNumber\.CreditCardNumber\.Other  | Credit card number for left\-over category of other types\. Checked through the Luhn algorithm\. | All                                                                                                |
+| BankAccountNumber\.CreditCardNumber\.Visa   | Credit card number for card types VISA (16 to 19 digits)\. Checked through the Luhn algorithm\.  | All                                                                                                |
+| EmailAddress                                | Email addresses, for example: john@gmail\.com                                                    | ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pl, pt, ro, ru, sk, sv, tr, zh\-cn |
+| IPAddress                                   | IPv4 and IPv6 addresses, for example, `10.142.250.123`                                           | ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pl, pt, ro, ru, sk, sv, tr, zh\-cn |
+| `PhoneNumber`                               | Any specific phone number, for example, 0511\-123\-456                                           | ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pl, pt, ro, ru, sk, sv, tr, zh\-cn |
+
+<!-- </table ""> -->
+
+Some PII entity type names are country\-specific\. The `_` in the following entity types is a placeholder for a country code\.
+
+<!-- <ul> -->
+
+ *  `BankAccountNumber.BBAN._` : These are more variable national bank account numbers and the extraction is mostly language\-specific without a general checksum algorithm\.
+ *  `BankAccountNumber.IBAN._` : Highly standardized IBANs are supported in a language\-independent way and with a checksum algorithm\.
+ *  `NationalNumber.NationalID._`: These national IDs don’t have a (published) checksum algorithm, and are being extracted on a language\-specific basis\.
+ *  `NationalNumber.Passport._` : Checksums are implemented only for the countries where a checksum algorithm exists\. These are specifically extracted language with additional context restrictions\.
+ *  `NationalNumber.TaxID._` : These IDs don't have a (published) checksum algorithm, and are being extracted on a language\-specific basis\.
+
+<!-- </ul> -->
+
+Which entity types are available for which languages and which country code to use is listed in the following table\.
+
+<!-- <table> -->
+
+Country\-specific PII entity types
+
+| Country                                              | Entity Type Name                              | Description                                                                                                          | Supported Languages |
+| ---------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| Austria                                              | `BankAccountNumber.BBAN.AT`                   | Basic bank account number                                                                                            | de                  |
+|                                                      | `BankAccountNumber.IBAN.AT`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.Passport.AT`                  | Passport number                                                                                                      | de                  |
+|                                                      | `NationalNumber.TaxID.AT`                     | Tax identification number                                                                                            | de                  |
+| Belgium                                              | `BankAccountNumber.BBAN.BE`                   | Basic bank account number                                                                                            | fr, nl              |
+|                                                      | `BankAccountNumber.IBAN.BE`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.BE`                | National identification number                                                                                       | fr, nl              |
+|                                                      | `NationalNumber.Passport.BE`                  | Passport number                                                                                                      | fr, nl              |
+| Bulgaria                                             | `BankAccountNumber.BBAN.BG`                   | Basic bank account number                                                                                            | bg                  |
+|                                                      | `BankAccountNumber.IBAN.BG`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.BG`                | National identification number                                                                                       | bg                  |
+| Canada                                               | `NationalNumber.SocialInsuranceNumber.CA`     | Social insurance number\. Checksum algorithm is implemented\.                                                        | en, fr              |
+| Croatia                                              | `BankAccountNumber.BBAN.HR`                   | Basic bank account number                                                                                            | hr                  |
+|                                                      | `BankAccountNumber.IBAN.HR`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.HR`                | National identification number                                                                                       | hr                  |
+|                                                      | `NationalNumber.TaxID.HR`                     | Tax identification number                                                                                            | hr                  |
+| Cyprus                                               | `BankAccountNumber.BBAN.CY`                   | Basic bank account number                                                                                            | el                  |
+|                                                      | `BankAccountNumber.IBAN.CY`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.TaxID.CY`                     | Tax identification number                                                                                            | el                  |
+| Czechia                                              | `BankAccountNumber.BBAN.CZ`                   | Basic bank account number                                                                                            | cs                  |
+|                                                      | `BankAccountNumber.IBAN.CZ`                   | International bank account number                                                                                    | cs                  |
+|                                                      | `NationalNumber.NationalID.CZ`                | National identification number                                                                                       | cs                  |
+|                                                      | `NationalNumber.TaxID.CZ`                     | Tax identification number                                                                                            | cs                  |
+| Denmark                                              | `BankAccountNumber.BBAN.DK`                   | Basic bank account number                                                                                            | da                  |
+|                                                      | `BankAccountNumber.IBAN.DK`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.DK`                | National identification number                                                                                       | da                  |
+| Estonia                                              | `BankAccountNumber.BBAN.EE`                   | Basic bank account number                                                                                            | et                  |
+|                                                      | `BankAccountNumber.IBAN.EE`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.EE`                | National identification number                                                                                       | et                  |
+| Finland                                              | `BankAccountNumber.BBAN.FI`                   | Basic bank account number                                                                                            | fi                  |
+|                                                      | `BankAccountNumber.IBAN.FI`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.FI`                | National identification number                                                                                       | fi                  |
+|                                                      | `NationalNumber.Passport.FI`                  | Passport number                                                                                                      | fi                  |
+| France                                               | `BankAccountNumber.BBAN.FR`                   | Basic bank account number                                                                                            | fr                  |
+|                                                      | `BankAccountNumber.IBAN.FR`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.Passport.FR`                  | Passport number                                                                                                      | fr                  |
+|                                                      | `NationalNumber.SocialInsuranceNumber.FR`     | Social insurance number\. Checksum algorithm is implemented\.                                                        | fr                  |
+| Germany                                              | `BankAccountNumber.BBAN.DE`                   | Basic bank aAccount number                                                                                           | de                  |
+|                                                      | `BankAccountNumber.IBAN.DE`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.Passport.DE`                  | Passport number                                                                                                      | de                  |
+|                                                      | `NationalNumber.SocialInsuranceNumber.DE`     | Social insurance number\. Checksum algorithm is implemented\.                                                        | de                  |
+| Greece                                               | `BankAccountNumber.BBAN.GR`                   | Basic bank account number                                                                                            | el                  |
+|                                                      | `BankAccountNumber.IBAN.GR`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.Passport.GR`                  | Passport number                                                                                                      | el                  |
+|                                                      | `NationalNumber.TaxID.GR`                     | Tax identification number                                                                                            | el                  |
+|                                                      | `NationalNumber.NationalID.GR`                | National ID number                                                                                                   | el                  |
+| Hungary                                              | `BankAccountNumber.BBAN.HU`                   | Basic bank account number                                                                                            | hu                  |
+|                                                      | `BankAccountNumber.IBAN.HU`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.HU`                | National identification number                                                                                       | hu                  |
+|                                                      | `NationalNumber.TaxID.HU`                     | Tax identification number                                                                                            | hu                  |
+| Iceland                                              | `BankAccountNumber.BBAN.IS`                   | Basic bank account number                                                                                            | is                  |
+|                                                      | `BankAccountNumber.IBAN.IS`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.IS`                | National identification number                                                                                       | is                  |
+| Ireland                                              | `BankAccountNumber.BBAN.IE`                   | Basic bank account number                                                                                            | en                  |
+|                                                      | `BankAccountNumber.IBAN.IE`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.IE`                | National identification number                                                                                       | en                  |
+|                                                      | `NationalNumber.Passport.IE`                  | Passport number                                                                                                      | en                  |
+|                                                      | `NationalNumber.TaxID.IE`                     | Tax identification number                                                                                            | en                  |
+| Italy                                                | `BankAccountNumber.BBAN.IT`                   | Basic bank account number                                                                                            | it                  |
+|                                                      | `BankAccountNumber.IBAN.IT`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.IT`                | National identification number                                                                                       | it                  |
+|                                                      | `NationalNumber.Passport.IT`                  | Passport number                                                                                                      | it                  |
+| Latvia                                               | `BankAccountNumber.BBAN.LV`                   | Basic bank account number                                                                                            | lv                  |
+|                                                      | `BankAccountNumber.IBAN.LV`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.LV`                | National identification number                                                                                       | lv                  |
+| Liechtenstein                                        | `BankAccountNumber.BBAN.LI`                   | Basic bank account number                                                                                            | de                  |
+|                                                      | `BankAccountNumber.IBAN.LI`                   | International bank account number                                                                                    | all                 |
+| Lithuania                                            | `BankAccountNumber.BBAN.LT`                   | Basic bank account number                                                                                            | lt                  |
+|                                                      | `BankAccountNumber.IBAN.LT`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.LT`                | National identification number                                                                                       | lt                  |
+| Luxembourg                                           | `BankAccountNumber.BBAN.LU`                   | Basic bank account number                                                                                            | de, fr              |
+|                                                      | `BankAccountNumber.IBAN.LU`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.TaxID.LU`                     | Tax identification number                                                                                            | de, fr              |
+| Malta                                                | `BankAccountNumber.BBAN.MT`                   | Basic bank account number                                                                                            | mt                  |
+|                                                      | `BankAccountNumber.IBAN.MT`                   | International bank account number                                                                                    | all                 |
+| Netherlands                                          | `BankAccountNumber.BBAN.NL`                   | Basic bank account number                                                                                            | nl                  |
+|                                                      | `BankAccountNumber.IBAN.NL`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.NL`                | National identification number                                                                                       | nl                  |
+|                                                      | `NationalNumber.Passport.NL`                  | Passport number                                                                                                      | nl                  |
+| Norway                                               | `BankAccountNumber.BBAN.NO`                   | Basic bank account number                                                                                            | no                  |
+|                                                      | `BankAccountNumber.IBAN.NO`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.NO`                | National identification number                                                                                       | no                  |
+|                                                      | `NationalNumber.NationalID.NO.Old`            | National identification number old                                                                                   | no                  |
+|                                                      | `NationalNumber.Passport.NO`                  | Passport number                                                                                                      | no                  |
+| Poland                                               | `BankAccountNumber.BBAN.PL`                   | Basic bank account number                                                                                            | pl                  |
+|                                                      | `BankAccountNumber.IBAN.PL`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.PL`                | National identification number                                                                                       | pl                  |
+|                                                      | `NationalNumber.Passport.PL`                  | Passport number                                                                                                      | pl                  |
+|                                                      | `NationalNumber.TaxID.PL`                     | Tax identification number                                                                                            | pl                  |
+| Portugal                                             | `BankAccountNumber.IBAN.PT`                   | International bank account number                                                                                    | all                 |
+|                                                      | `BankAccountNumber.BBAN.PT`                   | Basic bank account number                                                                                            | pt                  |
+|                                                      | `NationalNumber.NationalID.PT`                | National identification number                                                                                       | pt                  |
+|                                                      | `NationalNumber.NationalID.PT.Old`            | National identification number, obsolete format                                                                      | pt                  |
+|                                                      | `NationalNumber.TaxID.PT`                     | Tax identification number                                                                                            | pt                  |
+| Romania                                              | `BankAccountNumber.BBAN.RO`                   | Basic bank account number                                                                                            | ro                  |
+|                                                      | `BankAccountNumber.IBAN.RO`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.NationalID.RO`                | National identification number                                                                                       | ro                  |
+|                                                      | `NationalNumber.TaxID.RO`                     | Tax identification number                                                                                            | ro                  |
+| Slovakia                                             | `BankAccountNumber.IBAN.SK`                   | International bank account number                                                                                    | all                 |
+|                                                      | `BankAccountNumber.BBAN.SK`                   | Basic bank account number                                                                                            | sk                  |
+|                                                      | `NationalNumber.TaxID.SK`                     | Tax identification number                                                                                            | sk                  |
+|                                                      | `NationalNumber.NationalID.SK`                | National identification number                                                                                       | sk                  |
+| Slovenia                                             | `BankAccountNumber.IBAN.SI`                   | International bank account number                                                                                    | all                 |
+| Spain                                                | `BankAccountNumber.IBAN.ES`                   | International bank account number                                                                                    | all                 |
+|                                                      | `BankAccountNumber.BBAN.ES`                   | Basic bank account number                                                                                            | es                  |
+|                                                      | `NationalNumber.NationalID.ES`                | National identification number                                                                                       | es                  |
+|                                                      | `NationalNumber.Passport.ES`                  | Passport number                                                                                                      | es                  |
+|                                                      | `NationalNumber.TaxID.ES`                     | Tax identification number                                                                                            | es                  |
+| Sweden                                               | `BankAccountNumber.IBAN.SE`                   | International bank account number                                                                                    | all                 |
+|                                                      | `BankAccountNumber.BBAN.SE`                   | Basic bank account number                                                                                            | sv                  |
+|                                                      | `NationalNumber.NationalID.SE`                | National identification number                                                                                       | sv                  |
+|                                                      | `NationalNumber.Passport.SE`                  | Passport number                                                                                                      | sv                  |
+| Switzerland                                          | `BankAccountNumber.IBAN.CH`                   | International bank account number                                                                                    | all                 |
+|                                                      | `BankAccountNumber.BBAN.CH`                   | Basic bank account number                                                                                            | de, fr, it          |
+|                                                      | `NationalNumber.NationalID.CH`                | National identification number                                                                                       | de, fr, it          |
+|                                                      | `NationalNumber.Passport.CH`                  | Passport number                                                                                                      | de, fr, it          |
+|                                                      | `NationalNumber.NationalID.CH.Old`            | National identification number, obsolete format                                                                      | de, fr, it          |
+| United Kingdom of Great Britain and Northern Ireland | `BankAccountNumber.IBAN.GB`                   | International bank account number                                                                                    | all                 |
+|                                                      | `NationalNumber.SocialSecurityNumber.GB.NHS`  | National Health Service number                                                                                       | all                 |
+|                                                      | `NationalNumber.SocialSecurityNumber.GB.NINO` | National Social Security Insurance number                                                                            | all                 |
+|                                                      | `NationalNumber.NationalID.GB.Old`            | National ID number, obsolete format                                                                                  | all                 |
+|                                                      | `NationalNumber.Passport.GB`                  | Passport Number\. Checksum algorithm is not implemented and hence come with additional context restrictions\.        | all                 |
+| United States                                        | `NationalNumber.SocialSecurityNumber.US`      | Social Security number\. Checksum algorithm is not implemented and hence come with additional context restrictions\. | en                  |
+|                                                      | `NationalNumber.Passport.US`                  | Passport Number\. Checksum algorithm is not implemented and hence come with additional context restrictions\.        | en                  |
+
+<!-- </table ""> -->
+
+**Dependencies on other blocks**
+
+None
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load the RBR PII model. Note that this is a multilingual model supporting multiple languages.
+    rbr_entity_model = watson_nlp.load('entity-mentions_rbr_multi_pii')
+    
+    # Run the RBR model. Note that language code of the input text is passed as a parameter to the run method.
+    rbr_entity_mentions = rbr_entity_model.run('Please find my credit card number here: 378282246310005. Thanks for the payment.', language_code='en')
+    print(rbr_entity_mentions)
+
+Output of the code sample:
+
+    {
+      "mentions": [
+        {
+          "span": {
+            "begin": 40,
+            "end": 55,
+            "text": "378282246310005"
+          },
+          "type": "BankAccountNumber.CreditCardNumber.Amex",
+          "producer_id": {
+            "name": "RBR mentions",
+            "version": "0.0.1"
+          },
+          "confidence": 0.8,
+          "mention_type": "MENTT_UNSET",
+          "mention_class": "MENTC_UNSET",
+          "role": ""
+        }
+      ],
+      "producer_id": {
+        "name": "RBR mentions",
+        "version": "0.0.1"
+      }
+    }
+
+**Parent topic:**[Watson Natural Language Processing task catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)
+
+<!-- </article "role="article" "> -->

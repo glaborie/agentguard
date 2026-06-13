@@ -1,0 +1,4 @@
+# Math curve charts #
+
+A math curve chart plots mathematical equation curves that are based on user\-entered expressions\.
+<!-- </article "role="article" "> -->

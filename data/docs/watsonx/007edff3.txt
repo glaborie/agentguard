@@ -1,0 +1,83 @@
+# Get help #
+
+You can get help with IBM watsonx through documentation, training, support, and community resources\.
+
+<!-- <ul> -->
+
+ *  [Platform setup](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html?context=cdpaas&locale=en#platform)
+ *  [Training](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html?context=cdpaas&locale=en#training)
+ *  [Community resources](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html?context=cdpaas&locale=en#community)
+ *  [Samples](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html?context=cdpaas&locale=en#samples)
+ *  [Support](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html?context=cdpaas&locale=en#support)
+
+<!-- </ul> -->
+
+## Help with platform setup ##
+
+You must be the account owner or administrator for a billable IBM Cloud account to set up the IBM watsonx platform for your organization\. To learn how to set up IBM watsonx, see [Setting up the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)\.
+
+## Training ##
+
+Start training your model by data preparation, analysis, and visualization\. Learn how to build, deploy, and trust your models\. Use the following tutorials and videos to get started with IBM watsonx:
+
+<!-- <ul> -->
+
+ *  [Quick start tutorials](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html)
+ *  [Video library](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html)
+
+<!-- </ul> -->
+
+## Community resources ##
+
+Share and gain knowledge using IBM Community and get the most out of our services\.
+
+Explore blogs, forums, and other resources in these communities:
+
+<!-- <ul> -->
+
+ *  [watsonx\.ai Community](https://community.ibm.com/community/user/watsonx/communities/community-home?communitykey=81927b7e-9a92-4236-a0e0-018a27c4ad6e)
+ *  [Data Science Community](https://community.ibm.com/community/user/datascience/home)
+ *  [Watson Studio Community](https://community.ibm.com/community/user/watsonstudio/home)
+
+<!-- </ul> -->
+
+Find more blogs and forums on the following platforms:
+
+<!-- <ul> -->
+
+ *  [IBM Data and AI on Medium](https://medium.com/ibm-data-ai)
+ *  [Watson Studio Stack Overflow](https://stackoverflow.com/questions/tagged/watson-studio)
+
+<!-- </ul> -->
+
+## Samples ##
+
+You can use sample projects, notebooks, and data sets to get started fast\.
+
+Find samples in the following locations:
+
+<!-- <ul> -->
+
+ *  [Samples](https://dataplatform.cloud.ibm.com/gallery)
+ *  [IBM Data Science assets in GitHub](https://github.com/IBMDataScience)
+
+<!-- </ul> -->
+
+## Support ##
+
+IBM Cloud provides you with three paid support options to customize your experience according to your business needs\. Choose from [Basic, Advanced, or Premium support plan](https://cloud.ibm.com/docs/get-support?topic=get-support-support-plans)\. The level of support that you select determines the severity that you can assign to support cases and your level of access to the tools available in the Support Center\.
+
+You can also go to [IBM Cloud Support Center](https://cloud.ibm.com/unifiedsupport/supportcenter) to open a support case, browse FAQs, or ask questions to IBM Chat Bot\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Known issues](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html)
+ *  [FAQ](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/faq.html)
+ *  [Browser support](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/browser-support.html)
+ *  [Language support](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/localization.html)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

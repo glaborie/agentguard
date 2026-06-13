@@ -1,0 +1,30 @@
+# historynode properties #
+
+![History node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/historynodeicon.png)The History node creates new fields containing data from fields in previous records\. History nodes are most often used for sequential data, such as time series data\. Before using a History node, you may want to sort the data using a Sort node\.
+
+Example
+
+    node = stream.create("history", "My node")
+    node.setPropertyValue("fields", ["Drug"])
+    node.setPropertyValue("offset", 1)
+    node.setPropertyValue("span", 3)
+    node.setPropertyValue("unavailable", "Discard")
+    node.setPropertyValue("fill_with", "undef")
+
+<!-- <table "summary="historynode properties" id="historynodeslots__table_ypd_vcj_cdb" class="defaultstyle" "> -->
+
+historynode properties  
+
+Table 1\. historynode properties
+
+| `historynode` properties | Data type              | Property description                                                                                                                                                                             |
+| ------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `fields`                 | *list*                 | Fields for which you want a history\.                                                                                                                                                            |
+| `offset`                 | *number*               | Specifies the latest record (prior to the current record) from which you want to extract historical field values\.                                                                               |
+| `span`                   | *number*               | Specifies the number of prior records from which you want to extract values\.                                                                                                                    |
+| `unavailable`            | `Discard``Leave``Fill` | For handling records that have no history values, usually referring to the first several records (at the beginning of the dataset) for which there are no previous records to use as a history\. |
+| `fill_with`              | `String``Number`       | Specifies a value or string to be used for records where no history value is available\.                                                                                                         |
+
+<!-- </table "summary="historynode properties" id="historynodeslots__table_ypd_vcj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

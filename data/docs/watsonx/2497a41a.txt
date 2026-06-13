@@ -1,0 +1,141 @@
+# Signing up for IBM watsonx as a Service #
+
+IBM watsonx as a Service contains two components: watsonx\.ai and watsonx\.governance\. You can sign up for a personal version of either watsonx\.ai or watsonx\.governance at no initial cost, or sign up through an email invitation to join your organization's account\. Watsonx\.ai provides all the tools that you need to work with foundation models and machine learning models\. Watsonx\.governance provides the tools that you need to govern models\.
+
+After you sign up for the watsonx\.ai, you can add the watsonx\.governance component from the services catalog\. If you sign up for watsonx\.governance, watsonx\.ai is included automatically\.
+
+<!-- <ul> -->
+
+ *  [Signing up for a personal account](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html?context=cdpaas&locale=en#personal)
+ *  [Signing up for your organization's account](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html?context=cdpaas&locale=en#orgacct)
+ *  [Switching to your organization's account](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html?context=cdpaas&locale=en#switching)
+ *  [Logging in using IBM App ID (beta)](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html?context=cdpaas&locale=en#appid)
+
+<!-- </ul> -->
+
+## Signing up for a personal account ##
+
+When you sign up for watsonx\.ai or watsonx\.governance, you need an IBMid for an IBM Cloud account\. If you don't already have an IBMid, you can create one while you sign up for watsonx\.ai or watsonx\.governance\. For your IBM Cloud account, you enter your email address, personal information, and credit card information, which is used to verify your identity\. You are charged only if you upgrade to a billable plan and then consume billable services\. Lite plans do not incur charges\.
+
+The free version of watsonx\.ai contains Lite plans for the IBM Watson Studio and Watson Machine Learning services that provide the tools for working with foundation models and machine learning models\. The free version of watsonx\.governance contains the watsonx\.ai services plus a Lite plan for the watsonx\.governance service that provides the tools for governing models\. The Cloud Object Storage service is also included to provide storage\.
+
+To sign up for watsonx:
+
+<!-- <ol> -->
+
+1.  Go to [Try IBM watsonx\.ai](https://dataplatform.cloud.ibm.com/registration/stepone?context=wx&apps=data_science_experience,watson_data_platform,cos&uucid=0b526de8c1c419db&utm_content=WXAWW) or [Try watsonx\.governance](https://dataplatform.cloud.ibm.com/registration/stepone?context=wx&apps=data_science_experience,watson_machine_learning,cos,aiopenscale&uucid=0cf8ca3f38ace12f&utm_content=WXGWW&regions=us-south)\.
+2.  Select the IBM Cloud service region\. You can select the Dallas or Frankfurt region\.
+3.  Enter your IBM Cloud account username and password\. If you don't have an IBM Cloud account, [create one](https://cloud.ibm.com/registration)\.
+4.  If you see the **Select account** screen, select the account and resource group where you want to use watsonx\. If you belong to an account with existing services, you can select it instead of your account\. The **Select account** screen does not display if you have only one account and resource group\.
+5.  Click **Continue**\. The account activation process begins\.
+
+<!-- </ol> -->
+
+Note:Stay with your default browser during the activation process\. If you land on the IBM Cloud Dashboard, return to the [Try IBM watsonx\.ai](https://dataplatform.cloud.ibm.com/registration/stepone?context=wx)\{: new\_window\} page or the [Try watsonx\.governance](https://dataplatform.cloud.ibm.com/registration/stepone?context=wx&apps=data_science_experience,watson_machine_learning,cos,aiopenscale&uucid=0cf8ca3f38ace12f&utm_content=WXGWW&regions=us-south)\{: external\} page and follow the link to log in with an existing account\.
+
+After the activation process completes, your watsonx home page is shown\.
+
+Bookmark your home page so that you can go directly to the watsonx site for your region to log in with your personal credentials\.
+
+If you're in your own account, you have the necessary permissions for complete access to projects and deployment spaces\. You can access another account by [switching to that account](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html?context=cdpaas&locale=en#switching)\.
+
+To set up an account for your organization, so that other users can share services and resources, see [Set up an account for your organization](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-account.html)\.
+
+## Signing up for your organization's account ##
+
+Before you can access your organization's watsonx account, you must be a member of your organization's IBM Cloud account\. Account administrators can invite users to join their organization's IBM Cloud account\.
+
+The administrator provides the following information:
+
+<!-- <ul> -->
+
+ *  The IBM Cloud account name for watsonx\.
+ *  The resource group name for the watsonx account\.
+ *  The IBM Cloud service region\.
+
+<!-- </ul> -->
+
+When the account administrator invites you, you receive an email from IBM Cloud with the title "You are invited to join an account in IBM Cloud\." with the name of the account\.
+
+To join your organization's account:
+
+<!-- <ol> -->
+
+1.  Click the **Join now** link\. The expiry is 30 days\.
+2.  You are asked to log in with your IBMid\. IBMids are assigned to IBM Cloud account members\. If you don't have an IBMid, one is created for you when you join\.
+3.  Continue to the next screen and confirm that your information is correct, then accept the invite\.
+4.  Login in from the **Welcome** screen\. You are now logged in to the IBM Cloud account\.
+5.  Go to [Try IBM watsonx\.ai](https://dataplatform.cloud.ibm.com/registration/stepone?context=wx&apps=data_science_experience,watson_data_platform,cos&uucid=0b526de8c1c419db&utm_content=WXAWW) or [Try watsonx\.governance](https://dataplatform.cloud.ibm.com/registration/stepone?context=wx&apps=data_science_experience,watson_machine_learning,cos,aiopenscale&uucid=0cf8ca3f38ace12f&utm_content=WXGWW&regions=us-south)\.
+6.  Follow the prompts to sign up with your IBMid\.
+7.  On the **Select account** screen, select your organization's account and resource group\.
+8.  Click **Continue**\.
+
+<!-- </ol> -->
+
+You can see the name of the account you are currently working in on the menu bar\.
+
+![Account name](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/images/ent-accountname.png)
+
+## Switching to your organization's account ##
+
+You can switch to your organization's existing IBM Cloud account (or any other account for which you are a member) to share watsonx resources that are provisioned for that account\.
+
+If you are not already an account member, the account administrator must invite you to the IBM Cloud account\. You receive an email invitation to join the account\. After you accept the invitation, you can access the account and watsonx\.
+
+To switch to your organization's account:
+
+<!-- <ol> -->
+
+1.  Log in to watsonx with your personal credentials\.
+2.  Select your organization's account name from the account list on the page header\. If you don't see the account list, click the **Account Switcher**![Account Switcher icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/account_switcher.png) to open it\.
+
+<!-- </ol> -->
+
+To switch regions:
+
+<!-- <ol> -->
+
+1.  Select the region from the region list on the page header\. If you don't see the region list, click the **Region Switcher**![Region Switcher icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/region_switcher.png) to open it\.
+
+<!-- </ol> -->
+
+## Logging in to watsonx through IBM Cloud App ID (beta) ##
+
+IBM Cloud App ID integrates user authentication on IBM Cloud with user registries that are hosted on other identity providers\. If App ID is configured for your IBM Cloud account, your administrator provides an alias to log in to watsonx\. With App ID, you do not need to sign in to IBM Cloud\. Instead, you log in to watsonx with the App ID alias\.
+
+You cannot switch accounts when you log in through App ID\.
+
+To log in with App ID:
+
+<!-- <ol> -->
+
+1.  Go to watsonx and choose to log in with App ID (Beta)\.
+2.  Enter the alias that was [provided to you by your administrator](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-appid.html)\. You are redirected to your company's login page\.
+3.  Enter your company credentials on your company's login page\. You are redirected back to watsonx\.
+
+<!-- </ol> -->
+
+Select the **Remember App ID** checkbox to save the App ID alias for future logins\.
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  Go back to [Get started](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-wdp.html) and choose the right path for you\.
+ *  Add services from the services catalog\. See [Creating and managing services](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/create-services.html)\.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Get help](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html)
+ *  [Browser support](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/browser-support.html)
+ *  [Setting up IBM Cloud App ID (beta)](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-appid.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Getting started](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-wdp.html)
+
+<!-- </article "role="article" "> -->

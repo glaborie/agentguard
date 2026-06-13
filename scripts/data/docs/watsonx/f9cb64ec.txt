@@ -1,0 +1,9 @@
+# Specifying values and labels for nominal and ordinal data #
+
+Nominal (set) and ordinal (ordered set) measurement levels indicate that the data values are used discretely as a member of the set\. The storage types for a set can be string, integer, real number, or date/time\.
+
+The following controls are unique to nominal and ordinal fields\. You can use them to specify values and labels\. Select the desired field in the Type node settings and then click the gear icon at the end of its row\.
+
+Values and Labels\. You can specify values based on your knowledge of the current field\. You can enter expected values for the field and check the dataset's conformity to these values using the  Check options\. And you can specify lables for each value in the set\. Thse labels appear in a variety of locations, such as graphs, tables, output, and model browsers\.
+
+<!-- </article "role="article" "> -->

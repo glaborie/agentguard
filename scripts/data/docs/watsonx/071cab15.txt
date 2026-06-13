@@ -1,0 +1,70 @@
+# Federated Learning architecture #
+
+IBM Federated Learning has two main components: the aggregator and the remote training parties\. 
+
+## Aggregator ##
+
+The aggregator is a model fusion processor\. The admin manages the aggregator\.
+
+The aggregator runs the following tasks:
+
+<!-- <ul> -->
+
+ *  Runs as a platform service in regions Dallas, Frankfurt, London, or Tokyo\.
+ *  Starts with a Federated Learning experiment\.
+
+<!-- </ul> -->
+
+## Party ##
+
+A party is a user that provides model input to the Federated Learning experiment aggregator\. The party can be:
+
+<!-- <ul> -->
+
+ *  on any system that can run the Watson Machine Learning Python client and compatible with Watson Machine Learning frameworks\.
+    
+    Note:The system does not have to be specifically IBM watsonx. For a list of system requirements, see [Set up your system](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-setup.html).
+ *  running on the system in any geographical location\. You are recommended to locate each party in the same region where the data is to avoid data extraction out of different regions\.
+
+<!-- </ul> -->
+
+This illustration shows the architecture of IBM Federated Learning\.
+
+A Remote Training System is used to authenticate the party's identity to the aggregator during training\.
+
+![Illustration of the Federated Learning architecture](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl-arch.svg)
+
+## User workflow ##
+
+<!-- <ol> -->
+
+1.  The data scientist:
+    
+    <!-- <ol> -->
+    
+    1.  Identifies the data sources.
+    2.  Creates an initial "untrained" model.
+    3.  Creates a data handler file.  
+        These tasks might overlap with a training party entity.
+    
+    <!-- </ol> -->
+    
+2.  A party connects to the aggregator on their system, which can be remote\.
+3.  An admin controls the Federated Learning experiment by:
+    
+    <!-- <ol> -->
+    
+    1.  Configuring the experiment to accommodate remote parties.
+    2.  Starting the aggregator.
+    
+    <!-- </ol> -->
+    
+<!-- </ol> -->
+
+This illustration shows the actions that are associated with each role in the Federated Learning process\.
+
+![Illustration of the Federated Learning group workflow process](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl-workflow.svg)
+
+**Parent topic:**[Get started](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-get-started.html)
+
+<!-- </article "role="article" "> -->

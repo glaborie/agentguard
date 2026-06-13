@@ -1,0 +1,9 @@
+# Reducing input data string length #
+
+For binomial logistic regression, and auto classifier models that include a binomial logistic regression model, string fields are limited to a maximum of eight characters\. Where strings are more than eight characters, you can recode them using a Reclassify node\.
+
+This example uses the flow named  Reducing Input Data String Length, available in the example project \. The data file is  drug\_long\_name\.csv\.
+
+This example focuses on a small part of a flow to show the type of errors that may be generated with overlong strings, and explains how to use the Reclassify node to change the string details to an acceptable length\. Although the example uses a binomial Logistic Regression node, it is equally applicable when using the Auto Classifier node to generate a binomial Logistic Regression model\.
+
+<!-- </article "role="article" "> -->

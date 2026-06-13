@@ -1,0 +1,4 @@
+# Map charts #
+
+Map charts are commonly used to compare values and show categories across geographical regions\. Map charts are most beneficial when the data contains geographic information (countries, regions, states, counties, postal codes, and so on)\.
+<!-- </article "role="article" "> -->

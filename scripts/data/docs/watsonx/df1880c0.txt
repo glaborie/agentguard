@@ -1,0 +1,371 @@
+# Compute resource options for the notebook editor in projects #
+
+When you run a notebook in the notebook editor in a project, you choose an environment template, which defines the compute resources for the runtime environment\. The environment template specifies the type, size, and power of the hardware configuration, plus the software configuration\. For notebooks, environment templates include a supported language of Python and R\.
+
+<!-- <ul> -->
+
+ *  [Types of environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#types)
+ *  [Runtime releases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#runtime-releases)
+ *  [CPU environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#default-cpu)
+ *  [Spark environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#default-spark)
+ *  [GPU environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#default-gpu)
+ *  [Default hardware specifications for scoring models with Watson Machine Learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#wml)
+ *  [Data files in notebook environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#data-files)
+ *  [Compute usage by service](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#compute)
+ *  [Runtime scope](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#scope)
+ *  [Changing environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#change-env)
+
+<!-- </ul> -->
+
+## Types of environments ##
+
+You can use these types of environments for running notebook:
+
+<!-- <ul> -->
+
+ *  [Anaconda CPU environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#default-cpu) for standard workloads\.
+ *  [Spark environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#default-spark) for parallel processing that is provided by the platform or by other services\.
+ *  [GPU environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html?context=cdpaas&locale=en#default-gpu) for compute\-intensive machine learning models\.
+
+<!-- </ul> -->
+
+Most environment types for notebooks have default environment templates so you can get started quickly\. Otherwise, you can [create custom environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-customize-env-definition.html)\.
+
+<!-- <table> -->
+
+Environment types for notebooks
+
+| Environment type | Default templates | Custom templates |
+| ---------------- | ----------------- | ---------------- |
+| Anaconda CPU     | ✓                 | ✓                |
+| Spark clusters   | ✓                 | ✓                |
+| GPU              | ✓                 | ✓                |
+
+<!-- </table ""> -->
+
+## Runtime releases ##
+
+The default environments for notebooks are added as an affiliate of a runtime release and prefixed with `Runtime` followed by the release year and release version\.
+
+A runtime release specifies a list of key data science libraries and a language version, for example Python 3\.10\. All environments of a runtime release are built based on the library versions defined in the release, thus ensuring the consistent use of data science libraries across all data science applications\.
+
+The `Runtime 22.2` and `Runtime 23.1` releases are available for Python 3\.10 and R 4\.2\.
+
+While a runtime release is supported, IBM will update the library versions to address security requirements\. Note that these updates will not change the `<Major>.<Minor>` versions of the libraries, but only the `<Patch>` versions\. This ensures that your notebook assets will continue to run\.
+
+### Library packages included in Runtimes ###
+
+For specific versions of popular data science library packages included in Watson Studio runtimes refer to these tables:
+
+<!-- <table> -->
+
+Table 3\. Packages and their versions in the various Runtime releases for Python
+
+| Library       | Runtime 22\.2 on Python 3\.10 | Runtime 23\.1 on Python 3\.10 |
+| ------------- | ----------------------------- | ----------------------------- |
+| Keras         | 2\.9                          | 2\.12                         |
+| Lale          | 0\.7                          | 0\.7                          |
+| LightGBM      | 3\.3                          | 3\.3                          |
+| NumPy         | 1\.23                         | 1\.23                         |
+| ONNX          | 1\.12                         | 1\.13                         |
+| ONNX Runtime  | 1\.12                         | 1\.13                         |
+| OpenCV        | 4\.6                          | 4\.7                          |
+| pandas        | 1\.4                          | 1\.5                          |
+| PyArrow       | 8\.0                          | 11\.0                         |
+| PyTorch       | 1\.12                         | 2\.0                          |
+| scikit\-learn | 1\.1                          | 1\.1                          |
+| SciPy         | 1\.8                          | 1\.10                         |
+| SnapML        | 1\.8                          | 1\.13                         |
+| TensorFlow    | 2\.9                          | 2\.12                         |
+| XGBoost       | 1\.6                          | 1\.6                          |
+
+<!-- </table ""> -->
+
+<!-- <table> -->
+
+Table 4\. Packages and their versions in the various Runtime releases for R
+
+| Library       | Runtime 22\.2 on R 4\.2 | Runtime 23\.1 on R 4\.2 |
+| ------------- | ----------------------- | ----------------------- |
+| arrow         | 8\.0                    | 11\.0                   |
+| car           | 3\.0                    | 3\.0                    |
+| caret         | 6\.0                    | 6\.0                    |
+| catools       | 1\.18                   | 1\.18                   |
+| forecast      | 8\.16                   | 8\.16                   |
+| ggplot2       | 3\.3                    | 3\.3                    |
+| glmnet        | 4\.1                    | 4\.1                    |
+| hmisc         | 4\.7                    | 4\.7                    |
+| keras         | 2\.9                    | 2\.12                   |
+| lme4          | 1\.1                    | 1\.1                    |
+| mvtnorm       | 1\.1                    | 1\.1                    |
+| pandoc        | 2\.12                   | 2\.12                   |
+| psych         | 2\.2                    | 2\.2                    |
+| python        | 3\.10                   | 3\.10                   |
+| randomforest  | 4\.7                    | 4\.7                    |
+| reticulate    | 1\.25                   | 1\.25                   |
+| sandwich      | 3\.0                    | 3\.0                    |
+| scikit\-learn | 1\.1                    | 1\.1                    |
+| spatial       | 7\.3                    | 7\.3                    |
+| tensorflow    | 2\.9                    | 2\.12                   |
+| tidyr         | 1\.2                    | 1\.2                    |
+| xgboost       | 1\.6                    | 1\.6                    |
+
+<!-- </table ""> -->
+
+In addition to the libraries listed in the tables, runtimes include many other useful libraries\. To see the full list, select the **Manage** tab in your project, then click **Templates**, select the **Environments** tab, and then click on one of the listed environments\.
+
+## CPU environment templates ##
+
+You can select any of the following default CPU environment templates for notebooks\. The default environment templates are listed under **Templates** on the **Environments** page on the **Manage** tab of your project\.
+
+`DO` Indicates that the environment templates includes the CPLEX and the DOcplex libraries to model and solve decision optimization problems that exceed the complexity that is supported by the Community Edition of the libraries in the other default Python environments\. See [Decision Optimization notebooks](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/DONotebooks.html)\.
+
+`NLP` Indicates that the environment templates includes the Watson Natural Language Processing library with pre\-trained models for language processing tasks that you can run on unstructured data\. See [Using the Watson Natural Language Processing library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp.html)\. This default environment should be large enough to run the pre\-trained models\.
+
+<!-- <table> -->
+
+Default CPU environment templates for notebooks
+
+| Name                                       | Hardware configuration | CUH rate per hour |
+| ------------------------------------------ | ---------------------- | ----------------- |
+| Runtime 22\.2 on Python 3\.10 XXS          | 1 vCPU and 4 GB RAM    | 0\.5              |
+| Runtime 22\.2 on Python 3\.10 XS           | 2 vCPU and 8 GB RAM    | 1                 |
+| Runtime 22\.2 on Python 3\.10 S            | 4 vCPU and 16 GB RAM   | 2                 |
+| Runtime 23\.1 on Python 3\.10 XXS          | 1 vCPU and 4 GB RAM    | 0\.5              |
+| Runtime 23\.1 on Python 3\.10 XS           | 2 vCPU and 8 GB RAM    | 1                 |
+| Runtime 23\.1 on Python 3\.10 S            | 4 vCPU and 16 GB RAM   | 2                 |
+| DO \+ NLP Runtime 22\.2 on Python 3\.10 XS | 2 vCPU and 8 GB RAM    | 6                 |
+| NLP \+ DO Runtime 23\.1 on Python 3\.10 XS | 2 vCPU and 8 GB RAM    | 6                 |
+| Runtime 22\.2 on R 4\.2 S                  | 4 vCPU and 16 GB RAM   | 2                 |
+| Runtime 23\.1 on R 4\.2 S                  | 4 vCPU and 16 GB RAM   | 2                 |
+
+<!-- </table ""> -->
+
+You should stop all active CPU runtimes when you no longer need them to prevent consuming extra capacity unit hours (CUHs)\. See [CPU idle timeout](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html#stop-active-runtimes)\.
+
+### Notebooks and CPU environments ###
+
+When you open a notebook in edit mode in a CPU runtime environment, exactly one interactive session connects to a Jupyter kernel for the notebook language and the environment runtime that you select\. The runtime is started per single user and not per notebook\. This means that if you open a second notebook with the same environment template in the same project, a second kernel is started in the same runtime\. Runtime resources are shared by the Jupyter kernels that you start in the runtime\. Runtime resources are also shared if the CPU has GPU\.
+
+If you want to avoid sharing runtimes but want to use the same environment template for multiple notebooks in a project, you should create custom environment templates with the same specifications and associate each notebook with its own template\.
+
+If necessary, you can restart or reconnect to the kernel\. When you restart a kernel, the kernel is stopped and then started in the same session again, but all execution results are lost\. When you reconnect to a kernel after losing a connection, the notebook is connected to the same kernel session, and all previous execution results which were saved are available\.
+
+## Spark environment templates ##
+
+You can select any of the following default Spark environment templates for notebooks\. The default environment templates are listed under **Templates** on the **Environments** page on the **Manage** tab of your project\.
+
+<!-- <table> -->
+
+Default Spark environment templates for notebooks
+
+| Name                        | Hardware configuration                                                  | CUH rate per hour |
+| --------------------------- | ----------------------------------------------------------------------- | ----------------- |
+| Default Spark 3\.3 & R 4\.2 | 2 Executors each: 1 vCPU and 4 GB RAM;  <br>Driver: 1 vCPU and 4 GB RAM | 1                 |
+| Default Spark 3\.4 & R 4\.2 | 2 Executors each: 1 vCPU and 4 GB RAM;  <br>Driver: 1 vCPU and 4 GB RAM | 1                 |
+
+<!-- </table ""> -->
+
+You should stop all active Spark runtimes when you no longer need them to prevent consuming extra capacity unit hours (CUHs)\. See [Spark idle timeout](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html#stop-active-runtimes)\.
+
+### Large Spark environments ###
+
+If you have the Watson Studio Professional plan, you can create custom environment templates for larger Spark environments\.
+
+Professional plan users can have up to 35 executors and can choose from the following options for both driver and executor:
+
+<!-- <table> -->
+
+Hardware configurations for Spark environments
+
+| Hardware configuration |
+| ---------------------- |
+| 1 vCPU and 4 GB RAM    |
+| 1 vCPU and 8 GB RAM    |
+| 1 vCPU and 12 GB RAM   |
+
+<!-- </table ""> -->
+
+The CUH rate per hour increases by 0\.5 for every vCPU that is added\. For example, `1x Driver: 3vCPU with 12GB of RAM` and `4x Executors: 2vCPU with 8GB of RAM` amounts to `(3 + (4 * 2)) = 11 vCPUs` and `5.5 CUH`\.
+
+### Notebooks and Spark environments ###
+
+You can select the same Spark environment template for more than one notebook\. Every notebook associated with that environment has its own dedicated Spark cluster and no resources are shared\.
+
+When you start a Spark environment, extra resources are needed for the Jupyter Enterprise Gateway, Spark Master, and the Spark worker daemons\. These extra resources amount to 1 vCPU and 2 GB of RAM for the driver and 1 GB RAM for each executor\. You need to take these extra resources into account when selecting the hardware size of a Spark environment\. For example: if you create a notebook and select `Default Spark 3.3 & Python 3.10`, the Spark cluster consumes 3 vCPU and 12 GB RAM but, as 1 vCPU and 4 GB RAM are required for the extra resources, the resources remaining for the notebook are 2 vCPU and 8 GB RAM\.
+
+### File system on a Spark cluster ###
+
+If you want to share files across executors and the driver or kernel of a Spark cluster, you can use the shared file system at `/home/spark/shared`\.
+
+If you want to use your own custom libraries, you can store them under `/home/spark/shared/user-libs/`\. There are four subdirectories under `/home/spark/shared/user-libs/` that are pre\-configured to be made available to Python and R or Java runtimes\.
+
+The following tables lists the pre\-configured subdirectories where you can add your custom libaries\.
+
+<!-- <table> -->
+
+Table 5\. Pre\-configured subdirectories for custom libraries
+
+| Directory                               | Type of library    |
+| --------------------------------------- | ------------------ |
+| `/home/spark/shared/user-libs/python3/` | Python 3 libraries |
+| `/home/spark/shared/user-libs/R/`       | R packages         |
+| `/home/spark/shared/user-libs/spark2/`  | Java JAR files     |
+
+<!-- </table ""> -->
+
+To share libraries across a Spark driver and executors:
+
+<!-- <ol> -->
+
+1.  Download your custom libraries or JAR files to the appropriate pre\-configured directory\.
+2.  Restart the kernel from the notebook menu by clicking **Kernel > Restart Kernel**\. This loads your custom libraries or JAR files in Spark\.
+
+<!-- </ol> -->
+
+Note that these libraries are not persisted\. When you stop the environment runtime and restart it again later, you need to load the libraries again\.
+
+## GPU environment templates ##
+
+You can select the following GPU environment template for notebooks\. The environment templates are listed under **Templates** on the **Environments** page on the **Manage** tab of your project\.
+
+The GPU environment template names indicate the accelerator power\. The GPU environment templates include the Watson Natural Language Processing library with pre\-trained models for language processing tasks that you can run on unstructured data\. See [Using the Watson Natural Language Processing library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp.html)\.
+
+**~** Indicates that the environment template requires the Watson Studio Professional plan\. See [Offering plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/ws-plans.html)\.
+
+<!-- <table> -->
+
+Default GPU environment templates for notebooks
+
+| Name                                           | Hardware configuration                                | CUH rate per hour |
+| ---------------------------------------------- | ----------------------------------------------------- | ----------------- |
+| GPU V100 Runtime 22\.2 on Python 3\.10 **~**   | 40 vCPU \+ 172 GB RAM \+ 1 NVIDIA TESLA V100 (1 GPU)  | 68                |
+| GPU V100 Runtime 23\.1 on Python 3\.10 **~**   | 40 vCPU \+ 172 GB RAM \+ 1 NVIDIA TESLA V100 (1 GPU)  | 68                |
+| GPU 2xV100 Runtime 22\.2 on Python 3\.10 **~** | 80 vCPU and 344 GB RAM \+ 2 NVIDIA TESLA V100 (2 GPU) | 136               |
+| GPU 2xV100 Runtime 23\.1 on Python 3\.10 **~** | 80 vCPU and 344 GB RAM \+ 2 NVIDIA TESLA V100 (2 GPU) | 136               |
+
+<!-- </table ""> -->
+
+You should stop all active GPU runtimes when you no longer need them to prevent consuming extra capacity unit hours (CUHs)\. See [GPU idle timeout](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html#stop-active-runtimes)\.
+
+### Notebooks and GPU environments ###
+
+GPU environments for notebooks are available only in the Dallas IBM Cloud service region\.
+
+You can select the same Python and GPU environment template for more than one notebook in a project\. In this case, every notebook kernel runs in the same runtime instance and the resources are shared\. To avoid sharing runtime resources, create multiple custom environment templates with the same specifications and associate each notebook with its own template\.
+
+## Default hardware specifications for scoring models with Watson Machine Learning ##
+
+When you invoke the Watson Machine Learning API within a notebook, you consume compute resources from the Watson Machine Learning service as well as the compute resources for the notebook kernel\.
+
+You can select any of the following hardware specifications when you connect to Watson Machine Learning and create a deployment\.
+
+<!-- <table> -->
+
+Hardware specifications available when invoking the Watson Machine Learning service in a notebook
+
+| Capacity size | Hardware configuration      | CUH rate per hour |
+| ------------- | --------------------------- | ----------------- |
+| Extra small   | 1x4 = 1 vCPU and 4 GB RAM   | 0\.5              |
+| Small         | 2x8 = 2 vCPU and 8 GB RAM   | 1                 |
+| Medium        | 4x16 = 4 vCPU and 16 GB RAM | 2                 |
+| Large         | 8x32 = 8 vCPU and 32 GB RAM | 4                 |
+
+<!-- </table ""> -->
+
+## Data files in notebook environments ##
+
+If you are working with large data sets, you should store the data sets in smaller chunks in the IBM Cloud Object Storage associated with your project and process the data in chunks in the notebook\. Alternatively, you should run the notebook in a Spark environment\.
+
+Be aware that the file system of each runtime is non\-persistent and cannot be shared across environments\. To persist files in Watson Studio, you should use IBM Cloud Object Storage\. The easiest way to use IBM Cloud Object Storage in notebooks in projects is to leverage the [`project-lib` package for Python](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/project-lib-python.html) or the [`project-lib` package for R](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/project-lib-r.html)\.
+
+## Compute usage by service ##
+
+The notebook runtimes consumes compute resources as CUH from Watson Studio, while running default or custom environments\. You can monitor the Watson Studio CUH consumption in the project on the **Resource usage** page on the **Manage** tab of the project\.
+
+Notebooks can also consume CUH from the Watson Machine Learning service when the notebook invokes the Watson Machine Learning to score a model\. You can monitor the total monthly amount of CUH consumption for the Watson Machine Learning service on the **Resource usage** page on the **Manage** tab of the project\.
+
+### Track CUH consumption for Watson Machine Learning in a notebook ###
+
+To calculate capacity unit hours consumed by a notebook, run this code in the notebook:
+
+    CP =  client.service_instance.get_details()
+    CUH = CUH["entity"]["capacity_units"]/(3600*1000)
+    print(CUH)
+
+For example:
+
+    'capacity_units': {'current': 19773430}
+    
+    19773430/(3600*1000)
+
+returns 5\.49 CUH
+
+For details, see the Service Instances section of the [IBM Watson Machine Learning API](https://cloud.ibm.com/apidocs/machine-learning) documentation\.
+
+## Runtime scope ##
+
+Environment runtimes are always scoped to an environment template and a user within a project\. If different users in a project work with the same environment, each user will get a separate runtime\.
+
+If you select to run a version of a notebook as a scheduled job, each scheduled job will always start in a dedicated runtime\. The runtime is stopped when the job finishes\.
+
+## Changing the environment of a notebook ##
+
+You can switch environments for different reasons, for example, you can:
+
+<!-- <ul> -->
+
+ *  Select an environment with more processing power or more RAM
+ *  Change from using an environment without Spark to a Spark environment
+
+<!-- </ul> -->
+
+You can only change the environment of a notebook if the notebook is unlocked\. You can change the environment:
+
+<!-- <ul> -->
+
+ *  From the notebook opened in edit mode:
+    
+    <!-- <ol> -->
+    
+    1.  Save your notebook changes.
+    2.  Click the Notebook Info icon (![Notebook Info icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/get-information_32.png)) from the notebook toolbar and then click **Environment**.
+    3.  Select another template with the compute power and memory capacity from the list.
+    4.  Select **Change environment**. This stops the active runtime and starts the newly selected environment.
+    
+    <!-- </ol> -->
+    
+ *  From the **Assets** page of your project:
+    
+    <!-- <ol> -->
+    
+    1.  Select the notebook in the Notebooks section, click **Actions > Change Environment** and select another environment. The kernel must be stopped before you can change the environment. This new runtime environment will be instantiated the next time the notebook is opened for editing.
+    
+    <!-- </ol> -->
+    
+ *  In the notebook job by editing the job template\. See [Editing job settings](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html#view-job-details)\.
+
+<!-- </ul> -->
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  [Creating a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/creating-notebooks.html)
+ *  [Creating your own environment template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-customize-env-definition.html)
+ *  [Customizing an environment template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/customize-envs.html)
+ *  [Stopping active notebook runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html#stop-active-runtimes)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Monitoring account resource usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Compute resources for tools](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/environments-parent.html)
+
+<!-- </article "role="article" "> -->

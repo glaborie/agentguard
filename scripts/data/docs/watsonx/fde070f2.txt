@@ -1,0 +1,73 @@
+# Generic S3 connection #
+
+To access your data from a storage service that is compatible with the Amazon S3 API, create a connection asset for it\.
+
+## Create a Generic S3 connection ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  **Endpoint URL**: The endpoint URL to access to S3
+ *  **Bucket**(optional): The name of the bucket that contains the files
+ *  **Region** (optional): S3 region\. Specify a region that matches the regional endpoint\.
+ *  **Access key**: The access key (username) that authorizes access to S3
+ *  **Secret key**: The password associated with the Access key ID that authorizes access to S3
+ *  The SSL certificate of the trusted host\. The certificate is required when the host certificate is not signed by a known certificate authority\.
+ *  **Disable chunked encoding**: Select if the storage does not support chunked encoding\.
+ *  **Enable global bucket access**: Consult the documentation for your S3 data source for whether to select this property\.
+ *  **Enable path style access**: Consult the documentation for your S3 data source for whether to select this property\.
+
+<!-- </ul> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project**  
+Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space**  
+Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use the Generic S3 connection in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Generic S3 connection setup ##
+
+For setup information, consult the documentation of the S3\-compatible data source that you are connecting to\.
+
+## Supported file types ##
+
+The Generic S3 connection supports these file types: Avro, CSV, delimited text, Excel, JSON, ORC, Parquet, SAS, SAV, SHP, and XML\.
+
+**Related connection**: [Amazon S3 connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-amazon-s3.html)
+
+**Parent topic**: [Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

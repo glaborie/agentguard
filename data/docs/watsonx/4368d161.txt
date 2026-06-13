@@ -1,0 +1,13 @@
+# Storage and data access for IBM Watson Pipelines #
+
+Learn where files and data are stored outside of IBM Watson Pipelines and use it in a Pipelines\.
+
+## Access data on Cloud Object Storage ##
+
+File storage refers to the repository where you store assets to use with the pipeline\. It is a Cloud Object Storage bucket that is used as storage for a particular scope, such as a project or deployment space\.
+
+A storage location is referenced by a Cloud Object Storage data connection in its scope\. Refer to a file by pointing to a location such as an object key in a dedicated, self\-managed bucket\.
+
+**Parent topic:**[Creating a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-create.html)
+
+<!-- </article "role="article" "> -->

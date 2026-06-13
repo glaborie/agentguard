@@ -1,0 +1,33 @@
+# Uploading a custom asset in a Text Mining node #
+
+You can add a custom text analysis package (TAP) or template directly in the Text Mining node\. When your SPSS Modeler flow runs, it will use your custom asset\.
+
+## Procedure ##
+
+<!-- <ol> -->
+
+1.  If you want to download a TAP, save it locally\.
+    
+    <!-- <ol> -->
+    
+    1.  Click  Text analysis package while in the Text Analytics Workbench.
+    2.  Enter details about the asset, and then click  Submit. The text analysis package is saved locally as a  .tap file.
+    
+    <!-- </ol> -->
+    
+2.  If you want to download a template, see [Linguistic resources](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/tmwb-linguistic-resource.html#tmwb-templates-intro__DownloadAssetsSteps)\.
+3.  Add the TAP or template file to another Text Mining node\.
+    
+    <!-- <ol> -->
+    
+    1.  In the Text Mining node, click  Select resources.
+    2.  Click the  Text analysis package  or  Resource template tab depending on the asset you want.
+    3.  Click  Import , and then browse to or drag-and-drop your TAP or template.
+    4.  Enter details about the asset, and then click  Add. You can now see the uploaded TAP in the list of resources. It is also saved to your project as a project asset.
+    5.  Click  Ok.
+    
+    <!-- </ol> -->
+    
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

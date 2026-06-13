@@ -1,0 +1,10 @@
+# Data Asset node #
+
+You can use the Data Asset import node to pull in data from remote data sources using connections or from your local computer\. First, you must create the connection\.
+
+Note for connections to a Planning Analytics database, you must choose a view (not a cube)\.
+
+You can also pull in data from a local data file ( \.csv,  \.txt,  \.json,  \.xls,  \.xlsx,  \.sav, and  \.sas are supported)\. Only the first sheet is imported from spreadsheets\. In the node's properties, under  DATA, select one or more data files to upload\. You can also simply drag\-and\-drop the data file from your local file system onto your canvas\.
+
+Note: You can import a stream ( \.str) into  watsonx\.ai that was created in  SPSS Modeler Subscription or  SPSS Modeler client\. If the imported stream contains one or more import or export nodes, you'll be prompted to convert the nodes\. See [Importing an SPSS Modeler stream](https://dataplatform.cloud.ibm.com/docs/content/wsd/migration.html)\.
+<!-- </article "role="article" "> -->

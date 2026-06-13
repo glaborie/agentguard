@@ -7,7 +7,7 @@ This guide covers how to run AgentGuard locally for development and evaluation.
 To run AgentGuard locally, you need:
 
 - **Docker** with Compose v2
-- **Python 3.11+**
+- **Python 3.13+**
 - **~15 GB RAM** allocated to Docker
 - **NVIDIA GPU + drivers** if you want Ollama GPU acceleration  
   (CPU-only works, but will be slower)

@@ -1,0 +1,22 @@
+# Text Analytics Workbench #
+
+From a Text Mining modeling node, you can choose to launch an interactive Text Analytics Workbench session when your flow runs\. In this workbench, you can extract key concepts from your text data, build categories, explore patterns in text link analysis, and generate category models\.
+
+You can use the Text Analytics Workbench to explore the results and tune the configuration for the node\.
+
+Concepts
+:   Concepts are the key words and phrases identified and extracted from your text data, also referred to as extraction results\. These concepts are grouped into types\. You can use these concepts to explore your data and create your categories\. You can manage the concepts on the  Concepts tab\.
+
+Text links
+:   If you have text link analysis (TLA) pattern rules in your linguistic resources or are using a resource template that already has some TLA rules, you can extract patterns from your text data\. These patterns can help you uncover interesting relationships between concepts in your data\. You can also use these patterns as descriptors in your categories\. You can manage these on the  Text links tab\.
+
+Categories
+:   Using descriptors (such as extraction results, patterns, and rules) as a definition, you can manually or automatically create a set of categories\. Documents and records are assigned to these categories based on whether or not they contain a part of the category definition\. You can manage categories on the  Categories tab\.
+
+Resources
+:   The extraction process relies on a set of parameters and definitions from linguistic resources to govern how text is extracted and handled\. These are managed in the form of templates and libraries on the  Resource editor tab\.
+
+Figure 1\. Text Analytics Workbench
+
+![Text Analytics Workbench](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/ta_taw.png)
+<!-- </article "role="article" "> -->

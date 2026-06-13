@@ -1,0 +1,90 @@
+# PostgreSQL connection #
+
+To access your data in PostgreSQL, you must create a connection asset for it\.
+
+PostgreSQL is an open source and customizable object\-relational database\.
+
+## Supported versions ##
+
+<!-- <ul> -->
+
+ *  PostgreSQL 15\.0 and later
+ *  PostgreSQL 14\.0 and later
+ *  PostgreSQL 13\.0 and later
+ *  PostgreSQL 12\.0 and later
+ *  PostgreSQL 11\.0 and later
+ *  PostgreSQL 10\.1 and later
+ *  PostgreSQL 9\.6 and later
+
+<!-- </ul> -->
+
+## Create a connection to PostgreSQL ##
+
+To create the connection asset, you need the following connection details:
+
+<!-- <ul> -->
+
+ *  Database name
+ *  Hostname or IP address
+ *  Port number
+ *  Username and password
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use PostgreSQL connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## PostgreSQL setup ##
+
+[PostgreSQL installation](https://www.pgadmin.org/docs/pgadmin4/latest/getting_started.html)
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [SQL Syntax](https://www.postgresql.org/docs/current/sql-syntax.html) in the PostgreSQL documentation\.
+
+## Learn more ##
+
+[PostgreSQL documentation](https://www.postgresql.org/docs/)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

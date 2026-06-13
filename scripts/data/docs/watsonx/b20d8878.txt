@@ -1,0 +1,9 @@
+# Examining the data #
+
+For the first part of the process, imagine you have a flow that plots a number of graphs\. If the time series of temperature or power contains visible patterns, you could differentiate between impending error conditions or possibly predict their occurrence\. For both temperature and power, the flow plots the time series associated with the three different error codes on separate graphs, yielding six graphs\. Select nodes separate the data associated with the different error codes\.
+
+The graphs clearly display patterns distinguishing 202 errors from 101 and 303 errors\. The 202 errors show rising temperature and fluctuating power over time; the other errors don't\. However, patterns distinguishing 101 from 303 errors are less clear\. Both errors show even temperature and a drop in power, but the drop in power seems steeper for 303 errors\.
+
+Based on these graphs, it appears that the presence and rate of change for both temperature and power, as well as the presence and degree of fluctuation, are relevant to predicting and distinguishing faults\. These attributes should therefore be added to the data before applying the learning systems\.
+
+<!-- </article "role="article" "> -->

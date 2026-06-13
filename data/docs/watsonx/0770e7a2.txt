@@ -1,0 +1,19 @@
+# Streaming Time Series node #
+
+You use the Streaming Time Series node to build and score time series models in one step\. A separate time series model is built for each target field, however model nuggets are not added to the generated models palette and the model information cannot be browsed\.
+
+Methods for modeling time series data require a uniform interval between each measurement, with any missing values indicated by empty rows\. If your data does not already meet this requirement, you need to transform values as needed\.
+
+Other points of interest regarding Time Series nodes:
+
+<!-- <ul> -->
+
+ *  Fields must be numeric\.
+ *  Date fields cannot be used as inputs\.
+ *  Partitions are ignored\.
+
+<!-- </ul> -->
+
+The Streaming Time Series node estimates exponential smoothing, univariate Autoregressive Integrated Moving Average (ARIMA), and multivariate ARIMA (or transfer function) models for time series and produces forecasts based on the time series data\. Also available is an Expert Modeler, which attempts to automatically identify and estimate the best\-fitting ARIMA or exponential smoothing model for one or more target fields\.
+
+<!-- </article "role="article" "> -->

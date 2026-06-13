@@ -1,0 +1,244 @@
+# Federated Learning Tensorflow tutorial #
+
+This tutorial demonstrates the usage of Federated Learning with the goal of training a machine learning model with data from different users without having users share their data\. The steps are done in a low code environment with the UI and with a Tensorflow framework\.
+
+Note:This is a step\-by\-step tutorial for running a UI driven Federated Learning experiment\. To see a code sample for an API driven approach, see [Federated Learning Tensorflow samples](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-tf2-samples.html)\. Tip:In this tutorial, *admin* refers to the user that starts the Federated Learning experiment, and *party* refers to one or more users who send their model results after the experiment is started by the admin\. While the tutorial can be done by the admin and multiple parties, a single user can also complete a full runthrough as both the admin and the party\. For a simpler demonstrative purpose, in the following tutorial only one data set is submitted by one party\. For more information on the admin and party, see [Terminology](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-term.html)\.
+
+Watch this short video tutorial of how to create a Federated Learning experiment with Watson Studio\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+In this tutorial you will learn to:
+
+<!-- <ul> -->
+
+ *  [Step 1: Start Federated Learning as the admin](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-tf2-tutorial.html?context=cdpaas&locale=en#step-1)
+ *  [Step 2: Train model as a party](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-tf2-tutorial.html?context=cdpaas&locale=en#step-2)
+ *  [Step 3: Save and deploy the model online](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-tf2-tutorial.html?context=cdpaas&locale=en#step-3)
+
+<!-- </ul> -->
+
+## Step 1: Start Federated Learning as the admin ##
+
+In this tutorial, you train a Federated Learning experiment with a Tensorflow framework and the MNIST data set\.
+
+### Before you begin ###
+
+<!-- <ol> -->
+
+1.  Log in to [IBM Cloud](https://cloud.ibm.com/)\. If you don't have an account, create one with any email\.
+2.  [Create a Watson Machine Learning service instance](https://cloud.ibm.com/catalog/services/machine-learning) if you do not have it set up in your environment\.
+3.  Log in to [watsonx](https://dataplatform.cloud.ibm.com/home2?context=wx)\.
+4.  Use an existing [project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html) or create a new one\. You must have at least admin permission\.
+5.  Associate the Watson Machine Learning service with your project\.
+    
+    <!-- <ol> -->
+    
+    1.  In your project, click the **Manage > Service & integrations**.
+    2.  Click **Associate service**.
+    3.  Select your Watson Machine Learning instance from the list, and click **Associate**; or click **New service** if you do not have one to set up an instance.
+    
+    <!-- </ol> -->
+    
+    ![Screenshot of associating the service](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl_tut_add_wml_service.png)
+
+<!-- </ol> -->
+
+### Start the aggregator ###
+
+<!-- <ol> -->
+
+1.  Create the Federated learning experiment asset:
+    
+    <!-- <ol> -->
+    
+    1.  Click the **Assets** tab in your project.
+    2.  Click **New asset > Train models on distributed data**.
+    3.  Type a *Name* for your experiment and optionally a description.
+    4.  Verify the associated Watson Machine Learning instance under *Select a machine learning instance*. If you don't see a Watson Machine Learning instance associated, follow these steps:
+        
+        <!-- <ol> -->
+        
+        1.  Click **Associate a Machine Learning Service Instance**.
+        2.  Select an existing instance and click **Associate**, or create a **New service**.
+        3.  Click **Reload** to see the associated service.
+            
+            ![Screenshot of associating the service](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl_demo_2.png)
+        4.  Click **Next**.
+        
+        <!-- </ol> -->
+        
+    <!-- </ol> -->
+    
+2.  Configure the experiment\.
+    
+    <!-- <ol> -->
+    
+    1.  On the *Configure* page, select a *Hardware specification*.
+    2.  Under the *Machine learning framework* dropdown, select **Tensorflow 2**.
+    3.  Select a *Model type*.
+    4.  Download the [untrained model](https://github.com/IBMDataScience/sample-notebooks/raw/master/Files/tf_mnist_model.zip).
+    5.  Back in the Federated Learning experiment, click **Select** under *Model specification*.
+    6.  Drag the downloaded file named `tf_mnist_model.zip` onto the *Upload* file box.1. Select `runtime-22.2-py3.10` for the **Software Specification** dropdown.
+    7.  Give your model a name, and then click **Add**.
+        
+        ![Screenshot of importing an initial model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl_demo_3.png)
+    8.  Click **Weighted average** for the *Fusion method*, and click **Next**.
+        
+        ![Screenshot of Fusion methods UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl_demo_4.png)
+    
+    <!-- </ol> -->
+    
+3.  Define the hyperparameters\.
+    
+    <!-- <ol> -->
+    
+    1.  Accept the default hyperparameters or adjust as needed.
+    2.  When you are finished, click **Next**.
+    
+    <!-- </ol> -->
+    
+4.  Select remote training systems\.
+    
+    <!-- <ol> -->
+    
+    1.  Click **Add new systems**.
+        
+        ![Screenshot of Add RTS UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl_demo_7.png)
+    2.  Give your Remote Training System a name.
+    3.  Under **Allowed identities**, choose the user that is your party, and then click **Add**. In this tutorial, you can add a dummy user or yourself, for demonstrative purposes.  
+        This user must be added to your project as a collaborator with *Editor* or higher permissions. Add additional systems by repeating this step for each remote party you intent to use.
+    4.  When you are finished, click **Add systems**.
+        
+        ![Screenshot of adding users](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl_demo_8.png)
+    5.  Return to the *Select remote training systems* page, verify that your system is selected, and then click **Next**.
+    
+    <!-- </ol> -->
+    
+5.  Review your settings, and then click **Create**\.
+6.  Watch the status\. Your Federated Learning experiment status is *Pending* when it starts\. When your experiment is ready for parties to connect, the status will change to *Setup – Waiting for remote systems*\. This may take a few minutes\.
+7.  Click **View setup information** to download the party configuration and the party connector script that can be run on the remote party\.
+8.  Click the download icon besides each of the remote training systems that you created, and then click **Party connector script**\. This gives you the party connector script\. Save the script to a directory on your machine\.
+    
+    ![Screenshot of Training UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl-demo_9_2.png)
+
+<!-- </ol> -->
+
+## Step 2: Train model as the party ##
+
+Follow these steps to train the model as a party:
+
+<!-- <ol> -->
+
+1.  Ensure that you are using the same Python version as the admin\. Using a different Python version might cause compatibility issues\. To see Python versions compatible with different frameworks, see [Frameworks and Python version compatibility](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-frames.html#fl-py-fmwk)\.
+2.  Create a new local directory, and put your party connector script in it\.
+3.  [Download the data handler mnist\_keras\_data\_handler\.py](https://raw.githubusercontent.com/IBMDataScience/sample-notebooks/master/Files/mnist_keras_data_handler.py) by right\-clicking on it and click **Save link as**\. Save it to the same directory as the party connector script\.
+4.  [Download the MNIST handwriting data set](https://api.dataplatform.cloud.ibm.com/v2/gallery-assets/entries/903188bb984a30f38bb889102a1baae5/data) from our Samples\. In the the same directory as the party connector script, data handler, and the rest of your files, unzip it by running the unzip command `unzip MNIST-pkl.zip`\.
+5.  Install Watson Machine Learning\.
+    
+    <!-- <ul> -->
+    
+     *  If you are using Linux, run `pip install 'ibm-watson-machine-learning[fl-rt22.2-py3.10]'`.
+     *  If you are using Mac OS with M-series CPU and Conda, download the [installation script](https://raw.github.ibm.com/WML/federated-learning/master/docs/install_fl_rt22.2_macos.sh?token=AAAXW7VVQZF7LYMTX5VOW7DEDULLE) and then run `./install_fl_rt22.2_macos.sh <name for new conda environment>`.  
+        You now have the party connector script, `mnist_keras_data_handler.py`, `mnist-keras-test.pkl` and `mnist-keras-train.pkl`, data handler in the same directory.
+    
+    <!-- </ul> -->
+    
+6.  Your party connector script looks similar to the following\. Edit it by filling in the data file locations, the data handler, and API key for the user defined in the remote training system\. To get your API key, go to **Manage > Access(IAM) > API keys** in your [IBM Cloud account](https://cloud.ibm.com/iam/apikeys)\. If you don't have one, click **Create API key**, fill out the fields, and click **Create**\.
+    
+        from ibm_watson_machine_learning import APIClient
+         wml_credentials = {
+             "url": "https://us-south.ml.cloud.ibm.com",
+             "apikey": "<API KEY>"
+             }
+         wml_client = APIClient(wml_credentials)
+         wml_client.set.default_project("XXX-XXX-XXX-XXX-XXX")
+         party_metadata = {
+                     wml_client.remote_training_systems.ConfigurationMetaNames.DATA_HANDLER: {
+                     # Supply the name of the data handler class and path to it.
+                     # The info section may be used to pass information to the
+                     # data handler.
+                     # For example,
+                     #     "name": "MnistSklearnDataHandler",
+                     #     "path": "example.mnist_sklearn_data_handler",
+                     #     "info": {
+                     #         "train_file": pwd + "/mnist-keras-train.pkl",
+                     #         "test_file": pwd + "/mnist-keras-test.pkl"
+                     #     }
+                         "name": "<data handler>",
+                         "path": "<path to data handler>",
+                             "info": {
+                                 "<information to pass to data handler>"
+                             }
+                         }
+                     }
+         party = wml_client.remote_training_systems.create_party("XXX-XXX-XXX-XXX-XXX", party_metadata)
+         party.monitor_logs()
+         party.run(aggregator_id="XXX-XXX-XXX-XXX-XXX", asynchronous=False)
+7.  Run the party connector script: `python3 rts_<RTS Name>_<RTS ID>.py`\.  
+    From the UI you can monitor the status of your Federated Learning experiment.
+
+<!-- </ol> -->
+
+## Step 3: Save and deploy the model online ##
+
+In this section, you will learn to save and deploy the model that you trained\.
+
+<!-- <ol> -->
+
+1.  Save your model\.
+    
+    <!-- <ol> -->
+    
+    1.  In your completed Federated Learning experiment, click **Save model to project**.
+    2.  Give your model a name and click **Save**.
+    3.  Go to your project home.
+    
+    <!-- </ol> -->
+    
+2.  Create a deployment space, if you don't have one\.
+    
+    <!-- <ol> -->
+    
+    1.  From the navigation menu ![Navigation menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/navigation-menu.svg), click **Deployments**.
+    2.  Click **New deployment space**.
+    3.  Fill in the fields, and click **Create**.
+    
+    <!-- </ol> -->
+    
+3.  Promote the model to a space\.
+    
+    <!-- <ol> -->
+    
+    1.  Return to your project, and click the **Assets** tab.
+    2.  In the *Models* section, click the model to view its details page.
+    3.  Click **Promote to space**.
+    4.  Choose a deployment space for your trained model.
+    5.  Select the **Go to the model in the space after promoting it** option.
+    6.  Click **Promote**.
+    
+    <!-- </ol> -->
+    
+4.  When the model displays inside the deployment space, click **New deployment**\.
+    
+    <!-- <ol> -->
+    
+    1.  Select **Online** as the *Deployment type*.
+    2.  Specify a name for the deployment.
+    3.  Click **Create**.
+    
+    <!-- </ol> -->
+    
+5.  Click the **Deployments** tab to monitor your model's deployment status\.
+
+<!-- </ol> -->
+
+### Next steps ###
+
+Ready to create your own customized Federated Experiment? See the high level steps in [Creating your Federated Learning experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-start.html)\.
+
+**Parent topic:**[Federated Learning tutorial and samples](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-demo.html)
+
+<!-- </article "role="article" "> -->

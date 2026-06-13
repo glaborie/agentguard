@@ -1,0 +1,25 @@
+# extensionprocessnode properties #
+
+![Extension Transform node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/extensionprocessnode.png) With the Extension Transform node, you can take data from a flow and apply transformations to the data using R scripting or Python for Spark scripting\.
+
+<!-- <table "summary="extensionprocessnode properties" class="defaultstyle" "> -->
+
+extensionprocessnode properties  
+
+Table 1\. extensionprocessnode properties
+
+| `extensionprocessnode` properties | Data type                         | Property description                                                                      |
+| --------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------- |
+| `syntax_type`                     | *R**Python*                       | Specify which script runs – R or Python (R is the default)\.                              |
+| `r_syntax`                        | *string*                          | The R scripting syntax to run\.                                                           |
+| `python_syntax`                   | *string*                          | The Python scripting syntax to run\.                                                      |
+| `use_batch_size`                  | *flag*                            | Enable use of batch processing\.                                                          |
+| `batch_size`                      | *integer*                         | Specify the number of data records to include in each batch\.                             |
+| `convert_flags`                   | `StringsAndDoubles LogicalValues` | Option to convert flag fields\.                                                           |
+| `convert_missing`                 | *flag*                            | Option to convert missing values to the R NA value\.                                      |
+| `convert_datetime`                | *flag*                            | Option to convert variables with date or datetime formats to R date/time formats\.        |
+| `convert_datetime_class`          | `POSIXct POSIXlt`                 | Options to specify to what format variables with date or datetime formats are converted\. |
+
+<!-- </table "summary="extensionprocessnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

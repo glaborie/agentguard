@@ -1,0 +1,186 @@
+# Setting up IBM Cloud Object Storage for use with IBM watsonx #
+
+An IBM Cloud Object Storage service instance is provisioned automatically with a Lite plan when you join IBM watsonx\. Workspaces, such as projects, require IBM Cloud Object Storage to store files that are related to assets, including uploaded data files or notebook files\.
+
+You can also connect to IBM Cloud Object Storage as a data source\. See [IBM Cloud Object Storage connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cos.html)\.
+
+## Overview of setting up Cloud Object Storage ##
+
+To set up Cloud Object Storage, complete these tasks:
+
+<!-- <ol> -->
+
+1.  [Generate an administrative key](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#gen-key)\.
+2.  [Ensure that Global location is set in each user's profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#global)\.
+3.  [Provide access to Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#access)\.
+    
+    <!-- <ul> -->
+    
+     *  [Assign roles to enable access](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#assign).
+     *  [Enable storage delegation](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#stor-del).
+    
+    <!-- </ul> -->
+    
+4.  [Optional: Protect sensitive data](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#protect)\.
+5.  [Optional: Encrypt your IBM Cloud Object Storage instance with your own key](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#byok)\.
+
+<!-- </ol> -->
+
+Watch the following video to see how administrators set up Cloud Object Storage for use with Cloud Pak for Data as a Service\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Generate an administrative key ##
+
+You generate an administrative key for Cloud Object Storage by creating an initial test project\. The test project can be deleted after its creation\. Its sole purpose is to generate the key\.
+
+To automatically generate the administrative key for your Cloud Object Storage instance:
+
+<!-- <ol> -->
+
+1.  From the IBM watsonx main menu, select **Projects > View all projects** and then click **New project**\.
+2.  Specify to create an empty project\.
+3.  Enter a project name, such as "Test Project"\.
+4.  Select your Cloud Object Storage instance\.
+5.  Click **Create**\. The administrative key is generated\.
+6.  Delete the test project\.
+
+<!-- </ol> -->
+
+## Ensure that Global location is set for Cloud Object Storage in each user's profile ##
+
+Cloud Object Storage requires the Global location to be configured in each user's profile\. The Global location is configured automatically, but it might be changed by mistake\. An error occurs when a project is created if the Global location is not enabled in the user's profile\. Ask users to check that Global location is enabled\.
+
+[Check for the **Global** location in each user's profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/personal-settings.html)\.
+
+## Provide access to Cloud Object Storage ##
+
+You can provide different levels of access to Cloud Object Storage for people who need to work in IBM watsonx\. Using the storage delegation setting on the Cloud Object Storage instance, you can provide quick access to most users to create projects and catalogs\. However, another option is to provide targeted access by using IAM roles and access groups\. Role\-based access enacts stricter controls for viewing the Cloud Object Storage instance directly and for creating projects and catalogs\. If you decide to provide controlled access with IAM roles and access groups, you must disable storage delegation for the Cloud Object Storage instance\.
+
+You enable storage delegation for the Cloud Object Storage instance to provide access to nonadministrative users\. Users with minimal IAM permissions can create projects and catalogs, which automatically create buckets in the Cloud Object Storage instance\. See [Enable storage delegation for nonadministrative users](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#stor-del)\.
+
+You provide more controlled access with IAM roles and access groups\. For example, the Cloud Object Storage **Manager** role provides permissions to create projects and spaces together with the corresponding buckets in the Cloud Object Storage instance\. It also provides permissions to view all buckets and encryption root keys in the Cloud Object Storage instance, to view the metadata for a bucket and delete buckets, and to perform other administrative tasks that are related to buckets\. See [Assign roles to enable access](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html?context=cdpaas&locale=en#assign)\.
+
+No role assignments are needed for collaborators who work with the data in a project or catalog\. Users who are given collaborator roles can work in the project or catalog without storage delegation or an IAM role\. See [Project collaborator roles and permissions](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/collaborator-permissions.html)\.
+
+### Assign roles to enable access ###
+
+The IBM Cloud account owner or administrator assigns appropriate roles to users to provide access to Cloud Object Storage\. Storage delegation must be disabled when using role\-based access\.
+
+Rather than assigning each individual user a set of roles, you can create an access group\. Access groups expedite role assignments by grouping permissions\. For instructions on creating access groups, see [IBM Cloud docs: Setting up access groups](https://cloud.ibm.com/docs/account?topic=account-groups&interface=ui)\.
+
+### Enable storage delegation ###
+
+Storage delegation for the Cloud Object Storage instance allows nonadministrative users to create projects, the Platform assets catalog, and the corresponding Cloud Object Storage buckets\. Storage delegation provides wide access to Cloud Object Storage and allows users with minimal permissions to create projects\. Storage delegation for projects also includes deployment spaces\.
+
+To enable storage delegation for the Cloud Object Storage instance:
+
+<!-- <ol> -->
+
+1.  From the navigation menu, select **Administration > Configurations and settings > Storage delegation**\.
+2.  Set storage delegation for Projects to on\.
+3.  Optional\. If you want a non\-administrative user to create the Platform assets catalog, set storage delegation for Catalogs to on\.
+
+<!-- </ol> -->
+
+![Storage delegation](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/cos-delegation.png)
+
+## Optional: Encrypt your IBM Cloud Object Storage instance with your own key ##
+
+Encryption protects the data for your projects and catalogs\. Data at rest in Cloud Object Storage is encrypted by default with randomly generated keys that are managed by IBM\. For increased protection, you can create and manage your own encryption keys with IBM Key Protect\. IBM Key Protect for IBM Cloud is a centralized key management system for generating, managing, and deleting encryption keys used by IBM Cloud services\.
+
+For more information, see [IBM Cloud docs: IBM Key Protect for IBM Cloud](https://cloud.ibm.com/docs/services/key-protect?topic=key-protect-about#about)\.
+
+Not all [Watson Studio service plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/ws-plans.html) support the use of your own encryption keys\. Check your specific plan for details\.
+
+To encrypt your Cloud Object Storage instance with your own key, you need an instance of the IBM Key Project service\. Although Key Protect is a paid service, each account is allowed five keys without charge\.
+
+In IBM Cloud, provision Key Protect and generate a key:
+
+<!-- <ol> -->
+
+1.  Create an instance of Key Protect for your account from the IBM Cloud catalog\. See [IBM Cloud docs: Provisioning the Key Protect service](https://cloud.ibm.com/docs/key-protect?topic=key-protect-provision&interface=ui)\.
+2.  Grant a service authorization between your Key Protect instance and your Cloud Object Storage instance\. Do not associate a key with a bucket\. If you don't grant the authorization, users cannot create projects and catalogs with the Cloud Object Storage instance\. For more information, see [IBM Cloud docs: Using authorizations to grant access between services](https://cloud.ibm.com/docs/account?topic=account-serviceauth&interface=ui)\. You can also grant a service authorization for a root key from Watson Studio, by choosing **Manage > Access (IAM)**\.
+3.  Create a root key to protect your Cloud Object Storage instance\. See [IBM Cloud docs: Creating root keys](https://cloud.ibm.com/docs/key-protect?topic=key-protect-create-root-keys&interface=ui#create_root_keys)\.
+
+<!-- </ol> -->
+
+In IBM watsonx, add the key to the Cloud Object Storage instance:
+
+<!-- <ol> -->
+
+1.  Select **Administration > Configurations and settings > Storage delegation**\.
+2.  Slide the toggle for **Projects**, **Catalogs**, or both to select data for encryption with your key\.
+3.  Click **Add\.\.\.** under **Encryption keys** to add an encryption key\.
+4.  Select the **Key Protect instance** and the **Key Protect key**\.
+5.  Click **OK** to add the encryption key\.
+
+<!-- </ol> -->
+
+Important: If you change or remove the key, you lose access to existing encrypted data in the Cloud Object Storage instance\.
+
+## Optional: Protect sensitive data stored on Cloud Object Storage ##
+
+When you join IBM watsonx, a single Cloud Object Storage instance is automatically provisioned for you\. The Cloud Object Storage instance contains separate buckets for each project to store data assets and related files\. The ability to create projects and thus to add buckets to Cloud Object Storage is available only to users with the Platform **Administrator** role and the **Manager** role for the Cloud Object Storage Service\. Although only users with these roles can create projects and their accompanying buckets, any user with the **Editor** or **Viewer** role can see the data files\. For some businesses, the data files contain sensitive information and require stricter access controls\.
+
+### Control access to Cloud Object Storage with multiple instances ###
+
+For paid plans, you can control access to sensitive data files by creating one or more Cloud Object Storage instances and assigning access to specific users\. Project creators select the appropriate Cloud Object Storage instance when they create a project\. The data assets and files for the project are stored in a bucket in the selected instance\. Users with **Editor** or **Viewer** roles can work in the projects, but they cannot see the assets directly in the related Cloud Object Storage bucket\. You can assign access to a specific Cloud Object Storage instance either to an individual user or to an access group\. You must be the account owner or administrator to create service instances and assign access\.
+
+Extra fees are not incurred by creating more than one Cloud Object Storage instances because charges are determined by overall storage utilization\. The number of instances is not a factor for Cloud Object Storage fees\.
+
+Only one instance of Cloud Object Storage is allowed for the Lite plan\. You can change your pricing plan from the IBM Cloud catalog\.
+
+To create a Cloud Object Storage instance and assign access:
+
+<!-- <ol> -->
+
+1.  Select **Services > Services catalog** from the navigation menu\.
+2.  Select **Storage > Cloud Object Storage**\.
+3.  Click **Create**\. A Service name is generated for you on IBM Cloud\.
+4.  Select **Manage > Access(IAM)**\.
+5.  Select **Users** or **Access groups**\.
+6.  Click **Assign access**\.
+7.  In the **Services** list, choose Cloud Object Storage\.
+8.  For **Resources**, choose:
+    
+    <!-- <ul> -->
+    
+     *  Scope = Specific resources
+     *  Attribute type = Service instance
+     *  Operator = string equals
+     *  Value = name of Cloud Object Storage
+    
+    <!-- </ul> -->
+    
+9.  **For Roles and actions**, choose:
+    
+    <!-- <ul> -->
+    
+     *  Service access = Manager
+     *  Platform access = Administrator
+    
+    <!-- </ul> -->
+    
+10. Click **Add** and **Assign**\.
+
+<!-- </ol> -->
+
+The specified Cloud Object Storage instance can be accessed only by the user or access group with the Service role of Manager and the Platform role of Administrator\. Other users can work in the projects but cannot create projects or view assets directly in the bucket\.
+
+## Next step ##
+
+Finish the remaining steps for [setting up the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Security for IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-overview.html)
+ *  [Data security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-data.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Setting up the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)
+
+<!-- </article "role="article" "> -->

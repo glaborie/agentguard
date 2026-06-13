@@ -1,0 +1,86 @@
+# Watson Machine Learning Python client samples and examples #
+
+Review and use sample Jupyter Notebooks that use Watson Machine Learning Python library to demonstrate machine learning features and techniques\. Each notebook lists learning goals so you can find the one that best meets your goals\.
+
+## Training and deploying models from notebooks ##
+
+If you choose to build a machine learning model in a notebook, you must be comfortable with coding in a Jupyter Notebook\. A Jupyter Notebook is a web\-based environment for interactive computing\. You can run small pieces of code that process your data, and then immediately view the results of your computation\. Using this tool, you can assemble, test, and run all of the building blocks you need to work with data, save the data to Watson Machine Learning, and deploy the model\.
+
+## Learn from sample notebooks ##
+
+Many ways exist to build and train models and then deploy them\. Therefore, the best way to learn is to look at annotated samples that step you through the process by using different frameworks\. Review representative samples that demonstrate key features\.
+
+The samples are built by using the V4 version of the Watson Machine Learning [Python client library](https://ibm.github.io/watson-machine-learning-sdk/)\.
+
+Video disclaimer: Some minor steps and graphical elements in the videos might differ from your deployment\.
+
+Watch this video to learn how to train, deploy, and test a machine learning model in a Jupyter Notebook\. This video mirrors the **Use scikit\-learn to recognize hand\-written digits** found in the *Deployment samples* table\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+Watch this video to learn how to test a model that was created with AutoAI by using the Watson Machine Learning APIs in Jupyter Notebook\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+### Helpful variables ###
+
+Use the pre\-defined `PROJECT_ID` environment variable to call the Watson Machine Learning Python client APIs\. `PROJECT_ID` is the guide of the project where your environment is running\.
+
+## Deployment samples ##
+
+View or run these Jupyter Notebooks to see how techniques are implemented by using various frameworks\. Some of the samples rely on trained models, which are also available for you to download from the public repository\.
+
+<!-- <table> -->
+
+| Sample name                                                                                                                                                      | Framework     | Techniques demonstrated                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Use scikit\-learn and custom library to predict temperature](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/9365d34eeacef267026a2b75b92bfa2f)                                       | Scikit\-learn | Train a model with custom defined transformer  <br>Persist the custom\-defined transformer and the model in Watson Machine Learning repository  <br>Deploy the model by using Watson Machine Learning Service  <br>Perform predictions that use the deployed model                                                                                                                                                               |
+| [Use PMML to predict iris species](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/8bddf7f7e5d004a009c643750b16f5b4)                                                                                                                             | PMML          | Deploy and score a PMML model                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Use Python function to recognize hand\-written digits](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/1eddc77b3a4340d68f762625d40b64f9)                                                   | Python        | Use a function to store a sample model, then deploy the sample model\.                                                                                                                                                                                                                                                                                                                                                           |
+| [Use scikit\-learn to recognize hand\-written digits](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e20607d75c8473daaade1e77c21717d4)                                                       | Scikit\-learn | Train sklearn model  <br>Persist trained model in Watson Machine Learning repository  <br>Deploy model for online scoring by using client library  <br>Score sample records by using client library                                                                                                                                                                                                                              |
+| [Use Spark and batch deployment to predict customer churn](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e20607d75c8473daaade1e77c21719c1)                                                                                                     | Spark         | Load a CSV file into an Apache Spark DataFrame  <br>Explore data  <br>Prepare data for training and evaluation  <br>Create an Apache Spark machine learning pipeline  <br>Train and evaluate a model  <br>Persist a pipeline and model in Watson Machine Learning repository  <br>Explore and visualize prediction result by using the plotly package  <br>Deploy a model for batch scoring by using Watson Machine Learning API |
+| [Use Spark and Python to predict Credit Risk](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e20607d75c8473daaade1e77c2173364)                                                                                                                  | Spark         | Load a CSV file into an Apache® Spark DataFrame  <br>Explore data  <br>Prepare data for training and evaluation  <br>Persist a pipeline and model in Watson Machine Learning repository from tar\.gz files  <br>Deploy a model for online scoring by using Watson Machine Learning API  <br>Score sample data by using the Watson Machine Learning API  <br>Explore and visualize prediction results by using the plotly package |
+| [Use SPSS to predict customer churn](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e20607d75c8473daaade1e77c2175eb9)                                                                                                                           | SPSS          | Work with the instance  <br>Perform an online deployment of the SPSS model  <br>Score data by using deployed model                                                                                                                                                                                                                                                                                                               |
+| [Use XGBoost to classify tumors](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/ac820b22cc976f5cf6487260f4c8d9c8)                                                                                                                               | XGBoost       | Load a CSV file into numpy array  <br>Explore data  <br>Prepare data for training and evaluation  <br>Create an XGBoost machine learning model  <br>Train and evaluate a model  <br>Use cross\-validation to optimize the model's hyperparameters  <br>Persist a model in Watson Machine Learning repository  <br>Deploy a model for online scoring  <br>Score sample data                                                       |
+| [Predict business for cars](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/61a8b600f1bb183e2c471e7a64299f0e)                                                                                                                                    | Spark         | Download an externally trained Keras model with dataset\.  <br>Persist an external model in the Watson Machine Learning repository\.  <br>Deploy a model for online scoring by using client library\.  <br>Score sample records by using client library\.                                                                                                                                                                        |
+| [Deploy Python function for software specification](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/56825df5322b91daffd39426038808e9)                                                                                                            | Core          | Create a Python function  <br>Create a web service  <br>Score the model                                                                                                                                                                                                                                                                                                                                                          |
+| [Machine Learning artifact management](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/55ef73c276cd1bf2bae266613d08c0f3)                                                                                                                         | Core          | Export and import artifacts  <br>Load, deploy, and score externally created models                                                                                                                                                                                                                                                                                                                                               |
+| [Use Decision Optimization to plan your diet](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/5502accad754a3c5dcb3a08f531cea5a)                                                                                                                  | Core          | Create a diet planning model by using Decision Optimization                                                                                                                                                                                                                                                                                                                                                                      |
+| [Use SPSS and batch deployment with Db2 to predict customer churn](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e5e78be14e2260ccb4bcf8181d0955ef)                                                                                             | SPSS          | Load a CSV file into an Apache Spark DataFrame  <br>Explore data  <br>Prepare data for training and evaluation  <br>Persist a pipeline and model in Watson Machine Learning repository from tar\.gz files  <br>Deploy a model for online scoring by using Watson Machine Learning API  <br>Score sample data by using the Watson Machine Learning API  <br>Explore and visualize prediction results by using the plotly package  |
+| [Use scikit\-learn and AI lifecycle capabilities to predict Boston house prices](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/8bddf7f7e5d004a009c643750b1c7b47) | Scikit\-learn | Load a sample data set from scikit\-learn  <br>Explore data  <br>Prepare data for training and evaluation  <br>Create a scikit\-learn pipeline  <br>Train and evaluate a model  <br>Store a model in the Watson Machine Learning repository  <br>Deploy a model with AutoAI lifecycle capabilities                                                                                                                               |
+| [German credit risk prediction with Scikit\-learn for model monitoring](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/f63c83c7368d2487c943c91a9a28ad67)                   | Scikit\-learn | Train, create, and deploy a credit risk prediction model with monitoring                                                                                                                                                                                                                                                                                                                                                         |
+| [Monitor German credit risk model](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/48e9f342365736c7bb7a8dfc481bca6e)                                                                                                                             | Scikit\-learn | Train, create, and deploy a credit risk prediction model with IBM Watson OpenScale capabilities                                                                                                                                                                                                                                                                                                                                  |
+
+<!-- </table ""> -->
+
+## AutoAI samples ##
+
+View or run these Jupyter Notebooks to see how AutoAI model techniques are implemented\.
+
+<!-- <table> -->
+
+| Sample name                                    | Framework                 | Techniques demonstrated                                                                                                                                                                                                                            |
+| ---------------------------------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Use AutoAI and Lale to predict credit risk](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/8bddf7f7e5d004a009c643750b16d0c0) | Hybrid (AutoAI) with Lale | Work with Watson Machine Learning experiments to train AutoAI models  <br>Compare trained models quality and select the best one for further refinement  <br>Refine the best model and test new variations  <br>Deploy and score the trained model |
+| [Use AutoAI to predict credit risk](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/029d77a73d72a4134c81383d6f103330)          | Hybrid (AutoAI)           | Work with Watson Machine Learning experiments to train AutoAI models  <br>Compare trained models quality and select the best one for further refinement  <br>Refine the best model and test new variations  <br>Deploy and score the trained model |
+
+<!-- </table ""> -->
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  To learn more about using notebook editors, see [Notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebooks-and-scripts.html)\.
+ *  To learn more about working with notebooks, see [Coding and running notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/code-run-notebooks.html)\.
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  To learn more about authenticating in a notebook, see [Authentication](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html)\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Managing predictive deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+
+<!-- </article "role="article" "> -->

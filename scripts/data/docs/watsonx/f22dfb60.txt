@@ -1,0 +1,4 @@
+# Line charts #
+
+A line chart plots a series of data points on a graph and connects them with lines\. A line chart is useful for showing trend lines with subtle differences, or with data lines that cross one another\. You can use a line chart to summarize categorical variables, in which case it is similar to a bar chart (see [Bar charts](https://dataplatform.cloud.ibm.com/docs/content/dataview/chart_creation_barcharts.html#chart_creation_barcharts) )\. Line charts are also useful for time\-series data\.
+<!-- </article "role="article" "> -->

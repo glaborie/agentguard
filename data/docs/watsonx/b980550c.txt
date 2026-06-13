@@ -1,0 +1,26 @@
+# Modeling Assistant models #
+
+You can model and solve  Decision Optimization problems using the  Modeling Assistant (which enables you to formulate models in natural language)\. This requires little to no knowledge of Operational Research (OR) and does not require you to write Python code\. The  Modeling Assistant is **only available in English** and is not globalized\.
+
+The basic workflow to create a model with the  Modeling Assistant and examine it under different scenarios is as follows:
+
+<!-- <ol> -->
+
+1.  Create a project\.
+2.  Add a Decision Optimization  experiment (a scenario is created by default in the  experiment UI)\.
+3.  Add and import your data into the scenario\.
+4.  Create a natural language model in the scenario, by first selecting your  decision domain and then using the  Modeling Assistant to guide you\.
+5.  Run the model to solve it and explore the solution\.
+6.  Create visualizations of solution and data\.
+7.  Copy the scenario and edit the model and/or the data\.
+8.  Solve the new scenario to see the impact of these changes\.
+
+<!-- </ol> -->
+
+![Workflow showing the previously mentioned steps](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/images/new_overviewcognitive-3.jpg)
+
+This is demonstrated with a simple [planning and scheduling example ](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/exhousebuild.html#cogusercase)\.
+
+For more information about deployment see \.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,66 @@
+# Keyword extraction and ranking #
+
+The Watson Natural Language Processing Keyword extraction with ranking block extracts noun phrases from input text based on their relevance\.
+
+**Block name**
+
+`keywords_text-rank_<language>_stock`
+
+**Supported language**
+
+Keyword extraction with text ranking is available for the following languages\. For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes)\.
+
+ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pt, ro, ru, sk, sv, tr, zh\-cn
+
+**Capabilities**
+
+The keywords and text rank block ranks noun phrases extracted from an input document based on how relevant they are within the document\.
+
+<!-- <table> -->
+
+Capabilities of keyword extraction and ranking based on an example
+
+| Capabilities                                    | Examples                                                                                                                                             |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ranks extracted noun phrases based on relevance | "Anna went to school at University of California Santa Cruz\. Anna joined the university in 2015\." \-> Anna, University of California Santa Cruz |
+
+<!-- </table ""> -->
+
+**Dependencies on other blocks**
+
+The following blocks must run before you can run the Keyword extraction with ranking block:
+
+<!-- <ul> -->
+
+ *  `syntax_izumo_<language>_stock`
+ *  `noun-phrases_rbr_<language>_stock`
+
+<!-- </ul> -->
+
+**Code sample**
+
+    import watson_nlp
+    text = "Anna went to school at University of California Santa Cruz. Anna joined the university in 2015."
+    
+    # Load Syntax, Noun Phrases and Keywords models for English
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    noun_phrases_model = watson_nlp.load('noun-phrases_rbr_en_stock')
+    keywords_model = watson_nlp.load('keywords_text-rank_en_stock')
+    
+    # Run the Syntax and Noun Phrases models
+    syntax_prediction = syntax_model.run(text, parsers=('token', 'lemma', 'part_of_speech'))
+    noun_phrases = noun_phrases_model.run(text)
+    
+    # Run the keywords model
+    keywords = keywords_model.run(syntax_prediction, noun_phrases, limit=2)
+    print(keywords)
+
+Output of the code sample:
+
+    'keywords': 
+           [{'text': 'University of California Santa Cruz', 'relevance': 0.939524, 'count': 1},
+            {'text': 'Anna', 'relevance': 0.891002, 'count': 2}]
+
+**Parent topic:**[Watson Natural Language Processing task catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)
+
+<!-- </article "role="article" "> -->

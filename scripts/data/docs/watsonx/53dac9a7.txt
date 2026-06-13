@@ -1,0 +1,61 @@
+# Configuring a classification or regression experiment #
+
+AutoAI offers experiment settings that you can use to configure and customize your classification or regression experiments\.
+
+## Experiment settings overview ##
+
+After you upload the experiment data and select your experiment type and what to predict, AutoAI establishes default configurations and metrics for your experiment\. You can accept these defaults and proceed with the experiment or click **Experiment settings** to customize configurations\. By customizing configurations, you can precisely control how the experiment builds the candidate model pipelines\.
+
+Use the following tables as a guide to experiment settings for classification and regression experiments\. For details on configuring a time series experiment, see [Building a time series experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-timeseries.html)\.
+
+## Prediction settings ##
+
+Most of the prediction settings are on the main **General** page\. Review or update the following settings\.
+
+<!-- <table> -->
+
+| Setting                       | Description                                                                                                                                                                                                                                                                                                                                                             |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Prediction type               | You can change or override the prediction type\. For example, if AutoAI only detects two data classes and configures a binary classification experiment but you know that there are three data classes, you can change the type to *multiclass*\.                                                                                                                       |
+| Positive class                | For binary classification experiments optimized for *Precision*, *Average Precision*, *Recall*, or *F1*, a positive class is required\. Confirm that the Positive Class is correct or the experiment might generate inaccurate results\.                                                                                                                                |
+| Optimized metric              | Change the metric for optimizing and ranking the model candidate pipelines\.                                                                                                                                                                                                                                                                                            |
+| Optimized algorithm selection | Choose how AutoAI selects the algorithms to use for generating the model candidate pipelines\. You can optimize for the alorithms with the best score, or optimize for the algorithms with the highest score in the shortest run time\.                                                                                                                                 |
+| Algorithms to include         | Select which of the available algorithms to evaluate when the experiment is run\. The list of algorithms are based on the selected prediction type\.                                                                                                                                                                                                                    |
+| Algorithms to use             | AutoAI tests the specified algorithms and use the best performers to create model pipelines\. Choose how many of the best algorithms to apply\. Each algorithm generates 4\-5 pipelines, which means that if you select 3 algorithms to use, your experiment results will include 12 \- 15 ranked pipelines\. More algorithms increase the runtime for the experiment\. |
+
+<!-- </table ""> -->
+
+### Data fairness settings ###
+
+Click the *Fairness* tab to evaluate your experiment for fairness in predicted outcomes\. For details on configuring fairness detection, see [Applying fairness testing to AutoAI experiments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-fairness.html)\.
+
+## Data source settings ##
+
+The *General* tab of data source settings provides options for configuring how the experiment consumes and processes the data for training and evaluating the experiment\.
+
+<!-- <table> -->
+
+| Setting                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Duplicate rows                      | To accelerate training, you can opt to skip duplicate rows in your training data\.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Pipeline selection subsample method | For a large data set, use a subset of data to train the experiment\. This option speeds up results but might affect accuracy\.                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Data imputation                     | Interpolate missing values in your data source\. For details on managing data imputation, see [Data imputation in AutoAI experiments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-imputation.html)\.                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Text feature engineering            | When enabled, columns that are detected as text are transformed into vectors to better analyze semantic similarity between strings\. Enabling this setting might increase run time\. For details, see [Creating a text analysis experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-text-analysis.html)\.                                                                                                                                                                                                                                                                                                                                                              |
+| Final training data set             | Select what data to use for training the final pipelines\. If you choose to include training data only, the generated notebooks include a cell for retrieving the holdout data that is used to evaluate each pipeline\.                                                                                                                                                                                                                                                                                                                                                                                      |
+| Outlier handling                    | Choose whether AutoAI excludes outlier values from the target column to improve training accuracy\. If enabled, AutoAI uses the interquartile range (IQR) method to detect and exclude outliers from the final training data, whether that is training data only or training plus holdout data\.                                                                                                                                                                                                                                                                                                             |
+| Training and holdout method         | Training data is used to train the model, and holdout data is withheld from training the model and used to measure the performance of the model\. You can either split a singe data source into training and testing (holdout) data, or you can use a second data file specifically for the testing data\. If you split your training data, specify the percentages to use for training data and holdout data\. You can also specify the number of folds, from the default of three folds to a maximum of 10\. Cross validation divides training data into folds, or groups, for testing model performance\. |
+| Select features to include          | Select columns from your data source that contain data that supports the prediction column\. Excluding extraneous columns can improve run time\.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+
+<!-- </table ""> -->
+
+## Runtime settings ##
+
+Review experiment settings or change the compute resources that are allocated for running the experiment\.
+
+## Next steps ##
+
+[Configure a text analysis experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-text-analysis.html)
+
+**Parent topic:**[Building an AutoAI model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-build.html)
+
+<!-- </article "role="article" "> -->

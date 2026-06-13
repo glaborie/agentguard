@@ -1,0 +1,4 @@
+# Q\-Q plots #
+
+Q\-Q (quantile\-quantile) plots compare two probability distributions by plotting their quantiles against each other\. A Q–Q plot is used to compare the shapes of distributions, providing a graphical view of how properties such as location, scale, and skewness are similar or different in the two distributions\.
+<!-- </article "role="article" "> -->

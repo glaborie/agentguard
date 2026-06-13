@@ -1,0 +1,92 @@
+# Teradata connection #
+
+To access your data in Teradata, you must create a connection asset for it\.
+
+Teradata provides database and analytics\-related services and products\.
+
+## Supported versions ##
+
+Teradata databases 15\.10, 16\.10, 17\.00, 17\.10, and 17\.20
+
+## Create a connection to Teradata ##
+
+To create the connection asset, you need the following connection details:
+
+<!-- <ul> -->
+
+ *  Database name
+ *  Hostname or IP address
+ *  Port number
+ *  Client character set: **IMPORTANT**: Do not enter a value unless you are instructed by IBM support\. The character set value overrides the Teradata JDBC drivers normal mapping of the Teradata session character sets\. Data corruption can occur if you specify the wrong character set\. If no value is specified, UTF16 is used\.
+ *  Authentication method: Select the security mechanism to use to authenticate the user:
+    
+    <!-- <ul> -->
+    
+     *  **TD2 (Teradata Method 2)**: Use the Teradata security mechanism.
+     *  **LDAP**: Use an LDAP security mechanism for external authentication.
+    
+    <!-- </ul> -->
+    
+ *  Username and password
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Teradata connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Decision Optimization
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [Teradata SQL documentation](https://docs.teradata.com/reader/eWpPpcMoLGQcZEoyt5AjEg/9iudpbZXGZ_rAb7c6PL54g) for the correct syntax\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Teradata documentation](https://docs.teradata.com/)
+ *  [Teradata Community](https://support.teradata.com/community)
+
+<!-- </ul> -->
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+*Teradata JDBC Driver 17\.00\.00\.03 Copyright (C) 2023 by Teradata\. All rights reserved\. IBM provides embedded usage of the Teradata JDBC Driver under license from Teradata solely for use as part of the IBM Watson service offering\.*
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,19 @@
+# applylogregnode properties #
+
+You can use Logistic modeling nodes to generate a Logistic model nugget\. The scripting name of this model nugget is *applylogregnode*\. For more information on scripting the modeling node itself, [logregnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/logregnodeslots.html#logregnodeslots)\.
+
+<!-- <table "summary="applylogregnode properties" id="logregnuggetnodeslots__table_s2w_gdj_cdb" class="defaultstyle" "> -->
+
+applylogregnode properties  
+
+Table 1\. applylogregnode properties
+
+| `applylogregnode` Properties | Values | Property description |
+| ---------------------------- | ------ | -------------------- |
+| `calculate_raw_propensities` | *flag* |                      |
+| `calculate_conf`             | *flag* |                      |
+| `enable_sql_generation`      | *flag* |                      |
+
+<!-- </table "summary="applylogregnode properties" id="logregnuggetnodeslots__table_s2w_gdj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

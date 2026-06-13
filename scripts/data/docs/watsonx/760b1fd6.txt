@@ -1,0 +1,110 @@
+# Stop using services or IBM watsonx #
+
+You can stop using any services or IBM watsonx at any time, whether you are accessing the services from your own or someone else's IBM Cloud account\.
+
+The method you choose to stop using IBM watsonx depends on your goal:
+
+<!-- <ul> -->
+
+ *  To remove your access to IBM watsonx in all IBM Cloud accounts that you belong to, [leave IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/stopapps.html?context=cdpaas&locale=en#deactivate)\.
+ *  To stop the use of a service in your IBM Cloud account, [delete your service](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/stopapps.html?context=cdpaas&locale=en#deleteapps) in your IBM Cloud account\.
+ *  To stop all use of all IBM Cloud services in your account, [delete your IBM Cloud account](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/stopapps.html?context=cdpaas&locale=en#deletecloud)\.
+
+<!-- </ul> -->
+
+When other users in your account stop using IBM watsonx, they are cleaned up appropriately\.
+
+### Leave IBM watsonx ###
+
+If you want to leave IBM watsonx:
+
+<!-- <ol> -->
+
+1.  Log in to IBM watsonx\.
+2.  Click your avatar and then **Profile**\.
+3.  On the **Profile** page, click **Leave watsonx**\. If you change your mind about leaving, you can [sign up to re\-activate your profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html)\.
+
+<!-- </ol> -->
+
+Use this process when you want to stop using IBM watsonx, you are not the account owner, and you want to keep your IBM Cloud account\.
+
+These are the results when you leave IBM watsonx:
+
+<!-- <ul> -->
+
+ *  Your profile is deleted and you can't log in to IBM watsonx\.
+ *  Your projects and deployment spaces remain until you delete your services\.
+ *  Your IBM Cloud account remains active\.
+ *  Your IBM Cloud services are not affected\.
+
+<!-- </ul> -->
+
+## Delete a service ##
+
+To remove any of your services:
+
+<!-- <ol> -->
+
+1.  Log in to IBM watsonx\.
+2.  Click **Administration > Services > Service instances**\.
+3.  Click the menu next to the service you want to remove and choose **Delete**\.
+
+<!-- </ol> -->
+
+This action is the same as deleting the service in IBM Cloud\. If you change your mind within 30 days, you can get your services and data back by reprovisioning the service\.
+
+These are the results when you delete the Watson Studio service:
+
+<!-- <ul> -->
+
+ *  Your IBM watsonx profile remains\.
+ *  You can no longer access that service from that IBM Cloud account\.
+ *  You can still access your services from other accounts\.
+ *  Your billing for that service stops\.
+ *  Your data in IBM Cloud Object Storage remains\.
+ *  Your projects remain\.
+ *  You remain a collaborator in all your projects in other IBM Cloud accounts\.
+
+<!-- </ul> -->
+
+## Closing a IBM Cloud account ##
+
+If you want to stop using IBM Cloud services altogether and delete all your data, you can deactivate your IBM Cloud account\. Follow these steps to close your Lite account:
+
+<!-- <ol> -->
+
+1.  Sign in to your IBM Cloud account\.
+2.  In the IBM Cloud console, go to the **Manage > Account > Account settings** page\.
+3.  Click **Close Account**\. After an account is closed for 30 days, all data is deleted and all services are removed\.
+
+<!-- </ol> -->
+
+If you are not the owner of the account, you do not see a **Close Account** button\.
+
+These are the results when your IBM Cloud account is in the Canceled state:
+
+<!-- <ul> -->
+
+ *  All your data in IBM Cloud is permanently deleted in 30 days\.
+ *  The projects and catalogs in your account are deleted\.
+ *  Your IBM watsonx profile and your IBM Cloud profile are deleted\.
+ *  All the IBM Cloud services in you account are deleted in 30 days\.
+ *  You are removed as a collaborator from projects and catalogs in other accounts within 30 days\.
+
+<!-- </ul> -->
+
+If you want to close a Pay\-As\-You\-Go or Subscription account, contact [Support](https://cloud.ibm.com/unifiedsupport/supportcenter)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Removing users from the account or from the workspace](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-removeusers.html)
+ *  [IBM Cloud docs: Leaving an account](https://cloud.ibm.com/docs/account?topic=account-account-membership)
+ *  [IBM Cloud docs: Managing your account settings](https://cloud.ibm.com/docs/account?topic=account-account_settings)
+
+<!-- </ul> -->
+
+**Parent topic:**[Managing IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,15 @@
+# Inaccessible training data #
+
+![icon for explainability risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-explainability.svg)Risks associated with outputExplainabilityAmplified
+
+### Description ###
+
+Without access to the training data, the types of explanations a model can provide are limited and more likely to be incorrect\.
+
+### Why is inaccessible training data a concern for foundation models? ###
+
+Low quality explanations without source data make it difficult for users, model validators, and auditors to understand and trust the model\.
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

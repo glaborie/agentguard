@@ -1,0 +1,72 @@
+# Managing IBM watsonx #
+
+As the owner or an administrator of the IBM Cloud account, you can monitor and manage services and the platform\.
+
+<!-- <ul> -->
+
+ *  [Configuring services](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html?context=cdpaas&locale=en#core)
+
+<!-- </ul> -->
+
+An IBM Cloud account administrator is a user in the account who was assigned the **Administrator** role in IBM Cloud for the All Identity and Access enabled services option in IAM\. If you're not sure of your roles, see [Determine your roles](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/your-roles.html)\.
+
+You perform some administrative tasks within IBM watsonx, and others in IBM Cloud\. Some tasks require steps in both areas, depending on your goals\.
+
+## Configuring services ##
+
+The services that are included in watsonx\.ai are Watson Studio and Watson Machine Learning\.
+
+<!-- <table> -->
+
+| Task                                                            | In IBM watsonx? | In IBM Cloud? |
+| --------------------------------------------------------------- | --------------- | ------------- |
+| [Manage services in IBM Cloud](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/create-services.html#manage)                                | ✓               | ✓             |
+| [Switch service region](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html?context=cdpaas&locale=en#region)                                       | ✓               |               |
+| [Upgrade your IBM Cloud account](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/upgrade.html#account)                              | ✓               | ✓             |
+| [Upgrade your services](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/upgrade.html#app)                                       | ✓               |               |
+| [Configure private service endpoints](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/endpoints-vrf.html)                         |                 | ✓             |
+| [Remove users](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-removeusers.html)                                                | ✓               | ✓             |
+| [Stop using IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/stopapps.html)                                      | ✓               | ✓             |
+| [Monitor account resource usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html)                              | ✓               | ✓             |
+| [View and manage environment runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html#monitor-cuh)                        | ✓               |               |
+| [Set up IBM Cloud Object Storage for use with IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html)    | ✓               | ✓             |
+| [Manage users and access](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-access.html)                                     | ✓               | ✓             |
+| [Set resources scope](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html)                                         | ✓               |               |
+| [Set type of credentials for connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html)  | ✓               |               |
+| [Manage IBM Cloud account in IBM Cloud](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html)    |                 | ✓             |
+| [Manage all projects in the account](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-manage-projects.html)                          | ✓               | ✓             |
+| [Secure IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-overview.html)                                          | ✓               | ✓             |
+| [Set up IBM Cloud App ID (beta)](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-appid.html) |                 | ✓             |
+| [Delegate encryption keys for IBM Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html#byok)       | ✓               | ✓             |
+
+<!-- </table ""> -->
+
+## Switch service region ##
+
+The platform and services are available in multiple IBM Cloud service regions and you can have services in more than one region\. Your projects, catalogs, and data are specific to the region in which they were saved and can be accessed only from your services in that region\. If you provision Watson Studio services in both the Dallas and the Frankfurt regions, you can't access projects that you created in the Frankfurt region from the Dallas region\.
+
+To switch your service region:
+
+<!-- <ol> -->
+
+1.  Log in to IBM watsonx\.
+2.  Click the **Region Switcher**![Region Switcher icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/region_switcher.png) in the home page header\.
+3.  Select the region that contains your services and projects\.
+
+<!-- </ol> -->
+
+For wider browsers, you can select the region from the dropdown menu\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Watson Studio offering plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/ws-plans.html)
+ *  [Watson Machine Learning plans and compute usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html)
+ *  [Roles in the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/roles.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Administration](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/administer-accounts.html)
+
+<!-- </article "role="article" "> -->

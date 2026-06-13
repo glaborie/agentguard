@@ -1,0 +1,13 @@
+# RFM Analysis node #
+
+You can use the Recency, Frequency, Monetary (RFM) Analysis node to determine quantitatively which customers are likely to be the best ones by examining how recently they last purchased from you (recency), how often they purchased (frequency), and how much they spent over all transactions (monetary)\.
+
+The reasoning behind RFM analysis is that customers who purchase a product or service once are more likely to purchase again\. The categorized customer data is separated into a number of bins, with the binning criteria adjusted as you require\. In each of the bins, customers are assigned a score; these scores are then combined to provide an overall RFM score\. This score is a representation of the customer's membership in the bins created for each of the RFM parameters\. This binned data may be sufficient for your needs, for example, by identifying the most frequent, high\-value customers; alternatively, it can be passed on in a flow for further modeling and analysis\.
+
+Note, however, that although the ability to analyze and rank RFM scores is a useful tool, you must be aware of certain factors when using it\. There may be a temptation to target customers with the highest rankings; however, over\-solicitation of these customers could lead to resentment and an actual fall in repeat business\. It is also worth remembering that customers with low scores should not be neglected but instead may be cultivated to become better customers\. Conversely, high scores alone do not necessarily reflect a good sales prospect, depending on the market\. For example, a customer in bin 5 for recency, meaning that they have purchased very recently, may not actually be the best target customer for someone selling expensive, longer\-life products such as cars or televisions\.
+
+Note: Depending on how your data is stored, you may need to precede the RFM Analysis node with an RFM Aggregate node to transform the data into a usable format\. For example, input data must be in customer format, with one row per customer; if the customers' data is in transactional form, use an RFM Aggregate node upstream to derive the recency, frequency, and monetary fields\.
+
+The RFM Aggregate and RFM Analysis nodes in are set up to use independent binning; that is, they rank and bin data on each measure of recency, frequency, and monetary value, without regard to their values or the other two measures\.
+
+<!-- </article "role="article" "> -->

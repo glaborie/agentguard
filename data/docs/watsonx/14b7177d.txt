@@ -1,0 +1,183 @@
+# Managing outdated software specifications or frameworks #
+
+Use these guidelines when you are updating assets that refer to outdated software specifications or frameworks\.
+
+In some cases, asset update is seamless\. In other cases, you must retrain or redeploy the assets\. For general guidelines, refer to [Migrating assets that refer to discontinued software specifications](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#discont-soft-spec) or [Migrating assets that refer to discontinued framework versions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#discont-framewrk)\.
+
+For more information, see the following sections:
+
+<!-- <ul> -->
+
+ *  [Updating software specifications](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#update-soft-specs)
+ *  [Updating a machine learning model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#upgrade-model)
+ *  [Updating a Python function](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#upgr-function)
+ *  [Retraining an SPSS Modeler flow](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#retrain-spss)
+
+<!-- </ul> -->
+
+## Managing assets that refer to discontinued software specifications ##
+
+<!-- <ul> -->
+
+ *  During migration, assets that refer to the discontinued software specification are mapped to a comparable\-supported default software specification (only in cases where the model type is still supported)\.
+ *  When you create new deployments of the migrated assets, the updated software specification in the asset metadata is used\.
+ *  Existing deployments of the migrated assets are updated to use the new software specification\. If deployment or scoring fails due to framework or library version incompatibilities, follow the instructions in [Updating software specifications](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#update-soft-specs)\. If the problem persists, follow the steps that are listed in [Updating a machine learning model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#upgrade-model)\.
+
+<!-- </ul> -->
+
+## Migrating assets that refer to discontinued framework versions ##
+
+<!-- <ul> -->
+
+ *  During migration, model types are not be updated\. You must manually update this data\. For more information, see [Updating a machine learning model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#upgrade-model)\.
+ *  After migration, the existing deployments are removed and new deployments for the deprecated framework are not allowed\.
+
+<!-- </ul> -->
+
+## Updating software specifications ##
+
+You can update software specifications from the UI or by using the API\. For more information, see the following sections:
+
+<!-- <ul> -->
+
+ *  [Updating software specifications from the UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#update-soft-specs-ui)
+ *  [Updating software specifications by using the API](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#update-soft-specs-api)
+
+<!-- </ul> -->
+
+### Updating software specifications from the UI ###
+
+<!-- <ol> -->
+
+1.  From the deployment space, click the model (make sure it does not have any active deployments\.)
+2.  Click the `i` symbol to check model details\.
+3.  Use the dropdown list to update the software specification\.
+
+<!-- </ol> -->
+
+Refer to the example image:
+
+![Updating software specifications through the UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/update-software-spec-via-ui.png)
+
+### Updating software specifications by using the API ###
+
+You can update a software specification by using the API Patch command:
+
+For `software_spec` field, type `/software_spec`\. For `value` field, use either the ID or the name of the new software specification\.
+
+Refer to this example:
+
+    curl -X PATCH '<deployment endpoint url>/ml/v4/models/6f01d512-fe0f-41cd-9a52-1e200c525c84?space_id=f2ddb8ce-7b10-4846-9ab0-62454a449802&project_id=<project_id>&version=<YYYY-MM-DD>' \n--data-raw '[
+       {
+          "op":"replace",
+          "path":"/software_spec",
+          "value":{
+             "id":"6f01d512-fe0f-41cd-9a52-1e200c525c84"   // or "name":"tensorflow_rt22.1-py3.9"
+          }
+       }
+    ]'
+
+For more information, see [Updating an asset by using the Patch API command](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-update.html#update-asset-api)\.
+
+## Updating a machine learning model ##
+
+Follow these steps to update a model built with a deprecated framework\.
+
+### Option 1: Save the model with a compatible framework ###
+
+<!-- <ol> -->
+
+1.  Download the model by using either the Watson Machine Learning [REST API](https://cloud.ibm.com/apidocs/machine-learning) or the Watson Machine Learning [Python client library](https://ibm.github.io/watson-machine-learning-sdk/)\.
+    
+    The following example shows how to download your model:
+    
+        client.repository.download(<model-id>, filename="xyz.tar.gz")
+2.  Edit model metadata with the model type and version that is supported in the current release\. For more information, see [Software specifications and hardware specifications for deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/pm_service_supported_frameworks.html)\.
+    
+    The following example shows how to edit model metadata:
+    
+        model_metadata = {
+           client.repository.ModelMetaNames.NAME: "example model",
+           client.repository.ModelMetaNames.DESCRIPTION: "example description",
+           client.repository.ModelMetaNames.TYPE: "<new model type>",
+           client.repository.ModelMetaNames.SOFTWARE_SPEC_UID:
+           client.software_specifications.get_uid_by_name("<new software specification name>")
+        }
+3.  Save the model to the Watson Machine Learning repository\. The following example shows how to save the model to the repository:
+    
+        model_details = client.repository.store_model(model="xyz.tar.gz", meta_props=model_metadata)
+4.  Deploy the model\.
+5.  Score the model to generate predictions\.
+
+<!-- </ol> -->
+
+If deployment or scoring fails, the model is not compatible with the new version that was used for saving the model\. In this case, use [Option 2](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#retrain-option2)\.
+
+### Option 2: Retrain the model with a compatible framework ###
+
+<!-- <ol> -->
+
+1.  Retrain the model with a model type and version that is supported in the current version\.
+2.  Save the model with the supported model type and version\.
+3.  Deploy and score the model\.
+
+<!-- </ol> -->
+
+It is also possible to update a model by using the API\. For more information, see [Updating an asset by using the Patch API command](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-update.html#update-asset-api)\.
+
+## Updating a Python function ##
+
+Follow these steps to update a Python function built with a deprecated framework\.
+
+### Option 1: Save the Python function with a compatible runtime or software specification ###
+
+<!-- <ol> -->
+
+1.  Download the Python function by using either the Watson Machine Learning [REST API](https://cloud.ibm.com/apidocs/machine-learning) or the Watson Machine Learning [Python client library](https://ibm.github.io/watson-machine-learning-sdk/)\.
+2.  Save the Python function with a supported runtime or software specification version\. For more information, see [Software specifications and hardware specifications for deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/pm_service_supported_frameworks.html)\.
+3.  Deploy the Python function\.
+4.  Score the Python function to generate predictions\.
+
+<!-- </ol> -->
+
+If your Python function fails during scoring, the function is not compatible with the new runtime or software specification version that was used for saving the Python function\. In this case, use [Option 2](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html?context=cdpaas&locale=en#modify-option2)\.
+
+### Option 2: Modify the function code and save it with a compatible runtime or software specification ###
+
+<!-- <ol> -->
+
+1.  Modify the Python function code to make it compatible with the new runtime or software specification version\. In some cases, you must update dependent libraries that are installed within the Python function code\.
+2.  Save the Python function with the new runtime or software specification version\.
+3.  Deploy and score the Python function\.
+
+<!-- </ol> -->
+
+It is also possible to update a function by using the API\. For more information, see [Updating an asset by using the Patch API command](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-update.html#update-asset-api)\.
+
+## Retraining an SPSS Modeler flow ##
+
+Some models that were built with SPSS Modeler in IBM Watson Studio Cloud before 1 September 2020 can no longer be deployed by using Watson Machine Learning\. This problem is caused by an upgrade of the Python version in supported SPSS Modeler runtimes\. If you're using one of the following six nodes in your SPSS Modeler flow, you must rebuild and redeploy your models with SPSS Modeler and Watson Machine Learning:
+
+<!-- <ul> -->
+
+ *  XGBoost Tree
+ *  XGBoost Linear
+ *  One\-Class SVM
+ *  HDBSCAN
+ *  KDE Modeling
+ *  Gaussian Mixture
+
+<!-- </ul> -->
+
+To retrain your SPSS Modeler flow, follow these steps:
+
+<!-- <ul> -->
+
+ *  If you're using the Watson Studio user interface, open the SPSS Modeler flow in Watson Studio, retrain, and save the model to Watson Machine Learning\. After you save the model to the project, you can promote it to a deployment space and create a new deployment\.
+ *  If you're using [REST API](https://cloud.ibm.com/apidocs/machine-learning) or [Python client](https://ibm.github.io/watson-machine-learning-sdk/), retrain the model by using SPSS Modeler and save the model to the Watson Machine Learning repository with the model type `spss-modeler-18.2`\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Frameworks and software specifications](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-frame-and-specs.html)
+
+<!-- </article "role="article" "> -->

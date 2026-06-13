@@ -1,0 +1,18 @@
+# Forecasting catalog sales #
+
+A catalog company is interested in forecasting monthly sales of its men's clothing line, based on 10 years of their sales data\.
+
+This example uses the flow  Forecasting Catalog Sales, available in the example project \. The data file is  catalog\_seasfac\.csv\.
+
+We've seen in an earlier tutorial how you can let the Expert Modeler decide which is the most appropriate model for your time series\. Now it's time to take a closer look at the two methods that are available when choosing a model yourself—exponential smoothing and ARIMA\.
+
+To help you decide on an appropriate model, it's a good idea to plot the time series first\. Visual inspection of a time series can often be a powerful guide in helping you choose\. In particular, you need to ask yourself:
+
+<!-- <ul> -->
+
+ *  Does the series have an overall trend? If so, does the trend appear constant or does it appear to be dying out with time?
+ *  Does the series show seasonality? If so, do the seasonal fluctuations seem to grow with time or do they appear constant over successive periods?
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

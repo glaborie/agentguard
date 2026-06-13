@@ -1,0 +1,26 @@
+# Text Analytics #
+
+SPSS Modeler offers nodes that are specialized for handling text\.
+
+The Text Analytics nodes offer powerful text analytics capabilities, using advanced linguistic technologies and Natural Language Processing (NLP) to rapidly process a large variety of unstructured text data and, from this text, extract and organize the key concepts\. Text Analytics can also group these concepts into categories\.
+
+Around 80% of data held within an organization is in the form of text documents—for example, reports, web pages, e\-mails, and call center notes\. Text is a key factor in enabling an organization to gain a better understanding of their customers' behavior\. A system that incorporates NLP can intelligently extract concepts, including compound phrases\. Moreover, knowledge of the underlying language allows classification of terms into related groups, such as products, organizations, or people, using meaning and context\. As a result, you can quickly determine the relevance of the information to your needs\. These extracted concepts and categories can be combined with existing structured data, such as demographics, and applied to modeling in  SPSS Modeler to yield better and more\-focused decisions\.
+
+Linguistic systems are knowledge sensitive—the more information contained in their dictionaries, the higher the quality of the results\. Text Analytics provides a set of linguistic resources, such as dictionaries for terms and synonyms, libraries, and templates\. These nodes further allow you to develop and refine these linguistic resources to your context\. Fine\-tuning of the linguistic resources is often an iterative process and is necessary for accurate concept retrieval and categorization\. Custom templates, libraries, and dictionaries for specific domains, such as CRM and genomics, are also included\.
+
+Tips for getting started:
+
+<!-- <ul> -->
+
+ *  Watch the following video for an overview of Text Analytics\.
+ *  See the [Hotel satisfaction example for Text Analytics](https://dataplatform.cloud.ibm.com/docs/content/wsd/tutorials/tut_ta_hotel.html)\.
+
+<!-- </ul> -->
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+[https://video\.ibm\.com/embed/channel/23952663/video/spss\-text\-analytics\-workbench](https://video.ibm.com/embed/channel/23952663/video/spss-text-analytics-workbench)
+
+<!-- </article "role="article" "> -->

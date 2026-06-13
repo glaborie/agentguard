@@ -1,0 +1,57 @@
+# Managing all projects in the account #
+
+If you have the required permission, you can view and manage all projects in your IBM Cloud account\. You can add yourself to a project so that you can delete it or change its collaborators\.
+
+## Requirements ##
+
+To manage all projects in the account, you must:
+
+<!-- <ul> -->
+
+ *  Restrict resources to the current account\. See steps to [set the scope for resources](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html#set-the-scope-for-resources)\.
+ *  Have the **Manage projects** permission that is provided by the IAM **Manager** role for the IBM Cloud Pak for Data service\.
+
+<!-- </ul> -->
+
+## Assigning the Manage projects permission ##
+
+To grant the **Manage projects** permission to a user who is already in your IBM Cloud account:
+
+<!-- <ol> -->
+
+1.  From the navigation menu, choose **Administration > Access (IAM)** to open the **Manage access and users** page in your IBM Cloud account\.
+2.  Select the user on the **Users** page\.
+3.  Click the **Access** tab and then choose **Assign access\+**\.
+4.  Select **Access policy**\.
+5.  For **Service**, choose **IBM Cloud Pak for Data**\.
+6.  For **Service access**, select the **Manager** role\.
+7.  For **Platform access**, assign the **Editor** role\.
+8.  Click **Add** and **Assign** to assign the policy to the user\.
+
+<!-- </ol> -->
+
+## Managing projects ##
+
+You can add yourself to a project when you need to delete the project, delete collaborators, or assign the **Admin** role to a collaborator in the project\. To manage projects:
+
+<!-- <ul> -->
+
+ *  View all active projects on the **Projects** page in IBM watsonx by clicking the drop\-down menu next to the search field and selecting **All active projects**\.
+ *  Join any project as **Admin** by clicking **Join as admin** in the **Your role** column\.
+ *  Filter projects to identify which projects you are not a collaborator in, by clicking the filter icon ![Filter icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/filter.svg) and selecting **Your role > No membership**\.
+
+<!-- </ul> -->
+
+For more details on managing projects, see [Administering projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/admin-project.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Administering projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/admin-project.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Managing IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html)
+
+<!-- </article "role="article" "> -->

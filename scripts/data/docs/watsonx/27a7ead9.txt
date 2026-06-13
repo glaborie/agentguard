@@ -1,0 +1,6 @@
+# Table node #
+
+The Table node creates a table that lists the values in your data\. All fields and all values in the stream are included, making this an easy way to inspect your data values or export them in an easily readable form\. Optionally, you can highlight records that meet a certain condition\.
+
+Note: Unless you are working with small datasets, we recommend that you select a subset of the data to pass into the Table node\. The Table node cannot display properly when the number of records surpasses a size that can be contained in the display structure (for example, 100 million rows)\.
+<!-- </article "role="article" "> -->

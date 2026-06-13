@@ -13,6 +13,7 @@ data/bm25_index.pkl.tmp
 .pytest_cache/
 Agentic_Plan.md
 PLAN.md
+skills-lock.json
 .sync_feedback_state.json
 .online_eval_state.json
 .build_dataset_state.json
@@ -24,6 +25,7 @@ coverage.xml
 .arize/
 .agents/
 graphify-out/
+tmp/
 runtime_config.json
 !.claude/
 !.claude/agentguard-files.md

@@ -1,0 +1,24 @@
+# Federated Learning Tensorflow samples #
+
+Download and review sample files that show how to run a Federated Learning experiment by using API calls with a Tensorflow Keras model framework\.
+
+To see a step\-by\-step UI driven approach rather than sample files, see the [Federated Learning Tensorflow tutorial for UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-tf2-tutorial.html)\.
+
+## Download the Federated Learning sample files ##
+
+The Federated Learning sample has two parts, both in Jupyter Notebook format that can run in the latest Python environment\.
+
+For single\-user demonstrative purposes, the Notebooks are placed in a project\. Access the [Federated Learning project](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/cab78523832431e767c41527a42a6727), and click **Create project** to get all the sample files at once\.
+
+You can also get the Notebook separately\. Since, for practical purposes of Federated Learning, one user would run the admin Notebook and multiple users would run the party Notebook\. For more details on the admin and party, see [Terminology](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-term.html)\.
+
+<!-- <ol> -->
+
+1.  [Federated Learning Tensorflow Demo Part 1 \- for Admin](https://github.com/IBMDataScience/sample-notebooks/blob/master/CloudPakForData/notebooks/4.7/Federated_Learning_TF_Demo_Part_1.ipynb)
+2.  [Federated Learning Tensorflow Demo Part 2 \- for Party](https://github.com/IBMDataScience/sample-notebooks/blob/master/CloudPakForData/notebooks/4.7/Federated_Learning_TF_Demo_Part_2.ipynb)
+
+<!-- </ol> -->
+
+**Parent topic:**[Federated Learning tutorial and samples](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-demo.html)
+
+<!-- </article "role="article" "> -->

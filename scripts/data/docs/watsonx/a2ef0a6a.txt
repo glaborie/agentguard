@@ -1,0 +1,104 @@
+# Comparison of IBM watsonx as a Service and Cloud Pak for Data as a Service #
+
+IBM watsonx as a Service and Cloud Pak for Data as a Service have similar platform functionality and are compatible in many ways\. The watsonx platform provides a subset of the tools and services that are provided by Cloud Pak for Data as a Service\. However, watsonx\.ai and watsonx\.governance on watsonx provide more functionality than the same set of tools on Cloud Pak for Data as a Service\.
+
+<!-- <ul> -->
+
+ *  [Common platform functionality](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/compare-platforms.html?context=cdpaas&locale=en#platform)
+ *  [Services on each platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/compare-platforms.html?context=cdpaas&locale=en#services)
+ *  [Data science and MLOps tools](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/compare-platforms.html?context=cdpaas&locale=en#tools)
+ *  [AI governance tools](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/compare-platforms.html?context=cdpaas&locale=en#gov)
+
+<!-- </ul> -->
+
+## Common platform functionality ##
+
+The following platform functionality is common to both watsonx and Cloud Pak for Data as a Service:
+
+<!-- <ul> -->
+
+ *  Security, compliance, and isolation
+ *  Compute resources for running workloads
+ *  Global search for assets across the platform
+ *  The Platform assets catalog for sharing connections across the platform
+ *  Role\-based user management within workspaces
+ *  A services catalog for adding services
+ *  View compute usage from the **Administration** menu
+ *  Connections to remote data sources
+ *  Connection credentials that are personal or shared
+ *  Sample assets and projects
+
+<!-- </ul> -->
+
+If you are signed up for both watsonx and Cloud Pak for Data as a Service, you can switch between platforms\. See [Switching your platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/platform-switcher.html)\.
+
+## Services on each platform ##
+
+Both platforms provide services for data science and MLOps and AI governance use cases:
+
+<!-- <ul> -->
+
+ *  Watson Studio
+ *  Watson Machine Learning
+ *  Watson OpenScale
+
+<!-- </ul> -->
+
+However, the services for watsonx\.ai and watsonx\.governance on the watsonx platform include features for working with foundation models and generative AI that are not included in these services on Cloud Pak for Data as a Service\.
+
+Cloud Pak for Data as a Service also provides services for these use cases:
+
+<!-- <ul> -->
+
+ *  Data integration
+ *  Data governance
+
+<!-- </ul> -->
+
+## Data science and AI tools ##
+
+Both platforms provide a common set of data science and AI tools\. However, on watsonx, you can also perform foundation model inferencing with the Prompt Lab tool or with a Python library in notebooks\. Foundation model inferencing and the Prompt Lab tool are not available on Cloud Pak for Data as a Service\.
+
+The following table shows which data science and AI tools are available on each platform\.
+
+<!-- <table> -->
+
+Tools on watsonx and Cloud Pak for Data
+
+| Tool                         | On watsonx? | On Cloud Pak for Data? |
+| ---------------------------- | ----------- | ---------------------- |
+| [Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html)               | ✓           | No                     |
+| [Synthetic Data Generator](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/synthetic_data_overview_sd.html) | ✓           | No                     |
+| [Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)            | ✓           | ✓                      |
+| [Visualizations](https://dataplatform.cloud.ibm.com/docs/content/dataview/idh_idc_cg_help_main.html)           | ✓           | ✓                      |
+| [Jupyter notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-editor.html)        | ✓           | ✓                      |
+| [Federated learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fed-lea.html)       | ✓           | ✓                      |
+| [RStudio IDE](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/rstudio-overview.html)              | ✓           | ✓                      |
+| [SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsd/spss-modeler.html)             | ✓           | ✓                      |
+| [Decision Optimization](https://dataplatform.cloud.ibm.com/docs/content/DO/DOWS-Cloud_home.html)    | ✓           | ✓                      |
+| [AutoAI tool](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html)              | ✓           | ✓                      |
+| [Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-overview.html)         | ✓           | ✓                      |
+
+<!-- </table ""> -->
+
+If you are signed up for Cloud Pak for Data as a Service, you can access watsonx and you can move your projects and deployment spaces that meet the requirements from one platform to the other\. See [Switching the platform for a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/switch-platform.html) and [Switching the platform for a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/switch-platform-space.html)\.
+
+## AI governance tools ##
+
+Both platforms contain the same AI use case inventory and evaluation tools\. However, on watsonx, you can track and evaluate generative AI assets and dimensions\. See [Comparison of governance solutions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-comparison.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Switching your platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/platform-switcher.html)
+ *  [Switching the platform for a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/switch-platform.html)
+ *  [Switching the platform for a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/switch-platform-space.html)
+ *  [Overview of IBM watsonx as a Service](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/overview-wx.html)
+ *  [Foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-overview.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Overview of watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/overview-wx.html)
+
+<!-- </article "role="article" "> -->

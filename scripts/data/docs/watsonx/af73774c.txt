@@ -1,0 +1,11 @@
+# XGBoost Tree node #
+
+XGBoost Tree© is an advanced implementation of a gradient boosting algorithm with a tree model as the base model\. Boosting algorithms iteratively learn weak classifiers and then add them to a final strong classifier\. XGBoost Tree is very flexible and provides many parameters that can be overwhelming to most users, so the XGBoost Tree node in  watsonx\.ai exposes the core features and commonly used parameters\. The node is implemented in Python\.
+
+For more information about boosting algorithms, see the [XGBoost Tutorials](http://xgboost.readthedocs.io/en/latest/tutorials/index.html)\. ^1^
+
+Note that the XGBoost cross\-validation function is not supported in  watsonx\.ai\. You can use the Partition node for this functionality\. Also note that XGBoost in  watsonx\.ai performs one\-hot encoding automatically for categorical variables\.
+
+^1^ "XGBoost Tutorials\." *Scalable and Flexible Gradient Boosting*\. Web\. © 2015\-2016 DMLC\.
+
+<!-- </article "role="article" "> -->

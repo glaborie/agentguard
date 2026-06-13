@@ -1,0 +1,7 @@
+# Model nugget node properties #
+
+Refer to this section for a list of available properties for Model nuggets\.
+
+Model nugget nodes share the same common properties as other nodes\. See [Common node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/slot_parameters_common.html#slot_parameters_common) for more information\.
+
+<!-- </article "role="article" "> -->

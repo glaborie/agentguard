@@ -1,0 +1,5 @@
+# Exceptions #
+
+This section describes possible exception instances\. They are all a subclass of python exception\.
+
+<!-- </article "role="article" "> -->

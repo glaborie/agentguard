@@ -1,0 +1,106 @@
+# Adding connections to projects #
+
+You need to create a connection asset for a data source before you can access or load data to or from it\. A connection asset contains the information necessary to establish a connection to a data source\.
+
+Create connections to multiple types of data sources, including IBM Cloud services, other cloud services, on\-prem databases, and more\.
+
+See [Connectors](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html) for the list of data sources\.
+
+To create a new connection in a project:
+
+<!-- <ol> -->
+
+1.  Go to the project page, and click the **Assets** tab\.
+2.  Click **New asset > Connect to a data source**\.
+3.  Choose the kind of connection:
+    
+    <!-- <ul> -->
+    
+     *  Select **New connection** (the default) to create a new connection in the project.
+     *  Select **Platform connections** to select a connection that has already been created at the platform level.
+     *  Select **Deployed services** to connect to a data source from a cloud service this is integrated with IBM watsonx.
+    
+    <!-- </ul> -->
+    
+4.  Choose a data source\.
+5.  Enter the connection information that is required for the data source\. Typically, you need to provide information like the hostname, port number, username, and password\.
+6.  If prompted, specify whether you want to use personal or shared credentials\. You cannot change this option after you create the connection\. The credentials type for the connection, either Personal or Shared, is set by the account owner on the [Account page](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html)\. The default setting is **Shared**\.
+    
+    <!-- <ul> -->
+    
+     *  **Personal**: With personal credentials, each user must specify their own credentials to access the connection. Each user's credentials are saved but are not shared with any other users. Use personal credentials instead of shared credentials to protect credentials. For example, if you use personal credentials and another user changes the connection properties (such as the hostname or port number), the credentials are invalidated to prevent malicious redirection.
+     *  **Shared**: With shared credentials, all users access the connection with the credentials that you provide. Shared credentials can potentially be retrieved by a user who has access to the connection asset. Because the credentials are shared, it is difficult to audit access to the connection, to identify the source of data loss, or identify the source of a security breach.  
+          
+    <!-- </ul> -->
+    
+<!-- </ol> -->
+
+<!-- <ol> -->
+
+1.  For **Private connectivity**: To connect to a database that is not externalized to the internet (for example, behind a firewall), see [Securing connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+2.  If available, click **Test connection**\.
+3.  Click **Create**\. The connection appears on the **Assets** page\. You can edit the connection by clicking the connection name on the **Assets** page\.
+4.  Add tables, files, or other types of data from the connection by [creating a connected data asset](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ol> -->
+
+Connections with personal credentials are marked with a key icon (![the key symbol for private connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/privatekey.png)) on the **Assets** page and are locked\. If you are authorized to access the connection, you can unlock it by entering your credentials the first time you select it\. This is a one\-time step that permanently unlocks the connection for you\. After you unlock the connection, the key icon is no longer displayed\. Connections with personal credentials are already unlocked if you created the connections yourself\.
+
+Watch this video to see how to create a connection and add connected data to a project\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+<!-- <ul> -->
+
+ *  Transcript
+    
+     Synchronize transcript with video
+    
+    <!-- <table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+    | Time  | Transcript                                                                                                                                                             |
+    | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | 00:00 | This video shows you how to set up a connection to a data source and add connected data to a Watson Studio project.                                                   |
+    | 00:08 | If you have data stored in a data source, you can set up a connection to that data source from any project.                                                           |
+    | 00:16 | From here, you can add different elements to the project.                                                                                                             |
+    | 00:20 | In this case, you want to add a connection.                                                                                                                           |
+    | 00:24 | You can create a new connection to an IBM service, such as IBM Db2 and Cloud Object Storage, or to a service from third parties, such as Amazon, Microsoft or Apache. |
+    | 00:39 | And you can filter the list based on compatible services.                                                                                                             |
+    | 00:45 | You can also add a connection that was created at the platform level, which can be used across projects and catalogs.                                                 |
+    | 00:54 | Or you can create a connection to one of your provisioned IBM Cloud services.                                                                                         |
+    | 00:59 | In this case, select the provisioned IBM Cloud service for Db2 Warehouse on Cloud.                                                                                    |
+    | 01:08 | If the credentials are not prepopulated, you can get the credentials for the instance from the IBM Cloud service launch page.                                         |
+    | 01:17 | First, test the connection and then create the connection.                                                                                                            |
+    | 01:25 | The new connection now displays in the list of data assets.                                                                                                           |
+    | 01:30 | Next, add connected data assets to this project.                                                                                                                      |
+    | 01:37 | Select the source - in this case, it's the Db2 Warehouse on Cloud connection just created.                                                                           |
+    | 01:43 | Then select the schema and table.                                                                                                                                     |
+    | 01:50 | You can see that this will add a reference to the data within this connection and include it in the target project.                                                   |
+    | 01:58 | Provide a name and a description and click "Create".                                                                                                                  |
+    | 02:06 | The data now displays in the list of data assets.                                                                                                                     |
+    | 02:09 | Open the data set to get a preview; and from here you can move directly into refining the data.                                                                       |
+    | 02:17 | Find more videos in the Cloud Pak for Data as a Service documentation.                                                                                                |
+    
+    <!-- </table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+<!-- </ul> -->
+
+## Next step ##
+
+Go to [Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/asset_browser.html), and select the connection\. Drill down to a schema, and table or view\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)
+ *  [Integrations with other cloud platforms](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/int-cloud.html)
+ *  [Controlling access to Cloud Object Storage buckets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/cos_buckets.html)
+
+<!-- </ul> -->
+
+**Parent topic**: [Adding data to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html)
+
+<!-- </article "role="article" "> -->

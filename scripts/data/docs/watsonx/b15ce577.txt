@@ -1,0 +1,4 @@
+# Multi\-chart charts #
+
+Multi\-chart charts provide options for creating multiple charts\. The charts can be of the same or different types, and can include different variables from the same data set\.
+<!-- </article "role="article" "> -->

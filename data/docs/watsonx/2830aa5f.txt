@@ -1,0 +1,15 @@
+# Data usage #
+
+![icon for data laws risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-data-laws.svg)Risks associated with inputTraining and tuning phaseData lawsTraditional
+
+### Description ###
+
+Laws and other restrictions can limit or prohibit the use of some data for specific AI use cases\.
+
+### Why is data usage a concern for foundation models? ###
+
+Failing to comply with data usage laws might result in fines and other legal consequences\.
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

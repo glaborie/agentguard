@@ -1,0 +1,7 @@
+# Extension Model node #
+
+With the Extension Model node, you can run R scripts or Python for Spark scripts to build and score models\.
+
+After adding the node to your canvas, double\-click the node to open its properties\.
+
+<!-- </article "role="article" "> -->

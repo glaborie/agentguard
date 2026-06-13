@@ -1,0 +1,17 @@
+# Time Intervals node #
+
+Use the Time Intervals node to specify intervals and derive a new time field for estimating or forecasting\. A full range of time intervals is supported, from seconds to years\.
+
+Use the node to derive a new time field\. The new field has the same storage type as the input time field you chose\. The node generates the following items:
+
+<!-- <ul> -->
+
+ *  The field specified in the node properties as the  Time Field, along with the chosen prefix/suffix\. By default the prefix is `$TI_`\.
+ *  The fields specified in the node properties as the  Dimension fields\.
+ *  The fields specified in the node properties as the  Fields to aggregate\.
+
+<!-- </ul> -->
+
+You can also generate a number of extra fields, depending on the selected interval or period (such as the minute or second within which a measurement falls)\.
+
+<!-- </article "role="article" "> -->

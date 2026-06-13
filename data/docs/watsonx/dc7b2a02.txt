@@ -1,0 +1,32 @@
+# Data values #
+
+Using the  Value mode column in the Type node settings, you can read values automatically from the data, or you can specify measures and values\.
+
+The options available in the  Value mode drop\-down provide instructions for auto\-typing, as shown in the following table\.
+
+<!-- <table "summary="" class="defaultstyle" "> -->
+
+Table 1\. Instructions for auto\-typing
+
+| Option    | Function                                                              |
+| --------- | --------------------------------------------------------------------- |
+| `Read`    | Data is read when the node runs\.                                     |
+| `Extend`  | Data is read and appended to the current data (if any exists)\.       |
+| `Pass`    | No data is read\.                                                     |
+| `Current` | Keep current data values\.                                            |
+| `Specify` | You can click the gear icon at the end of the row to specify values\. |
+
+<!-- </table "summary="" class="defaultstyle" "> -->
+
+Running a Type node or clicking  Read Values auto\-types and reads values from your data source based on your selection\. You can also specify these values manually by using the  Specify option and clicking the gear icon at the end of a row\.
+
+After you make changes for fields in the Type node, you can reset value information using the following buttons:
+
+<!-- <ul> -->
+
+ *  Using the  Clear all values button, you can clear changes to field values made in this node (non\-inherited values) and reread values from upstream operations\. This option is useful for resetting changes that you may have made for specific fields upstream\.
+ *  Using the  Clear values button, you can reset values for all fields read into the node\. This option effectively sets the  Value mode column to `Read` for all fields\. This option is useful for resetting values for all fields and rereading values and measurement levels from upstream operations\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

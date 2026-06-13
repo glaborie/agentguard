@@ -1,0 +1,202 @@
+# Writing deployable Python functions #
+
+Learn how to write a Python function and then store it as an asset that allows for deploying models\.
+
+For a list of general requirements for deployable functions refer to [General requirements for deployable functions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#reqs)\. For information on what happens during a function deployment, refer to [Function deployment process](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#fundepro)
+
+## General requirements for deployable functions ##
+
+To be deployed successfully, a function must meet these requirements:
+
+<!-- <ul> -->
+
+ *  The Python function file on import must have the `score` function object as part of its scope\. Refer to [Score function requirements](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#score)
+ *  Scoring input payload must meet the requirements that are listed in [Scoring input requirements](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#scoinreq)
+ *  The output payload expected as output of `score` must include the schema of the `score_response` variable for status code 200\. Note that the `prediction` parameter, with an array of JSON objects as its value, is mandatory in the `score` output\.
+ *  When you use the Python client to save a Python function that contains a reference to an outer function, only the code in the scope of the outer function (including its nested functions) is saved\. Therefore, the code outside the outer function's scope will not be saved and thus will not be available when you deploy the function\.
+
+<!-- </ul> -->
+
+### Score function requirements ###
+
+<!-- <ul> -->
+
+ *  Two ways to add the `score` function object exist:
+    
+    <!-- <ul> -->
+    
+     *  explicitly, by user
+     *  implicitly, by the method that is used to save the Python function as an asset in the Watson Machine Learning repository
+    
+    <!-- </ul> -->
+    
+ *  The `score` function must accept a single, JSON input parameter\.
+ *  The `score` function must return a JSON\-serializable object (for example: dictionaries or lists)
+
+<!-- </ul> -->
+
+### Scoring input requirements ###
+
+<!-- <ul> -->
+
+ *  The scoring input payload must include an array with the name `values`, as shown in this example schema\.
+    
+        {"input_data": [!{
+            "values": "Hello world"]]
+                        }]
+         }
+    
+    Note:  
+    - The `input_data` parameter is mandatory in the payload.  
+    - The `input_data` parameter can also include additional name-value pairs.
+ *  The scoring input payload must be passed as input parameter value for `score`\. This way you can ensure that the value of the `score` input parameter is handled accordingly inside the `score`\.
+ *  The scoring input payload must match the input requirements for the concerned Python function\.
+ *  The scoring input payload must include an array that matches the [Example input data schema](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#exschema)\.
+
+<!-- </ul> -->
+
+#### Example input data schema ####
+
+    {"input_data": [!{
+        "values": "Hello world"]]
+                    }]
+     }
+
+### Example Python code ###
+
+    #wml_python_function
+    def my_deployable_function():
+    
+        def score( payload ):
+    
+            message_from_input_payload = payload.get("input_data")[0].get("values")[0]
+            response_message = "Received message - {0}".format(message_from_input_payload)
+    
+            # Score using the pre-defined model
+            score_response = {
+                'predictions': [{'fields': 'Response_message_field'],
+                                 'values': response_message]]
+                                }]
+            }
+            return score_response
+    
+        return score
+    
+    score = my_deployable_function()
+
+You can test your function like this:
+
+    input_data = { "input_data": [{ "fields":  "message" ]!,
+                                    "values":  "Hello world" ]]
+                                   }
+                                  ]
+                 }
+    function_result = score( input_data )
+    print( function_result )
+
+It returns the message "Hello world\!"\.
+
+## Function deployment process ##
+
+The Python code of your Function asset gets loaded as a Python module by the Watson Machine Learning engine by using an `import` statement\. This means that the code will be executed exactly once (when the function is deployed or each time when the corresponding pod gets restarted)\. The `score` function that is defined by the Function asset is then called in every prediction request\.
+
+## Handling deployable functions ##
+
+Use one of these methods to create a deployable Python function:
+
+<!-- <ul> -->
+
+ *  [Creating deployable functions through REST API](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#rest)
+ *  [Creating deployable functions through the Python client](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#py)
+
+<!-- </ul> -->
+
+### Creating deployable functions through REST API ###
+
+For REST APIs, because the Python function is uploaded directly through a file, the file must already contain the `score` function\. Any one time import that needs to be done to be used later within the `score` function can be done within the global scope of the file\. When this file is deployed as a Python function, the one\-time imports available in the global scope get executed during the deployment and later simply reused with every prediction request\.
+
+Important:The function archive must be a `.gz` file\.
+
+Sample `score` function file:
+
+    Score function.py
+    ---------------------
+    def score(input_data):
+        return {'predictions': [{'values': 'Just a test']]}]}
+
+Sample `score` function with one time imports:
+
+    import subprocess
+    subprocess.check_output('pip install gensim --user', shell=True)
+    import gensim
+    
+    def score(input_data):
+        return {'predictions': [{'fields': 'gensim_version'], 'values': gensim.__version__]]}]}
+
+### Creating deployable functions through the Python client ###
+
+To persist a Python function as an asset, the Python client uses the `wml_client.repository.store_function` method\. You can do that in two ways:
+
+<!-- <ul> -->
+
+ *  [Persisting a function through a file that contains the Python function](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#persfufile)
+ *  [Persisting a function through the function object](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#persfunob)
+
+<!-- </ul> -->
+
+#### Persisting a function through a file that contains the Python function ####
+
+This method is the same as persisting the Python function file through REST APIs (`score` must be defined in the scope of the Python source file)\. For details, refer to [Creating deployable functions through REST API](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#rest)\.
+
+Important:When you are calling the `wml_client.repository.store_function` method, pass the file name as the first argument\.
+
+#### Persisting a function through the function object ####
+
+You can persist Python function objects by creating Python Closures with a nested function named `score`\. The `score` function is returned by the outer function that is being stored as a function object, when called\. This `score` function must meet the requirements that are listed in [General requirements for deployable functions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function-write.html?context=cdpaas&locale=en#reqs)\. In this case, any one time imports and initial setup logic must be added in the outer nested function so that they get executed during deployment and get used within the `score` function\. Any recurring logic that is needed during the `prediction` request must be added within the nested `score` function\.
+
+Sample Python function save by using the Python client:
+
+    def my_deployable_function():
+    
+        import subprocess
+        subprocess.check_output('pip install gensim', shell=True)
+        import gensim
+    
+        def score(input_data):
+            import
+            message_from_input_payload = payload.get("input_data")[0].get("values")[0]
+            response_message = "Received message - {0}".format(message_from_input_payload)
+    
+            # Score using the pre-defined model
+            score_response = {
+                'predictions': [{'fields': 'Response_message_field', 'installed_lib_version'],
+                                 'values': response_message, gensim.__version__]]
+                                }]
+            }
+            return score_response
+    
+        return score
+    
+    function_meta = {
+        client.repository.FunctionMetaNames.NAME:"test_function",
+        client.repository.FunctionMetaNames.SOFTWARE_SPEC_ID: sw_spec_id
+    }
+    func_details = client.repository.store_function(my_deployable_function, function_meta)
+
+In this scenario, the Python function takes up the job of creating a Python file taht contains the `score` function and persisting the function file as an asset in the Watson Machine Learning repository:
+
+    score = my_deployable_function()
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Python Closures](https://www.programiz.com/python-programming/closure)
+ *  [Closures](https://www.learnpython.org/en/Closures)
+ *  [Nested function, Scope of variable & closures in Python](https://www.codesdope.com/blog/article/nested-function-scope-of-variable-closures-in-pyth/)
+
+<!-- </ul> -->
+
+**Parent topic:**[Deploying Python functions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-py-function.html)
+
+<!-- </article "role="article" "> -->

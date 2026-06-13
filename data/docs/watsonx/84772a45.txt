@@ -1,0 +1,85 @@
+# Libraries and scripts for notebooks #
+
+Watson Studio includes a large selection of preinstalled open source libraries for Python and R in its runtime environments\. You can also use preinstalled IBM libraries or install custom libraries\.
+
+Watson Studio includes the following libraries and the appropriate runtime environments with which you can expand your data analysis:
+
+<!-- <ul> -->
+
+ *  The Watson Natural Language Processing library in Python and Python with GPU runtime environments\.
+ *  The gespatio\-temporal library in Spark with Python runtime environments
+ *  The Xskipper library for data skipping uses the open source in Spark with Python runtime environments
+ *  Parquet encryption in Spark with Python runtime environments
+ *  The tspy library for time series analysis in Spark with Python runtime environments
+
+<!-- </ul> -->
+
+## Listing installed libraries ##
+
+Many of your favorite open source libraries are pre\-installed on runtime environments\. All you have to do is import them\. See [Import preinstalled libraries and packages](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/libraries.html?context=cdpaas&locale=en#import-lib)\.
+
+If a library is not preinstalled, you can add it:
+
+<!-- <ul> -->
+
+ *  Through the notebook
+    
+    Some libraries require a kernel restart after a version change. If you need to work with a library version that isn't pre-installed in the environment in which you start the notebook, and you install this library version through the notebook, the notebook only runs successfully after you restart the kernel.
+    
+    Note that when you run the notebook non-interactively, for example as a notebook job, it fails because the kernel can't be restarted.
+ *  By adding a customization to the environment in which the notebook runs
+    
+    If you add a library with a particular version to the software customization, the library is preinstalled at the time the environment is started and no kernel restart is required. Also, if the notebook is run in a scheduled job, it won't fail.
+    
+    The advantage of adding an environment customization is that the library is preinstalled each time the environment runtime is started. Libraries that you add through a notebook are persisted for the lifetime of the runtime only. If the runtime is stopped and later restarted, those libraries are not installed.
+
+<!-- </ul> -->
+
+To see the list of installed libraries in your environment runtime:
+
+<!-- <ol> -->
+
+1.  From the **Manage** tab, on the project's **Environments** page, select the environment template\.
+2.  From a notebook, run the appropriate command from a notebook cell:
+    
+    <!-- <ul> -->
+    
+     *  Python: `!pip list --isolated`
+     *  R: `installed.packages()`
+    
+    <!-- </ul> -->
+    
+3.  Optional: Add custom libraries and packages to the environment\. See [customizing an environment template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/customize-envs.html)\.
+
+<!-- </ol> -->
+
+## Importing an installed library ##
+
+To import an installed library into your notebook, run the appropriate command from a notebook cell with the library name:
+
+<!-- <ul> -->
+
+ *  Python: `import library_name`
+ *  R: `library(library_name)`
+
+<!-- </ul> -->
+
+Alternatively, you can write a script that includes multiple classes and methods and then [import the script into your notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/add-script-to-notebook.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Installing custom libraries](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/install-cust-lib.html)
+ *  [Importing scripts into a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/add-script-to-notebook.html)
+ *  [Watson Natural Language Processing library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp.html)
+ *  [gespatio\-temporal library for location analysis](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/geo-spatial-lib.html)
+ *  [Xskipper library for data skipping](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-skipping-spark-sql.html)
+ *  [Parquet encryption](https://dataplatform.cloud.ibm.com/docs/content/wsj/spark/parquet-encryption.html)
+ *  [tspy library for time series analysis](https://dataplatform.cloud.ibm.com/docs/content/wsj/spark/time-series-lib.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Notebooks and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebooks-and-scripts.html)
+
+<!-- </article "role="article" "> -->

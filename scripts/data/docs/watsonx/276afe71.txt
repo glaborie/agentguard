@@ -1,0 +1,36 @@
+# Creating jobs in Data Refinery #
+
+You can create a job to run a Data Refinery flow directly in Data Refinery\.
+
+To create a Data Refinery flow job:
+
+<!-- <ol> -->
+
+1.  In Data Refinery, click the Jobs icon ![the jobs icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/Run-schedule_Blue.png) from the Data Refinery toolbar and select **Save and create a job**\.
+2.  Define the job details by entering a name and a description (optional)\.
+3.  On the Configure page, select an environment runtime for the job, and optionally modify the job retention settings\.
+4.  On the Schedule page, you can optionally add a one\-time or repeating schedule\.
+    
+    If you define a start day and time without selecting **Repeat**, the job will run exactly one time at the specified day and time. If you define a start date and time and you select **Repeat**, the job will run for the first time at the timestamp indicated in the Repeat section.
+    
+    You can't change the time zone; the schedule uses your web browser's time zone setting. If you exclude certain weekdays, the job might not run as you would expect. The reason might be due to a discrepancy between the time zone of the user who creates the schedule, and the time zone of the compute node where the job runs.
+5.  Optional: Set up notifications for the job\. You can select the type of alerts to receive\.
+6.  Review the job settings\. Then, create the job and run it immediately, or create the job and run it later\.
+    
+    The Data Refinery flow job is listed in the **Jobs** in your project.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Compute resource options for Data Refinery in projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html)
+ *  [Viewing job details](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html#view-job-details)
+ *  [Refining data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+
+<!-- </ul> -->
+
+**Parent topic**: [Jobs](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html)
+
+<!-- </article "role="article" "> -->

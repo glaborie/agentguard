@@ -1,0 +1,34 @@
+# Choosing compute resources for running tools in projects #
+
+You use compute resources in projects when you run jobs and most tools\. Depending on the tool, you might have a choice of compute resources for the runtime for the tool\.
+
+Compute resources are known as either environment templates or hardware and software specifications\. In general, compute resources with larger hardware configurations incur larger usage costs\.
+
+These tools have multiple choices for configuring runtimes that you can choose from:
+
+<!-- <ul> -->
+
+ *  [Notebook editor](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html)
+ *  [Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spark-dr-envs.html)
+ *  [SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-envs.html)
+ *  [AutoAI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-autoai.html)
+ *  [Decision Optimization experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-decisionopt.html)
+ *  [RStudio IDE](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/rstudio-envs.html)
+ *  [Synthetic Data Generator](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/synthetic-envs.html)
+ *  [Tuning Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-fm-tuning.html)
+
+<!-- </ul> -->
+
+Prompt Lab does not consume compute resources\. Prompt Lab usage is measured by the number of processed tokens\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Monitoring account resource usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Projects ](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+
+<!-- </article "role="article" "> -->

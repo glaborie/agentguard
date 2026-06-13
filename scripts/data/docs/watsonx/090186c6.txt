@@ -1,0 +1,32 @@
+# slrmnode properties #
+
+![SLRM ode icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/selflearn_icon.png)The Self\-Learning Response Model (SLRM) node enables you to build a model in which a single new case, or small number of new cases, can be used to reestimate the model without having to retrain the model using all data\.
+
+<!-- <table "summary="slrmnode properties" class="defaultstyle" "> -->
+
+slrmnode properties  
+
+Table 1\. slrmnode properties
+
+| `slrmnode` Properties              | Values                     | Property description                                                                                                                                        |
+| ---------------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target`                           | *field*                    | The target field must be a nominal or flag field\. A frequency field can also be specified\. See [Common modeling node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/modelingnodeslots_common.html#modelingnodeslots_common) for more information\. |
+| `target_response`                  | *field*                    | Type must be flag\.                                                                                                                                         |
+| `continue_training_existing_model` | *flag*                     |                                                                                                                                                             |
+| `target_field_values`              | *flag*                     | Use all: Use all values from source\. Specify: Select values required\.                                                                                     |
+| `target_field_values_specify`      | *\[field1 \.\.\. fieldN\]* |                                                                                                                                                             |
+| `include_model_assessment`         | *flag*                     |                                                                                                                                                             |
+| `model_assessment_random_seed`     | *number*                   | Must be a real number\.                                                                                                                                     |
+| `model_assessment_sample_size`     | *number*                   | Must be a real number\.                                                                                                                                     |
+| `model_assessment_iterations`      | *number*                   | Number of iterations\.                                                                                                                                      |
+| `display_model_evaluation`         | *flag*                     |                                                                                                                                                             |
+| `max_predictions`                  | *number*                   |                                                                                                                                                             |
+| `randomization`                    | *number*                   |                                                                                                                                                             |
+| `scoring_random_seed`              | *number*                   |                                                                                                                                                             |
+| `sort`                             | `Ascending``Descending`    | Specifies whether the offers with the highest or lowest scores will be displayed first\.                                                                    |
+| `model_reliability`                | *flag*                     |                                                                                                                                                             |
+| `calculate_variable_importance`    | *flag*                     |                                                                                                                                                             |
+
+<!-- </table "summary="slrmnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

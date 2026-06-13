@@ -1,0 +1,19 @@
+# Hidden variables #
+
+You can hide data by creating Private variables\. Private variables can be accessed only by the class itself\. If you declare names of the form `__xxx` or `__xxx_yyy`, that is with two preceding underscores, the Python parser will automatically add the class name to the declared name, creating hidden variables\. For example:
+
+    class MyClass:
+        __attr = 10   #private class attribute
+    
+        def method1(self):
+            pass
+    
+        def method2(self, p1, p2):
+            pass
+    
+        def __privateMethod(self, text):
+            self.__text = text    #private attribute
+
+Unlike in Java, in Python all references to instance variables must be qualified with `self`; there's no implied use of `this`\.
+
+<!-- </article "role="article" "> -->

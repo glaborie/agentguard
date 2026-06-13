@@ -1,0 +1,87 @@
+# Tuning Studio #
+
+Tune a foundation model with the Tuning Studio to guide an AI foundation model to return useful output\.
+
+**Required permissions** : To run training experiments, you must have the **Admin** or **Editor** role in a project\.
+
+: The Tuning Studio is not available with all plans or in all data centers\. See [Watson Machine Learning plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html) and [Regional availability for services and features](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/regional-datactr.html)\.
+
+**Data format** : Tabular: JSON, JSONL\. For details, see [Data formats](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-data.html)\.
+
+Note: You can use the same training data file with one or more tuning experiments\.
+
+**Data size** : 50 to 10,000 input and output example pairs\. The maximum file size is 200 MB\.
+
+You use the Tuning Studio to create a tuned version of an existing foundation model\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+Foundation models are AI models that are pretrained on terabytes of data from across the internet and other public resources\. They are unrivaled in their ability to predict the next best word and generate language\. While language\-generation can be useful for brainstorming and spurring creativity, it is less useful for achieving concrete tasks\. Model tuning, and other techniques, such as retrieval\-augmented generation, help you to use foundation models in meaningful ways for your business\.
+
+With the Tuning Studio, you can tune a smaller foundation model to improve its performance on natural language processing tasks such as classification, summarization, and generation\. Tuning can help a smaller foundation model achieve results comparable to larger models in the same model family\. By tuning and deploying the smaller model, you can reduce long\-term inference costs\.
+
+Much like prompt engineering, tuning a foundation model helps you to influence the content and format of the foundation model output\. Knowing what to expect from a foundation model is essential if you want to plug the step of inferencing a foundation model into a business workflow\.
+
+The following diagram illustrates how tuning a foundation model can help you guide the model to generate useful output\. You provide labeled data that illustrates the format and type of output that you want the model to return, which helps the foundation model to follow the established pattern\.
+
+![How a tuned model relates to a foundation model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fm-tune-overview.png)
+
+You can tune a foundation model to optimize the model's ability to do many things, including:
+
+<!-- <ul> -->
+
+ *  Generate new text in a specific style
+ *  Generate text that summarizes or extracts information in a certain way
+ *  Classify text
+
+<!-- </ul> -->
+
+To learn more about when tuning a model is the right approach, see [When to tune a foundation model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-when.html)\.
+
+## Workflow ##
+
+Tuning a model involves the following tasks:
+
+<!-- <ol> -->
+
+1.  Engineer prompts that work well with the model you want to use\.
+    
+    <!-- <ul> -->
+    
+     *  Find the largest foundation model that works best for the task.
+     *  Experiment until you understand which prompt formats show the most potential for getting good results from the model.
+    
+    <!-- </ul> -->
+    
+    Tuning doesn't mean you can skip prompt engineering altogether. Experimentation is necessary to find the right foundation model for your use case. Tuning means you can do the work of prompt engineering once and benefit from it again and again.
+    
+    You can use the Prompt Lab to experiment with prompt engineering. For help, see [Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html).
+2.  Create training data to use for model tuning\.
+3.  Create a tuning experiment to tune the model\.
+4.  Evaluate the tuned model\.
+    
+    If necessary, change the training data or the experiment parameters and run more experiments until you're satisfied with the results.
+5.  Deploy the tuned model\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [When to tune](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-when.html)
+ *  [Methods for tuning](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-methods.html)
+ *  [Tuning a model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-tune.html)
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  [Quick start: Tune a foundation model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-tuning-studio.html)
+ *  [Sample notebook: Tune a model to classify CFPB documents in watsonx](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/bf57e8896f3e50c638b5a378780f7502)
+
+<!-- </ul> -->
+
+**Parent topic:**[Foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-overview.html)
+
+<!-- </article "role="article" "> -->

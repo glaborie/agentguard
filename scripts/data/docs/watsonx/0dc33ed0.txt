@@ -1,0 +1,55 @@
+# Managing and customizing report templates #
+
+If the default report templates that are provided with AI Factsheets do not meet your needs, you can download a default report template, customize it, and upload the new template\.
+
+## Customizing a custom report template ##
+
+Any user with at least Editor access can create a report from an AI use case that captures all the details from An AI use case\. You can use reports for compliance verification, archiving, or other purposes\.
+
+If the default templates for the reports do not meet the needs of your organization, you can customize the report templates, the branding file, or the default stylesheet\. For example, you can replace the IBM logo with your own logo image file\. You must have the Admin role for managing inventories to customize report templates\.
+
+Follow these steps to customize a report template\.
+
+### Downloading a report ###
+
+To download a report template from the UI:
+
+<!-- <ol> -->
+
+1.  Open the AI uses cases settings and click the **Report templates** tab\. If you do not see this tab, you might have insufficient access\.
+2.  In the options menu for a report template, click **Download**\. ![Downloading a report template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-report-template.png)
+3.  Open the `<report-name>.ftl` file in an editor\.
+4.  Edit the template by using instructions from [Apache FreeMarker](https://freemarker.apache.org/) or the API commands\.
+
+<!-- </ol> -->
+
+To download a report template by using APIs:
+
+<!-- <ol> -->
+
+1.  Use the `GET` endpoint for `/v1/aigov/report_templates` in the [IBM Watson Data API](https://cloud.ibm.com/apidocs/watson-data-api) to list the available templates\. Note the ID for the template that you want to download\.
+2.  Use the `GET` endpoint `/v1/aigov/report_templates/{template_id}/content` with the template ID to download the template file\.
+3.  Open the `<report-name>.ftl` file in an editor\.
+4.  Edit the template by using instructions from [Apache FreeMarker](https://freemarker.apache.org/) or the API commands\.
+
+<!-- </ol> -->
+
+### Uploading a template ###
+
+<!-- <ol> -->
+
+1.  Open the AI uses cases settings and click the **Report templates** tab\. If you do not see this tab, you might have insufficient access\.
+2.  Click **Add template**\.
+3.  Specify a name for the template and an optional description\.
+4.  Choose the type of template: model or model use case\. The reports are available for external models and Watson Machine Learning models\.
+5.  Upload the updated `FTL` file\.  
+    
+<!-- </ol> -->
+
+Restriction:The `ftl` file that you upload must not import any other files\. Support is not yet available for `import` statements other than system templates in the `ftl` file\.
+
+The custom template displays in the Report templates section and is available for creating reports\. Click **Edit** or **Delete** from the action menu for a custom template to update the template details or to remove the template\.
+
+**Parent topic:**[Creating and managing inventories](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-inventory-manage.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,130 @@
+# Managing feature groups (beta) #
+
+Create a feature group to preserve a set of columns of a data asset along with associated metadata for use with Machine Learning models\.
+
+**Required service** : You must have these services\.
+
+    - Watson Studio (for projects)
+
+**Required permissions** : To view this page, you can have any role in a project\. : To edit or update information on this page, you must have the **Editor** or **Admin** role in the project\.
+
+**Workspaces** : You can view the asset feature group in these workspaces: : Projects
+
+**Types of assets** : These types of assets can have a feature group: : Tabular: CSV, TSV, Parquet, xls, xslx, avro, text, json files : [Connected data types](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html) that are structured and supported in Watson Studio\.
+
+**Data size** : No limit
+
+## Feature groups (beta) ##
+
+Create a **feature group** to preserve a set of columns of a particular data asset along with the metadata used for Machine Learning\. For example, if you have a set of features for a credit approval model, you can preserve the features used to train the model, as well as some metadata, including which column is used as the prediction target, and which columns are used for bias detection\. Feature groups make it simple to preserve the metadata for the features used to train a machine learning model so other data scientists can use the same features\. You can see the feature group tab when you preview a particular asset\.
+
+<!-- <ul> -->
+
+ *  [Creating a feature group](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/feature-group.html?context=cdpaas&locale=en#create-featuregrp)
+ *  [Editing a feature group](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/feature-group.html?context=cdpaas&locale=en#edit-featuregrp)
+ *  [Removing features or a feature group](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/feature-group.html?context=cdpaas&locale=en#remove-featuregrp)
+ *  [Using the Python API for feature groups](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/feature-group.html?context=cdpaas&locale=en#api-featuregrp)
+
+<!-- </ul> -->
+
+### Creating a feature group in a project ###
+
+#### Before you begin ####
+
+If you create a [profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html) for the data asset before creating a feature group you can select profile metadata to add values to the feature\.
+
+#### Create a feature group ####
+
+You can select particular columns of data assets to form a feature group\.
+
+<!-- <ol> -->
+
+1.  In the project **Assets** tab, click the name of the relevant asset to open the preview and select the **Feature group** tab\. Here you can create a feature group or view and edit an existing one\. An asset can have only one feature group\. Click **New feature group**\.
+    
+    ![Create a feature group](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/create-feature-group3.png)
+2.  Select the columns that you want to be used in the feature group\. Select the **Name** checkbox to include all the columns as features\.
+    
+    ![Select the feature group columns](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/create-feature-group-columns1.png)
+
+<!-- </ol> -->
+
+### Editing a feature group ###
+
+When you have selected the columns of the data asset to be used in the feature group, you can then view each feature and edit it to specify the role it will have in Machine Learning models\.
+
+![View feature group](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/feature-group-example3.png)
+
+<!-- <ol> -->
+
+1.  Click a feature name and click **Edit this feature**\. A window opens displaying the following tabs:
+    
+    <!-- <ul> -->
+    
+     *  **Details** - provide the following information about the feature.
+        
+        ![Details](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/feature-group-details.png)
+        
+        Select a **Role** to be assigned to the feature:
+        
+        <!-- <ul> -->
+        
+         *  `Input`: the feature can be used as input for training a Machine Learning model.
+         *  `Target`: the feature to be used as the prediction target when the data is used to train a Machine Learning model.
+         *  `Identifier`: the primary key, such as customer ID, used to identify the input data.
+            
+            Enter a **Description**, **Recipe** (any method or formula used to create values for the feature) and any **Tags**.
+        
+        <!-- </ul> -->
+        
+     *  **Value descriptions**
+        
+        ![Value descriptions](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/feature-group-values.png)
+        
+        Value descriptions allow you to clarify the meaning of specific values. For example, consider a column "credit evaluation" with the values *-1*, *0* and *1*. You can use value descriptions to provide meaning for these values. For example, *-1* might mean "evaluation rejected". You can enter descriptions for particular values. For numerical values, you can also specify a range. To specify a range of numerical values, enter the following text *\[n,m\]* where *n* is the start and *m* is the end of the range, surrounded by brackets, and click **Add**. For example, to describe all age values between 18 and 24 as "millenials", enter *\[18,24\]* as the value and *millenials* as the description. If you have a [profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html) defined, the profile values are displayed in the value descriptions list. From here you can select one value or multiple values.
+     *  **Fairness information**
+        
+        ![Fairness information](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/feature-group-fairness.png)
+        
+        You can define `Monitor` or `Reference` groups of values for monitoring bias. The values that are more at risk of biased outcomes can be placed in the Monitor group. These values are then compared to values in the Reference group. To specify a range of numerical values, enter the following text *\[n,m\]* where *n* is the start and *m* is the end of the range, surrounded by brackets. For example, to monitor all age values between 18 and 35, enter *\[18,35\]*. Then select Monitor or Reference and click **Add**. You can also specify **Favorable outcomes**. See [Fairness in AutoAI experiments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-fairness.html) for more information about fairness.
+    
+    <!-- </ul> -->
+    
+2.  When you have edited the feature, click **Save**\. You can now see your changes in the **Feature Details** window\. Close this window to return to the feature group\.
+
+<!-- </ol> -->
+
+### Removing features from a group ###
+
+To remove a feature from a group:
+
+<!-- <ol> -->
+
+1.  Preview the asset in the project and select the **Feature group** tab\.
+2.  In the **Features** table that is displayed, select the feature (or features) that you want to remove\.
+3.  In the toolbar that appears, select **Remove from group**\.
+    
+    ![Removing features](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/feature-group-remove3.png)
+
+<!-- </ol> -->
+
+The feature, or feature group if you selected all the features, is removed\.
+
+### Searching for a feature group ###
+
+You can [search for assets or columns across all projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/search-assets.html#filter)\. To filter your search results to find assets with a feature group, select **Data** to see the filter options, and select **Feature group**\. Assets containing a feature group will then be listed in the search results\.
+
+### Using the Python API to create and use feature groups ###
+
+You can also use the [assetframe\-lib Python library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html) in notebooks to create and edit feature groups\. This library also allows you use feature metadata like fairness information when creating machine learning models\.
+
+## Learn more ##
+
+For examples on how to create and use feature groups in notebooks:
+
+<!-- <ul> -->
+
+ *  [Creating and using feature store data](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e756adfa2855bdfc20f588f9c1986382) sample project in the Samples
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

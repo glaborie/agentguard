@@ -1,0 +1,135 @@
+# The parts of a notebook #
+
+You can see some information about a notebook before you open it on the Assets page of a project\. When you open a notebook in edit mode, you can do much more with the notebook by using multiple menu options, toolbars, an information pane, and by editing and running the notebook cells\.
+
+You can view the following information about a notebook by clicking the **Notebooks** asset type in the **Assets** page of your project:
+
+<!-- <ul> -->
+
+ *  The name of the notebook
+ *  The date when the notebook was last modified and the person who made the change
+ *  The programming language of the notebook
+ *  Whether the notebook is currently locked
+
+<!-- </ul> -->
+
+When you open a notebook in edit mode, the notebook editor includes the following features:
+
+<!-- <ul> -->
+
+ *  [Menu bar and toolbar](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html?context=cdpaas&locale=en#menu-bar-and-toolbar)
+ *  [Notebook action bar](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html?context=cdpaas&locale=en#notebook-action-bar)
+ *  [The cells in a Jupyter notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html?context=cdpaas&locale=en#the-cells-in-a-jupyter-notebook)
+    
+    <!-- <ul> -->
+    
+     *  [Jupyter Code cells](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html?context=cdpaas&locale=en#jupyter-code-cells)
+     *  [Jupyter markdown cells](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html?context=cdpaas&locale=en#jupyter-markdown-cells)
+     *  [Raw Jupyter NBConvert cells](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html?context=cdpaas&locale=en#raw-jupyter-nbconvert-cells)
+    
+    <!-- </ul> -->
+    
+ *  [Spark job progress bar](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html?context=cdpaas&locale=en#spark-job-progress-bar)
+ *  [Project token for authorization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/token.html)
+
+<!-- </ul> -->
+
+![menu and toolbar](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/toolbar.png)
+
+You can select notebook features that affect the way the notebook functions and perform the most\-used operations within the notebook by clicking an icon\.
+
+## Notebook action bar ##
+
+![Notebook action bar](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/action-bar-Blue.png)
+
+You can select features that enhance notebook collaboration\. From the action bar, you can:
+
+<!-- <ul> -->
+
+ *  Publish your notebook as a gist or on GitHub\.
+ *  Create a permanent URL so that anyone with the link can view your notebook\.
+ *  Create jobs in which to run your notebook\. See [Schedule a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-nb-editor.html)\.
+ *  Download your notebook\.
+ *  Add a project token so that code can access the project resources\. See [Add code to set the project token](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/token.html)\.
+ *  Generate code snippets to add data from a data asset or a connection to a notebook cell\.
+ *  View your notebook information\. You can:
+    
+    <!-- <ul> -->
+    
+     *  Change the name of your notebook by editing it in the **Name** field.
+     *  Edit the description of your notebook in the **Description** field.
+     *  View the date when the notebook was created.
+     *  View the environment details and runtime status; you can change the notebook runtime from here. See [Notebook environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html).
+    
+    <!-- </ul> -->
+    
+ *  Save versions of your notebook\.
+ *  Upload assets to the project\.
+
+<!-- </ul> -->
+
+## The cells in a Jupyter notebook ##
+
+A Jupyter notebook consists of a sequence of cells\. The flow of a notebook is sequential\. You enter code into an input cell, and when you run the cell, the notebook executes the code and prints the output of the computation to an output cell\.
+
+You can change the code in an input cell and re\-run the cell as often as you like\. In this way, the notebook follows a read\-evaluate\-print loop paradigm\. You can choose to use tags to describe cells in a notebook\.
+
+The behavior of a cell is determined by a cell’s type\. The different types of cells include:
+
+### Jupyter code cells ###
+
+Where you can edit and write new code\.
+
+![code cells](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/code_cells_notebook_bigger.png)
+
+### Jupyter markdown cells ###
+
+Where you can document the computational process\. You can input headings to structure your notebook hierarchically\.
+
+You can also add and edit image files as attachments to the notebook\. The markdown code and images are rendered when the cell is run\.
+
+![markdown cells](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/markdownCells_notebook.png)
+
+See [Markdown for Jupyter notebooks cheatsheet](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/markd-jupyter.html)\.
+
+### Raw Jupyter NBConvert cells ###
+
+Where you can write output directly or put code that you don’t want to run\. Raw cells are not evaluated by the notebook\.
+
+![raw convert cells](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/rawconvert_cells_notebook_bigger.png)
+
+## Spark job progress bar ##
+
+When you run code in a notebook that triggers Spark jobs, it is often challenging to determine why your code is not running efficiently\.
+
+To help you better understand what your code is doing and assist you in code debugging, you can monitor the execution of the Spark jobs for a code cell\.
+
+To enable Spark monitoring for a cell in a notebook:
+
+<!-- <ul> -->
+
+ *  Select the code cell you want to monitor\.
+ *  Click the **Enable Spark Monitoring** icon (![Shows the enable Spark monitoring icon\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ProgressBars-Active.png)) on the notebook toolbar\.
+
+<!-- </ul> -->
+
+The progress bars you see display the real time runtime progress of your jobs on the Spark cluster\. Each Spark job runs on the cluster in one or more stages, where each stage is a list of tasks that can be run in parallel\. The monitoring pane can become very large is the Spark job has many stages\.
+
+The job monitoring pane also displays the duration of each job and the status of the job stages\. A stage can have one of the following statuses:
+
+<!-- <ul> -->
+
+ *  `Running`: Stage active and started\.
+ *  `Completed`: Stage completed\.
+ *  `Skipped`: The results of this stage were cached from a earlier operation and so the task doesn't have to run again\.
+ *  `Pending`: Stage hasn't started yet\.
+
+<!-- </ul> -->
+
+Click the icon again to disable monitoring in a cell\.
+
+Note: Spark monitoring is currently only supported in notebooks that run on Python\.
+
+**Parent topic:**[Creating notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/creating-notebooks.html)
+
+<!-- </article "role="article" "> -->

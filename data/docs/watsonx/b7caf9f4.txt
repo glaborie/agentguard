@@ -1,0 +1,83 @@
+# Creating environment templates #
+
+You can create custom environment templates if you do not want to use the default environments provided by Watson Studio\.
+
+**Required permissions** : To create an environment template, you must have the **Admin** or **Editor** role within the project\.
+
+You can create environment templates for the following types of assets:
+
+<!-- <ul> -->
+
+ *  Notebooks in the Notebook editor
+ *  Notebooks in RStudio
+ *  Modeler flows in the SPSS Modeler
+ *  Data Refinery flows
+ *  Jobs that run operational assets, such as Data Refinery flows, or Notebooks in a project
+
+<!-- </ul> -->
+
+Note:
+
+To create an environment template:
+
+<!-- <ol> -->
+
+1.  On the **Manage** tab of your project, select the **Environments** page and click **New template** under **Templates**\.
+2.  Enter a name and a description\.
+3.  Select one of the following engine types:
+    
+    <!-- <ul> -->
+    
+     *  **Default**: Select for Python, R, and RStudio runtimes for Watson Studio.
+     *  **Spark**: Select for Spark with Python or R runtimes for Watson Studio.
+     *  **GPU**: Select for more computing power to improve model training performance for Watson Studio.
+    
+    <!-- </ul> -->
+    
+4.  Select the hardware configuration from the **Hardware configuration** drop\-down menu\.
+5.  Select the software version if you selected a runtime of "Default," "Spark," or "GPU\."
+
+<!-- </ol> -->
+
+### Where to find your custom environment template ###
+
+Your new environment template is listed under Templates on the **Environments** page in the **Manage** tab of your project\. From this page, you can:
+
+<!-- <ul> -->
+
+ *  Check which runtimes are active
+ *  Update custom environment templates
+ *  Track the number of capacity units per hour that your runtimes have consumed so far
+ *  Stop active runtimes\.
+
+<!-- </ul> -->
+
+## Limitations ##
+
+The default environments provided by Watson Studio cannot be edited or modified\.
+
+**Notebook environments** (Anaconda Python or R distributions):
+
+: \- You can't add a software customization to the default Python and R environment templates included in Watson Studio\. You can only add a customization to an environment template that you create\. : \- If you add a software customization using conda, your environment must have at least 2 GB RAM\. : \- You can't customize an R environment for a notebook by installing R packages directly from CRAN or GitHub\. You can check if the CRAN package you want is available only from conda channels and, if the package is available, add that package name in the customization list as `r-<package-name>`\.
+
+<!-- <ul> -->
+
+ *  After you have started a notebook in an Watson Studio environment, you can't create another conda environment from inside that notebook and use it\. Watson Studio environments do not behave like a Conda environment manager\.
+
+<!-- </ul> -->
+
+**Spark environments**: : \- You can't customize the software configuration of a Spark environment template\.
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  [Customize environment templates for Python or R](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/customize-envs.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+**Parent topic:**[Managing compute resources](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html)
+
+<!-- </article "role="article" "> -->

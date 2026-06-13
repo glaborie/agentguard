@@ -1,0 +1,36 @@
+# Firewall access for AWS Redshift #
+
+Inbound firewall access allows IBM watsonx to connect to Redshift on AWS through the firewall\. You need inbound firewall access to work with your data stored in Redshift\.
+
+To connect to Redshift from IBM watsonx, you configure inbound access through the Redshift firewall by entering the IP ranges for IBM watsonx into the inbound firewall rules (also called ingress rules)\. Inbound access through the firewall is configurable if Redshift resides on a public subnet\. If Redshift resides on a private subnet, then no access is possible\.
+
+Follow these steps to configure inbound firewall access to AWS Redshift:
+
+<!-- <ol> -->
+
+1.  Go to your provisioned Amazon Redshift cluster\.
+2.  Select **Properties** and then scroll down to **Network and security settings**\.
+3.  Click the **VPC security group**\.
+    
+    ![AWS VPC security group](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/images/int-aws-active.png)
+4.  Edit the active/default security group\.
+    
+    ![AWS active security group](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/images/int-aws-vpc.png)
+5.  Under **Inbound rules**, change the port range to 5439 to specify the Redshift port\. Then select **Edit inbound rules > Add rule**\.
+    
+    ![Edit inbound rules](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/images/int-aws-IPs.png)
+6.  From IBM watsonx, go to the **Administration > Cloud integrations** page\.
+7.  Click the **Firewall configuration** link to view the list of IP ranges used by IBM watsonx\. IP addresses can be viewed in either CIDR notation or as Start and End addresses\.
+8.  Copy each of the IP ranges listed and paste them into the **Source** field for inbound firewall rules\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Working with Redshift\-managed VPC endpoints in Amazon Redshift](https://docs.aws.amazon.com/redshift/latest/mgmt/managing-cluster-cross-vpc.html)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

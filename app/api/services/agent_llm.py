@@ -2,7 +2,6 @@ import asyncio
 import logging
 from typing import Optional
 
-from app.agent.graph import run_agent_async
 from app.api.services.guardrail_scoring import detect_guardrail_type, score_guardrail_block
 from app.core.config import settings
 from app.core.ids import completion_id
@@ -17,6 +16,8 @@ def call(
     model: Optional[str] = None,
 ) -> tuple[str, str]:
     """Invoke the ReAct agent for one turn. Returns (answer_text, completion_id)."""
+    from app.agent.graph import run_agent_async
+
     resolved_model = model or settings.agent_model
 
     try:

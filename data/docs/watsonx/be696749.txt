@@ -1,0 +1,35 @@
+# Selecting functions #
+
+The function list displays all available CLEM functions and operators\. Scroll to select a function from the list, or, for easier searching, use the drop\-down list to display a subset of functions or operators\.
+
+The following categories of functions are available:
+
+<!-- <table "summary="" id="expressionbuilder_functions__table_sfr_j4w_2fb" class="defaultstyle" "> -->
+
+Table 1\. CLEM functions for use with your data
+
+| Function type     | Description                                                                                                                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Operators         | Lists all the operators you can use when building expressions\. Operators are also available from the buttons\.                                                                               |
+| Information       | Used to gain insight into field values\. For example, the function `is_string` returns `true` for all records whose type is a string\.                                                        |
+| Conversion        | Used to construct new fields or convert storage type\. For example, the function `to_timestamp` converts the selected field to a timestamp\.                                                  |
+| Comparison        | Used to compare field values to each other or to a specified string\. For example, `<=` is used to compare whether the values of two fields are lesser or equal\.                          |
+| Logical           | Used to perform logical operations, such as `if, then, else` operations\.                                                                                                                     |
+| Numeric           | Used to perform numeric calculations, such as the natural log of field values\.                                                                                                               |
+| Trigonometric     | Used to perform trigonometric calculations, such as the arccosine of a specified angle\.                                                                                                      |
+| Probability       | Returns probabilities that are based on various distributions, such as probability that a value from Student's t distribution is less than a specific value\.                                 |
+| Spatial Functions | Used to perform spatial calculations on geospatial data\.                                                                                                                                     |
+| Bitwise           | Used to manipulate integers as bit patterns\.                                                                                                                                                 |
+| Random            | Used to randomly select items or generate numbers\.                                                                                                                                           |
+| String            | Used to perform various operations on strings, such as `stripchar`, which allows you to remove a specified character\.                                                                        |
+| Date and time     | Used to perform various operations on date, time, and timestamp fields\.                                                                                                                      |
+| Sequence          | Used to gain insight into the record sequence of a data set or perform operations that are based on that sequence\.                                                                           |
+| Global            | Used to access global values that are created by a Set Globals node\. For example, `@MEAN` is used to refer to the mean average of all values for a field across the entire data set\.        |
+| Blanks and Null   | Used to access, flag, and frequently fill user\-specified blanks or system\-missing values\. For example, `@BLANK(FIELD)` is used to raise a true flag for records where blanks are present\. |
+| Special Fields    | Used to denote the specific fields under examination\. For example, `@FIELD` is used when deriving multiple fields\.                                                                          |
+
+<!-- </table "summary="" id="expressionbuilder_functions__table_sfr_j4w_2fb" class="defaultstyle" "> -->
+
+After you select a group of functions, double\-click to insert the functions into the  Expression box at the point indicated by the position of the cursor\.
+
+<!-- </article "role="article" "> -->

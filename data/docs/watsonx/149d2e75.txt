@@ -1,0 +1,14 @@
+# Scripting overview #
+
+This section provides high\-level descriptions and examples of flow\-level scripts and standalone scripts in the SPSS Modeler interface\. More information on scripting language, syntax, and commands is provided in the sections that follow\.
+
+Notes:
+
+<!-- <ul> -->
+
+ *  Some of the properties and features described in this scripting and automation guide aren't available in  Watsonx\.ai\.
+ *  You can't import and run scripts created in SPSS Statistics\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

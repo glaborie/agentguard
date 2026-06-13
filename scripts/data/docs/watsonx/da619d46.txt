@@ -1,0 +1,25 @@
+# smotenode properties #
+
+![SMOTE node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/smotenodeicon.png)The Synthetic Minority Over\-sampling Technique (SMOTE) node provides an over\-sampling algorithm to deal with imbalanced data sets\. It provides an advanced method for balancing data\. The SMOTE process node in SPSS Modeler is implemented in Python and requires the  imbalanced\-learn© Python library\.
+
+<!-- <table "summary="smotenode properties" class="defaultstyle" "> -->
+
+smotenode properties  
+
+Table 1\. smotenode properties
+
+| `smotenode` properties | Data type | Property description                                                                                                                                                                                          |
+| ---------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target`               | *field*   | The target field\.                                                                                                                                                                                            |
+| `sample_ratio`         | *string*  | Enables a custom ratio value\. The two options are Auto (`sample_ratio_auto`) or Set ratio (`sample_ratio_manual`)\.                                                                                          |
+| `sample_ratio_value`   | *float*   | The ratio is the number of samples in the minority class over the number of samples in the majority class\. It must be larger than `0` and less than or equal to `1`\. Default is `auto`\.                    |
+| `enable_random_seed`   | *Boolean* | If set to `true`, the `random_seed` property will be enabled\.                                                                                                                                                |
+| `random_seed`          | *integer* | The seed used by the random number generator\.                                                                                                                                                                |
+| `k_neighbours`         | *integer* | The number of nearest neighbors to be used for constructing synthetic samples\. Default is `5`\.                                                                                                              |
+| `m_neighbours`         | *integer* | The number of nearest neighbors to be used for determining if a minority sample is in danger\. This option is only enabled with the SMOTE algorithm types `borderline1` and `borderline2`\. Default is `10`\. |
+| `algorithm`            | *string*  | The type of SMOTE algorithm: `regular`, `borderline1`, or `borderline2`\.                                                                                                                                     |
+| `use_partition`        | *Boolean* | If set to `true`, only training data will be used for model building\. Default is `true`\.                                                                                                                    |
+
+<!-- </table "summary="smotenode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

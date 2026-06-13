@@ -1,0 +1,20 @@
+# Marking a project as sensitive #
+
+When you create a project, you can mark the project as sensitive to prevent project collaborators from moving sensitive data out of the project\.
+
+Marking a project as sensitive prevents collaborators of a project, including administrators, from downloading or exporting data assets, connections, or connected data from a project\. These sensitive assets cannot be added to a catalog or promoted to a space either\. Project collaborators with **Admin** or **Editor** role can export assets like notebooks or models from the project\.
+
+When users open a project that is marked as sensitive, a notification is displayed stating that no data assets can be downloaded or exported from the project\.
+
+## Restrictions ##
+
+<!-- <ul> -->
+
+ *  You cannot mark a project as sensitive after the project is created\.
+ *  You cannot mark projects that use Git integration as sensitive\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Administering projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/admin-project.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,21 @@
+# reordernode properties #
+
+![Field Reorder node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/fieldreordernodeicon.png)The Field Reorder node defines the natural order used to display fields downstream\. This order affects the display of fields in a variety of places, such as tables, lists, and when selecting fields\. This operation is useful when working with wide datasets to make fields of interest more visible\.
+
+<!-- <table "summary="reordernode properties" class="defaultstyle" "> -->
+
+reordernode properties  
+
+Table 1\. reordernode properties
+
+| `reordernode` properties | Data type                    | Property description                                          |
+| ------------------------ | ---------------------------- | ------------------------------------------------------------- |
+| `mode`                   | `Custom``Auto`               | You can sort values automatically or specify a custom order\. |
+| `sort_by`                | `Name``Type``Storage`        |                                                               |
+| `ascending`              | *flag*                       |                                                               |
+| `start_fields`           | *\[field1 field2 … fieldn\]* | New fields are inserted after these fields\.                  |
+| `end_fields`             | *\[field1 field2 … fieldn\]* | New fields are inserted before these fields\.                 |
+
+<!-- </table "summary="reordernode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

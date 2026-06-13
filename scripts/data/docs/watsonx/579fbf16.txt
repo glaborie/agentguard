@@ -1,0 +1,7 @@
+# Nodes palette #
+
+The following sections describe all the nodes available on the palette in SPSS Modeler\. Drag\-and\-drop or double\-click a node in the list to add it to your flow canvas\. You can then double\-click any node icon in your flow to set its properties\. Hover over a property to see information about it, or click the information icon to see Help\.
+
+When first creating a flow, you select which runtime to use\. By default, the flow will use the  IBM SPSS Modeler runtime\. If you want to use native Spark algorithms instead of SPSS algorithms, select the  Spark runtime\. Properties for some nodes will vary depending on which runtime option you choose\.
+
+<!-- </article "role="article" "> -->

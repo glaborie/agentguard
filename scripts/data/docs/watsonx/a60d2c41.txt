@@ -1,0 +1,21 @@
+# Building a chart from the chart type gallery #
+
+Use chart type gallery for building charts\. Following are general steps for building a chart from the gallery\.
+
+<!-- <ol> -->
+
+1.  In the  Chart Type section, select a chart category\. A preview version of the selected chart type is shown on the chart canvas\.
+2.  If the canvas already displays a chart, the new chart replaces the chart's axis set and graphic elements\.
+    
+    <!-- <ol> -->
+    
+    1.  Depending on the selected chart type, the available variables are presented under a number of different headings in the Details pane (for example,  Category for bar charts,  X-axis and  Y-axis for line charts). Select the appropriate variables for the selected chart type.
+    
+    <!-- </ol> -->
+    
+3.  Click the  Save visualization to project control to save the visualization to the project\. You can select to also  Create a new asset from the visualization, provide a visualization asset name, description, and chart name\.
+4.  Click  Apply to save the visualization to the project\. The new visualization asset is now available under the  Assets tab\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

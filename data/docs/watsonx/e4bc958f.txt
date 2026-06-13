@@ -1,0 +1,19 @@
+# Creating synthetic data from a custom data schema #
+
+Using the *Synthetic Data Generator* graphical editor flow tool, you can generate a structured synthetic data set based on meta data, automatically or with user\-specified statistical distributions\. You can define the data within each table column, their distributions, and any correlations\. You can then export and review your synthetic data\.
+
+Before you can use *generate* to create synthetic data, you need [to create a task](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/synthetic_data_overview_sd.html#create-synthetic)\.
+
+1\. The **Generate synthetic tabular data flow** window opens\. Select use case **Create from custom data schema**\. Click **Next**\. ![Generate synthetic tabular data flow window](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-generate-flow.png)
+
+2\. Select **Generate options**\. You can use the *Synthetic Data Generator* graphical editor flow tool to specify the number of rows and add columns\. You can define properties and specify fields, storage types, statistical distributions, and distribution parameters\. Click **Next**\. ![Generate options](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-generate-options.png)
+
+3\. Select **Export data** to select the export file name and type\. For more information, see [Exporting data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/export_data_sd.html)\. Click **Next**\. ![Export data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-generate-export.png)
+
+4\. Select **Review** to check your selection and make any updates before generating your synthetic data\. Click **Save and run**\. ![Review data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/sd-generate-review.png)
+
+## Learn more ##
+
+[Creating synthetic data from production data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/mask_mimic_data_sd.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,44 @@
+# Visualizations of assets #
+
+In your project, you can create visualizations of data assets to further explore and discover insights\. To create and view visualizations, open a data asset and go to the **Visualization** tab\.
+
+## Requirements and restrictions ##
+
+You can view the visualization of assets under the following circumstances\.
+
+<!-- <ul> -->
+
+ *  **Required permissions**  
+    To view this page, you can have any role in a project. To edit or update information on this page, you must have the **Editor** or **Admin** role.
+ *  **Workspaces**  
+    You can view the asset visualization in projects.
+ *  **Types of assets**  
+    These types of assets create a visualization:
+    
+    <!-- <ul> -->
+    
+     *  Data asset from file: Avro, CSV, JSON, Parquet, TSV, SAV, Microsoft Excel .xls and .xlsx files, SAS, delimited text files
+     *  Connected data assets
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  **Collaboration**  
+    Visualization assets created by a user can be viewed or edited by other collaborators of the same project, depending on the assigned permissions.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Visualizing your data](https://dataplatform.cloud.ibm.com/docs/content/dataview/idh_idc_cg_help_main.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Asset types and properties](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assets.html)
+
+<!-- </article "role="article" "> -->

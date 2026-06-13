@@ -1,0 +1,29 @@
+# multilayerperceptronnode properties #
+
+![MultiLayerPerceptron\-AS node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/sparkmultilayerperceptronnodeicon.png)Multilayer perceptron is a classifier based on the feedforward artificial neural network and consists of multiple layers\. Each layer is fully connected to the next layer in the network\. The MultiLayerPerceptron\-AS node in SPSS Modeler is implemented in Spark\. For details about the multilayer perceptron classifier (MLPC), see 
+
+[https://spark\.apache\.org/docs/latest/ml\-classification\-regression\.html\#multilayer\-perceptron\-classifier](https://spark.apache.org/docs/latest/ml-classification-regression.html#multilayer-perceptron-classifier)\.
+
+<!-- <table "summary="multilayerperceptronnode properties" id="multilayerperceptronnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+multilayerperceptronnode properties  
+
+Table 1\. multilayerperceptronnode properties
+
+| `multilayerperceptronnode` properties | Data type | Property description                                                                                                                                                                            |
+| ------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `custom_fields`                       | *boolean* | This option tells the node to use field information specified here instead of that given in any upstream Type node(s)\. After selecting this option, specify the following fields as required\. |
+| `target`                              | *field*   | One field name for target\.                                                                                                                                                                     |
+| `inputs`                              | *field*   | List of the field names for input\.                                                                                                                                                             |
+| `num_hidden_layers`                   | *string*  | Specify the number of hidden layers\. Use a comma between multiple hidden layers\.                                                                                                              |
+| `num_output_number`                   | *string*  | Specify the number of output layers\.                                                                                                                                                           |
+| `random_seed`                         | *integer* | Generate the seed used by the random number generator\.                                                                                                                                         |
+| `maxiter`                             | *integer* | Specify the maximum number of iterations to perform\.                                                                                                                                           |
+| `set_expert`                          | *boolean* | Select the Expert Mode option in the Model Building section if you want to specify the block size for stacking input data in matrices\.                                                         |
+| `block_size`                          | *integer* | This option can speed up the computation\.                                                                                                                                                      |
+| `use_model_name`                      | *boolean* | Specify a custom name for the model or use `auto`, which sets the label as the target field\.                                                                                                   |
+| `model_name`                          | *string*  | Renamed model name\.                                                                                                                                                                            |
+
+<!-- </table "summary="multilayerperceptronnode properties" id="multilayerperceptronnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,37 @@
+# IBM Cloud services in the  IBM watsonx services catalog #
+
+You can provision  IBM® Cloud service instances for the  watsonx platform\.
+
+The  IBM watsonx\.ai component provides the following services that provide key functionality, including tools and compute resources:
+
+<!-- <ul> -->
+
+ *  [Watson™ Studio](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/wsl.html)
+ *  [Watson Machine Learning](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/wml.html)
+
+<!-- </ul> -->
+
+If you signed up for  watsonx\.ai, you already have these services\. Otherwise, you can create instances of these services from the Services catalog\.
+
+If you signed up for  watsonx\.governance, you already have this service\. Otherwise, you can create an instance of this service from the Services catalog\.
+
+The [IBM Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/cloud-object-storage.html) provides storage for projects and deployment spaces on the  IBM watsonx platform\.
+
+The [Secure Gateway](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/secure-gateway.html) service provides secure connections to on\-premises date sources\.
+
+These services provide databases that you can access in  IBM watsonx by creating connections:
+
+<!-- <ul> -->
+
+ *  [IBM Analytics Engine](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/spark.html)
+ *  [Cloudant](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/cloudant.html)
+ *  [Databases for Elasticsearch](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/elasticsearch.html)
+ *  [Databases for EDB](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/edb.html)
+ *  [Databases for MongoDB](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/mongodb.html)
+ *  [Databases for PostgreSQL](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/postgresql.html)
+ *  [Db2®](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/db2oltp.html)
+ *  [Db2 Warehouse](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/db2wh.html)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

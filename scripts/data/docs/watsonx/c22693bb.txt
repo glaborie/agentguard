@@ -1,0 +1,28 @@
+# Looping through nodes #
+
+You can use a `for` loop to loop through all the nodes in a flow\. For example, the following two script examples loop through all nodes and change field names in any Filter nodes to uppercase\.
+
+You can use this script in any flow that contains a Filter node, even if no fields are actually filtered\. Simply add a Filter node that passes all fields in order to change field names to uppercase across the board\.
+
+    # Alternative 1: using the data model nameIterator() function
+    stream = modeler.script.stream()
+    for node in stream.iterator():
+        if (node.getTypeName() == "filter"):
+            # nameIterator() returns the field names
+            for field in node.getInputDataModel().nameIterator():
+                newname = field.upper()
+                node.setKeyedPropertyValue("new_name", field, newname)
+
+    # Alternative 2: using the data model iterator() function
+    stream = modeler.script.stream()
+    for node in stream.iterator():
+        if (node.getTypeName() == "filter"):
+            # iterator() returns the field objects so we need
+            # to call getColumnName() to get the name
+            for field in node.getInputDataModel().iterator():
+                newname = field.getColumnName().upper()
+                node.setKeyedPropertyValue("new_name", field.getColumnName(), newname)
+
+The script loops through all nodes in the current flow, and checks whether each node is a Filter\. If so, the script loops through each field in the node and uses either the `field.upper()` or `field.getColumnName().upper()` function to change the name to uppercase\.
+
+<!-- </article "role="article" "> -->

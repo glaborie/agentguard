@@ -1,0 +1,7 @@
+# Deployment steps #
+
+With IBM  Watson Machine Learning you can deploy your  Decision Optimization prescriptive model and associated common data once and then submit job requests to this deployment with only the related transactional data\. This deployment can be achieved by using the  Watson Machine Learning REST API or by using the  Watson Machine Learning Python client\.
+
+See [REST API example](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/DeployModelRest.html#task_deploymodelREST) for a full code example\. See [Python client examples](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/DeployPythonClient.html#topic_wmlpythonclient) for a link to a Python  notebook available from the  Samples\.
+
+<!-- </article "role="article" "> -->

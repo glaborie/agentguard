@@ -1,0 +1,10 @@
+# Creating advanced visualizations #
+
+The previous three sections use different types of graph nodes\. Another way to explore data is with the advanced visualizations feature\.
+
+You can use the Charts node to launch the chart builder and create advanced charts to explore your data from different perspectives and identify patterns, connections, and relationships within your data\.
+
+Figure 1\. Advanced visualizations
+
+![Advanced visualizations](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_viz.png)
+<!-- </article "role="article" "> -->

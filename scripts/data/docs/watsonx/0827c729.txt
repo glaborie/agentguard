@@ -1,0 +1,49 @@
+# Accessing flow run results #
+
+Many SPSS Modeler nodes produce output objects such as models, charts, and tabular data\. Many of these outputs contain useful values that can be used by scripts to guide subsequent runs\. These values are grouped into content containers (referred to as simply containers) which can be accessed using tags or IDs that identify each container\. The way these values are accessed depends on the format or "content model" used by that container\.
+
+For example, many predictive model outputs use a variant of XML called PMML to represent information about the model such as which fields a decision tree uses at each split, or how the neurons in a neural network are connected and with what strengths\. Model outputs that use PMML provide an XML Content Model that can be used to access that information\. For example:
+
+    stream = modeler.script.stream()
+    # Assume the flow contains a single C5.0 model builder node
+    # and that the datasource, predictors, and targets have already been
+    # set up
+    modelbuilder = stream.findByType("c50", None)
+    results = []
+    modelbuilder.run(results)
+    modeloutput = results[0]
+    
+    # Now that we have the C5.0 model output object, access the
+    # relevant content model
+    cm = modeloutput.getContentModel("PMML")
+    
+    # The PMML content model is a generic XML-based content model that
+    # uses XPath syntax. Use that to find the names of the data fields.
+    # The call returns a list of strings match the XPath values
+    dataFieldNames = cm.getStringValues("/PMML/DataDictionary/DataField", "name")
+
+SPSS Modeler supports the following content models in scripting:
+
+<!-- <ul> -->
+
+ *  Table content model provides access to the simple tabular data represented as rows and columns\.
+ *  XML content model provides access to content stored in XML format\.
+ *  JSON content model provides access to content stored in JSON format\.
+ *  Column statistics content model provides access to summary statistics about a specific field\.
+ *  Pair\-wise column statistics content model provides access to summary statistics between two fields or values between two separate fields\.
+
+<!-- </ul> -->
+
+Note that the following nodes don't contain these content models:
+
+<!-- <ul> -->
+
+ *  Time Series
+ *  Discriminant
+ *  SLRM
+ *  All Extension nodes
+ *  All Database Modeling nodes
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

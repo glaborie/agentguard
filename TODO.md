@@ -163,3 +163,32 @@ Add `notebooks/quality_drift.ipynb` that pulls historical eval scores from Langf
 - Add unit tests for `check_drift()` in `tests/test_drift.py` covering: no regression, single regression, threshold override, empty scores edge case
 
 **Files to create/touch:** `notebooks/quality_drift.ipynb`, `app/eval/drift.py`, `app/main.py` (add `drift-check` command), `tests/test_drift.py`
+
+---
+
+## Test coverage gaps
+
+### #15 Raise unit test coverage from 63% to 80% (~3h)
+
+**Why:** 63% barely clears the 60% CI floor. Industry standard is 80%. The gap is concentrated in a few eval modules that are easy to mock.
+
+**Current state (2026-06-12):** 2513 stmts, 934 missed, 63% total.
+
+**Priority files:**
+
+| File | Cover | Effort | What to add |
+|------|-------|--------|-------------|
+| `app/eval/service.py` | 0% | Low | Thin wrappers — mock `run_deepeval_evaluation`, `run_experiment`, `run_ragas_experiment`, `run_gate`; assert delegation |
+| `app/eval/deepeval_runner.py` | 0% | Medium | Mock `LiteLLMModel`, `DeepEvalDataset`, metric classes; test happy path + score push to Langfuse |
+| `app/eval/ragas_metrics.py` | 63% | Low | Cover `_build_llm`, `_build_embeddings`, `_get_metric_objects` (metric registry lookup + strictness cap) |
+| `app/utils.py` | 38% | Low | Cover uncovered utility branches |
+| `app/eval/experiments.py` | 42% | Medium | Cover `run_experiment` DeepEval path — mock `LiteLLMModel`, dataset items, score push |
+| `app/rag/chain.py` | 37% | Medium | Mock `langfuse.get_prompt`, `ChatOpenAI`, `QdrantVectorStore`; test `build_chain`, `query`, `get_retriever` |
+
+**Constraints:**
+- No integration tests — all unit, mock LLM/Langfuse/Qdrant at boundary
+- Existing test files: `tests/test_evaluators.py`, `tests/test_ragas_metrics.py`, `tests/test_api_routes.py`
+- New files OK: `tests/test_service.py`, `tests/test_deepeval_runner.py`, `tests/test_chain.py`
+- CI threshold in `pyproject.toml`: `fail_under = 60` — raise to `80` once gap closed
+
+**Files to touch:** `tests/test_service.py` (new), `tests/test_deepeval_runner.py` (new), `tests/test_chain.py` (new), `tests/test_ragas_metrics.py` (extend), `tests/test_evaluators.py` (extend), `pyproject.toml`

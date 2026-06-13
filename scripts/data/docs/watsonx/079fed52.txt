@@ -1,0 +1,15 @@
+# Cox node #
+
+Cox Regression builds a predictive model for time\-to\-event data\. The model produces a survival function that predicts the probability that the event of interest has occurred at a given time `t` for given values of the predictor variables\. The shape of the survival function and the regression coefficients for the predictors are estimated from observed subjects; the model can then be applied to new cases that have measurements for the predictor variables\.
+
+Note that information from censored subjects, that is, those that do not experience the event of interest during the time of observation, contributes usefully to the estimation of the model\.
+
+Example\. As part of its efforts to reduce customer churn, a telecommunications company is interested in modeling the time to churn in order to determine the factors that are associated with customers who are quick to switch to another service\. To this end, a random sample of customers is selected, and their time spent as customers (whether or not they are still active customers) and various demographic fields are pulled from the database\.
+
+Requirements\. You need one or more input fields, exactly one target field, and you must specify a survival time field within the Cox node\. The target field should be coded so that the "false" value indicates survival and the "true" value indicates that the event of interest has occurred; it must have a measurement level of `Flag`, with string or integer storage\. (Storage can be converted using a Filler or Derive node if necessary\. ) Fields set to `Both` or `None` are ignored\. Fields used in the model must have their types fully instantiated\. The survival time can be any numeric field\. Note: On scoring a Cox Regression model, an error is reported if empty strings in categorical variables are used as input to model building\. Avoid using empty strings as input\.
+
+Dates & Times\. Date & Time fields cannot be used to directly define the survival time; if you have Date & Time fields, you should use them to create a field containing survival times, based upon the difference between the date of entry into the study and the observation date\.
+
+Kaplan\-Meier Analysis\. Cox regression can be performed with no input fields\. This is equivalent to a Kaplan\-Meier analysis\.
+
+<!-- </article "role="article" "> -->

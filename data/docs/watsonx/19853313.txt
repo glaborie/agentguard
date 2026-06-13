@@ -1,0 +1,33 @@
+# linearasnode properties #
+
+![Linear\-AS node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/almas_nodeicon.png)Linear regression models predict a continuous target based on linear relationships between the target and one or more predictors\.
+
+<!-- <table "summary="linearasnode properties" class="defaultstyle" "> -->
+
+linearasnode properties  
+
+Table 1\. linearasnode properties
+
+| `linearasnode` Properties       | Values                                    | Property description                                                                                                                                            |
+| ------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target`                        | *field*                                   | Specifies a single target field\.                                                                                                                               |
+| `inputs`                        | \[*field1 \.\.\. fieldN*\]                | Predictor fields used by the model\.                                                                                                                            |
+| `weight_field`                  | *field*                                   | Analysis field used by the model\.                                                                                                                              |
+| `custom_fields`                 | *flag*                                    | The default value is `TRUE`\.                                                                                                                                   |
+| `intercept`                     | *flag*                                    | The default value is `TRUE`\.                                                                                                                                   |
+| `detect_2way_interaction`       | *flag*                                    | Whether or not to consider two way interaction\. The default value is `TRUE`\.                                                                                  |
+| `cin`                           | *number*                                  | The interval of confidence used to compute estimates of the model coefficients\. Specify a value greater than 0 and less than 100\. The default value is `95`\. |
+| `factor_order`                  | `ascending``descending`                   | The sort order for categorical predictors\. The default value is `ascending`\.                                                                                  |
+| `var_select_method`             | `ForwardStepwise``BestSubsets``none`      | The model selection method to use\. The default value is `ForwardStepwise`\.                                                                                    |
+| `criteria_for_forward_stepwise` | `AICC``Fstatistics``AdjustedRSquare``ASE` | The statistic used to determine whether an effect should be added to or removed from the model\. The default value is `AdjustedRSquare`\.                       |
+| `pin`                           | *number*                                  | The effect that has the smallest p\-value less than this specified `pin` threshold is added to the model\. The default value is `0.05`\.                        |
+| `pout`                          | *number*                                  | Any effects in the model with a p\-value greater than this specified `pout` threshold are removed\. The default value is `0.10`\.                               |
+| `use_custom_max_effects`        | *flag*                                    | Whether to use max number of effects in the final model\. The default value is `FALSE`\.                                                                        |
+| `max_effects`                   | *number*                                  | Maximum number of effects to use in the final model\. The default value is `1`\.                                                                                |
+| `use_custom_max_steps`          | *flag*                                    | Whether to use the maximum number of steps\. The default value is `FALSE`\.                                                                                     |
+| `max_steps`                     | *number*                                  | The maximum number of steps before the stepwise algorithm stops\. The default value is `1`\.                                                                    |
+| `criteria_for_best_subsets`     | `AICC``AdjustedRSquare``ASE`              | The mode of criteria to use\. The default value is `AdjustedRSquare`\.                                                                                          |
+
+<!-- </table "summary="linearasnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

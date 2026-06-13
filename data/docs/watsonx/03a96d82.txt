@@ -1,0 +1,260 @@
+# Quick start tutorials #
+
+Take quick start tutorials to learn how to perform specific tasks, such as refine data or build a model\. These tutorials help you quickly learn how to do a specific task or set of related tasks\.
+
+The quick start tutorials are categorized by task:
+
+<!-- <ul> -->
+
+ *  [Preparing data](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html?context=cdpaas&locale=en#prepare)
+ *  [Analyzing and visualizing data](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html?context=cdpaas&locale=en#analyze)
+ *  [Building, deploying, and trusting models](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html?context=cdpaas&locale=en#build)
+ *  [Working with foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html?context=cdpaas&locale=en#prompt)
+
+<!-- </ul> -->
+
+Each tutorial requires one or more service instances\. Some services are included in multiple tutorials\. The tutorials are grouped by task\. You can start with any task\. Each of these tutorials provides a description of the tool, a video, the instructions, and additional learning resources\.
+
+The tags for each tutorial describe the level of expertise (
+
+Beginner
+
+, 
+
+Intermediate
+
+, or 
+
+Advanced
+
+), and the amount of coding required (
+
+No code
+
+, 
+
+Low code
+
+, or 
+
+All code
+
+)\.
+
+After completing these tutorials, see the [Other learning resources](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html?context=cdpaas&locale=en#resources) section to continue your learning\.
+
+## Preparing data ##
+
+To get started with preparing, transforming, and integrating data, understand the overall workflow, choose a tutorial, and check out other learning resources for working on the platform\.
+
+Your data preparation workflow has these basic steps:
+
+<!-- <ol> -->
+
+1.  Create a project\.
+2.  If necessary, create the service instance that provides the tool you want to use and associate it with the project\.
+3.  Add data to your project\. You can add data files from your local system, data from a remote data source that you connect to, data from a catalog, or sample data\.
+4.  Choose a tool to analyze your data\. Each of the tutorials describes a tool\.
+5.  Run or schedule a job to prepare your data\.
+
+<!-- </ol> -->
+
+### Tutorials for preparing data ###
+
+Each of these tutorials provides a description of the tool, a video, the instructions, and additional learning resources:
+
+<!-- <table> -->
+
+| Tutorial                                         | Description                                                       | Expertise for tutorial                                                  |
+| ------------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [Refine and visualize data with Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-refine.html) | Prepare and visualize tabular data with a graphical flow editor\. | Select operations to manipulate data\.  <br><br>Beginner<br><br>No code |
+| [Generate synthetic tabular data](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html)              | Generate synthetic tabular data using a graphical flow editor\.   | Select operations to generate data\.  <br><br>Beginner<br><br>No code   |
+
+<!-- </table ""> -->
+
+## Analyzing and visualizing data ##
+
+To get started with analyzing and visualizing data, understand the overall workflow, choose a tutorial, and check out other learning resources for working with other tools\.
+
+Your analyzing and visualizing data workflow has these basic steps:
+
+<!-- <ol> -->
+
+1.  Create a project\.
+2.  If necessary, create the service instance that provides the tool you want to use and associate it with the project\.
+3.  Add data to your project\. You can add data files from your local system, data from a remote data source that you connect to, data from a catalog, or sample data\.
+4.  Choose a tool to analyze your data\. Each of the tutorials describes a tool\.
+
+<!-- </ol> -->
+
+### Tutorials for analyzing and visualizing data ###
+
+Each of these tutorials provides a description of the tool, a video, the instructions, and additional learning resources:
+
+<!-- <table> -->
+
+| Tutorial                                         | Description                                                       | Expertise for tutorial                                                   |
+| ------------------------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [Analyze data in a Jupyter notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-analyze.html)           | Load data, run, and share a notebook\.                            | Understand generated Python code\.  <br><br>Intermediate<br><br>All code |
+| [Refine and visualize data with Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-refine.html) | Prepare and visualize tabular data with a graphical flow editor\. | Select operations to manipulate data\.  <br><br>Beginner<br><br>No code  |
+
+<!-- </table ""> -->
+
+## Building, deploying, and trusting models ##
+
+To get started with building, deploying, and trusting models, understand the overall workflow, choose a tutorial, and check out other learning resources for working on the platform\.
+
+The model workflow has three main steps: build a model asset, deploy the model, and build trust in the model\.
+
+![Overview of model workflow](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ml-engineer-overview-wx.svg)
+
+### Tutorials for building, deploying, and trusting models ###
+
+Each tutorial provides a description of the tool, a video, the instructions, and additional learning resources:
+
+<!-- <table> -->
+
+| Tutorial                                                        | Description                                                                                                   | Expertise for tutorial                                                                                          |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [Build and deploy a machine learning model with AutoAI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html)       | Automatically build model candidates with the AutoAI tool\.                                                   | Build, deploy, and test a model without coding\.  <br><br>Beginner<br><br>No code                               |
+| [Build and deploy a machine learning model in a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build-notebook.html)     | Build a model by updating and running a notebook that uses Python code and the Watson Machine Learning APIs\. | Build, deploy, and test a scikit\-learn model that uses Python code\.  <br><br>Intermediate<br><br>All code     |
+| [Build and deploy a machine learning model with SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build-spss.html) | Build a C5\.0 model that uses the SPSS Modeler tool\.                                                         | Drop data and operation nodes on a canvas and select properties\.  <br><br>Beginner<br><br>No code              |
+| [Build and deploy a Decision Optimization model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html)              | Automatically build scenarios with the Modeling Assistant\.                                                   | Solve and explore scenarios, then deploy and test a model without coding\.  <br><br>Intermediate<br><br>No code |
+| [Automate the lifecycle for a model with pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-pipeline.html)           | Create and run a pipeline to automate building and deploying a machine learning model\.                       | Drop operation nodes on a canvas and select properties\.  <br><br>Beginner<br><br>No code                       |
+
+<!-- </table ""> -->
+
+## Prompting foundation models ##
+
+To get started with prompting foundation models, understand the overall workflow, choose a tutorial, and check out other learning resources for working on the platform\.
+
+Your prompt engineering workflow has these basic steps:
+
+<!-- <ol> -->
+
+1.  Create a project\.
+2.  If necessary, create the service instance that provides the tool you want to use and associate it with the project\.
+3.  Choose a tool to prompt foundation models\. Each of the tutorials describes a tool\.
+4.  Save and share your best prompts\.
+
+<!-- </ol> -->
+
+### Tutorials for working with foundation models ###
+
+Each tutorial provides a description of the tool, a video, the instructions, and additional learning resources:
+
+<!-- <table> -->
+
+| Tutorial                                                                                                                                                 | Description                                                                                                                     | Expertise for tutorial                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| [Prompt a foundation model using Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-prompt-lab.html)                                                                                                           | Experiment with prompting different foundation models, explore sample prompts, and save and share your best prompts\.           | Prompt a model using Prompt Lab without coding\.  <br><br>Beginner<br><br>No code                                                   |
+| [Prompt a foundation model with the retrieval\-augmented generation pattern](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html) | Prompt a foundation model by leveraging information in a knowledge base\.                                                       | Use the retrieval\-augmented generation pattern in a Jupyter notebook that uses Python code\.  <br><br>Intermediate<br><br>All code |
+| [Tune a foundation model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-tuning-studio.html)                                                                                                                              | Tune a foundation model to enhance model performance\.                                                                          | Use the Tuning Studio to tune a model without coding\.  <br><br>Intermediate<br><br>No code                                         |
+| [Evaluate and track a prompt template](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-evaluate-prompt.html)                                                                                                                 | Evaluate a prompt template to measure the performance of foundation model and track the prompt template through its lifecycle\. | Use the evaluation tool and an AI use case to track the prompt template\.  <br><br>Beginner<br><br>No code                          |
+
+<!-- </table ""> -->
+
+## Other learning resources ##
+
+### Guided tutorials ###
+
+Access the [Build an AI model sample project](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/c6008d167803ef95c1b37da931604cac) to follow a guided tutorial in the Samples\. After you create the sample project, the readme provides instructions:
+
+<!-- <ul> -->
+
+ *  Choose **Explore and prepare data** to remove anomalies in the data with Data Refinery\.
+ *  Choose **Build a model in a notebook** to build a model with Python code\.
+ *  Choose **Build and deploy a model** to automate building a model with the AutoAI tool\.
+
+<!-- </ul> -->
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+<!-- <ul> -->
+
+ *  Watch a preview of the guided tutorial video series
+
+<!-- </ul> -->
+
+### Documentation ###
+
+#### General ####
+
+<!-- <ul> -->
+
+ *  [Projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+ *  [Adding data to your project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html)
+
+<!-- </ul> -->
+
+#### Preparing data ####
+
+<!-- <ul> -->
+
+ *  [Refining data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+
+<!-- </ul> -->
+
+[Synthetic data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/synthetic_data_overview_sd.html)
+
+#### Analyzing and visualizing data ####
+
+<!-- <ul> -->
+
+ *  [Notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebooks-and-scripts.html)
+
+<!-- </ul> -->
+
+#### Building, deploying, and trusting models ####
+
+<!-- <ul> -->
+
+ *  [Analyzing data and building models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-science.html)
+ *  [Deploying and managing models](https://dataplatform.cloud.ibm.com/docs/content/wsj/wmls/wmls-deploy-overview.html)
+
+<!-- </ul> -->
+
+### Prompting a foundation model ###
+
+<!-- <ul> -->
+
+ *  [Retrieval\-augmented generation pattern](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-rag.html)
+ *  [Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html)
+ *  [Foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html)
+
+<!-- </ul> -->
+
+### Videos ###
+
+<!-- <ul> -->
+
+ *  [A comprehensive set of videos](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html) that show many common tasks in watsonx\.
+
+<!-- </ul> -->
+
+### Samples ###
+
+Find sample data sets, projects, models, prompts, and notebooks in the Samples area to gain hands\-on experience:
+
+![Notebook icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook.svg)[Notebooks](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=notebook) that you can add to your project to get started analyzing data and building models\.
+
+![Project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/ibm-cloud--projects.svg)[Projects](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=project-template) that you can import containing notebooks, data sets, prompts, and other assets\.
+
+![Data set icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/data--set.svg)[Data sets](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=dataset) that you can add to your project to refine, analyze, and build models\.
+
+![Prompt icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/prompt.svg)[Prompts](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=example-prompt) that you can use in the Prompt Lab to prompt a foundation model\.
+
+![Model icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/model.svg)[Foundation models](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=foundation-model) that you can use in the Prompt Lab\.
+
+### Training ###
+
+<!-- <ul> -->
+
+ *  [Watson Studio Methodology](https://www.ibm.com/training/course/W7067G) is an IBM Training e\-Learning course that provides an in\-depth look at Watson Studio\.
+ *  [Take control of your data with Watson Studio](https://developer.ibm.com/learningpaths/get-started-watson-studio/) is a learning path that consists of step\-by\-step tutorials that explain the process of working with data using Watson Studio\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Getting started](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-wdp.html)
+
+<!-- </article "role="article" "> -->

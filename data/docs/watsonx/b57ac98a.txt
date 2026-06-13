@@ -1,0 +1,62 @@
+# Notices #
+
+These notices apply to the watsonx platform\.
+
+The Offering includes some or all of the following that IBM provides under the [SIL Open Font License 1\.1](https://opensource.org/license/openfont-html/):
+
+<!-- <ul> -->
+
+ *  AMSFONTS
+ *  AMSFONTS (matplotlib)
+ *  CARLOGO (matplotlib)
+ *  CMMI9 (libtasn1)
+ *  cvxopt 1\.3\.0
+ *  FONTS (harfbuzz)
+ *  FONTS (pillow)
+ *  FONT AWESOME (Apache ORC)
+ *  FONT AWESOME \- FONT (bazel)
+ *  FONT AWESOME 4\.2\.0 (arrow)
+ *  FONT\-AWESOME\-IE7\.MIN\.CSS (Jetty)
+ *  FONT AWESOME (nbconvert)
+ *  FONTAWESOME\-FONTS
+ *  HELVETICA\-NEUE
+ *  READLINE\.PS (Readline)
+ *  FONT\-AWESOME (Notebook)
+ *  FONTAWESOME
+ *  FONTAWESOME (Tables)
+ *  FONT AWESOME FONTS
+ *  FONTAWESOME (FONT) (JupyterLab)
+ *  Font\-Awesome v4\.6\.3
+ *  Font\-Awesome v4\.3\.0
+ *  Font\-Awesome v4\.7\.0
+ *  handsontable v0\.25\.1
+ *  minio 7\.1\.7
+ *  IBM PLEX TYPEFACE (carbon\-components)
+ *  nbconvert v5\.2\.1
+ *  nbconvert v5\.1\.1
+ *  nbconvert 6\.4\.4
+ *  nbconvert 6\.5\.0
+ *  nbdime 3\.1\.1
+ *  NotoNastaliqUrdu\-Regular\.ttf (pillow)
+ *  NOTO\-FONTS (pillow)
+ *  QTAWESOME\-FONTS (qtawesome)
+ *  qtawesome v3\.3\.0
+ *  READLINE\.PS (Readline)
+ *  RLUSERMAN\.PS (Readline)
+ *  STIX FONT (matplotlib)
+
+<!-- </ul> -->
+
+The Offering includes some or all of the following that IBM provides under the [UBUNTU FONT LICENCE Version 1\.0](https://ubuntu.com/legal/font-licence):
+
+<!-- <ul> -->
+
+ *  Font\_license (Werkzeug)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+[Foundation model use terms](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-disclaimer.html)
+
+<!-- </article "role="article" "> -->

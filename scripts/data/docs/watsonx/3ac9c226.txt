@@ -1,0 +1,14 @@
+# Means node #
+
+The Means node compares the means between independent groups or between pairs of related fields to test whether a significant difference exists\. For example, you can compare mean revenues before and after running a promotion or compare revenues from customers who didn't receive the promotion with those who did\.
+
+You can compare means in two different ways, depending on your data:
+
+<!-- <ul> -->
+
+ *  Between groups within a field\. To compare independent groups, select a test field and a grouping field\. For example, you could exclude a sample of "holdout" customers when sending a promotion and compare mean revenues for the holdout group with all of the others\. In this case, you would specify a single test field that indicates the revenue for each customer, with a flag or nominal field that indicates whether they received the offer\. The samples are independent in the sense that each record is assigned to one group or another, and there is no way to link a specific member of one group to a specific member of another\. You can also specify a nominal field with more than two values to compare the means for multiple groups\. When executed, the node calculates a one\-way ANOVA test on the selected fields\. In cases where there are only two field groups, the one\-way ANOVA results are essentially the same as an independent\-samples `t` test\.
+ *  Between pairs of fields\. When comparing means for two related fields, the groups must be paired in some way for the results to be meaningful\. For example, you could compare the mean revenues from the same group of customers before and after running a promotion or compare usage rates for a service between husband\-wife pairs to see if they are different\. Each record contains two separate but related measures that can be compared meaningfully\. When executed, the node calculates a paired\-samples `t` test on each field pair selected\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,66 @@
+# Batch deployment input details for Python scripts #
+
+Follow these rules when you specify input details for batch deployments of Python scripts\.
+
+Data type summary table:
+
+<!-- <table> -->
+
+| Data         | Description     |
+| ------------ | --------------- |
+| Type         | Data references |
+| File formats | Any             |
+
+<!-- </table ""> -->
+
+## Data sources ##
+
+Input or output data references:
+
+<!-- <ul> -->
+
+ *  Local or managed assets from the space
+ *  Connected (remote) assets: Cloud Object Storage
+
+<!-- </ul> -->
+
+**Notes:**
+
+<!-- <ul> -->
+
+ *  For connections of type [Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cos.html) or [Cloud Object Storage(infrastructure)](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cos-infra.html), you must configure **Access key** and **Secret key**, also known as [HMAC credentials](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-uhc-hmac-credentials-main)\.
+
+<!-- </ul> -->
+
+If you are specifying input/output data references programmatically:
+
+<!-- <ul> -->
+
+ *  Data source reference `type` depends on the asset type\. For more information, see **Data source reference types** section in [Adding data assets to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+ *  You can specify the environment variables that are required for running the Python Script as `'key': 'value'` pairs in `scoring.environment_variables`\. The `key` must be the name of an environment variable and the `value` must be the corresponding value of the environment variable\.
+ *  The deployment job's payload is saved as a JSON file in the deployment container where you run the Python script\. The Python script can access the full path file name of the JSON file that uses the `JOBS_PAYLOAD_FILE` environment variable\.
+ *  If input data is referenced as a local or managed data asset, deployment service downloads the input data and places it in the deployment container where you run the Python script\. You can access the location (path) of the downloaded input data through the `BATCH_INPUT_DIR` environment variable\.
+ *  For input data references (data asset or connection asset), downloading of the data must be handled by the Python script\. If a connected data asset or a connection asset is present in the deployment jobs payload, you can access it using the `JOBS_PAYLOAD_FILE` environment variable that contains the full path to the deployment job's payload that is saved as a JSON file\.
+ *  If output data must be persisted as a local or managed data asset in a space, you can specify the name of the asset to be created in `scoring.output_data_reference.location.name`\. As part of a Python script, output data can be placed in the path that is specified by the `BATCH_OUTPUT_DIR` environment variable\. The deployment service compresses the data to compressed file format and upload it in the location that is specified in `BATCH_OUTPUT_DIR`\.
+ *  These environment variables are set internally\. If you try to set them manually, your values are overridden:
+    
+    <!-- <ul> -->
+    
+     *  `BATCH_INPUT_DIR`
+     *  `BATCH_OUTPUT_DIR`
+     *  `JOBS_PAYLOAD_FILE`
+    
+    <!-- </ul> -->
+    
+ *  If output data must be saved in a remote data store, you must specify the reference of the output data reference (for example, a data asset or a connected data asset) in `output_data_reference.location.href`\. The Python script must take care of uploading the output data to the remote data source\. If a connected data asset or a connection asset reference is present in the deployment jobs payload, you can access it using the `JOBS_PAYLOAD_FILE` environment variable, which contains the full path to the deployment job's payload that is saved as a JSON file\.
+ *  If the Python script does not require any input or output data references to be specified in the deployment job payload, then do not provide the `scoring.input_data_references` and `scoring.output_data_references` objects in the payload\.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+[Deploying scripts in Watson Machine Learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-script.html)\.
+
+**Parent topic:**[Batch deployment input details by framework](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-input-by-framework.html)
+
+<!-- </article "role="article" "> -->

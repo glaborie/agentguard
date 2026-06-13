@@ -1,0 +1,66 @@
+# Model deployment #
+
+To deploy a  Decision Optimization model, create a model ready for deployment in your deployment space and then upload your model as an archive\. When deployed, you can submit jobs to your model and monitor job states\.
+
+## Procedure ##
+
+To deploy a  Decision Optimization model:
+
+<!-- <ol> -->
+
+1.  Package your  Decision Optimization model formulation with your common data (optional) ready for deployment as a `tar.gz`, `.zip`, or `.jar` file\. Your archive can include the following optional files:
+    
+    <!-- <ol> -->
+    
+    1.  Your model files
+    2.  Settings (For more information, see [ Solve parameters](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/DeploySolveParams.html#topic_deploysolveparams) )
+    3.  Common data
+    
+    <!-- </ol> -->
+    
+    Note: For Python models with multiple  .py files, put all files in the same folder in your archive. The same folder must contain a main file called  main.py. Do not use subfolders.
+2.  Create a model ready for deployment in  Watson Machine Learning providing the following information: 
+    
+    <!-- <ul> -->
+    
+     *  **Machine Learning** service instance
+     *  **Deployment space** instance
+     *  **Software specification** ( Decision Optimization**runtime version**):
+        
+        <!-- <ul> -->
+        
+         *  do\_ 22.1 runtime is based on CPLEX  22.1.1.0
+         *  do\_ 20.1 runtime is based on CPLEX  20.1.0.1
+        
+        <!-- </ul> -->
+        
+        You can extend the software specification provided by  Watson Machine Learning. See the [ExtendWMLSoftwareSpec](https://github.com/IBMDecisionOptimization/DO-Samples/blob/watson_studio_cloud/jupyter/watsonx.ai%20and%20Cloud%20Pak%20for%20Data%20as%20a%20Service/ExtendWMLSoftwareSpec.ipynb) notebook in the **jupyter** folder of the **[DO-samples](https://github.com/IBMDecisionOptimization/DO-Samples)**.
+        
+        Updating CPLEX runtimes:
+        
+        If you previously deployed your model with a CPLEX runtime that is no longer supported, you can update your existing deployed model by using either the [ REST API](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html#update-soft-specs-api) or the [UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-manage-outdated.html#discont-soft-spec).
+     *  The **model type**:
+        
+        <!-- <ul> -->
+        
+         *  opl (do-opl\_<*runtime version*>)
+         *  cplex (do-cplex\_<*runtime version*>)
+         *  cpo (do-cpo\_<*runtime version*>)
+         *  docplex (do-docplex\_<*runtime version*>) using Python  3.10
+        
+        <!-- </ul> -->
+        
+        (The *Runtime version* can be one of the available runtimes so, for example, an opl model with runtime  22.1 would have the model type *do-opl\_ 22.1*.)
+    
+    <!-- </ul> -->
+    
+    You obtain a *MODEL-ID*. Your  Watson Machine Learning model can then be used in one or multiple deployments.
+3.  Upload your model archive (`tar.gz`, `.zip`, or `.jar` file) on  Watson Machine Learning\. See [Model input and output data file formats](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/ModelIOFileFormats.html#topic_modelIOFileFormats) for information about input file types\. 
+4.  Deploy your model by using the *MODEL\-ID*, *SPACE\-ID*, and the **hardware specification** for the available configuration sizes (small S, medium M, large L, extra large XL)\. See [configurations](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/Paralleljobs.html#topic_paralleljobs__34c6)\.You obtain a *DEPLOYMENT\-ID*\.
+5.  Monitor the deployment by using the *DEPLOYMENT\-ID*\. **Deployment states** can be: `initializing`, `updating`, `ready`, or `failed`\.
+6.  Submit jobs to your deployment\.You obtain a *JOB\-ID*\.
+7.  Monitor your jobs by using the JOB\-ID\. 
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

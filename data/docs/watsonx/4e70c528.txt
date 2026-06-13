@@ -1,0 +1,104 @@
+# Presto connection #
+
+To access your data in Presto, create a connection asset for it\.
+
+Presto is a fast and reliable SQL engine for Data Analytics and the Open Lakehouse\.
+
+## Supported versions ##
+
+<!-- <ul> -->
+
+ *  Version 0\.279 and earlier
+
+<!-- </ul> -->
+
+## Create a connection to Presto ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  Hostname or IP address
+ *  Port
+ *  Username
+ *  Password (required if you connect to Presto with SSL enabled)
+ *  SSL certificate (if required by the Presto server)
+
+<!-- </ul> -->
+
+### Connecting to Presto within IBM watsonx\.data ###
+
+To connect to a Presto server within watsonx\.data on IBM Cloud, use these connection details:
+
+<!-- <ul> -->
+
+ *  Username: `ibmlhapikey`
+ *  Password (for SSL\-enabled, which is the default): An IBM Cloud API key\. For more information, see [Connecting to Presto server](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-con-presto-serv)\.
+
+<!-- </ul> -->
+
+To connect to a Presto server within watsonx\.data on Cloud Pak for Data or stand\-alone watsonx\.data, use the username and password that you use for the watsonx\.data console\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project**  
+Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space**  
+Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.  
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use the Presto connection in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Presto setup ##
+
+To set up Presto, see [Presto installation](https://prestodb.io/docs/current/installation.html)\.
+
+## Restriction ##
+
+You can use this connection only for source data\. You cannot write to data or export data with this connection\.
+
+## Limitation ##
+
+The Presto connection does not support the Apache Cassandra Time data type\.
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [SQL Statement Syntax](https://prestodb.io/docs/current/sql.html) for the correct syntax\.
+
+## Learn more ##
+
+[Presto documentation](https://prestodb.io/docs/current/index.html)
+
+**Parent topic**: [Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

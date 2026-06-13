@@ -1,0 +1,99 @@
+# IBM Informix connection #
+
+To access your data in an IBM Informix database, create a connection asset for it\.
+
+IBM Informix is a database that contains relational, object\-relational, or dimensional data\. You can use the Informix connection to access data from an on\-prem Informix database server or from IBM Informix on Cloud\.
+
+## Supported Informix versions (on\-prem) ##
+
+<!-- <ul> -->
+
+ *  Informix 14\.10 and later\. This version does not support the Progress DataDirect JDBC driver, which is used by the Informix connection\. The Informix connection supports Informix 14\.10 features that are comparable to previous Informix versions, but not the new features\. Issues related to DataDirect's JDBC driver are not supported\.
+ *  Informix 12\.10 and later
+ *  Informix 11\.0 and later
+ *  Informix 10\.0 and later
+ *  Informix 9\.2 and later
+
+<!-- </ul> -->
+
+## Create a connection to Informix ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  Name of the database server
+ *  Name of the database
+ *  Hostname or IP address of the database
+ *  Port number (Default is `1526`)
+ *  Username and password
+
+<!-- </ul> -->
+
+On\-prem Informix database servers: For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Informix connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Informix setup ##
+
+To set up Informix, see these topics:
+
+<!-- <ul> -->
+
+ *  Informix on\-prem: [Creating a database server after installation](https://www.ibm.com/docs/SSGU8G_14.1.0/com.ibm.inst.doc/ids_inst_023.htm)
+ *  Informix on Cloud: [Getting started with Informix on Cloud](https://cloud.ibm.com/docs/InformixOnCloud/InformixOnCloud.html)
+
+<!-- </ul> -->
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [Guide to SQL: Syntax](https://www.ibm.com/docs/SSGU8G_14.1.0/com.ibm.sqls.doc/sqls.htm) in the product documentation for the correct syntax\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Informix product documentation](https://www.ibm.com/docs/informix-servers/14.10) (on\-prem)
+ *  [IBM Informix on Cloud](https://www.ibm.com/cloud/informix)
+ *  [IBM Informix on Cloud FAQ](https://www.ibm.com/cloud/informix/faq)
+
+<!-- </ul> -->
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

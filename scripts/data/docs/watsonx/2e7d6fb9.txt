@@ -1,0 +1,23 @@
+# Anonymize node #
+
+With the Anonymize node, you can disguise field names, field values, or both when working with data that's to be included in a model downstream of the node\. In this way, the generated model can be freely distributed (for example, to Technical Support) with no danger that unauthorized users will be able to view confidential data, such as employee records or patients' medical records\.
+
+Depending on where you place the Anonymize node in your flow, you may need to make changes to other nodes\. For example, if you insert an Anonymize node upstream from a Select node, the selection criteria in the Select node will need to be changed if they are acting on values that have now become anonymized\.
+
+The method to be used for anonymizing depends on various factors\. For field names and all field values except Continuous measurement levels, the data is replaced by a string of the form:
+
+    prefix_Sn
+
+where `prefix_` is either a user\-specified string or the default string `anon_`, and `n` is an integer value that starts at 0 and is incremented for each unique value (for example, `anon_S0`, `anon_S1`, etc\.)\.
+
+Field values of type Continuous must be transformed because numeric ranges deal with integer or real values rather than strings\. As such, they can be anonymized only by transforming the range into a different range, thus disguising the original data\. Transformation of a value `x` in the range is performed in the following way:
+
+    A*(x + B)
+
+where:
+
+`A` is a scale factor, which must be greater than 0\.
+
+`B` is a translation offset to be added to the values\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,22 @@
+# applybayesnetnode properties #
+
+You can use Bayesian network modeling nodes to generate a Bayesian network model nugget\. The scripting name of this model nugget is *applybayesnetnode*\. For more information on scripting the modeling node itself, see [bayesnetnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/bayesnetnodeslots.html#bayesnetnodeslots)\.
+
+<!-- <table "summary="applybayesnetnode properties" class="defaultstyle" "> -->
+
+applybayesnetnode properties  
+
+Table 1\. applybayesnetnode properties
+
+| `applybayesnetnode` Properties    | Values          | Property description                                                                                                                             |
+| --------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `all_probabilities`               | *flag*          |                                                                                                                                                  |
+| `raw_propensity`                  | *flag*          |                                                                                                                                                  |
+| `adjusted_propensity`             | *flag*          |                                                                                                                                                  |
+| `calculate_raw_propensities`      | *flag*          |                                                                                                                                                  |
+| `calculate_adjusted_propensities` | *flag*          |                                                                                                                                                  |
+| `enable_sql_generation`           | `false``native` | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applybayesnetnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

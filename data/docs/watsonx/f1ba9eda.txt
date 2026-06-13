@@ -1,0 +1,56 @@
+# Tips and shortcuts #
+
+Work quickly and easily by familiarizing yourself with the following shortcuts and tips:
+
+<!-- <ul> -->
+
+ *  **Quickly find nodes\.** You can use the search bar on the Nodes palette to search for certain node types, and hover over them to see helpful descriptions\.
+ *  **Quickly edit nodes\.** After adding a node to your flow, double\-click it to open its properties\.
+ *  **Add a node to a flow connection\.** To add a new node between two connected nodes, drag the node to the connection line\.
+ *  **Replace a connection\.** To replace an existing connection on a node, simply create a new connection and the old one will be replaced\.
+ *  **Start from an SPSS Modeler stream\.** You can import a stream ( \.str) that was created in SPSS Modeler Subscription or SPSS Modeler client
+ *  **Use tool tips\.** In node properties, helpful tool tips are available in various locations\. Hover over the tooltip icon to see tool tips\. ![Tool tips icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/spss_tooltip.png)
+ *  **Rename nodes and add annotations\.** Each node properties panel includes an Annotations section in which you can specify a custom name for nodes on the canvas\. You can also include lengthy annotations to track progress, save process details, and denote any business decisions required or achieved\.
+ *  **Generate new nodes from table output\.** When viewing table output, you can select one or more fields, click  Generate, and select a node to add to your flow\.
+ *  **Insert values automatically into a CLEM expression\.** Using the Expression Builder, accessible from various areas of the user interface (such as those for Derive and Filler nodes), you can automatically insert field values into a CLEM expression\.
+
+<!-- </ul> -->
+
+Keyboard shortcuts are available for SPSS Modeler\. See the following table\. Note that all **Ctrl** keys listed are **Cmd** on macOS\.
+
+<!-- <table "summary="Shortcut keys" id="spss_tips__table_mjf_jyn_zcb" class="defaultstyle" "> -->
+
+Shortcut keys  
+
+Table 1\. Shortcut keys
+
+| Shortcut Key                | Function                                                                                                                                                                                                                                                 |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ctrl \+ F1                  | Navigate to the header\.                                                                                                                                                                                                                                 |
+| Ctrl \+ F2                  | Navigate to the Nodes palette, then use arrow keys to move between nodes\. Press Enter or the space key to add the selected node to your canvas\.                                                                                                        |
+| Ctrl \+ F3                  | Navigate to the toolbar\.                                                                                                                                                                                                                                |
+| Ctrl \+ F4                  | Navigate to the flow canvas, then use arrow keys to move between nodes\. Press Enter or space twice to open the node's context menu\. Then use the arrow keys to select the desired context menu action and press Enter or space to perform the action\. |
+| Ctrl \+ F5                  | Navigate to the node properties panel if it's open\.                                                                                                                                                                                                     |
+| Ctrl \+ F6                  | Move between areas of the user interface (header, palette, canvas, toolbar, etc\.)\.                                                                                                                                                                     |
+| Ctrl \+ F7                  | Open and navigate to the Messages panel\.                                                                                                                                                                                                                |
+| Ctrl \+ F8                  | Open and navigate to the Outputs panel\.                                                                                                                                                                                                                 |
+| Ctrl \+ A                   | Select all nodes when focus is on the canvas                                                                                                                                                                                                             |
+| Ctrl \+ E                   | With a node selected on the canvas, open its node properties\. Then use the tab or arrow keys to move around the list of node properties\. Press Ctrl \+ S to save your changes or press Ctrl \+ to cancel your changes\.                                |
+| Ctrl \+ I                   | Open the settings panel\.                                                                                                                                                                                                                                |
+| Ctrl \+ J                   | With a node selected on the canvas, connect it to another node\. Use the arrow keys to select the node to connect to, then press Enter or space (or press Esc to cancel)\.                                                                               |
+| Ctrl \+ K                   | Disconnect a node\.                                                                                                                                                                                                                                      |
+| Ctrl \+ Enter               | Run a branch from where the focus is\.                                                                                                                                                                                                                   |
+| Ctrl \+ Shift \+ Enter      | Run the entire flow\.                                                                                                                                                                                                                                    |
+| Ctrl \+ Shift \+ P          | Launch preview\.                                                                                                                                                                                                                                         |
+| Ctrl \+ arrow               | Move a selected node around the canvas\.                                                                                                                                                                                                                 |
+| Ctrl \+ Alt \+ arrow        | Move the canvas in a direction\.                                                                                                                                                                                                                         |
+| Ctrl \+ Shift \+ arrow      | Move a selected node around the canvas ten times faster than Ctrl \+ arrow\.                                                                                                                                                                             |
+| Ctrl \+ Shift \+ C          | Toggle cache on/off\.                                                                                                                                                                                                                                    |
+| Ctrl \+ Shift \+ up arrow   | Select all nodes upstream of the selected node\.                                                                                                                                                                                                         |
+| Ctrl \+ Shift \+ down arrow | Select all nodes downstream of the selected node\.                                                                                                                                                                                                       |
+| Enter \+ space twice        | Open the context menu when a node is selected on the flow canvas                                                                                                                                                                                         |
+| Shift \+ arrow              | Select multiple nodes\.                                                                                                                                                                                                                                  |
+
+<!-- </table "summary="Shortcut keys" id="spss_tips__table_mjf_jyn_zcb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

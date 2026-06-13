@@ -1,0 +1,30 @@
+# Common modeling node properties #
+
+The following properties are common to some or all modeling nodes\. Any exceptions are noted in the documentation for individual modeling nodes as appropriate\.
+
+<!-- <table "summary="Common modeling node properties" id="modelingnodeslots_common__table_qf4_kdj_cdb" class="defaultstyle" "> -->
+
+Common modeling node properties  
+
+Table 1\. Common modeling node properties
+
+| Property               | Values                                | Property description                                                                                                                                       |
+| ---------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `custom_fields`        | *flag*                                | If true, allows you to specify target, input, and other fields for the current node\. If false, the current settings from an upstream Type node are used\. |
+| `target` or `targets`  | *field* or \[*field1 \.\.\. fieldN*\] | Specifies a single target field or multiple target fields depending on the model type\.                                                                    |
+| `inputs`               | \[*field1 \.\.\. fieldN*\]            | Input or predictor fields used by the model\.                                                                                                              |
+| `partition`            | *field*                               |                                                                                                                                                            |
+| `use_partitioned_data` | *flag*                                | If a partition field is defined, this option ensures that only data from the training partition is used to build the model\.                               |
+| `use_split_data`       | *flag*                                |                                                                                                                                                            |
+| `splits`               | *\[field1 \.\.\. fieldN\]*            | Specifies the field or fields to use for split modeling\. Effective only if `use_split_data` is set to `True`\.                                            |
+| `use_frequency`        | *flag*                                | Weight and frequency fields are used by specific models as noted for each model type\.                                                                     |
+| `frequency_field`      | *field*                               |                                                                                                                                                            |
+| `use_weight`           | *flag*                                |                                                                                                                                                            |
+| `weight_field`         | *field*                               |                                                                                                                                                            |
+| `use_model_name`       | *flag*                                |                                                                                                                                                            |
+| `model_name`           | *string*                              | Custom name for new model\.                                                                                                                                |
+| `mode`                 | `Simple``Expert`                      |                                                                                                                                                            |
+
+<!-- </table "summary="Common modeling node properties" id="modelingnodeslots_common__table_qf4_kdj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

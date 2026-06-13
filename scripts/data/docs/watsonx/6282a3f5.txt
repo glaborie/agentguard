@@ -1,0 +1,84 @@
+# AutoAI Overview #
+
+The AutoAI graphical tool analyzes your data and uses data algorithms, transformations, and parameter settings to create the best predictive model\. AutoAI displays various potential models as model candidate pipelines and rank them on a leaderboard for you to choose from\.
+
+**Data format** : Tabular: CSV files, with comma (,) delimiter for all types of AutoAI experiments\. : Connected data from [IBM Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cos.html)\.
+
+Note:You can use a data asset that is saved as a *Feature Group (beta)* but the metadata is not used to populate the AutoAI experiment settings\.
+
+**Data size** : Up to 1 GB or up to 20 GB\. For details, refer to [AutoAI data use](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html?context=cdpaas&locale=en#autoai-data-use)\.
+
+## AutoAI data use ##
+
+These limits are based on the default compute configuration of 8 CPU and 32 GB\.
+
+AutoAI classification and regression experiments:
+
+<!-- <ul> -->
+
+ *  You can upload a file up to 1 GB for AutoAI experiments\.
+ *  If you connect to a data source that exceeds 1 GB, only the first 1 GB of records is used\.
+
+<!-- </ul> -->
+
+AutoAI time series experiments:
+
+<!-- <ul> -->
+
+ *  If the data source contains a timestamp column, AutoAI samples the data at a uniform frequency\. For example, data can be in increments of one minute, one hour, or one day\. The specified timestamp is used to determine the lookback window to improve the model accuracy\.
+    
+    Note:If the file size is larger than 1 GB, AutoAi sorts the data in *descending* time order and only the first 1 GB is used to train the experiment.
+ *  If the data source does not contain a timestamp column, ensure AutoAI samples the data at uniform intervals and sorts the data in *ascending* time order\. An ascending sort order means that the value in the first row is the oldest, and the value in the last row is the most recent\.
+    
+    Note: If the file size is larger than 1 GB, truncate the file size so it is smaller than 1 GB.
+
+<!-- </ul> -->
+
+## AutoAI process ##
+
+Using AutoAI, you can build and deploy a machine learning model with sophisticated training features and no coding\. The tool does most of the work for you\.
+
+To view the code that created a particular experiment, or interact with the experiment programmatically, you can [save an experiment as a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-notebook.html)\.
+
+![The AutoAI process takes data from a structured file, prepares the data, selects the model type, and generates and ranks pipelines so you can save and deploy a model\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_overview.svg)
+
+AutoAI automatically runs the following tasks to build and evaluate candidate model pipelines:
+
+<!-- <ul> -->
+
+ *  [Data pre\-processing](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html?context=cdpaas&locale=en#preprocess)
+ *  [Automated model selection](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html?context=cdpaas&locale=en#model_selection)
+ *  [Automated feature engineering](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html?context=cdpaas&locale=en#feature_engineering)
+ *  [Hyperparameter optimization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html?context=cdpaas&locale=en#hpo_optimization)
+
+<!-- </ul> -->
+
+#### Understanding the AutoAI process ####
+
+For additional detail on each of these phases, including links to associated research papers and descriptions of the algorithms applied to create the model pipelines, see [AutoAI implementation details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html)\.
+
+### Data pre\-processing ###
+
+Most data sets contain different data formats and missing values, but standard machine learning algorithms work only with numbers and no missing values\. Therefore, AutoAI applies various algorithms or estimators to analyze, clean, and prepare your raw data for machine learning\. This technique automatically detects and categorizes values based on features, such as data type: categorical or numerical\. Depending on the categorization, AutoAI uses [hyper\-parameter optimization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html?context=cdpaas&locale=en#hpo_optimization) to determine the best combination of strategies for missing value imputation, feature encoding, and feature scaling for your data\.
+
+### Automated model selection ###
+
+AutoAI uses automated model selection to identify the best model for your data\. This novel approach tests potential models against small subsets of the data and ranks them based on accuracy\. AutoAI then selects the most promising models and increases the size of the data subset until it identifies the best match\. This approach saves time and improves performance by gradually narrowing down the potential models based on accuracy\.
+
+For information on how to handle automatically\-generated pipelines to select the best model, refer to [Selecting an AutoAI model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-view-results.html)\.
+
+### Automated feature engineering ###
+
+Feature engineering identifies the most accurate model by transforming raw data into a combination of features that best represent the problem\. This unique approach explores various feature construction choices in a structured, nonexhaustive manner, while progressively maximizing model accuracy by using reinforcement learning\. This technique results in an optimized sequence of transformations for the data that best match the algorithms of the model selection step\.
+
+### Hyperparameter optimization ###
+
+Hyperparameter optimization refines the best performing models\. AutoAI uses a novel hyperparameter optimization algorithm for certain function evaluations, such as model training and scoring, that are typical in machine learning\. This approach quickly identifies the best model despite long evaluation times at each iteration\.
+
+## Next steps ##
+
+[AutoAI tutorial: Build a Binary Classification Model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai_example_binary_classifier.html)
+
+**Parent topic:**[Analyzing data and building models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-science.html)
+
+<!-- </article "role="article" "> -->

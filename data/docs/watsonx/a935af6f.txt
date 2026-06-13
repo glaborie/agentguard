@@ -1,0 +1,8 @@
+# Fields #
+
+Names in CLEM expressions that aren’t names of functions are assumed to be field names\.
+
+You can write these simply as `Power`, `val27`, `state_flag`, and so on, but if the name begins with a digit or includes non\-alphabetic characters, such as spaces (with the exception of the underscore), place the name within single quotation marks (for example, `'Power Increase'`, `'2nd answer'`, `'#101'`, `'$P-NextField'`)\.
+
+Note: Fields that are quoted but undefined in the data set will be misread as strings\.
+<!-- </article "role="article" "> -->

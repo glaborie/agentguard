@@ -1,0 +1,115 @@
+# Creating notebooks #
+
+You can add a notebook to your project by using one of these methods: creating a notebook file or copying a sample notebook from the Samples\.
+
+**Required permissions** : You must have the Admin or Editor role in the project to create a notebook\.
+
+Watch this short video to learn the basics of Jupyter notebooks\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Creating a notebook file in the notebook editor ##
+
+To create a notebook file in the notebook editor:
+
+<!-- <ol> -->
+
+1.  From your project, click **New asset > Work with data and models in Python or R notebooks**\.
+2.  On the **New Notebook** page, specify the method to use to create your notebook\. You can create a blank notebook, upload a notebook file from your file system, or upload a notebook file from a URL:
+    
+    <!-- <ul> -->
+    
+     *  The notebook file you select to upload must follow these requirements:
+        
+        <!-- <ul> -->
+        
+         *  The file type must be *.ipynb*.
+         *  The file name must not exceed 255 characters.
+         *  The file name must not contain these characters: `< > : ” / | ( ) ?`
+        
+        <!-- </ul> -->
+        
+     *  The URL must be a public URL that is shareable and doesn't require authentication.  
+        ![Notebook options](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/createnotebook.png)
+    
+    <!-- </ul> -->
+    
+3.  Specify the runtime environment for the language you want to use (Python or R)\. You can select a provided environment template or an environment template which you created and configured under **Templates** on the **Environments** page on the **Manage** tab of your project\. For more information on environments, see [Notebook environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html)\.
+4.  Click **Create Notebook**\. The notebook opens in edit mode\.
+    
+    Note that the time that it takes to create a new notebook or to open an existing one for editing might vary. If no runtime container is available, a container needs to be created and only after it is available, the Jupyter notebook user interface can be loaded. The time it takes to create a container depends on the cluster load and size. Once a runtime container exists, subsequent calls to open notebooks will be significantly faster.
+    
+    The opened notebook is locked by you. For more information, see [Locking and unlocking notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/creating-notebooks.html?context=cdpaas&locale=en#locking-and-unlocking).
+5.  Tell the service to trust your notebook content and execute all cells\.
+    
+    When a new notebook is opened in edit mode, the notebook is considered to be *untrusted* by the Jupyter service by default. When you run an untrusted notebook, content deemed untrusted will not be executed. Untrusted content includes any Javascript, HTML or Javascript in Markdown cells or in any output cells that you did not generate.
+    
+    <!-- <ol> -->
+    
+    1.  Click **Not Trusted** in the upper right corner of the notebook.
+    2.  Click **Trust** to execute all cells.
+    
+    <!-- </ol> -->
+    
+<!-- </ol> -->
+
+## Adding a notebook from the Samples ##
+
+Notebooks from the Samples are based on real\-world scenarios and contain many useful examples of computations and visualizations that you can adapt to your analysis needs\.
+
+To copy a sample notebook:
+
+<!-- <ol> -->
+
+1.  In the main menu, click **Samples**, then filter for **Notebooks** to show only notebook cards\.
+2.  Find the card for the sample notebook you want, and click the card\. You can view the notebook contents to browse the steps and the code that it contains\.
+3.  To work with a copy of the sample notebook, click **Add to project**\.
+4.  Choose the project for the notebook, and click **Add**\.
+5.  Optional: Change the name and description for the notebook\.
+6.  Specify the runtime environment\. If you created an environment template on the *Environments* page of your project, it will display in the list of runtimes you can select from\.
+7.  Click **Create**\. The notebook opens in edit mode and is locked by you\. Locking the file avoids possible merge conflicts that might be caused by competing changes to the file\. To get familiar with the structure of a notebook, see [Parts of a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/parts-of-a-notebook.html)\.
+
+<!-- </ol> -->
+
+## Locking and unlocking notebooks ##
+
+If you open a notebook in edit mode, this notebook is locked by you\. While you hold the lock, only you can make changes to the notebook\. All other projects users will see the lock icon on the notebook\. Only project administrators are able to unlock a locked notebook and open it in edit mode\.
+
+When you close the notebook, the lock is released and another user can select to open the notebook in edit mode\. Note that you must close the notebook while the runtime environment is still active\. The notebook lock can't be released for you if the runtime was stopped or is in idle state\. If the notebook lock is not released for you, you can unlock the notebook from the project's Assets page\. Locking the file avoids possible merge conflicts that might be caused by competing changes to the file\.
+
+## Finding your notebooks ##
+
+You can find and open notebooks from the **Assets** page of the project\.
+
+You can open a notebook in view or edit mode\. When you open a notebook in view mode, you can't change or run the notebook\. You can only change or run a notebook when it is opened in edit mode and started in an environment\.
+
+You can open a notebook by:
+
+<!-- <ul> -->
+
+ *  Clicking the notebook\. This opens the notebook in view mode\. To then open the notebook in edit mode, click the pencil icon (![Edit icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pencil-icon.png)) on the notebook toolbar\. This starts the environment associated with the notebook\.
+ *  Expanding the three vertical dots on the right of the notebook entry, and selecting **View** or **Edit**\.
+
+<!-- </ul> -->
+
+## Next step ##
+
+<!-- <ul> -->
+
+ *  [Code and run notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/code-run-notebooks.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Provided CPU runtime environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html#default-cpu)
+ *  [Provided Spark runtime environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html#default-spark)
+ *  [Change the environment runtime used by a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html#change-env)
+
+<!-- </ul> -->
+
+**Parent topic:**[Jupyter Notebook editor](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-editor.html)
+
+<!-- </article "role="article" "> -->

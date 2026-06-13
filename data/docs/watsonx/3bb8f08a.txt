@@ -1,0 +1,17 @@
+# Scatter plots and dot plots #
+
+Several broad categories of charts are created with the point graphic element\.
+
+Scatter plots
+:   Scatter plots are useful for plotting multivariate data\. They can help you determine potential relationships among scale variables\. A simple scatter plot uses a 2\-D coordinate system to plot two variables\. A 3\-D scatter plot uses a 3\-D coordinate system to plot three variables\. When you need to plot more variables, you can try overlay scatter plots and scatter plot matrices (SPLOMs)\. An overlay scatter plot displays overlaid pairs of X\-Y variables, with each pair distinguished by color or shape\. A SPLOM creates a matrix of 2\-D scatter plots, with each variable plotted against every other variable in the SPLOM\.
+
+Dot plots
+:   Like histograms, dot plots are useful for showing the distribution of a single scale variable\. The data are binned, but, instead of one value for each bin (like a count), all of the points in each bin are displayed and stacked\. These graphs are sometimes called density plots\.
+
+Summary point plots
+:   Summary point plots are similar to bar charts, except that points are drawn in place of the top of the bars\. For more information, see [Bar charts](https://dataplatform.cloud.ibm.com/docs/content/dataview/chart_creation_barcharts.html#chart_creation_barcharts)\.
+
+Drop\-line charts
+:   Drop\-line charts are a special type of summary point plot\. The points are grouped and a line is drawn through the points in each category\. The drop\-line chart is useful for comparing a statistic across categorical variables\.
+
+<!-- </article "role="article" "> -->

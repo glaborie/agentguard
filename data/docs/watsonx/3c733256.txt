@@ -1,0 +1,34 @@
+# Troubleshooting Federated Learning experiments #
+
+The following are some of the limitations and troubleshoot methods that apply to Federated learning experiments\.
+
+## Limitations ##
+
+<!-- <ul> -->
+
+ *  If you choose to enable homomorphic encryption, intermediate models can no longer be saved\. However, the final model of the training experiment can be saved and used normally\. The aggregator will not be able to decrypt the model updates and the intermediate global models\. The aggregator can see only the final global model\.
+
+<!-- </ul> -->
+
+## Troubleshooting ##
+
+<!-- <ul> -->
+
+ *  If a quorum error occurs during homomorphic keys distribution, restart the experiment\.
+ *  Changing the name of a Federated Learning experiment causes it to lose its current name, including earlier runs\. If this is not intended, create a new experiment with the new name\.
+ *  The default software spec is used by every run\. If your model type becomes outdated and not compatible with future software specs, re\-running an older experiment might run into issues\.
+ *  As Remote Training Systems are meant to run on different servers, you might encounter unexpected behavior when you run with multiple parties that are based in the same server\.
+
+<!-- </ul> -->
+
+## Federated Learning known issues ##
+
+<!-- <ul> -->
+
+ *  [Known issues for Federated Learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html#wml)
+
+<!-- </ul> -->
+
+**Parent topic:**[IBM Federated Learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fed-lea.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,5 @@
+# applyxgboostlinearnode properties #
+
+XGBoost Linear nodes can be used to generate an XGBoost Linear model nugget\. The scripting name of this model nugget is *applyxgboostlinearnode*\. No other properties exist for this model nugget\. For more information on scripting the modeling node itself, see [xgboostlinearnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/xgboostlinearnodeslots.html#xboostlinearnodeslots)\.
+
+<!-- </article "role="article" "> -->

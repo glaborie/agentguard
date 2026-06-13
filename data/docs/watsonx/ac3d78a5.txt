@@ -1,0 +1,4 @@
+# Series array charts #
+
+Series array charts include individual sub charts and display the Y\-axis for all sub charts in the legend\.
+<!-- </article "role="article" "> -->

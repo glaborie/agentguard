@@ -1,0 +1,31 @@
+# Accessibility features in IBM watsonx content and documentation #
+
+IBM is committed to accessibility\. Accessibility features that follow compliance guidelines are included in IBM watsonx content and documentation to benefit users with disabilities\. Parts of the user interface of IBM watsonx are accessible, but not entirely\. Only documentation is compliant, with a subset of parts of the overall product\.
+
+IBM watsonx documentation uses the latest W3C Standard, [WAI\-ARIA 1\.0](https://www.w3.org/TR/wai-aria/) to ensure compliance with the [United States Access Board Section 508 Standards](https://www.access-board.gov/ict/), and the [ Web Content Accessibility Guidelines (WCAG) 2\.0](https://www.w3.org/TR/WCAG20/)\.
+
+The IBM watsonx online product documentation is enabled for accessibility\. Accessibility features help users who have a disability, such as restricted mobility or limited vision, to use information technology products successfully\. Documentation is provided in HTML so that it is easily accessible through assistive technology\. With the accessibility features of IBM watsonx, you can do the following tasks:
+
+<!-- <ul> -->
+
+ *  Use screen\-reader software and digital speech synthesizers to hear what is displayed on the screen\. Consult the product documentation of the assistive technology for details on using assistive technologies with HTML\-based information\.
+ *  Use screen magnifiers to magnify what is displayed on the screen\.
+ *  Operate specific or equivalent features by using only the keyboard\.
+
+<!-- </ul> -->
+
+For more information about the commitment that IBM has to accessibility, see [IBM Accessibility](http://www.ibm.com/able)\.
+
+## TTY service ##
+
+In addition to standard IBM help desk and support websites, IBM has established a TTY telephone service for use by deaf or hard of hearing customers to access sales and support services:
+
+800\-IBM\-3383 (800\-426\-3383) within North America
+
+## Additional interface information ##
+
+The IBM watsonx user interfaces do not have content that flashes 2 \- 55 times per second\.
+
+The IBM watsonx web user interfaces rely on cascading stylesheets to render content properly and to provide a usable experience\. If you are a low\-vision user, you can adjust your operating system display settings, and use settings such as high contrast mode\. You can control font size by using the device or web browser settings\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,31 @@
+# carmanode properties #
+
+![C5\.0 node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/carmanodeicon.png)The CARMA model extracts a set of rules from the data without requiring you to specify input or target fields\. In contrast to Apriori, the CARMA node offers build settings for rule support (support for both antecedent and consequent) rather than just antecedent support\. This means that the rules generated can be used for a wider variety of applications—for example, to find a list of products or services (antecedents) whose consequent is the item that you want to promote this holiday season\.
+
+<!-- <table "summary="carmanode properties" class="defaultstyle" "> -->
+
+carmanode properties  
+
+Table 1\. carmanode properties
+
+| `carmanode` Properties      | Values                     | Property description                                                                                                                                               |
+| --------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `inputs`                    | *\[field1 \.\.\. fieldn\]* | CARMA models use a list of input fields, but no target\. Weight and frequency fields are not used\. See [Common modeling node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/modelingnodeslots_common.html#modelingnodeslots_common) for more information\. |
+| `id_field`                  | *field*                    | Field used as the ID field for model building\.                                                                                                                    |
+| `contiguous`                | *flag*                     | Used to specify whether IDs in the ID field are contiguous\.                                                                                                       |
+| `use_transactional_data`    | *flag*                     |                                                                                                                                                                    |
+| `content_field`             | *field*                    |                                                                                                                                                                    |
+| `min_supp`                  | *number(percent)*          | Relates to rule support rather than antecedent support\. The default is 20%\.                                                                                      |
+| `min_conf`                  | *number(percent)*          | The default is 20%\.                                                                                                                                               |
+| `max_size`                  | *number*                   | The default is 10\.                                                                                                                                                |
+| `mode`                      | `Simple``Expert`           | The default is `Simple`\.                                                                                                                                          |
+| `exclude_multiple`          | *flag*                     | Excludes rules with multiple consequents\. The default is `False`\.                                                                                                |
+| `use_pruning`               | *flag*                     | The default is `False`\.                                                                                                                                           |
+| `pruning_value`             | *number*                   | The default is 500\.                                                                                                                                               |
+| `vary_support`              | *flag*                     |                                                                                                                                                                    |
+| `estimated_transactions`    | *integer*                  |                                                                                                                                                                    |
+| `rules_without_antecedents` | *flag*                     |                                                                                                                                                                    |
+
+<!-- </table "summary="carmanode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

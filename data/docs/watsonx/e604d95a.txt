@@ -1,0 +1,72 @@
+# Compute resource options for SPSS Modeler in projects #
+
+When you run an SPSS Modeler flow in a project, you choose an environment template for the runtime environment\. The environment template specifies the type, size, and power of the hardware configuration, plus the software template\.
+
+<!-- <ul> -->
+
+ *  [Types of environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-envs.html?context=cdpaas&locale=en#types_spss)
+ *  [Default environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-envs.html?context=cdpaas&locale=en#default_spss)
+ *  [Compute usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-envs.html?context=cdpaas&locale=en#compute_spss)
+ *  [Changing the runtime](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-envs.html?context=cdpaas&locale=en#change-env_spss)
+
+<!-- </ul> -->
+
+## Types of environments ##
+
+You can use this type of environment with SPSS Modeler:
+
+<!-- <ul> -->
+
+ *  Default SPSS Modeler CPU environments for standard workloads
+
+<!-- </ul> -->
+
+## Default environment templates ##
+
+You can select any of the following default environment templates for SPSS Modeler in a project\. The included environment templates are listed under **Templates** on the **Environments** page on the **Manage** tab of your project\.
+
+<!-- <table> -->
+
+Default SPSS Modeler environment templates
+
+| Name                     | Hardware configuration | Local storage | CUH rate per hour |
+| ------------------------ | ---------------------- | ------------- | ----------------- |
+| `Default SPSS Modeler S` | 2 vCPU and 8 GB RAM    | 128 GB        | 1                 |
+| `Default SPSS Modeler M` | 4 vCPU and 16 GB RAM   | 128 GB        | 2                 |
+| `Default SPSS Modeler L` | 6 vCPU and 24 GB RAM   | 128 GB        | 3                 |
+
+<!-- </table ""> -->
+
+After selecting an environment, any other SPSS Modeler flows opened in that project will use the same runtime\. The hardware configuration of the available SPSS Modeler environments is preset and cannot be changed\.
+
+## Compute usage in projects ##
+
+SPSS Modeler consumes compute resources as CUH from the Watson Studio service in projects\.
+
+You can monitor the Watson Studio CUH consumption on the **Resource usage** page on the **Manage** tab of your project\.
+
+## Changing the SPSS Modeler runtime ##
+
+If you notice that processing is very slow, you can restart SPSS Modeler and select a larger environment runtime\.
+
+To change the SPSS Modeler environment runtime:
+
+<!-- <ol> -->
+
+1.  Save any data from your current session before switching to another environment\.
+2.  Stop the active SPSS Modeler runtime under **Tool runtimes** on the **Environments** page on the **Manage** tab of your project\.
+3.  Restart SPSS Modeler and select another environment with the compute power and memory capacity that better meets your requirements\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsd/spss-modeler.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Choosing compute resources for tools](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/environments-parent.html)
+
+<!-- </article "role="article" "> -->

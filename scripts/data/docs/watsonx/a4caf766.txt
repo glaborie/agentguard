@@ -1,0 +1,7 @@
+# Python scripting #
+
+This guide to the Python scripting language is an introduction to the components that you're most likely to use when scripting in  SPSS Modeler, including concepts and programming basics\.
+
+This provides you with enough knowledge to start developing your own Python scripts to use in  SPSS Modeler\.
+
+<!-- </article "role="article" "> -->

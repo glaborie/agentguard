@@ -1,0 +1,7 @@
+# Forecasting bandwidth utilization #
+
+An analyst for a national broadband provider is required to produce forecasts of user subscriptions to predict utilization of bandwidth\. Forecasts are needed for each of the local markets that make up the national subscriber base\.
+
+You'll use time series modeling to produce forecasts for the next three months for a number of local markets\.
+
+<!-- </article "role="article" "> -->

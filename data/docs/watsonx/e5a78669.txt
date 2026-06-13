@@ -1,0 +1,17 @@
+# applyautonumericnode properties #
+
+You can use Auto Numeric modeling nodes to generate an Auto Numeric model nugget\. The scripting name of this model nugget is *applyautonumericnode*\.For more information on scripting the modeling node itself, see [autonumericnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/rangepredictornodeslots.html#rangepredictornodeslots)\.
+
+<!-- <table "summary="applyautonumericnode properties" id="autonumericnuggetnodeslots__table_lcn_nj3_cdb" class="defaultstyle" "> -->
+
+applyautonumericnode properties  
+
+Table 1\. applyautonumericnode properties
+
+| `applyautonumericnode` Properties | Values | Property description |
+| --------------------------------- | ------ | -------------------- |
+| `calculate_standard_error`        | *flag* |                      |
+
+<!-- </table "summary="applyautonumericnode properties" id="autonumericnuggetnodeslots__table_lcn_nj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

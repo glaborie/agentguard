@@ -1,0 +1,15 @@
+# Data provenance #
+
+![icon for transparency risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-transparency.svg)Risks associated with inputTraining and tuning phaseTransparencyAmplified
+
+### Description ###
+
+Without standardized and established methods for verifying where data came from, there are no guarantees that available data is what it claims to be\.
+
+### Why is data provenance a concern for foundation models? ###
+
+Not all data sources are trustworthy\. Data might have been unethically collected, manipulated, or falsified\. Using such data can result in undesirable behaviors in the model\. Business entities could face fines, reputational harms, and other legal consequences\.
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,49 @@
+# Aggregate node #
+
+Aggregation is a data preparation task frequently used to reduce the size of a dataset\. Before proceeding with aggregation, you should take time to clean the data, concentrating especially on missing values\. A aggregation, potentially useful information regarding missing values may be lost\.
+
+You can use an Aggregate node to replace a sequence of input records with summary, aggregated output records\. For example, you might have a set of input sales records such as those shown in the following table\.
+
+<!-- <table "summary="Sales record input example" id="aggregate__table_azf_l25_zcb" class="defaultstyle" "> -->
+
+Sales record input example  
+
+Table 1\. Sales record input example
+
+| Age | Sex | Region | Branch | Sales |
+| --- | --- | ------ | ------ | ----- |
+| 23  | M   | S      | 8      | 4     |
+| 45  | M   | S      | 16     | 4     |
+| 37  | M   | S      | 8      | 5     |
+| 30  | M   | S      | 5      | 7     |
+| 44  | M   | N      | 4      | 9     |
+| 25  | M   | N      | 2      | 11    |
+| 29  | F   | S      | 16     | 6     |
+| 41  | F   | N      | 4      | 8     |
+| 23  | F   | N      | 6      | 2     |
+| 45  | F   | N      | 4      | 5     |
+| 33  | F   | N      | 6      | 10    |
+
+<!-- </table "summary="Sales record input example" id="aggregate__table_azf_l25_zcb" class="defaultstyle" "> -->
+
+You can aggregate these records with `Sex` and `Region` as key fields\. Then choose to aggregate `Age` with the mode  Mean and `Sales` with the mode  Sum\. Select the  Include record count in field aggregate node option and your aggregated output will be similar to the following table\.
+
+<!-- <table "summary="Aggregated record example" id="aggregate__table_ezf_l25_zcb" class="defaultstyle" "> -->
+
+Aggregated record example  
+
+Table 2\. Aggregated record example
+
+| Age (mean) | Sex | Region | Sales (sum) | Record Count |
+| ---------- | --- | ------ | ----------- | ------------ |
+| 35\.5      | F   | N      | 25          | 4            |
+| 29         | F   | S      | 6           | 1            |
+| 34\.5      | M   | N      | 20          | 2            |
+| 33\.75     | M   | S      | 20          | 4            |
+
+<!-- </table "summary="Aggregated record example" id="aggregate__table_ezf_l25_zcb" class="defaultstyle" "> -->
+
+From this you learn, for example, that the average age of the four female sales staff in the North region is 35\.5, and the sum total of their sales was 25 units\.
+
+Note: Fields such as `Branch` are automatically discarded when no aggregate mode is specified\.
+<!-- </article "role="article" "> -->

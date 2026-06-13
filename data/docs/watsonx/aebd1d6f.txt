@@ -1,0 +1,48 @@
+# Compute resource options for Decision Optimization #
+
+When you run a Decision Optimization model, you use the Watson Machine Learning instance that is linked to the deployment space associated with your experiment\.
+
+<!-- <ul> -->
+
+ *  [Default hardware configurations](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-decisionopt.html?context=cdpaas&locale=en#default)
+ *  [Compute usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-decisionopt.html?context=cdpaas&locale=en#compute)
+
+<!-- </ul> -->
+
+## Default hardware configuration ##
+
+The following hardware configuration is used by default when running models in an experiment:
+
+<!-- <table> -->
+
+| Capacity type       | Capacity units per hour (CUH) |
+| ------------------- | ----------------------------- |
+| 2 vCPU and 8 GB RAM | 6                             |
+
+<!-- </table ""> -->
+
+The CUH is consumed only when the model is running and not when you are adding data or editing your model\.
+
+You can also switch to any other experiment environment as required\. See the [Decision Optimization plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html#do) for a list of environments for Decision Optimization experiments\.
+
+For more information on how to configure Decision Optimization experiment environments, see [Configuring environments](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/configureEnvironments.html)\.
+
+## Compute usage in projects ##
+
+Decision Optimization experiments consume compute resources as CUH from the Watson Machine Learning service\.
+
+You can monitor the total monthly amount of CUH consumption for the Watson Machine Learning service on the **Resource usage** page on the **Manage** tab of your project\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Decision Optimization](https://dataplatform.cloud.ibm.com/docs/content/DO/DOWS-Cloud_home.html)
+ *  [Watson Machine Learning plans and compute usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html)
+ *  [Monitoring account resource usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Choosing compute resources for tools](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/environments-parent.html)
+
+<!-- </article "role="article" "> -->

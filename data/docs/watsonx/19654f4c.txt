@@ -1,0 +1,5 @@
+# Disabling or caching nodes in a flow #
+
+You can disable a node so it's ignored when the flow runs\. And you can set up a cache on a node\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,32 @@
+# Hotel satisfaction example for Text Analytics #
+
+SPSS Modeler offers nodes that are specialized for handling text\.
+
+In this example, a hotel manager is interested in learning what customers think about the hotel\.
+
+Figure 1\. Chart of positive opinions
+
+![Chart of positive opinions](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel_positive.png)
+
+Figure 2\. Chart of negative opinions
+
+![Chart of negative opinions](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel_negative.png)
+
+This example uses the flow named  Hotel Satisfaction, available in the example project \. The data files are  hotelSatisfaction\.csv and  hotelSatisfaction\.xlsx\. The flow uses Text Analytics nodes to analyze fictional text data about hotel personnel, comfort, cleanliness, price, etc\.
+
+This flow illustrates two ways of analyzing data with a Text Mining node and a Text Link Analysis node\. It also illustrates how you can deploy a text model and score current or new data\.
+
+Let's take a look at the flow\.
+
+<!-- <ol> -->
+
+1.  Open the \.
+2.  Scroll down to the  Modeler flows section and select the  Hotel Satisfaction flow\.
+    
+    Figure 3. Completed flow
+    
+    ![Completed flow](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel.png)
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

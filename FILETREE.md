@@ -12,7 +12,7 @@ _Auto-maintained by `/filetree:update`. Each entry carries a content hash; misma
 - `CONTRIBUTING.md` — Contribution guidelines covering development setup, code quality, testing, documentation, PR workflow, and prioritized contribution areas <!--hash:2ca6144f-->
 - `DEPLOYMENT.md` — Root deployment entrypoint linking to canonical local/cloud deployment docs and compose naming conventions <!--hash:66e2501c-->
 - `DOCKER.md` — Docker Scout commands for scanning images for CVEs using docker-compose with tools profile <!--hash:1794dcbb-->
-- `Dockerfile.api` — Multi-stage Docker image for rag-api service using Python 3.11-slim with dependency wheels and health checks <!--hash:fbf199ac-->
+- `Dockerfile.api` — Multi-stage Docker image for rag-api service using Python 3.13-slim with dependency wheels and health checks <!--hash:fbf199ac-->
 - `Dockerfile.litellm` — LiteLLM proxy image extending berriai base with qdrant-client and OpenInference instrumentation <!--hash:dd566ded-->
 - `Dockerfile.ollama` — Ollama image with nomic-embed-text embedding model pre-pulled at build time for instant availability <!--hash:7cf0224f-->
 - `Dockerfile.worker` — Multi-stage worker service image containing polling scripts for feedback sync, online eval, and dataset building <!--hash:de620a0d-->

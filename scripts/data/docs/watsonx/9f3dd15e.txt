@@ -1,0 +1,18 @@
+# Automated data preparation #
+
+Preparing data for analysis is one of the most important steps in any data\-mining project—and traditionally, one of the most time consuming\. The Auto Data Prep node handles the task for you, analyzing your data and identifying fixes, screening out fields that are problematic or not likely to be useful, deriving new attributes when appropriate, and improving performance through intelligent screening techniques\.
+
+You can use the Auto Data Prep node in fully automated fashion, allowing the node to choose and apply fixes, or you can preview the changes before they're made and accept or reject them as desired\. With this node, you can ready your data for data mining quickly and easily, without the need for prior knowledge of the statistical concepts involved\. If you run the node with the default settings, models will tend to build and score more quickly\.
+
+This example uses the flow named  Automated Data Preparation, available in the example project \. The data file is  telco\.csv\. This example demonstrates the increased accuracy you can find by using the default Auto Data Prep node settings when building models\.
+
+Let's take a look at the flow\.
+
+<!-- <ol> -->
+
+1.  Open the  Example Project\.
+2.  Scroll down to the  Modeler flows section, click  View all, and select the  Automated Data Preparation flow\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

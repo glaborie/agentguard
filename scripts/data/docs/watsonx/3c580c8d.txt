@@ -1,0 +1,34 @@
+# Configuring firewall access #
+
+Firewalls protect valuable data from public access\. If your data sources reside behind a firewall for protection, and you are not using a Satellite Connector or Satellite location, then you must configure the firewall to allow the IP addresses for IBM watsonx and also for individual services\. Otherwise, IBM watsonx is denied access to the data sources\.
+
+To allow IBM watsonx access to private data sources, you configure inbound firewall rules using the security mechanisms for your firewall\. Inbound firewall rules are not required for connections that use a Satellite Connector or Satellite location, which establishes a link by performing an outbound connection\. For more information, see [Connecting to data behind a firewall](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+All services in IBM watsonx actively use WebSockets for the proper functioning of the user interface and APIs\. Any firewall between the user and the IBM watsonx domain must allow **HTTPUpgrade**\. If IBM watsonx is installed behind a firewall, traffic for the **wss://** protocol must be enabled\.
+
+## Configuring inbound access rules for firewalls ##
+
+If data sources reside behind a firewall, then inbound access rules are required for IBM watsonx\. Inbound firewall rules protect the network against incoming traffic from the internet\. The following scenarios require inbound access rules through a firewall:
+
+<!-- <ul> -->
+
+ *  [Firewall access for IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall_cfg.html)
+ *  [Firewall access for Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall-cfg-private-cos.html)
+ *  [Firewall access for AWS Redshift](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall-redshift.html)
+ *  [Firewall access for Watson Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall-dsx.html)
+ *  [Firewall access for Watson Machine Learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall-wml.html)
+ *  [Firewall access for Spark](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall-spark.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Connecting to data behind a firewall](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Setting up the platform for administrators](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)
+
+<!-- </article "role="article" "> -->

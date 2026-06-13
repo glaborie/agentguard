@@ -1,0 +1,63 @@
+# Setting up the Watson Studio and Watson Machine Learning services #
+
+The Watson Studio and Watson Machine Learning services are provisioned automatically with a Lite plan when you sign up for IBM watsonx\. To set up Watson Studio and Watson Machine Learning for an organization, you upgrade the service plans\. You allow the node IP addresses access through the firewall\.
+
+To set up the Watson Studio and Watson Machine Learning services, complete these tasks:
+
+<!-- <ol> -->
+
+1.  [Upgrade the services](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/set-up-ws.html?context=cdpaas&locale=en#upgrade)\.
+2.  [Allow IP addresses](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/set-up-ws.html?context=cdpaas&locale=en#node-ips)\.
+
+<!-- </ol> -->
+
+## Step 1: Upgrade the services to the appropriate plans ##
+
+**Required roles** : You must be the IBM Cloud account **Owner** or **Administrator**\.
+
+To upgrade the services:
+
+<!-- <ol> -->
+
+1.  Determine the Watson Studio service plan that you need\. The features and compute resources of Watson Studio vary across the service plans\. See [Watson Studio service plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/ws-plans.html)\.
+2.  While logged in to IBM watsonx, from the main menu, click **Administration > Services > Service instances**\.
+3.  Click the menu next to the Watson Studio service and choose **Upgrade service**\.
+4.  Choose the plan you want and click **Upgrade**\.
+5.  Repeat the steps for the Watson Machine Learning service\. The resources and number of deployment jobs vary across the Watson Machine Learning service plans\. See [Watson Machine Learning service plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html)\.
+
+<!-- </ol> -->
+
+Make sure that object storage is configured to allow these users to create catalogs and projects\. See [Setting up IBM Cloud Object Storage for use with IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_cos.html#cos-delegation)\.
+
+All users in your IBM Cloud account with the **Editor** IAM platform access role for all IAM enabled services can now create projects and use all the Watson Studio and Watson Machine Learning tools\.
+
+## Step 2: Allow IP addresses for Watson Studio for your region ##
+
+The IP addresses for the Watson Studio nodes in each region must be configured as allowed IP addresses for the IBM Cloud account\. When allowing specific IP addresses for Watson Studio, you include the CIDR ranges for the Watson Studio nodes in each region to allow a secure connection through the firewall\.
+
+**Required roles** : You must have the **Editor** or higher IBM Cloud IAM Platform role to allow IP addresses\.
+
+First look up the CIDR blocks in IBM watsonx, and then enter them into the **Access(IAM) > Settings** screen in IBM Cloud\. Follow these steps:
+
+<!-- <ol> -->
+
+1.  From the IBM watsonx main menu, select **Administration > Cloud integrations**\.
+2.  Click **Firewall configuration** to display the IP addresses for the current region\.
+3.  Checkmark **Show IP ranges in CIDR notation**\.
+4.  Click the icon to copy a CIDR block to the clipboard\.
+5.  Enter the CIDR block of IP addresses into the **Access(IAM) > Settings > Restrict IP address access > Allowed IP addresses** for the IBM Cloud account\.
+6.  Then click **Save**\.
+7.  Repeat for each CIDR block until all are entered\.
+8.  Repeat for each region\.
+
+<!-- </ol> -->
+
+For step\-by\-step instructions, see [IBM Cloud docs: Allowing specific IP addresses](https://cloud.ibm.com/docs/account?topic=account-ips)\.
+
+## Next steps ##
+
+Finish the remaining steps for [setting up the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)\.
+
+**Parent topic:**[Setting up the platform for administrators](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)
+
+<!-- </article "role="article" "> -->

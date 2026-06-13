@@ -1,0 +1,106 @@
+# Concepts extraction block #
+
+The Watson Natural Language Processing Concepts block extracts general DBPedia concepts (concepts drawn from language\-specific Wikipedia versions) that are directly referenced or alluded to, but not directly referenced, in the input text\.
+
+**Block name**
+
+`concepts_alchemy_<language>_stock`
+
+**Supported languages**
+
+The Concepts block is available for the following languages\. For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes)\.
+
+de, en, es, fr, it, ja, ko, pt
+
+**Capabilities**
+
+Use this block to assign concepts from [DBPedia](https://www.dbpedia.org/) (2016 edition)\. The output types are based on DBPedia\.
+
+**Dependencies on other blocks**
+
+The following block must run before you can run the Concepts extraction block:
+
+<!-- <ul> -->
+
+ *  `syntax_izumo_<language>_stock`
+
+<!-- </ul> -->
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load Syntax and a Concepts model for English
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    concepts_model = watson_nlp.load('concepts_alchemy_en_stock')
+    # Run the syntax model on the input text
+    syntax_prediction = syntax_model.run('IBM announced new advances in quantum computing')
+    
+    # Run the concepts model on the result of syntax
+    concepts = concepts_model.run(syntax_prediction)
+    print(concepts)
+
+Output of the code sample:
+
+    {
+      "concepts": [
+        {
+          "text": "IBM",
+          "relevance": 0.9842190146446228,
+          "dbpedia_resource": "http://dbpedia.org/resource/IBM"
+        },
+        {
+          "text": "Quantum_computing",
+          "relevance": 0.9797260165214539,
+          "dbpedia_resource": "http://dbpedia.org/resource/Quantum_computing"
+        },
+        {
+          "text": "Computing",
+          "relevance": 0.9080164432525635,
+          "dbpedia_resource": "http://dbpedia.org/resource/Computing"
+        },
+        {
+          "text": "Shor's_algorithm",
+          "relevance": 0.7580527067184448,
+          "dbpedia_resource": "http://dbpedia.org/resource/Shor's_algorithm"
+        },
+        {
+          "text": "Quantum_dot",
+          "relevance": 0.7069802284240723,
+          "dbpedia_resource": "http://dbpedia.org/resource/Quantum_dot"
+        },
+        {
+          "text": "Quantum_algorithm",
+          "relevance": 0.7063655853271484,
+          "dbpedia_resource": "http://dbpedia.org/resource/Quantum_algorithm"
+        },
+        {
+          "text": "Qubit",
+          "relevance": 0.7063655853271484,
+          "dbpedia_resource": "http://dbpedia.org/resource/Qubit"
+        },
+        {
+          "text": "DNA_computing",
+          "relevance": 0.7044616341590881,
+          "dbpedia_resource": "http://dbpedia.org/resource/DNA_computing"
+        },
+        {
+          "text": "Computation",
+          "relevance": 0.7044616341590881,
+          "dbpedia_resource": "http://dbpedia.org/resource/Computation"
+        },
+        {
+          "text": "Computer",
+          "relevance": 0.7044616341590881,
+          "dbpedia_resource": "http://dbpedia.org/resource/Computer"
+        }
+      ],
+      "producer_id": {
+        "name": "Alchemy Concepts",
+        "version": "0.0.1"
+      }
+    }
+
+**Parent topic:**[Watson Natural Language Processing block catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)
+
+<!-- </article "role="article" "> -->

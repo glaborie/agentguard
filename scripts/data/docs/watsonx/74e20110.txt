@@ -1,0 +1,73 @@
+# IBM Cloudant connection #
+
+To access your data in IBM Cloudant, create a connection asset for it\.
+
+Cloudant is a JSON document database available in IBM Cloud\.
+
+## Create a connection to Cloudant ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  URL to the Cloudant database
+ *  Database name
+ *  Username and password
+
+<!-- </ul> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Cloudant connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Cloudant setup ##
+
+To set up the Cloudant database on IBM Cloud, see [Getting started with IBM Cloudant](https://cloud.ibm.com/docs/Cloudant?topic=Cloudant-getting-started-with-cloudant)\.  
+When you create your Cloudant service, for **Authentication method**, select **IAM and legacy credentials**\.
+
+## Restriction ##
+
+IBM Cloud Query (CQ) is not supported\.
+
+## Learn more ##
+
+[IBM Cloudant docs](https://cloud.ibm.com/docs/Cloudant)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

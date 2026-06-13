@@ -1,0 +1,17 @@
+# KDE node #
+
+Kernel Density Estimation (KDE)© uses the Ball Tree or KD Tree algorithms for efficient queries, and walks the line between unsupervised learning, feature engineering, and data modeling\.
+
+Neighbor\-based approaches such as KDE are some of the most popular and useful density estimation techniques\. KDE can be performed in any number of dimensions, though in practice high dimensionality can cause a degradation of performance\. The KDE Modeling node and the KDE Simulation node in  watsonx\.ai expose the core features and commonly used parameters of the KDE library\. The nodes are implemented in Python\. ^1^
+
+To use a KDE node, you must set up an upstream Type node\. The KDE node will read input values from the Type node (or from the Types of an upstream import node)\.
+
+The  KDE Modeling node is available under the Modeling node palette\. The KDE Modeling node generates a model nugget, and the nugget's scored values are kernel density values from the input data\.
+
+The  KDE Simulation node is available under the Outputs node palette\. The KDE Simulation node generates a KDE Gen source node that can create some records that have the same distribution as the input data\. In the KDE Gen node properties, you can specify how many records the node will create (default is 1) and generate a random seed\.
+
+For more information about KDE, including examples, see the [KDE documentation](http://scikit-learn.org/stable/modules/density.html#kernel-density-estimation)\. ^1^
+
+^1^ "User Guide\." *Kernel Density Estimation*\. Web\. © 2007\-2018, scikit\-learn developers\.
+
+<!-- </article "role="article" "> -->

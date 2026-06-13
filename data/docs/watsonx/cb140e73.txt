@@ -1,0 +1,45 @@
+# Nonconsensual use #
+
+![icon for misuse risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-misuse.svg)Risks associated with outputMisuseAmplified
+
+### Description ###
+
+The possibility that a model could be misused to imitate others through video (deepfakes), images, audio, or other modalities without their consent is the risk of nonconsensual use\.
+
+### Why is nonconsensual use a concern for foundation models? ###
+
+Intentionally imitating others for the purposes of deception without their consent is unethical and might be illegal\. A model that has this potential must be properly governed\. Otherwise, business entities could face fines, reputational harms, and other legal consequences\.
+
+Example
+
+#### FBI Warning on Deepfakes ####
+
+The FBI recently warned the public of malicious actors creating synthetic, explicit content “for the purposes of harassing victims or sextortion schemes”\. They noted that advancements in AI have made this content higher quality, more customizable, and more accessible than ever\.
+
+Sources:
+
+[FBI, June 2023](https://www.ic3.gov/Media/Y2023/PSA230605)
+
+Example
+
+#### Deepfakes ####
+
+A deepfake is the creation of an audio or video where the people speaking are created by AI not the actual person\.
+
+Sources:
+
+[CNN, January 2019](https://www.cnn.com/interactive/2019/01/business/pentagons-race-against-deepfakes/)
+
+Example
+
+#### Misleading Voicebot Interaction ####
+
+The article cited a case where a deepfake voice was used to scam a CEO out of $243,000\. The CEO believed he was on the phone with his boss, the chief executive of his firm’s parent company, when he followed the orders to transfer €220,000 (approximately $243,000) to the bank account of a Hungarian supplier\.
+
+Sources:
+
+[Forbes, September 2019](https://www.forbes.com/sites/jessedamiani/2019/09/03/a-voice-deepfake-was-used-to-scam-a-ceo-out-of-243000/?sh=10432a7d2241)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

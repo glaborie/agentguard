@@ -1,0 +1,42 @@
+# Flow scripting example #
+
+You can use a flow to train a model when it runs\. Normally, to test the model, you might run the modeling node to add the model to the flow, make the appropriate connections, and run an Analysis node\.
+
+Using a script, you can automate the process of testing the model nugget after you create it\. For example, you might use a script such as the following to train a neural network model:
+
+    stream = modeler.script.stream()
+    neuralnetnode = stream.findByType("neuralnetwork", None)
+    results = []
+    neuralnetnode.run(results)
+    appliernode = stream.createModelApplierAt(results[0], "Drug", 594, 187)
+    analysisnode = stream.createAt("analysis", "Drug", 688, 187)
+    typenode = stream.findByType("type", None)
+    stream.linkBetween(appliernode, typenode, analysisnode)
+    analysisnode.run([])
+
+The following bullets describe each line in this script example\.
+
+<!-- <ul> -->
+
+ *  The first line defines a variable that points to the current flow\.
+ *  In line 2, the script finds the Neural Net builder node\.
+ *  In line 3, the script creates a list where the execution results can be stored\.
+ *  In line 4, the Neural Net model nugget is created\. This is stored in the list defined on line 3\.
+ *  In line 5, a model apply node is created for the model nugget and placed on the flow canvas\.
+ *  In line 6, an analysis node called `Drug` is created\.
+ *  In line 7, the script finds the Type node\.
+ *  In line 8, the script connects the model apply node created in line 5 between the Type node and the Analysis node\.
+ *  Finally, the Analysis node runs to produce the Analysis report\.
+
+<!-- </ul> -->
+
+Tips:
+
+<!-- <ul> -->
+
+ *  It's possible to use a script to build and run a flow from scratch, starting with a blank canvas\.
+ *  For complete details about scripting, see the [Scripting and automation](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/scripting_overview.html) guide\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

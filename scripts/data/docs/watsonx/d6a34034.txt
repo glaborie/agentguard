@@ -1,0 +1,125 @@
+# AutoAI glossary #
+
+Learn terms and concepts that are used in AutoAI for building and deploying machine learning models\.
+
+**aggregate score**  
+The aggregation of the four anomaly types: level shift, trend, localized extreme, variance\. A higher score indicates a stronger score\.
+
+**algorithm**  
+A formula applied to data to determine optimal ways to solve analytical problems\.
+
+**anomaly prediction**  
+An AutoAI time\-series model that can predict anomalies, or unexpected results, against new data\.
+
+**AutoAI experiment**  
+An automated training process that considers a series of training definitions and parameters to create a set of ranked pipelines as model candidates\.
+
+**batch employment**  
+Processes input data from a file, data connection, or connected data in a storage bucket and writes the output to a selected destination\.
+
+**bias detection (machine learning)**  
+To identify imbalances in the training data or prediction behavior of the model\.
+
+**binary classification**  
+A classification model with two classes and only assigns samples into one of the two classes\.
+
+**classification model**  
+A predictive model that predicts data in distinct categories\.
+
+**confusion matrix**  
+A performance measurement that determines the accuracy between a model’s positive and negative predicted outcomes to positive and negative actual outcomes\.
+
+**cross validation**  
+A technique that tests the effectiveness of machine learning models\. It is also used as a resampling procedure for models with limited data\.
+
+**data imputation**  
+Substituting missing values in a data set with estimated values\.
+
+**exogenous features**  
+Features that can influence the prediction model but cannot be influenced in return\. See also: Supporting features
+
+**fairness**  
+Determines whether a model produces biased outcomes that favor a monitored group over a reference group\. Fairness evaluations detect if the model shows a tendency to provide a favorable or preferable outcome more often for one group over another\. Typical categories to monitor are age, sex, and race\.
+
+**feature correlation**  
+The relationship between two features\. For example, postal code might have a strong correlation with income in some models\.
+
+**feature encoding**  
+Transforming categorical values into numerical values\.
+
+**feature importance**  
+The relative impact a particular column or feature has on the model's prediction or forecast\.
+
+**feature scaling**  
+Normalizing the range of independent variables or features in a data set\.
+
+**feature selection**  
+Identifying the columns of data that best support an accurate prediction or score\.
+
+**feature transformation**  
+In AutoAI, a phase of pipeline creation that applies algorithms to transform and optimize the training data to achieve the best outcome for the model type\.
+
+**holdout data**  
+Data used to test or validate the model's performance\. Holdout data can be a reserved portion of the training data, or it can be a separate file\.
+
+**hyperparameter optimization (HPO)**  
+The process for setting hyperparameter values to the settings that provide the most accurate model\.
+
+**incremental learning**  
+The process of training a model that uses data that is continually updated without forgetting data that is obtained from the preceding tasks\.
+
+**large tabular data**  
+Structured data that exceeds the limit on standard processing and must be processed in batches\. See incremental learning\.
+
+**labeled data**  
+Data that is labeled to identify the appropriate data vectors to be pulled in for model training\.
+
+**monitored group**  
+A class of data monitored to determine whether the results differ significantly from the results of the reference group\. For example, in a credit app, you might monitor applications in a particular age range and compare results to the age range more likely to recieve a positive outcome to evaluate whether there might be bias in the results\.
+
+**multiclass classification model**  
+A classification task with more than two classes\. For example, where a binary classification model predicts *yes* or *no* values, a multi\-class model predicts *yes*, *no*, *maybe*, or *not applicable*\.
+
+**multivariate time series**  
+Time series experiment that contains two or more changing variables\. For example, a time series model that forecasts the electricity usage of three clients\.
+
+**optimized metric**  
+The metric used to measure the performance of the model\. For example, accuracy is the typical metric that is used to measure the performance of a binary classification model\.
+
+**pipeline (model candidate pipeline)**  
+End\-to\-end outline that illustrates the steos in a workflow\.
+
+**positive class**  
+The class that is related to your objective function\.
+
+**reference group**  
+A group that you identify as most likely to receive a positive result in a predictive model\. You can then compare the results to a monitored group to look for potential bias in outcomes\.
+
+**regression model**  
+A model that relates a dependent variable to one or more independent variable\.
+
+**scoring**  
+In machine learning, the process of measuring the confidence of a predicted outcome\.
+
+**supporting features**  
+Input features that can influence the prediction target\. See also: Exogenus features
+
+**text classification**  
+A model that automatically identifies and classifies text into distinct categories\.
+
+**time series model (AutoAI)**  
+A model that tracks data over time\.
+
+**trained model**  
+A model that is ready to be deployed\.
+
+**training**  
+The initial stage of model building, involving a subset of the source data\. The model can then be tested against a further, different subset for which the outcome is already known\.
+
+**training data**  
+Data used to teach and train a model's learning algorithm\.
+
+**univariate time series**  
+Time series experiment that contains only one changing variable\. For example, a time series model that forecasts the temperature has a single prediction column of the temperature\.
+
+<!-- </article "role="article" "> -->

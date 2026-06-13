@@ -1,0 +1,5 @@
+# Automated modeling for a continuous target #
+
+You can use the Auto Numeric node to automatically create and compare different models for continuous (numeric range) outcomes, such as predicting the taxable value of a property\. With a single node, you can estimate and compare a set of candidate models and generate a subset of models for further analysis\. The node works in the same manner as the Auto Classifier node, but for continuous rather than flag or nominal targets\.
+
+<!-- </article "role="article" "> -->

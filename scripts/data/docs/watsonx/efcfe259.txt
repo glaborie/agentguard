@@ -1,0 +1,37 @@
+# Data privacy rights #
+
+![icon for privacy risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-privacy.svg)Risks associated with inputTraining and tuning phasePrivacyAmplified
+
+### Description ###
+
+In some countries, privacy laws give individuals the right to access, correct, verify, or remove certain types of information that companies hold or process about them\. Tracking the usage of an individual’s personal information in training a model and providing appropriate rights to comply with such laws can be a complex endeavor\.
+
+### Why is data privacy rights a concern for foundation models? ###
+
+The identification or improper usage of data could lead to violation of privacy laws\. Improper usage or a request for data removal could force organizations to retrain the model, which is expensive\. In addition, business entities could face fines, reputational harms, and other legal consequences if they fail to comply with data privacy rules and regulations\.
+
+Example
+
+#### Right to Be Forgotten (RTBF) ####
+
+As stated in the article, laws in multiple locales, including Europe (GDPR); Canada (CPPA); and Japan (APPI), grant users’ rights for their personal data to be “forgotten” by technology (Right To Be Forgotten)\. However, the emerging and increasingly popular AI (LLMs) services present new challenges for the right to be forgotten (RTBF)\. According to Data61’s research, the only way for users to identify usage of their personal information in an LLM is “by either inspecting the original training dataset or perhaps prompting the model\.” However, training data is either not public or companies do not disclose it, citing safety and other concerns, and guardrails may prevent users from accessing the information via prompting\. Due to these barriers, users cannot initiate RTBF procedures and companies deploying LLMs may be unable to meet RTBF laws\.
+
+Sources:
+
+[Zhang et al\., Sept 2023](https://arxiv.org/pdf/2307.03941.pdf)
+
+Example
+
+#### Lawsuit About LLM Unlearning ####
+
+According to the report, a lawsuit was filed against Google that alleges the use of copyright material and personal information as training data for its AI systems, which includes its Bard chatbot\. Opt\-out and deletion rights are guaranteed rights for California residents under the CCPA and children in the United States below 13 under the COPPA\. The plaintiffs allege that because there is no way for Bard to “unlearn” or fully remove all the scraped PI it has been fed\. The plaintiffs note that Bard’s privacy notice states that Bard conversations cannot be deleted by the user once they have been reviewed and annotated by the company and may be kept up to 3 years, which plaintiffs allege further contributes to non\-compliance with these laws\.
+
+Sources:
+
+[Reuters, July 2023](https://www.reuters.com/legal/litigation/google-hit-with-class-action-lawsuit-over-ai-data-scraping-2023-07-11/)
+
+[J\.L\. v\. Alphabet Inc\., July 2023](https://fingfx.thomsonreuters.com/gfx/legaldocs/myvmodloqvr/GOOGLE%20AI%20LAWSUIT%20complaint.pdf)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

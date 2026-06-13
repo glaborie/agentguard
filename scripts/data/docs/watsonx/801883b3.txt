@@ -1,0 +1,15 @@
+# Dangerous use #
+
+![icon for misuse risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-misuse.svg)Risks associated with outputMisuseNew
+
+### Description ###
+
+The possibility that a model could be misused for dangerous purposes such as creating plans to develop weapons, malware, or causing harm to others is the risk of dangerous use\.
+
+### Why is dangerous use a concern for foundation models? ###
+
+Enabling people to harm others is unethical and can be illegal\. A model that has this potential must be properly governed\. Otherwise, business entities could face fines, reputational harms, and other legal consequences\.
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

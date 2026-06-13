@@ -1,0 +1,15 @@
+# Apriori node #
+
+The Apriori node discovers association rules in your data\.
+
+Association rules are statements of the form:
+
+    if  antecedent(s)  then  consequent(s)
+
+For example, if a customer purchases a razor and after shave, then that customer will purchase shaving cream with 80% confidence\. Apriori extracts a set of rules from the data, pulling out the rules with the highest information content\. The Apriori node also discovers association rules in the data\. Apriori offers five different methods of selecting rules and uses a sophisticated indexing scheme to efficiently process large data sets\.
+
+Requirements\. To create an Apriori rule set, you need one or more `Input` fields and one or more `Target` fields\. Input and output fields (those with the role `Input`, `Target`, or `Both`) must be symbolic\. Fields with the role `None` are ignored\. Fields types must be fully instantiated before executing the node\. Data can be in tabular or transactional format\.
+
+Strengths\. For large problems, Apriori is generally faster to train\. It also has no arbitrary limit on the number of rules that can be retained and can handle rules with up to 32 preconditions\. Apriori offers five different training methods, allowing more flexibility in matching the data mining method to the problem at hand\.
+
+<!-- </article "role="article" "> -->

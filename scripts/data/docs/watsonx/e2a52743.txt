@@ -1,0 +1,60 @@
+# Troubleshooting AutoAI experiments #
+
+The following list contains the common problems that are known for AutoAI\. If your AutoAI experiment fails to run or deploy successfully, review some of these common problems and resolutions\.
+
+## Passing incomplete or outlier input value to deployment can lead to outlier prediction ##
+
+After you deploy your machine learning model, note that providing input data that is markedly different from data that is used to train the model can produce an outlier prediction\. When linear regression algorithms such as Ridge and LinearRegression are passed an out of scale input value, the model extrapolates the values and assigns a relatively large weight to it, producing a score that is not in line with conforming data\.
+
+## Time Series pipeline with supporting features fails on retrieval ##
+
+If you train an AutoAI Time Series experiment by using supporting features and you get the error 'Error: name 'tspy\_interpolators' is not defined' when the system tries to retrieve the pipeline for predictions, check to make sure your system is running Java 8 or higher\.
+
+## Running a pipeline or experiment notebook fails with a software specification error ##
+
+If supported software specifications for AutoAI experiments change, you might get an error when you run a notebook built with an older software specification, such as an older version of Python\. In this case, run the experiment again, then save a new notebook and try again\.
+
+## Resolving an Out of Memory error ##
+
+If you get a memory error when you run a cell from an AutoAI generated notebook, create a notebook runtime with more resources for the AutoAI notebook and execute the cell again\.
+
+## Notebook for an experiment with subsampling can fail generating predictions ##
+
+If you do pipeline refinery to prepare the model, and the experiment uses subsampling of the data during training, you might encounter an “unknown class” error when you run a notebook that is saved from the experiment\.
+
+The problem stems from an unknown class that is not included in the training data set\. The workaround is to use the entire data set for training or re\-create the subsampling that is used in the experiment\.
+
+To subsample the training data (before `fit()`), provide sample size by number of rows or by fraction of the sample (as done in the experiment)\.
+
+<!-- <ul> -->
+
+ *  If number of records was used in subsampling settings, you can increase the value of `n`\. For example:
+    
+        train_df = train_df.sample(n=1000)
+ *  If subsampling is represented as a fraction of the data set, increase the value of `frac`\. For example:
+    
+        train_df = train_df.sample(frac=0.4, random_state=experiment_metadata['random_state'])
+
+<!-- </ul> -->
+
+## Pipeline creation fails for binary classification ##
+
+AutoAI analyzes a subset of the data to determine the best fit for experiment type\. If the sample data in the prediction column contains only two values, AutoAI recommends a binary classification experiment and applies the related algorithms\. However, if the full data set contains more than two values in the prediction column the binary classification fails and you get an error that indicates that AutoAI cannot create the pipelines\.
+
+In this case, manually change the experiment type from binary to either multiclass, for a defined set of values, or regression, for an unspecified set of values\.
+
+<!-- <ol> -->
+
+1.  Click the **Reconfigure Experiment** icon to edit the experiment settings\.
+2.  On the *Prediction* page of Experiment Settings, change the prediction type to the one that best matches the data in the prediction column\.
+3.  Save the changes and run the experiment again\.
+
+<!-- </ol> -->
+
+## Next steps ##
+
+[AutoAI overview](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html)
+
+**Parent topic:**[AutoAI overview](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html)
+
+<!-- </article "role="article" "> -->

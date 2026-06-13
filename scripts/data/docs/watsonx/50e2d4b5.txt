@@ -1,0 +1,33 @@
+# Solving and analyzing a model: the diet problem #
+
+This example shows you how to create and solve a Python\-based model by using a sample\.
+
+## Procedure ##
+
+To create and solve a Python\-based model by using a sample:
+
+<!-- <ol> -->
+
+1.  Download and extract all the [DO\-samples](https://github.com/IBMDecisionOptimization/DO-Samples) on to your computer\. You can also download just the  diet\.zip file from the  Model\_Builder subfolder for your product and version, but in this case, do not extract it\.
+2.  Open your project or create an empty project\.
+3.  On the  Manage tab of your project, select the  Services and integrations section and click  Associate service\. Then select an existing  Machine Learning service instance (or create a new one ) and click  Associate\. When the service is associated, a success message is displayed, and you can then close the  Associate service window\. 
+4.  Select the    Assets tab\.
+5.  Select   New asset > Solve optimization problems in the   Work with models section\.
+6.  Click  Local file in the   Solve optimization problems window that opens\.
+7.  Browse to find the  Model\_Builder folder in your downloaded  DO\-samples\.  Select the relevant product and version subfolder\. Choose the  Diet\.zip file and click  Open\. Alternatively use drag and drop\.
+8.  If you haven't already associated a  Machine Learning service with your project, you must first select  Add a  Machine Learning service to select or create one before you choose a deployment space for your  experiment\.
+9.  Click  New deployment space, enter a name, and click  Create (or select an existing space from the drop\-down menu)\.
+10. Click **Create**\.A  Decision Optimization model is created with the same name as the sample\.
+11. In the   Prepare data view, you can see the data assets imported\.These tables represent the min and max values for nutrients in the diet (`diet_nutrients`), the nutrients in different foods (`diet_food_nutrients`), and the price and quantity of specific foods (`diet_food`)\.
+    
+    ![Tables of input data in Prepare data view](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/Cloudpreparedata2.png)
+12. Click   Build model in the sidebar to view your model\.The Python model minimizes the cost of the food in the diet while satisfying minimum nutrient and calorie requirements\.
+    
+    ![Python model for diet problem displayed in Run model view](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/newrunmodel3.png)
+    
+    Note also how the **inputs** (tables in the  Prepare data view) and the **outputs** (in this case the solution table to be displayed in the Explore solution  view) are specified in this model.
+13. Run the model by clicking the **Run** button in the   Build model view\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

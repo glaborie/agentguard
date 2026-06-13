@@ -1,0 +1,49 @@
+# Browsing the model #
+
+After running a flow, an orange model nugget is added to the canvas with a link to the modeling node from which it was created\. To view the model details, right\-click the model nugget and choose  View Model\.
+
+Figure 1\. Model nugget
+
+![Model nugget](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_intro_nugget.png)
+
+In the case of the CHAID nugget, the  CHAID Tree Model screen includes pages for  Model Information,  Feature Importance,  Top Decision Rules,  Tree Diagram, Build Settings, and  Training Summary\. For example, you can see details in the form of a rule set—essentially a series of rules that can be used to assign individual records to child nodes based on the values of different input fields\.
+
+Figure 2\. CHAID model nugget, rule set
+
+![CHAID model nugget, rule set](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_intro_rules.png)
+
+For each decision tree terminal node – meaning those tree nodes that are not split further—a prediction of  Good or  Bad is returned\. In each case, the prediction is determined by the mode, or most common response, for records that fall within that node\.
+
+The  Feature Importance chart shows the relative importance of each predictor in estimating the model\. From this, we can see that  Income level is easily the most significant in this case, with  Number of credit cards being the next most significant factor\.
+
+Figure 3\. Feature Importance chart
+
+![Feature Importance chart](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/feature-importance.jpg)
+
+The  Tree Diagram page displays the same model in the form of a tree, with a node at each decision point\. Hover over branches and nodes to explore details\.
+
+Figure 4\. Tree diagram in the model nugget
+
+![Tree diagram in the model nugget](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tree-diagram.jpg)
+
+Looking at the start of the tree, the first node (node 0) gives us a summary for all the records in the data set\. Just over 40% of the cases in the data set are classified as a bad risk\. This is quite a high proportion, so let's see if the tree can give us any clues as to what factors might be responsible\.
+
+We can see that the first split is by  Income level\. Records where the income level is in the  Low category are assigned to node 2, and it's no surprise to see that this category contains the highest percentage of loan defaulters\. Clearly, lending to customers in this category carries a high risk\. However, almost 18% of the customers in this category actually didn’t default, so the prediction won't always be correct\. No model can feasibly predict every response, but a good model should allow us to predict the most likely response for each record based on the available data\.
+
+In the same way, if we look at the high income customers (node 1), we see that the vast majority (over 88%) are a good risk\. But more than 1 in 10 of these customers has also defaulted\. Can we refine our lending criteria to minimize the risk here?
+
+Notice how the model has divided these customers into two sub\-categories (nodes 4 and 5), based on the number of credit cards held\. For high\-income customers, if we lend only to those with fewer than five credit cards, we can increase our success rate from 88% to almost 97%—an even more satisfactory outcome\.
+
+Figure 5\. High\-income customers with fewer than five credit cards
+
+![High\-income customers with fewer than five credit cards](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_intro_node5.png)
+
+But what about those customers in the Medium income category (node 3)? They’re much more evenly divided between  Good and  Bad ratings\. Again, the sub\-categories (nodes 6 and 7 in this case) can help us\. This time, lending only to those medium\-income customers with fewer than five credit cards increases the percentage of  Good ratings from 58% to 86%, a significant improvement\.
+
+Figure 6\. Tree view of medium\-income customers
+
+![Tree view of medium\-income customers](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_intro_node7.png)
+
+So, we’ve learned that every record that is input to this model will be assigned to a specific node, and assigned a prediction of  Good or  Bad based on the most common response for that node\. This process of assigning predictions to individual records is known as scoring\. By scoring the same records used to estimate the model, we can evaluate how accurately it performs on the training data—the data for which we know the outcome\. Let's examine how to do this\.
+
+<!-- </article "role="article" "> -->

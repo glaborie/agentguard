@@ -1,0 +1,127 @@
+# IBM Db2 for z/OS connection #
+
+To access your data in IBM Db2 for z/OS, create a connection asset for it\.
+
+Db2 for z/OS is an enterprise data server for IBM Z\. It manages core business data across an enterprise and supports key business applications\.
+
+## Supported versions ##
+
+IBM Db2 for z/OS version 11 and later
+
+## Prerequisites ##
+
+### Obtain the certificate file ###
+
+A certificate file on the Db2 for z/OS server is required to use this connection\.**These steps must be done on the Db2 for z/OS server**: Obtain an IBM Db2 Connect Unlimited Edition license certificate file from [IBM Db2 Connect: Pricing](https://www.ibm.com/products/db2-connect/pricing) and [Installing the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/en/db2/11.5?topic=apis-installing-data-server-driver-jdbc-sqlj)\. For installation instructions, see [Activating the license certificate file for Db2 Connect Unlimited Edition](https://www.ibm.com/docs/en/db2/11.5?topic=li-activating-license-certificate-file-db2-connect-unlimited-edition)\.
+
+### Run the bind command ###
+
+Run the following commands from the Db2 client that is configured to access the Db2 for z/OS server\.  
+You need to run the bind command only once per remote database per Db2 client version\.
+
+    db2 connect to DBALIAS user USERID using PASSWORD
+    db2 bind path@ddcsmvs.lst blocking all sqlerror continue messages ddcsmvs.msg grant public
+    db2 connect reset
+
+For information about bind commands, see [Binding applications and utilities (Db2 Connect Server)](https://www.ibm.com/docs/SSEPGG_11.5.0/com.ibm.db2.luw.qb.dbconn.doc/doc/c0005595.html?pos=2)\.
+
+### Run catalog commands ###
+
+Run the following catalog commands from the Db2 client that is configured to access the Db2 for z/OS server:
+
+<!-- <ol> -->
+
+1.      db2 catalog tcpip node node_name remote hostname_or_address server port_no_or_service_name
+    
+    Example:  
+    `db2 catalog tcpip node db2z123 remote 192.0.2.0 server 446`  
+      
+2.      db2 catalog dcs database local_name as real_db_name
+    
+    Example:  
+    `db2 catalog dcs database db2z123 as db2z123`  
+      
+3.      db2 catalog database local_name as alias at node node_name authentication server
+    
+    Example:  
+    `db2 catalog database db2z123 as db2z123 at node db2z123 authentication server`  
+      
+<!-- </ol> -->
+
+For information about catalog commands, see [CATALOG TCPIP NODE](https://www.ibm.com/docs/SSEPGG_11.5.0/com.ibm.db2.luw.admin.cmd.doc/doc/r0001944.html) and [CATALOG DCS DATABASE](https://www.ibm.com/docs/SSEPGG_11.5.0/com.ibm.db2.luw.admin.cmd.doc/doc/r0001937.html)\.
+
+## Create a connection to Db2 for z/OS ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  **Hostname or IP address**
+ *  **Port number**
+ *  **Collection ID**: The ID of the collections of packages to use
+ *  **Location:** The unique name of the Db2 location you want to access
+ *  **Username** and **password**
+ *  **Application name** (optional): The name of the application that is currently using the connection\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client accounting information** (optional): The value of the accounting string from the client information that is specified for the connection\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client hostname** (optional): The hostname of the machine on which the application that is using the connection is running\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client user** (optional): The name of the user on whose behalf the application that is using the connection is running\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **SSL certificate** (if required by the database server)
+
+<!-- </ul> -->
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Db2 for z/OS connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Notebooks\. Click **Read data** on the **Code snippets** pane to get the connection credentials and load the data into a data structure\. See [Load data from data source connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/load-and-access-data.html#conns)\.
+ *  Decision Optimization
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Restriction ##
+
+For SPSS Modeler, you can use this connection only to import data\. You cannot export data to this connection or to a Db2 for z/OS connected data asset\.
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [ Db2 for z/OS and SQL concepts](https://www.ibm.com/docs/db2-for-zos/12?topic=zos-db2-sql-concepts) for the correct syntax\.
+
+## Learn more ##
+
+[IBM Db2 for z/OS documentation](https://www.ibm.com/docs/db2-for-zos)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

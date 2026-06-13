@@ -1,0 +1,32 @@
+# Building the flow #
+
+<!-- <ol> -->
+
+1.  Add a Data Asset node that points to  telco\.csv\.
+    
+    Figure 1. Auto Data Prep example flow
+    
+    ![Auto Data Prep example flow](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_autodata.png)
+2.  Attach a Type node to the Data Asset node\. Set the measure for the `churn` field to  Flag, and set the role to  Target\. Make sure the role for all other fields is set to  Input\.
+    
+    Figure 2. Setting the measurement level and role
+    
+    ![Setting the measurement level and role](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_autodata_build_target.png)
+3.  Attach a Logistic node to the Type node\.
+4.  In the Logistic node's properties, under  MODEL SETTINGS, select the  Binomial procedure\. For  Model Name, select  Custom and enter No ADP \- churn\.
+    
+    Figure 3. Choosing model options
+    
+    ![Choosing model options](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_autodata_binomial_default.png)
+5.  Attach an Auto Data Prep node to the Type node\. Under  OBJECTIVES, leave the default settings in place to analyze and prepare your data by balancing both speed and accuracy\.
+6.  Run the flow to analyze and process your data\. Other Auto Data Prep node properties allow you to specify that you want to concentrate more on accuracy, more on the speed of processing, or to fine tune many of the data preparation processing steps\. Note: If you want to adjust the node properties and run the flow again in the future, since the model already exists, you must first click Clear Analysis, under  OBJECTIVES before running the flow again\.
+    
+    Figure 4. Auto Data Prep default objectives
+    
+    ![Auto Data Prep default objectives](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_autodata_objectives.png)
+7.  Attach a Logistic node to the Auto Data Prep node\.
+8.  In the Logistic node's properties, under  MODEL SETTINGS, select the  Binomial procedure\. For  Model Name, select  Custom and enter After ADP \- churn\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

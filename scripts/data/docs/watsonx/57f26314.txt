@@ -1,0 +1,17 @@
+# Input and output data #
+
+You can access the input and output data you defined in the  experiment UI by using the following dictionaries\.
+
+The data that you imported in the **Prepare data view** in the  experiment UI is accessible from the input dictionary\. You must define each table by using the syntax `inputs['tablename']`\. For example, here food is an entity that is defined from the table called `diet_food`:
+
+    food = inputs['diet_food']
+
+Similarly, to show tables in the  Explore solution  view of the  experiment UI you must specify them using the syntax `outputs['tablename']`\. For example,
+
+    outputs['solution'] = solution_df
+
+defines an output table that is called `solution`\. The entity `solution_df` in the Python model defines this table\.
+
+You can find this Diet example in the  Model\_Builder folder of the [DO\-samples](https://github.com/IBMDecisionOptimization/DO-Samples)\. To import and run (solve) it in the  experiment UI, see [Solving and analyzing a model: the diet problem](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Notebooks/solveModel.html#task_mtg_n3q_m1b)\.
+
+<!-- </article "role="article" "> -->

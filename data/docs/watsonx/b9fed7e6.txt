@@ -1,0 +1,312 @@
+# AutoAI implementation details #
+
+AutoAI automatically prepares data, applies algorithms, or estimators, and builds model pipelines that are best suited for your data and use case\.
+
+The following sections describe some of these technical details that go into generating the pipelines and provide a list of research papers that describe how AutoAI was designed and implemented\.
+
+<!-- <ul> -->
+
+ *  [Preparing the data for training (pre\-processing)](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#data-prep)
+ *  [Automated model selection](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#auto-select)
+ *  [Algorithms used for classification models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#estimators-classification)
+ *  [Algorithms used for regression models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#estimators-regression)
+ *  [Metrics by model type](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#metric-by-model)
+ *  [Data transformations](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#data-transformations)
+ *  [Automated Feature Engineering](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#feat-eng)
+ *  [Hyperparameter optimization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#hyper-opt)
+ *  [AutoAI FAQ](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#autoai-faq)
+ *  [Learn more](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#add-resource)
+
+<!-- </ul> -->
+
+## Preparing the data for training (data pre\-processing) ##
+
+During automatic data preparation, or pre\-processing, AutoAI analyzes the training data and prepares it for model selection and pipeline generation\. Most data sets contain missing values but machine learning algorithms typically expect no missing values\. On exception to this rule is described in [xgboost section 3\.4](https://arxiv.org/abs/1603.02754)\. AutoAI algorithms perform various missing value imputations in your data set by using various techniques, making your data ready for machine learning\. In addition, AutoAI detects and categorizes features based on their data types, such as categorical or numerical\. It explores encoding and scaling strategies that are based on the feature categorization\.
+
+Data preparation involves these steps:
+
+<!-- <ul> -->
+
+ *  [Feature column classification](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#col-classification)
+ *  [Feature engineering](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#feature-eng)
+ *  [Pre\-processing (data imputation and encoding)](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html?context=cdpaas&locale=en#pre-process)
+
+<!-- </ul> -->
+
+### Feature column classification ###
+
+<!-- <ul> -->
+
+ *  Detects the types of feature columns and classifies them as categorical or numerical class
+ *  Detects various types of missing values (default, user\-provided, outliers)
+
+<!-- </ul> -->
+
+### Feature engineering ###
+
+<!-- <ul> -->
+
+ *  Handles rows for which target values are missing (drop (default) or target imputation)
+ *  Drops unique value columns (except datetime and timestamps)
+ *  Drops constant value columns
+
+<!-- </ul> -->
+
+### Pre\-processing (data imputation and encoding) ###
+
+<!-- <ul> -->
+
+ *  Applies Sklearn imputation/encoding/scaling strategies (separately on each feature class)\. For example, the current default method for missing value imputation strategies, which are used in the product are `most frequent` for categorical variables and `mean` for numerical variables\.
+ *  Handles labels of test set that were not seen in training set
+ *  HPO feature: Optimizes imputation/encoding/scaling strategies given a data set and algorithm
+
+<!-- </ul> -->
+
+## Automatic model selection ##
+
+The second stage in an AutoAI experiment training is automated model selection\. The automated model selection algorithm uses the Data Allocation by using Upper Bounds strategy\. This approach sequentially allocates small subsets of training data among a large set of algorithms\. The goal is to select an algorithm that gives near\-optimal accuracy when trained on all data, while also minimizing the cost of misallocated samples\. The system currently supports all Scikit\-learn algorithms, and the popular XGBoost and LightGBM algorithms\. Training and evaluation of models on large data sets is costly\. The approach of starting small subsets and allocating incrementally larger ones to models that work well on the data set saves time, without sacrificing performance\. Snap machine learning algorithms were added to the system to boost the performance even more\.
+
+### Selecting algorithms for a model ###
+
+Algorithms are selected to match the data and the nature of the model, but they can also balance accuracy and duration of runtime, if the model is configured for that option\. For example, Snap ML algorithms are typically faster for training than Scikit\-learn algorithms\. They are often the preferred algorithms AutoAI selects automatically for cases where training is optimized for a shorter run time and accuracy\. You can manually select them if training speed is a priority\. For details, see [Snap ML documentation](https://snapml.readthedocs.io/)\. For a discussion of when SnapML algorithms are useful, see this [blog post on using SnapML algorithms](https://lukasz-cmielowski.medium.com/watson-studio-autoai-python-api-and-covid-19-data-78169beacf36)\.
+
+### Algorithms used for classification models ###
+
+These algorithms are the default algorithms that are used for model selection for classification problems\.
+
+<!-- <table> -->
+
+Table 1: Default algorithms for classification
+
+| **Algorithm**                    | **Description**                                                                                                                                                                                                             |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Decision Tree Classifier         | Maps observations about an item (represented in branches) to conclusions about the item's target value (represented in leaves)\. Supports both binary and multiclass labels, and both continuous and categorical features\. |
+| Extra Trees Classifier           | An averaging algorithm based on randomized decision trees\.                                                                                                                                                                 |
+| Gradient Boosted Tree Classifier | Produces a classification prediction model in the form of an ensemble of decision trees\. It supports binary labels and both continuous and categorical features\.                                                          |
+| LGBM Classifier                  | Gradient boosting framework that uses leaf\-wise (horizontal) tree\-based learning algorithm\.                                                                                                                              |
+| Logistic Regression              | Analyzes a data set where one or more independent variables that determine one of two outcomes\. Only binary logistic regression is supported                                                                               |
+| Random Forest Classifier         | Constructs multiple decision trees to produce the label that is a mode of each decision tree\. It supports both binary and multiclass labels, and both continuous and categorical features\.                                |
+| SnapDecisionTreeClassifier       | This algorithm provides a decision tree classifier by using the IBM Snap ML library\.                                                                                                                                       |
+| SnapLogisticRegression           | This algorithm provides regularized logistic regression by using the IBM Snap ML solver\.                                                                                                                                   |
+| SnapRandomForestClassifier       | This algorithm provides a random forest classifier by using the IBM Snap ML library\.                                                                                                                                       |
+| SnapSVMClassifier                | This algorithm provides a regularized support vector machine by using the IBM Snap ML solver\.                                                                                                                              |
+| XGBoost Classifier               | Accurate sure procedure that can be used for classification problems\. XGBoost models are used in various areas, including web search ranking and ecology\.                                                                 |
+| SnapBoostingMachineClassifier    | Boosting machine for binary and multi\-class classification tasks that mix binary decision trees with linear models with random fourier features\.                                                                          |
+
+<!-- </table ""> -->
+
+### Algorithms used for regression models ###
+
+These algorithms are the default algorithms that are used for automatic model selection for regression problems\.
+
+<!-- <table> -->
+
+Table 2: Default algorithms for regression
+
+| **Algorithm**                | **Description**                                                                                                                                                                                            |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Decision Tree Regression     | Maps observations about an item (represented in the branches) to conclusions about the item's target value (represented in the leaves)\. It supports both continuous and categorical features\.            |
+| Extra Trees Regression       | An averaging algorithm based on randomized decision trees\.                                                                                                                                                |
+| Gradient Boosting Regression | Produces a regression prediction model in the form of an ensemble of decision trees\. It supports both continuous and categorical features\.                                                               |
+| LGBM Regression              | Gradient boosting framework that uses tree\-based learning algorithms\.                                                                                                                                    |
+| Linear Regression            | Models the linear relationship between a scalar\-dependent variable y and one or more explanatory variables (or independent variables) x\.                                                                 |
+| Random Forest Regression     | Constructs multiple decision trees to produce the mean prediction of each decision tree\. It supports both continuous and categorical features\.                                                           |
+| Ridge                        | Ridge regression is similar to Ordinary Least Squares but imposes a penalty on the size of coefficients\.                                                                                                  |
+| SnapBoostingMachineRegressor | This algorithm provides a boosting machine by using the IBM Snap ML library that can be used to construct an ensemble of decision trees\.                                                                  |
+| SnapDecisionTreeRegressor    | This algorithm provides a decision tree by using the IBM Snap ML library\.                                                                                                                                 |
+| SnapRandomForestRegressor    | This algorithm provides a random forest by using the IBM Snap ML library\.                                                                                                                                 |
+| XGBoost Regression           | GBRT is an accurate and effective off\-the\-shelf procedure that can be used for regression problems\. Gradient Tree Boosting models are used in various areas, including web search ranking and ecology\. |
+
+<!-- </table ""> -->
+
+## Metrics by model type ##
+
+The following metrics are available for measuring the accuracy of pipelines during training and for scoring data\.
+
+### Binary classification metrics ###
+
+<!-- <ul> -->
+
+ *  Accuracy (default for ranking the pipelines)
+ *  Roc auc
+ *  Average precision
+ *  F
+ *  Negative log loss
+ *  Precision
+ *  Recall
+
+<!-- </ul> -->
+
+### Multi\-class classification metrics ###
+
+Metrics for multi\-class models generate scores for how well a pipeline performs against the specified measurement\. For example, an F1 score averages *precision* (of the predictions made, how many positive predictions were correct) and *recall* (of all possible positive predictions, how many were predicted correctly)\.
+
+You can further refine a score by qualifying it to calculate the given metric globally (macro), per label (micro), or to weight an imbalanced data set to favor classes with more representation\.
+
+<!-- <ul> -->
+
+ *  Metrics with the *micro* qualifier calculate metrics globally by counting the total number of true positives, false negatives and false positives\.
+ *  Metrics with the *macro* qualifier calculates metrics for each label, and finds their unweighted mean\. All labels are weighted equally\.
+ *  Metrics with the *weighted* qualifier calculate metrics for each label, and find their average weighted by the contribution of each class\. For example, in a data set that includes categories for apples, peaches, and plums, if there are many more instances of apples, the weighted metric gives greater importance to correctly predicting apples\. This alters *macro* to account for label imbalance\. Use a weighted metric such as F1\-weighted for an imbalanced data set\.
+
+<!-- </ul> -->
+
+These are the multi\-class classification metrics:
+
+<!-- <ul> -->
+
+ *  Accuracy (default for ranking the pipelines)
+ *  F1
+ *  F1 Micro
+ *  F1 Macro
+ *  F1 Weighted
+ *  Precision
+ *  Precision Micro
+ *  Precision Macro
+ *  Precision Weighted
+ *  Recall
+ *  Recall Micro
+ *  Recall Macro
+ *  Recall Weighted
+
+<!-- </ul> -->
+
+### Regression metrics ###
+
+<!-- <ul> -->
+
+ *  Negative root mean squared error (default for ranking the pipeline)
+ *  Negative mean absolute error
+ *  Negative root mean squared log error
+ *  Explained variance
+ *  Negative mean squared error
+ *  Negative mean squared log error
+ *  Negative median absolute error
+ *  R2
+
+<!-- </ul> -->
+
+## Automated Feature Engineering ##
+
+The third stage in the AutoAI process is automated feature engineering\. The automated feature engineering algorithm is based on Cognito, described in the research papers, [Cognito: Automated Feature Engineering for Supervised Learning](https://ieeexplore.ieee.org/abstract/document/7836821) and [Feature Engineering for Predictive Modeling by using Reinforcement Learning](https://research.ibm.com/publications/feature-engineering-for-predictive-modeling-using-reinforcement-learning)\. The system explores various feature construction choices in a hierarchical and nonexhaustive manner, while progressively maximizing the accuracy of the model through an exploration\-exploitation strategy\. This method is inspired from the "trial and error" strategy for feature engineering, but conducted by an autonomous agent in place of a human\.
+
+### Metrics used for feature importance ###
+
+For tree\-based classification and regression algorithms such as Decision Tree, Extra Trees, Random Forest, XGBoost, Gradient Boosted, and LGBM, feature importances are their inherent feature importance scores based on the reduction in the criterion that is used to select split points, and calculated when these algorithms are trained on the training data\.
+
+For nontree algorithms such as Logistic Regression, LInear Regression, SnapSVM, and Ridge, the feature importances are the feature importances of a Random Forest algorithm that is trained on the same training data as the nontree algorithm\.
+
+For any algorithm, all feature importances are in the range between zero and one and have been normalized as the ratio with respect to the maximum feature importance\.
+
+### Data transformations ###
+
+For feature engineering, AutoAI uses a novel approach that explores various feature construction choices in a structured, nonexhaustive manner, while progressively maximizing model accuracy by using reinforcement learning\. This results in an optimized sequence of transformations for the data that best match the algorithms, or algorithms, of the model selection step\. This table lists some of the transformations that are used and some well\-known conditions under which they are useful\. This is not an exhaustive list of scenarios where the transformation is useful, as that can be complex and hard to interpret\. Finally, the listed scenarios are not an explanation of how the transformations are selected\. The selection of which transforms to apply is done in a trial and error, performance\-oriented manner\.
+
+<!-- <table> -->
+
+Table 3: Transformations for feature engineering
+
+| **Name**                     | **Code**              | **Function**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Principle Component Analysis | pca                   | Reduce dimensions of data and realign across a more suitable coordinate system\. Helps tackle the 'curse of dimensionality' in linearly correlated data\. It eliminates redundancy and separates significant signals in data\.                                                                                                                                                                                                                                                                   |
+| Standard Scaler              | stdscaler             | Scales data features to a standard range\. This helps the efficacy and efficiency of certain learning algorithms and other transformations such as PCA\.                                                                                                                                                                                                                                                                                                                                         |
+| Logarithm                    | log                   | Reduces right skewness in features and make them more symmetric\. Resulting symmetry in features helps algorithms understand the data better\. Even scaling based on mean and variance is more meaningful on symmetrical data\. Additionally, it can capture specific physical relationships between feature and target that is best described through a logarithm\.                                                                                                                             |
+| Cube Root                    | cbrt                  | Reduces right skewness in data like logarithm, but is weaker than log in its impact, which might be more suitable in some cases\. It is also applicable to negative or zero values to which log doesn't apply\. Cube root can also change units such as reducing volume to length\.                                                                                                                                                                                                              |
+| Square root                  | sqrt                  | Reduces mild right skewness in data\. It is weaker than log or cube root\. It works with zeros and reduces spatial dimensions such as area to length\.                                                                                                                                                                                                                                                                                                                                           |
+| Square                       | square                | Reduces left skewness to a moderate extent to make such distributions more symmetric\. It can also be helpful in capturing certain phenomena such as super\-linear growth\.                                                                                                                                                                                                                                                                                                                      |
+| Product                      | product               | A product of two features can expose a nonlinear relationship to better predict the target value than the individual values alone\. For example, item cost into number of items that are sold is a better indication of the size of a business than any of those alone\.                                                                                                                                                                                                                         |
+| Numerical XOR                | nxor                  | This transform helps capture "exclusive disjunction" type of relationships between variables, similar to a bitwise XOR, but in a general numerical context\.                                                                                                                                                                                                                                                                                                                                     |
+| Sum                          | sum                   | Sometimes the sum of two features is better correlated to the prediction target than the features alone\. For instance, loans from different sources, when summed up, provide a better idea of a credit applicant's total indebtedness\.                                                                                                                                                                                                                                                         |
+| Divide                       | divide                | Division is a fundamental operand that is used to express quantities such as gross GDP over population (per capita GDP), representing a country's average lifespan better than either GDP alone or population alone\.                                                                                                                                                                                                                                                                            |
+| Maximum                      | max                   | Take the higher of two values\.                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Rounding                     | round                 | This transformation can be seen as perturbation or adding some noise to reduce overfitting that might be a result of inaccurate observations\.                                                                                                                                                                                                                                                                                                                                                   |
+| Absolute Value               | abs                   | Consider only the magnitude and not the sign of observation\. Sometimes, the direction or sign of an observation doesn't matter so much as the magnitude of it, such as physical displacement, while considering fuel or time spent in the actual movement\.                                                                                                                                                                                                                                     |
+| Hyperbolic tangent           | tanh                  | Nonlinear activation function can improve prediction accuracy, similar to that of neural network activation functions\.                                                                                                                                                                                                                                                                                                                                                                          |
+| Sine                         | sin                   | Can reorient data to discover periodic trends such as simple harmonic motions\.                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Cosine                       | cos                   | Can reorient data to discover periodic trends such as simple harmonic motions\.                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Tangent                      | tan                   | Trigonometric tangent transform is usually helpful in combination with other transforms\.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Feature Agglomeration        | feature agglomeration | Clustering different features into groups, based on distance or affinity, provides ease of classification for the learning algorithm\.                                                                                                                                                                                                                                                                                                                                                           |
+| Sigmoid                      | sigmoid               | Nonlinear activation function can improve prediction accuracy, similar to that of neural network activation functions\.                                                                                                                                                                                                                                                                                                                                                                          |
+| Isolation Forest             | isoforestanomaly      | Performs clustering by using an Isolation Forest to create a new feature containing an anomaly score for each sample\.                                                                                                                                                                                                                                                                                                                                                                           |
+| Word to vector               | word2vec              | This algorithm, which is used for text analysis, is applied before all other transformations\. It takes a corpus of text as input and outputs a set of vectors\. By turning text into a numerical representation, it can detect and compare similar words\. When trained with enough data, `word2vec` can make accurate predictions about a word’s meaning or relationship to other words\. The predictions can be used to analyze text and predict meaning in sentiment analysis applications\. |
+
+<!-- </table ""> -->
+
+## Hyperparameter Optimization ##
+
+The final stage in AutoAI is hyperparameter optimization\. The AutoAI approach optimizes the parameters of the best performing pipelines from the previous phases\. It is done by exploring the parameter ranges of these pipelines by using a black box hyperparameter optimizer called RBFOpt\. RBFOpt is described in the research paper [RBFOpt: an open\-source library for black\-box optimization with costly function evaluations](http://www.optimization-online.org/DB_HTML/2014/09/4538.html)\. RBFOpt is suited for AutoAI experiments because it is built for optimizations with costly evaluations, as in the case of training and scoring an algorithm\. RBFOpt's approach builds and iteratively refines a surrogate model of the unknown objective function to converge quickly despite the long evaluation times of each iteration\.
+
+## AutoAI FAQs ##
+
+The following are commonly asked questions about creating an AutoAI experiment\.
+
+### How many pipelines are created? ###
+
+Two AutoAI parameters determine the number of pipelines:
+
+<!-- <ul> -->
+
+ *  **max\_num\_daub\_ensembles:** Maximum number (top\-K ranked by DAUB model selection) of the selected algorithm, or estimator types, for example LGBMClassifierEstimator, XGBoostClassifierEstimator, or LogisticRegressionEstimator to use in pipeline composition\. The default is 1, where only the highest ranked by model selection algorithm type is used\.
+ *  **num\_folds:** Number of subsets of the full data set to train pipelines in addition to the full data set\. The default is 1 for training the full data set\.
+
+<!-- </ul> -->
+
+For each fold and algorithm type, AutoAI creates four pipelines of increased refinement, corresponding to:
+
+<!-- <ol> -->
+
+1.  Pipeline with default sklearn parameters for this algorithm type,
+2.  Pipeline with optimized algorithm by using HPO
+3.  Pipeline with optimized feature engineering
+4.  Pipeline with optimized feature engineering and optimized algorithm by using HPO
+
+<!-- </ol> -->
+
+The total number of pipelines that are generated is:
+
+    TotalPipelines= max_num_daub_ensembles * 4, if num_folds = 1:  
+    
+    TotalPipelines= (num_folds+1)* max_num_daub_ensembles * 4,  if num_folds > 1 :
+
+### What hyperparameter optimization is applied to my model? ###
+
+AutoAI uses a model\-based, derivative\-free global search algorithm, called RBfOpt, which is tailored for the costly machine learning model training and scoring evaluations that are required by hyperparameter optimization (HPO)\. In contrast to Bayesian optimization, which fits a Gaussian model to the unknown objective function, RBfOpt fits a radial basis function mode to accelerate the discovery of hyper\-parameter configurations that maximize the objective function of the machine learning problem at hand\. This acceleration is achieved by minimizing the number of expensive training and scoring machine learning models evaluations and by eliminating the need to compute partial derivatives\.
+
+For each fold and algorithm type, AutoAI creates two pipelines that use HPO to optimize for the algorithm type\.
+
+<!-- <ul> -->
+
+ *  The first is based on optimizing this algorithm type based on the preprocessed (imputed/encoded/scaled) data set (pipeline 2) above)\.
+ *  The second is based on optimizing the algorithm type based on optimized feature engineering of the preprocessed (imputed/encoded/scaled) data set\.
+
+<!-- </ul> -->
+
+The parameter values of the algorithms of all pipelines that are generated by AutoAI is published in status messages\.
+
+For more details regarding the RbfOpt algorithm, see:
+
+<!-- <ul> -->
+
+ *  [RbfOpt: A blackbox optimization library in Python](https://github.com/coin-or/rbfopt)
+ *  [An effective algorithm for hyperparameter optimization of neural networks\. IBM Journal of Research and Development, 61(4\-5), 2017](http://ieeexplore.ieee.org/document/8030298/)
+
+<!-- </ul> -->
+
+**Research references**
+
+This list includes some of the foundational research articles that further detail how AutoAI was designed and implemented to promote trust and transparency in the automated model\-building process\.
+
+<!-- <ul> -->
+
+ *  [Toward cognitive automation of data science](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=km7EsqsAAAAJ&cst[…]&sortby=pubdate&citation_for_view=km7EsqsAAAAJ:R3hNpaxXUhUC)
+ *  [Cognito: Automated feature engineering for supervised learning](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=km7EsqsAAAAJ&cst[…]&sortby=pubdate&citation_for_view=km7EsqsAAAAJ:maZDTaKrznsC)
+
+<!-- </ul> -->
+
+## Next steps ##
+
+[Data imputation in AutoAI experiments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-imputation.html)  
+
+**Parent topic:**[AutoAI overview](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html)
+
+<!-- </article "role="article" "> -->

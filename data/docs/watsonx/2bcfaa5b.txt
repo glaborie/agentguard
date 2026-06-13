@@ -1,0 +1,31 @@
+# Tracking assets in an AI use case #
+
+Track machine learning models or prompt templates in AI use cases to capture details about them in factsheets\. Use the information collected in the AI use case to monitor the progress of assets through the AI lifecycle, from request to production\.
+
+Define an AI use case to identify a business problem and request a solution\. A solution might be a predictive machine learning model or a generative AI prompt template\. When an asset is developed, associate it with the use case to capture details about the asset in factsheets\. As the asset moves through the AI lifecycle, from development to testing and then to production, the factsheets collect the data to support governance or compliance goals\.
+
+## Creating approaches to compare ways to solve a problem ##
+
+Each AI use case can contain at least one *approach*\. An approach is one facet of the solution to the business problem represented by the AI use case\. For example, you might create two approaches to compare by using different frameworks for predictive models to see which one performs best\. Or, created approaches to track several prompt templates in a use case\.
+
+Approaches also capture version information\. The same version number is applied to all assets in an approach\. If you have a stable version of an asset, you might maintain that version in an approach and create a new approach for the next round of iteration and experimentation\.
+
+This use case includes three approaches for organizing three prompt templates for an insurance claims processing use case:
+
+![Multiple approaches for an insurance claim use case](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-prompt-approach1.png)
+
+## Adding assets to a use case ##
+
+You can track these assets in an AI use case:
+
+<!-- <ul> -->
+
+ *  [Prompt templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-track-prompt-temp.html) include the prompt input for a foundation model and variables that are defined to make the prompt reusable for generating new output\.
+ *  [Machine learning models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-track-ml-model.html) that are created by using a Watson Machine Learning tool such as AutoAI or SPSS Modeler\.
+ *  [External models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-external-models.html) are models that are created in Jupyter Notebooks or models that are created by using a third\-party machine learning provider\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Governing assets in AI use cases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-use-cases.html)
+
+<!-- </article "role="article" "> -->

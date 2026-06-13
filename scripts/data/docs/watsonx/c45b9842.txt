@@ -1,0 +1,17 @@
+# Scripting and automation #
+
+Scripting in SPSS Modeler is a powerful tool for automating processes in the user interface\. Scripts can perform the same types of actions that you perform with a mouse or a keyboard, and you can use them to automate tasks that would be highly repetitive or time consuming to perform manually\.
+
+You can use scripts to:
+
+<!-- <ul> -->
+
+ *  Impose a specific order for node executions in a flow\.
+ *  Set properties for a node as well as perform derivations using a subset of CLEM (Control Language for Expression Manipulation)\.
+ *  Specify an automatic sequence of actions that normally involves user interaction—for example, you can build a model and then test it\.
+ *  Set up complex processes that require substantial user interaction—for example, cross\-validation procedures that require repeated model generation and testing\.
+ *  Set up processes that manipulate flows—for example, you can take a model training flow, run it, and produce the corresponding model\-testing flow automatically\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

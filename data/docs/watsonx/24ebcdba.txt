@@ -1,0 +1,25 @@
+# Mining for concepts and categories #
+
+The Text Mining node uses linguistic and frequency techniques to extract key concepts from the text and create categories with these concepts and other data\. Use the node to explore the text data contents or to produce either a concept model nugget or category model nugget\.
+
+![Text Mining node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/ta_textmining.png)When you run this node, an internal linguistic extraction engine extracts and organizes the concepts, patterns, and categories by using natural language processing methods\. Two build modes are available in the Text Mining node's properties:
+
+<!-- <ul> -->
+
+ *  The  Generate directly (concept model nugget) mode automatically produces a concept or category model nugget when you run the node\.
+ *  The  Build interactively (category model nugget) is a more hands\-on, exploratory approach\. You can use this mode to not only extract concepts, create categories, and refine your linguistic resources, but also run text link analysis and explore clusters\. This build mode launches the Text Analytics Workbench\.
+
+<!-- </ul> -->
+
+And you can use the Text Mining node to generate one of two text mining model nuggets:
+
+<!-- <ul> -->
+
+ *  Concept model nuggets uncover and extract important concepts from your structured or unstructured text data\.
+ *  Category model nuggets score and assign documents and records to categories, which are made up of the extracted concepts (and patterns)\.
+
+<!-- </ul> -->
+
+The extracted concepts and patterns and the categories from your model nuggets can all be combined with existing structured data, such as demographics, to yield better and more\-focused decisions\. For example, if customers frequently list login issues as the primary impediment to completing online account management tasks, you might want to incorporate "login issues" into your models\.
+
+<!-- </article "role="article" "> -->

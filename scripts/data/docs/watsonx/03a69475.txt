@@ -1,0 +1,74 @@
+# Examining the model #
+
+<!-- <ol> -->
+
+1.  Right\-click the Time Series model nugget and select  View Model to see information about the models generated for each of the markets\.
+    
+    Figure 1. Time Series models generated for the markets
+    
+    ![Time Series models generated for the markets](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_examine.png)
+2.  In the left  TARGET column, select any of the markets\. Then go to  Model Information\. The  Number of Predictors row shows how many fields were used as predictors for each target\.
+    
+    The other rows in the  Model Information tables show various goodness-of-fit measures for each model.  Stationary R-Squared measures how a model is better than a baseline model. If the final model is  ARIMA(p,d,q)(P,D,Q), the baseline model is  ARIMA(0,d,0)(0,D,0). If the final model is an Exponential Smoothing model, then  d is  2 for Brown and Holt model and  1 for other models, and  D is  1 if the seasonal length is greater than  1, otherwise  D is  0. A negative stationary R squared means that the model under consideration is worse than the baseline model. Zero stationary R squared means that the model is as good or bad as the baseline model and a positive stationary R squared means the model is better than the baseline model
+    
+    The  Statistic and  df lines, and the  Significance under  Parameter Estimates, relate to the Ljung-Box statistic, a test of the randomness of the residual errors in the model. The more random the errors, the better the model is likely to be.  Statistic is the Ljung-Box statistic itself, while  df (degrees of freedom) indicates the number of model parameters that are free to vary when estimating a particular target.
+    
+    The  Significance gives the significance value of the Ljung-Box statistic, providing another indication of whether the model is correctly specified. A significance value less than 0.05 indicates that the residual errors are not random, implying that there is structure in the observed series that is not accounted for by the model.
+    
+    Taking both the  Stationary R-Squared and  Significance values into account, the models that the Expert Modeler has chosen for `Market_3`, and `Market_4` are quite acceptable. The  Significance values for `Market_1`, `Market_2`, and `Market_5` are all less than 0.05, indicating that some experimentation with better-fitting models for these markets might be necessary.
+    
+    The display shows a number of additional goodness-of-fit measures. The  R-Squared value gives an estimation of the total variation in the time series that can be explained by the model. As the maximum value for this statistic is 1.0, our models are fine in this respect.
+    
+    RMSE is the root mean square error, a measure of how much the actual values of a series differ from the values predicted by the model, and is expressed in the same units as those used for the series itself. As this is a measurement of an error, we want this value to be as low as possible. At first sight it appears that the models for `Market_2` and `Market_3`, while still acceptable according to the statistics we have seen so far, are less successful than those for the other three markets.
+    
+    These additional goodness-of-fit measures include the mean absolute percentage errors ( MAPE) and its maximum value ( MAXAPE). Absolute percentage error is a measure of how much a target series varies from its model-predicted level, expressed as a percentage value. By examining the mean and maximum across all models, you can get an indication of the uncertainty in your predictions.
+    
+    The  MAPE value shows that all models display a mean uncertainty of around 1%, which is very low. The  MAXAPE value displays the maximum absolute percentage error and is useful for imagining a worst-case scenario for your forecasts. It shows that the largest percentage error for most of the models falls in the range of roughly 1.8% to 3.7%, again a very low set of figures, with only `Market_4` being higher at close to 7%.
+    
+    The  MAE (mean absolute error) value shows the mean of the absolute values of the forecast errors. Like the  RMSE value, this is expressed in the same units as those used for the series itself.  MAXAE shows the largest forecast error in the same units and indicates worst-case scenario for the forecasts.
+    
+    Although these absolute values are interesting, it's the values of the percentage errors ( MAPE and  MAXAPE) that are more useful in this case, as the target series represent subscriber numbers for markets of varying sizes.
+    
+    Do the  MAPE and  MAXAPE values represent an acceptable amount of uncertainty with the models? They are certainly very low. This is a situation in which business sense comes into play, because acceptable risk will change from problem to problem. We'll assume that the goodness-of-fit statistics fall within acceptable bounds, so let's go on to look at the residual errors.
+    
+    Examining the values of the autocorrelation function ( ACF) and partial autocorrelation function ( PACF) for the model residuals provides more quantitative insight into the models than simply viewing goodness-of-fit statistics.
+    
+    A well-specified time series model will capture all of the nonrandom variation, including seasonality, trend, and cyclic and other factors that are important. If this is the case, any error should not be correlated with itself (autocorrelated) over time. A significant structure in either of the autocorrelation functions would imply that the underlying model is incomplete.
+3.  For the fourth market, click  Correlogram to display the values of the autocorrelation function ( ACF) and partial autocorrelation function ( PACF) for the residual errors in the model\.
+    
+    Figure 2. ACF and PACF values for the fourth market
+    
+    ![ACF and PACF values for the fourth market](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_examine_correlogram.png)
+    
+    In these plots, the original values of the error variable have been lagged (under  BUILD OPTIONS - OUTPUT) up to the default value of 24 time periods and compared with the original value to see if there's any correlation over time. Ideally, the bars representing all lags of ACF and PACF should be within the shaded area. However, in practice, there may be some lags that extend outside of the shaded area. This is because, for example, some larger lags may not have been tried for inclusion in the model in order to save computation time. Some lags are insignificant and are removed from the model. If you want to improve the model further and don't care whether these lags are redundant or not, these plots serve as tips for you as to which lags are potential predictors.
+    
+    Should this occur, you'd need to check the lower ( PACF) plot to see whether the structure is confirmed there. The  PACF plot looks at correlations after controlling for the series values at the intervening time points.
+    
+    The values for `Market_4` are all within the shaded area, so we can continue and check the values for the other markets.
+4.  Open the  Correlogram for each of the other markets and the totals\.
+    
+    The values for the other markets all show some values outside the shaded area, confirming what we suspected earlier from their  Significance values. We'll need to experiment with some different models for those markets at some point to see if we can get a better fit, but for the rest of this example, we'll concentrate on what else we can learn from the `Market_4` model.
+5.  Return to your flow canvas\. Attach a new Time Plot node to the Time Series model nugget\. Double\-click the node to open its properties\.
+6.  Deselect the  Display series in separate panel option\.
+7.  For the  Series list, add the `Market_4` and `$TS-Market_4` fields\.
+8.  Save the properties, then right\-click the Time Plot node and select  Run to generate a line graph of the actual and forecast data for the first of the local markets\.Notice how the forecast (`$TS-Market_4`) line extends past the end of the actual data\. You now have a forecast of expected demand for the next three months in this market\.
+    
+    Figure 3. Time Plot of actual and forecast data for Market\_4
+    
+    ![Time Plot of actual and forecast data for Market\_4](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_examine_line1.png)
+    
+    The lines for actual and forecast data over the entire time series are very close together on the graph, indicating that this is a reliable model for this particular time series.
+    
+    You have a reliable model for this particular market, but what margin of error does the forecast have? You can get an indication of this by examining the confidence interval.
+9.  Double\-click the last Time Plot node in the flow (the one labeled  Market\_4 $TS\-Market\_4)\.
+10. Add the `$TSLCI-Market_4` and `$TSUCI-Market_4` fields to the  Series list\.
+11. Save the properties and run the node again\.
+
+<!-- </ol> -->
+
+Now you have the same graph as before, but with the upper (`$TSUCI`) and lower (`$TSLCI`) limits of the confidence interval added\. Notice how the boundaries of the confidence interval diverge over the forecast period, indicating increasing uncertainty as you forecast further into the future\. However, as each time period goes by, you'll have another (in this case) month's worth of actual usage data on which to base your forecast\. In a real\-world scenario, you could read the new data into the flow and reapply your model now that you know it's reliable\.
+
+Figure 4\. Time Plot with confidence interval added
+
+![Time Plot with confidence interval added](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_examine_line2.png)
+<!-- </article "role="article" "> -->

@@ -1,0 +1,59 @@
+# Geospatial data analysis #
+
+You can use the geospatio\-temporal library to expand your data science analysis in Python notebooks to include location analytics by gathering, manipulating and displaying imagery, GPS, satellite photography and historical data\.
+
+The gespatio\-temporal library is available in all IBM Watson Studio Spark with Python runtime environments\.
+
+## Key functions ##
+
+The geospatio\-temporal library includes functions to read and write data, topological functions, geohashing, indexing, ellipsoidal and routing functions\.
+
+Key aspects of the library include:
+
+<!-- <ul> -->
+
+ *  All calculated geometries are accurate without the need for projections\.
+ *  The geospatial functions take advantage of the distributed processing capabilities provided by Spark\.
+ *  The library includes native geohashing support for geometries used in simple aggregations and in indexing, thereby improving storage retrieval considerably\.
+ *  The library supports extensions of Spark distributed joins\.
+ *  The library supports the SQL/MM extensions to Spark SQL\.
+
+<!-- </ul> -->
+
+## Getting started with the library ##
+
+Before you can start using the library in a notebook, you must register `STContext` in your notebook to access the `st` functions\.
+
+To register `STContext`:
+
+    from pyst import STContext
+    stc = STContext(spark.sparkContext._gateway)
+
+## Next steps ##
+
+After you have registered `STContext` in your notebook, you can begin exploring the spatio\-temporal library for:
+
+<!-- <ul> -->
+
+ *  Functions to read and write data
+ *  Topological functions
+ *  Geohashing functions
+ *  Geospatial indexing functions
+ *  Ellipsoidal functions
+ *  Routing functions
+
+<!-- </ul> -->
+
+Check out the following sample Python notebooks to learn how to use these different functions in Python notebooks:
+
+<!-- <ul> -->
+
+ *  [Use the spatio\-temporal library for location analytics](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/92c6ab6ea922d1da6a2cc9496a277005)
+ *  [Use spatial indexing to query spatial data](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/a7432f0c29c5bda2fb42749f3628d981)
+ *  [Spatial queries in PySpark](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/27ecffa80bd3a386fffca1d8d1256ba7)
+
+<!-- </ul> -->
+
+**Parent topic:**[Notebooks and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebooks-and-scripts.html)
+
+<!-- </article "role="article" "> -->

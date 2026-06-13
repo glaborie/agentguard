@@ -1,0 +1,149 @@
+# Creating an SPSS Modeler batch job with multiple data sources #
+
+In an SPSS Modeler flow, it's common to have multiple import and export nodes, where multiple import nodes can be fetching data from one or more relational databases\. Learn how to use Watson Machine Learning to create an SPSS Modeler batch job with multiple data sources from relational databases\.
+
+Note:The examples use IBM Db2 and IBM Db2 Warehouse, referred to in examples as *dashdb*\.
+
+## Connecting to multiple relational databases as input to a batch job ##
+
+The number of import nodes in an SPSS Modeler flow can vary\. You might use as many as 60 or 70\. However, the number of distinct connections to databases in these cases are just a few, though the table names that are accessed through the connections vary\. Rather than specifying the details for every table connection, the approach that is described here focuses on the database connections\. Therefore, the batch jobs accept a list of data connections or references by *node name* that are mapped to connection names in the SPSS Modeler flow's import nodes\.
+
+For example, assume that if a flow has 30 nodes, only three database connections are used to connect to 30 different tables\. In this case, you submit three connections (C1, C2, and C3) to the batch job\. C1, C2, and C3 are connection names in the import node of the flow and the *node name* in the input of the batch job\.
+
+When a batch job runs, the data reference for a node is provided by mapping the *node name* with the *connection name* in the import node\. This example illustrates the steps for creating the mapping\.
+
+The following diagram shows the flow from model creation to job submission:
+
+![SPSS Modeler job with multiple inputs](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/word_SPSS-multiple-input-job.svg)
+
+**Limitation:** The connection reference for a node in a flow is overridden by the reference that is received from the batch job\. However, the table name in the import or export node is not overridden\.
+
+## Deployment scenario with example ##
+
+In this example, an SPSS model is built by using 40 import nodes and a single output\. The model has the following configuration:
+
+<!-- <ul> -->
+
+ *  Connections to three databases: 1 Db2 Warehouse (dashDB) and 2 Db2\.
+ *  The import nodes are read from 40 tables (30 from Db2 Warehouse and 5 each from the Db2 databases)\.
+ *  A single output table is written to a Db2 database\.
+
+<!-- </ul> -->
+
+![SPSS Modeler flow with multiple inputs](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/word_SPSS-multiple-input-job2.svg)
+
+### Example ###
+
+These steps demonstrate how to create the connections and identify the tables\.
+
+<!-- <ol> -->
+
+1.  Create a connection in your project\.
+    
+    To run the SPSS Modeler flow, you start in your project and create a connection for each of the three databases your model connects to. You then configure each import node in the flow to point to a table in one of the connected databases.
+    
+    For this example, the database connections in the project are named `dashdb_conn`, `db2_conn1`, and `db2_conn2`.
+2.  Configure Data Asset to import nodes in your SPSS Modeler flow with connections\.
+    
+    Configure each node in the flow to reference one of the three connections you created (`dashdb_conn`, `db2_conn1`, and `db2_conn2`), then specify a table for each node.
+    
+    Note: You can change the name of the connection at the time of the job run. The table names that you select in the flow are referenced when the job runs. You can't overwrite or change them.
+3.  Save the SPSS model to the Watson Machine Learning repository\.
+    
+    For this example, it's helpful to provide the input and output schema when you are saving the model. It simplifies the process of identifying each input when you create and submit the batch job in the Watson Studio user interface. Connections that are referenced in the Data Asset nodes of the SPSS Modeler flow must be provided in the *node name* field of the input schema. To find the *node name*, double-click the Data Asset import node in your flow to open its properties:
+    
+    ![Data Asset import node name](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/spss-node-name.png)
+    
+    Note:SPSS models that are saved without schemas are still supported for jobs, but you must enter *node name* fields manually and provide the data asset when you submit the job.
+    
+    This code sample shows how to save the input schema when you save the model (Endpoint: `POST /v4/models`).
+    
+        {
+                   "name": "SPSS Drug Model",
+                   "label_column": "label",
+                   "type": "spss-modeler_18.1",
+                   "runtime": {
+                           "href": "/v4/runtimes/spss-modeler_18.1"
+                    },
+                    "space": {
+                           "href": "/v4/spaces/<space_id>"
+                    },
+                    "schemas": {
+                              "input":  [ { "id": "dashdb_conn", "fields": ] },
+                                                { "id": "db2_conn1 ", "fields": ] } ,
+                                                { "id": "db2_conn2", "fields": ] } ],
+                               "output": [{ "id": "db2_conn2 ","fields": ] }]
+                     }
+             }
+    
+    Note: The number of fields in each of these connections doesn't matter. They’re not validated or used. What's important is the number of connections that are used.
+4.  Create the batch deployment for the SPSS model\.
+    
+    For SPSS models, the creation process of the batch deployment job is the same. You can submit the deployment request with the model that was created in the previous step.
+5.  Submit SPSS batch jobs\.
+    
+    You can submit a batch job from the Watson Studio user interface or by using the REST API. If the schema is saved with the model, the Watson Studio user interface makes it simple to accept input from the connections specified in the schema. Because you already created the data connections, you can select a connected data asset for each *node name* field that displays in the Watson Studio user interface as you define the job.
+    
+    The name of the connection that is created at the time of job submission can be different from the one used at the time of model creation. However, it must be assigned to the *node name* field.
+
+<!-- </ol> -->
+
+### Submitting a job when schema is not provided ###
+
+If the schema isn't provided in the model metadata at the time the model is saved, you must enter the *import node name* manually\. Further, you must select the data asset in the Watson Studio user interface for each connection\. Connections that are referenced in the Data Asset import nodes of the SPSS Modeler flow must be provided in the *node name* field of the import/export data references\.
+
+#### Specifying the connections for a job with data asset ####
+
+This code sample demonstrates how to specify the connections for a job that is submitted by using the REST API (Endpoint: `/v4/deployment_jobs`)\.
+
+    {
+                         "deployment": {
+                                        "href": "/v4/deployments/<deploymentID>"
+                            },
+                            "scoring": {
+                                        "input_data_references": [
+                                           {
+                                              "id": "dashdb_conn",
+                                              "name": "dashdb_conn",
+                                              "type": "data_asset",
+                                              "connection": {},
+                                              "location": {
+                                                          "href": "/v2/assets/<asset_id>?space_id=<space_id>"
+                                                 },
+                                                 "schema": {}
+                                        },
+                                        {
+                                                 "id": "db2_conn1 ",
+                                                 "name": "db2_conn1 ",
+                                                 "type": "data_asset",
+                                                 "connection": {},
+                                                 "location": {
+                                                          "href": "/v2/assets/<asset_id>?space_id=<space_id>"
+                                                 },
+                                                 "schema": {}
+                                        },
+                                        {
+                                                 "id": "db2_conn2 ",
+                                                 "name": "db2_conn2",
+                                                 "type": "data_asset",
+                                                 "connection": {},
+                                                 "location": {
+                                                          "href": "/v2/assets/<asset_id>?space_id=<space_id>"
+                                                 },
+                                                 "schema": {}
+                                        }],
+                                        "output_data_reference": {
+                                                 "id": "db2_conn2"
+                                                 "name": "db2_conn2",
+                                                 "type": "data_asset ",
+                                                 "connection": {},
+                                                 "location": {
+                                                          "href": "/v2/assets/<asset_id>?space_id=<space_id>"
+                                                 },
+                                                 "schema": {}
+                                        }
+             }
+
+**Parent topic:**[Creating a batch deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-details.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,25 @@
+# Space\-Time\-Boxes node #
+
+Space\-Time\-Boxes (STB) are an extension of Geohashed spatial locations\. More specifically, an STB is an alphanumeric string that represents a regularly shaped region of space and time\.
+
+For example, the STB  dr5ru7\|2013\-01\-01 00:00:00\|2013\-01\-01 00:15:00 is made up of the following three parts:
+
+<!-- <ul> -->
+
+ *  The geohash  dr5ru7
+ *  The start timestamp  2013\-01\-01 00:00:00
+ *  The end timestamp  2013\-01\-01 00:15:00
+
+<!-- </ul> -->
+
+As an example, you could use space and time information to improve confidence that two entities are the same because they are virtually in the same place at the same time\. Alternatively, you could improve the accuracy of relationship identification by showing that two entities are related due to their proximity in space and time\.
+
+In the node properties, you can choose the  Individual Records or  Hangouts mode as appropriate for your requirements\. Both modes require the same basic details, as follows:
+
+Latitude field\. Select the field that identifies the latitude (in WGS84 coordinate system)\.
+
+Longitude field\. Select the field that identifies the longitude (in WGS84 coordinate system)\.
+
+Timestamp field\. Select the field that identifies the time or date\.
+
+<!-- </article "role="article" "> -->

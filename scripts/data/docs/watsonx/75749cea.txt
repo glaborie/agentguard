@@ -1,0 +1,15 @@
+# Prompt injection #
+
+![icon for robustness risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-robustness.svg)Risks associated with inputInferenceRobustnessNew
+
+### Description ###
+
+A prompt injection attack forces a model to produce unexpected output due to the structure or information contained in prompts\.
+
+### Why is prompt injection a concern for foundation models? ###
+
+Injection attacks can be used to alter model behavior and benefit the attacker\. If not properly controlled, business entities could face fines, reputational harm, and other legal consequences\.
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

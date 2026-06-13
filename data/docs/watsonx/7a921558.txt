@@ -1,0 +1,25 @@
+# Output bias #
+
+![icon for fairness risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-fairness.svg)Risks associated with outputFairnessNew
+
+### Description ###
+
+Generated model content might unfairly represent certain groups or individuals\. For example, a large language model might unfairly stigmatize or stereotype specific persons or groups\.
+
+### Why is output bias a concern for foundation models? ###
+
+Bias can harm users of the AI models and magnify existing exclusive behaviors\. Business entities can face reputational harms and other consequences\.
+
+Example
+
+#### Biased Generated Images ####
+
+Lensa AI is a mobile app with generative features trained on Stable Diffusion that can generate “Magic Avatars” based on images users upload of themselves\. According to the source report, some users discovered that generated avatars are sexualized and racialized\.
+
+Sources:
+
+[Business Insider, January 2023](https://www.businessinsider.com/lensa-ai-raises-serious-concerns-sexualization-art-theft-data-2023-1)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

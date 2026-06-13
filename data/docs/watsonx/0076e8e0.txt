@@ -1,0 +1,20 @@
+# Screening predictors #
+
+The Feature Selection node helps you identify the fields that are most important in predicting a certain outcome\. From a set of hundreds or even thousands of predictors, the Feature Selection node screens, ranks, and selects the predictors that may be most important\. Ultimately, you may end up with a quicker, more efficient model—one that uses fewer predictors, runs more quickly, and may be easier to understand\.
+
+The data used in this example represents a data warehouse for a hypothetical telephone company and contains information about responses to a special promotion by 5,000 of the company's customers\. The data includes many fields that contain customers' age, employment, income, and telephone usage statistics\. Three "target" fields show whether or not the customer responded to each of three offers\. The company wants to use this data to help predict which customers are most likely to respond to similar offers in the future\.
+
+This example uses the flow named  Screening Predictors, available in the example project \. The data file is  customer\_dbase\.csv\.
+
+This example focuses on only one of the offers as a target\. It uses the CHAID tree\-building node to develop a model to describe which customers are most likely to respond to the promotion\. It contrasts two approaches:
+
+<!-- <ul> -->
+
+ *  Without feature selection\. All predictor fields in the dataset are used as inputs to the CHAID tree\.
+ *  With feature selection\. The Feature Selection node is used to select the best 10 predictors\. These are then input into the CHAID tree\.
+
+<!-- </ul> -->
+
+By comparing the two resulting tree models, we can see how feature selection can produce effective results\.
+
+<!-- </article "role="article" "> -->

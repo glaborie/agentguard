@@ -1,0 +1,143 @@
+# Evaluating prompt templates in deployment spaces #
+
+You can evaluate prompt templates in deployment spaces to measure the performance of foundation model tasks and understand how your model generates responses\.
+
+With watsonx\.governance, you can evaluate prompt templates in deployment spaces to measure how effectively your foundation models generate responses for the following task types:
+
+<!-- <ul> -->
+
+ *  [Classification](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-samples.html#classification)
+ *  [Summarization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-samples.html#summarization)
+ *  [Generation](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-samples.html#generation)
+ *  [Question answering](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-samples.html#qa)
+ *  [Entity extraction](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-samples.html#extraction)
+
+<!-- </ul> -->
+
+Prompt templates are saved prompt inputs for foundation models\. You can evaluate prompt template deployments in pre\-production and production spaces\.
+
+## Before you begin ##
+
+You must have access to a watsonx\.governance deployment space to evaluate prompt templates\. For more information, see [Setting up watsonx\.governance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-setup-wos.html)\.
+
+To run evaluations, you must log in and [switch](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/personal-settings.html#account) to a watsonx account that has watsonx\.governance and watsonx\.ai instances that are installed and open a deployment space\. You must be assigned the **Admin** or **Editor** roles for the account to open deployment spaces\.
+
+In your project, you must also [create and save a prompt template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html#creating-and-running-a-prompt) and [promote a prompt template to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/prompt-template-deploy.html)\. You must specify at least one variable when you create prompt templates to enable evaluations\.
+
+The following sections describe how to evaluate prompt templates in deployment spaces and review your evaluation results:
+
+<!-- <ul> -->
+
+ *  [Evaluating prompt templates in pre\-production spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-eval-prompt-spaces.html?context=cdpaas&locale=en#prompt-eval-pre-prod)
+ *  [Evaluating prompt templates in production spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-eval-prompt-spaces.html?context=cdpaas&locale=en#prompt-eval-prod)
+
+<!-- </ul> -->
+
+## Evaluating prompt templates in pre\-production spaces ##
+
+### Activate evaluation ###
+
+To run prompt template evaluations, you can click **Activate** on the **Evaluations** tab when you open a deployment to open the **Evaluate prompt template** wizard\. You can run evaluations only if you are assigned the **Admin** or **Editor** roles for your deployment space\.
+
+![Run prompt template evaluation](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-activate-prompt-eval.png)
+
+### Select dimensions ###
+
+The **Evaluate prompt template** wizard displays the dimensions that are available to evaluate for the task type that is associated with your prompt\. You can expand the dimensions to view the list of metrics that are used to evaluate the dimensions that you select\.
+
+![Select dimensions to evaluate](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-select-dimension-preprod-spaces.png)
+
+watsonx\.governance automatically configures evaluations for each dimension with default settings\. To [configure evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-monitors-overview.html) with different settings, you can select **Advanced settings** to set minimum sample sizes and threshold values for each metric as shown in the following example:
+
+![Configure evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-config-eval-settings.png)
+
+### Select test data ###
+
+You must upload a CSV file that contains test data with reference columns and columns for each prompt variable\. When the upload completes, you must also map [prompt variables](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-variables.html#creating-prompt-variables) to the associated columns from your test data\.
+
+![Select test data to upload](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-select-test-data-preprod-spaces.png)
+
+### Review and evaluate ###
+
+You can review the selections for the prompt task type, the uploaded test data, and the type of evaluation that runs\. You must select **Evaluate** to run the evaluation\.
+
+![Review and evaluate prompt template evaluation settings](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-review-evaluate-preprod-spaces.png)
+
+### Reviewing evaluation results ###
+
+When your evaluation finishes, you can review a summary of your evaluation results on the **Evaluations** tab in watsonx\.governance to gain insights about your model performance\. The summary provides an overview of metric scores and violations of default score thresholds for your prompt template evaluations\.
+
+To analyze results, you can click the arrow ![navigation arrow](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-nav-arrow.png) next to your prompt template evaluation to view data visualizations of your results over time\. You can also analyze results from the model health evaluation that is run by default during prompt template evaluations to understand how efficiently your model processes your data\.
+
+The **Actions** menu also provides the following options to help you analyze your results:
+
+<!-- <ul> -->
+
+ *  **Evaluate now**: Run evaluation with a different test data set
+ *  **All evaluations**: Display a history of your evaluations to understand how your results change over time\.
+ *  **Configure monitors**: Configure evaluation thresholds and sample sizes\.
+ *  **View model information**: View details about your model to understand how your deployment environment is set up\.
+
+<!-- </ul> -->
+
+![Analyze prompt template evaluation results](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-review-results-preprod.png)
+
+If you [track your prompt templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-track-prompt-temp.html), you can review evaluation results to gain insights about your model performance throughout the AI lifecycle\.
+
+## Evaluating prompt templates in production spaces ##
+
+### Activate evaluation ###
+
+To run prompt template evaluations, you can click **Activate** on the **Evaluations** tab when you open a deployment to open the **Evaluate prompt template** wizard\. You can run evaluations only if you are assigned the **Admin** or **Editor** roles for your deployment space\.
+
+![Run prompt template evaluation](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-activate-prompt-eval.png)
+
+### Select dimensions ###
+
+The **Evaluate prompt template** wizard displays the dimensions that are available to evaluate for the task type that is associated with your prompt\. You can provide a label column name for the reference output that you specify in your feedback data\. You can also expand the dimensions to view the list of metrics that are used to evaluate the dimensions that you select\.
+
+![Select dimensions to evaluate](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-select-dimensions-pre-prod-spaces.png)
+
+watsonx\.governance automatically configures evaluations for each dimension with default settings\. To [configure evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-monitors-overview.html) with different settings, you can select **Advanced settings** to set minimum sample sizes and threshold values for each metric as shown in the following example:
+
+![Configure evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-config-eval-settings.png)
+
+### Review and evaluate ###
+
+You can review the selections for the prompt task type and the type of evaluation that runs\. You can also select **View payload schema** or **View feedback schema** to validate that your column names match the prompt variable names in the prompt template\. You must select **Activate** to run the evaluation\.
+
+![Review and evaluate selections](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-review-evaluate-prod-spaces.png)
+
+To generate evaluation results, select **Evaluate now** in the **Actions** menu to open the **Import test data** window when the evaluation summary page displays\.
+
+![Select evaluate now](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-evaluate-now-prod-space.png)
+
+### Import test data ###
+
+In the **Import test data** window, you can select **Upload payload data** or **Upload feedback data** to upload a CSV file that contains labeled columns that match the columns in your payload and feedback schemas\.
+
+![Import test data](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-import-test-data-prod-space.png)
+
+When your upload completes successfully, you can select **Evaluate now** to run your evaluation\.
+
+### Reviewing evaluation results ###
+
+When your evaluation finishes, you can review a summary of your evaluation results on the **Evaluations** tab in watsonx\.governance to gain insights about your model performance\. The summary provides an overview of metric scores and violations of default score thresholds for your prompt template evaluations\.
+
+To analyze results, you can click the arrow ![navigation arrow](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-nav-arrow.png) next to your prompt template evaluation to view data visualizations of your results over time\. You can also analyze results from the model health evaluation that is run by default during prompt template evaluations to understand how efficiently your model processes your data\.
+
+The **Actions** menu also provides the following options to help you analyze your results:
+
+<!-- <ul> -->
+
+ *  **Evaluate now**: Run evaluation with a different test data set
+ *  **Configure monitors**: Configure evaluation thresholds and sample sizes\.
+ *  **View model information**: View details about your model to understand how your deployment environment is set up\.
+
+<!-- </ul> -->
+
+![Analyze prompt template evaluation results](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-eval-results-prod-spaces.png)
+
+If you [track your prompt templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-track-prompt-temp.html), you can review evaluation results to gain insights about your model performance throughout the AI lifecycle\.
+
+<!-- </article "role="article" "> -->

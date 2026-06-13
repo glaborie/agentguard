@@ -1,0 +1,46 @@
+# Creating SPSS Modeler jobs #
+
+You can create a job to run an SPSS Modeler flow\.
+
+To create an SPSS Modeler job:
+
+<!-- <ol> -->
+
+1.  In SPSS Modeler, click the **Create a job** icon ![the jobs icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/Run-schedule_Blue.png) from the toolbar and select **Create a job**\. A wizard will appear\. Click **Next** to proceed through each page of the wizard as described here\.
+2.  Define the job details by entering a name and a description (optional)\. If desired, you can also specify retention settings for the job\. Select **Job run retention settings** to set how long to retain finished job runs and job run artifacts such as logs\. You can select one of the following retention methods\. Be mindful when changing the default as too many job run files can quickly use up project storage\.
+    
+    <!-- <ul> -->
+    
+     *  **By duration (days)**. Specify the number of days to retain job runs and job artifacts. The retention value is set to 7 days by default (the last 7 days of job runs retained).
+     *  **By amount**. Specify the last number of finished job runs and job artifacts to keep. The retention value is set to 200 jobs by default.
+    
+    <!-- </ul> -->
+    
+3.  On the Flow parameters page, you can set values for flow parameters if any exist for the flow\. They are, in effect, user\-defined variables that are saved and persisted with the flow\. Parameters are often used in scripting to control the behavior of the script by providing information about fields and values that don't need to be hard coded in the script\. See [Setting properties for flows](https://dataplatform.cloud.ibm.com/docs/content/wsd/flow_properties.html) for more information\.
+    
+    For example, your flow might contain a parameter called **age\_param** that you choose to set to **40** here, and a parameter called **bp\_param** you might set to **HIGH**.
+4.  On the Configuration page, you can choose whether the job will run the entire flow or one or more branches of the flow\.
+5.  On the Schedule page, you can optionally add a one\-time or repeating schedule\.
+    
+    If you define a start day and time without selecting **Repeat**, the job will run exactly one time at the specified day and time. If you define a start date and time and you select **Repeat**, the job will run for the first time at the timestamp indicated in the Repeat section.
+    
+    You can't change the time zone; the schedule uses your web browser's time zone setting. If you exclude certain weekdays, the job might not run as you would expect. The reason might be due to a discrepancy between the time zone of the user who creates the schedule, and the time zone of the compute node where the job runs.
+6.  Optionally turn on notifications for the job\. You can select the type of alerts to receive\.
+7.  Review the job settings\. Click **Save** to create the job\.
+    
+    The SPSS Modeler job is listed under **Jobs** in your project.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Viewing job details](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html#view-job-details)
+ *  [SPSS Modeler documentation](https://dataplatform.cloud.ibm.com/docs/content/wsd/spss-modeler.html)
+
+<!-- </ul> -->
+
+**Parent topic**: [Jobs](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html)
+
+<!-- </article "role="article" "> -->

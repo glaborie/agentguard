@@ -1,0 +1,4 @@
+# Time plots #
+
+Time plots illustrate data points at successive intervals of time\. The time series you plot must contain numeric values and are assumed to occur over a range of time in which the periods are uniform\. Time plots provide a preliminary analysis of the characteristics of time series data on basic statistics and test, and thus generate useful insights about your data before modeling\. Time plots include analysis methods such as decomposition, augmented Dickey\-Fuller test (ADF), correlations (ACF/PACF), and spectral analysis\.
+<!-- </article "role="article" "> -->

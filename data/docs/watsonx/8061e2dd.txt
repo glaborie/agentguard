@@ -1,0 +1,81 @@
+# Cloudera Impala connection #
+
+To access your data in Cloudera Impala, create a connection asset for it\.
+
+Cloudera Impala provides SQL queries directly on your Apache Hadoop data stored in HDFS or HBase\.
+
+## Supported versions ##
+
+Cloudera Impala 1\.3\+
+
+## Create a connection to Cloudera Impala ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  Database name
+ *  Hostname or IP address
+ *  Port number
+ *  Username and password
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Cloudera Impala connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Cloudera Impala setup ##
+
+[Cloudera Impala installation](https://docs.cloudera.com/documentation/enterprise/5-14-x/topics/cm_ig_install_impala.html)
+
+## Restriction ##
+
+You can use this connection only for source data\. You cannot write to data or export data with this connection\.
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [Impala SQL Language Reference](https://docs.cloudera.com/documentation/enterprise/5-5-x/topics/impala_langref.html) for the correct syntax\.
+
+## Learn more ##
+
+[Cloudera Impala documentation](https://docs.cloudera.com/documentation/enterprise/5-5-x/topics/impala.html)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

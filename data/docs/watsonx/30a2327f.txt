@@ -1,0 +1,26 @@
+# Classifying telecommunications customers #
+
+Logistic regression is a statistical technique for classifying records based on values of input fields\. It is analogous to linear regression, but takes a categorical target field instead of a numeric one\.
+
+For example, suppose a telecommunications provider has segmented its customer base by service usage patterns, categorizing the customers into four groups\. If demographic data can be used to predict group membership, you can customize offers for individual prospective customers\.
+
+This example uses the flow named  Classifying Telecommmunications Customers, available in the example project \. The data file is  telco\.csv\.
+
+The example focuses on using demographic data to predict usage patterns\. The target field `custcat` has four possible values that correspond to the four customer groups, as follows:
+
+<!-- <table "summary="" class="defaultstyle" "> -->
+
+Table 1\. Possible values for the target field
+
+| Value | Label         |
+| ----- | ------------- |
+| 1     | Basic Service |
+| 2     | E\-Service    |
+| 3     | Plus Service  |
+| 4     | Total Service |
+
+<!-- </table "summary="" class="defaultstyle" "> -->
+
+Because the target has multiple categories, a multinomial model is used\. In the case of a target with two distinct categories, such as yes/no, true/false, or churn/don't churn, a binomial model could be created instead\. See [Telecommunications churn](https://dataplatform.cloud.ibm.com/docs/content/wsd/tutorials/tut_churn.html#tut_churn) for more information\.
+
+<!-- </article "role="article" "> -->

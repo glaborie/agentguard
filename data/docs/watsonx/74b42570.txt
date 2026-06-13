@@ -1,0 +1,112 @@
+# Adding data to a project #
+
+After you create a project, the next step is to add data assets to it so that you can work with data\. All the collaborators in the project are automatically authorized to access the data in the project\.
+
+Different asset types can have duplicate names\. However, you can't add an asset type with the same name multiple times\.
+
+You can use the following methods to add data assets to projects:
+
+<!-- <table> -->
+
+| Method                                                        | When to use                                                                                               |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [Add local files](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html?context=cdpaas&locale=en#files)                                           | You have data in CSV or similar files on your local system\.                                              |
+| [Add Samples data sets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html?context=cdpaas&locale=en#community)                                     | You want to use sample data sets\.                                                                        |
+| [Add database connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)                                  | You need to connect to a remote data source\.                                                             |
+| [Add data from a connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)                                | You need one or more tables or files from a remote data source\.                                          |
+| [Add connected folder assets from IBM Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/folder-asset.html) | You need a folder in IBM Cloud Object Storage that contains a dynamic set of files, such as a news feed\. |
+| [Convert files in project storage to assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html?context=cdpaas&locale=en#os)                | You want to convert files that you created in the project into data assets\.                              |
+
+<!-- </table ""> -->
+
+## Add local files ##
+
+You can add a file from your local system as a data asset in a project\.
+
+**Required permissions** : You must have the **Editor** or **Admin** role in the project\.
+
+**Restrictions** : \- The file cannot be empty\. : \- The file name can't exceed 255 characters\.
+
+: \- The maximum size for files that you can load with the UI is 5 GB\. You can [load larger files to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/store-large-objs-in-cos.html) with APIs\.
+
+Important: You can't add executable files to a project\. All other types files that you add to a project are not checked for malicious code\. You must ensure that your files do not contain malware or other types of malicious software that other collaborators might download\.
+
+To add data files to a project:
+
+<!-- <ol> -->
+
+1.  From your project's **Assets** page, click the **Upload asset to project** icon (![Shows the find data icon\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/find_data_icon.png))\. You can also click the same icon (![Shows the find data icon\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/find_data_icon.png)) from within a notebook or canvas\.
+2.  In the pane that opens, browse for the files or drag them onto the pane\. You must stay on the page until the load is complete\.
+
+<!-- </ol> -->
+
+The files are saved in the object storage that is associated with your project and are listed as data assets on the **Assets** page of your project\.
+
+When you click the data asset name, you can see this information about data assets from files:
+
+<!-- <ul> -->
+
+ *  The asset name and description
+ *  The tags for the asset
+ *  The name of the person who created the asset
+ *  The size of the data
+ *  The date when the asset was added to the project
+ *  The date when the asset was last modified
+ *  A [preview](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html) of the data, for CSV, Avro, Parquet, TSV, Microsoft Excel, PDF, text, JSON, and image files
+ *  A [profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html) of the data, for CSV, Avro, Parquet, TSV, and Microsoft Excel files
+
+<!-- </ul> -->
+
+You can update the contents of a data asset from a file by adding a file with the same name and format to the project and then choosing to replace the existing data asset\.
+
+You can remove the data asset by choosing the **Delete** option from the action menu next to the asset name\. Choose the **Prepare data** option to refine the data with [Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)\.
+
+## Add Samples data sets ##
+
+You can add data sets from Samples to your project:
+
+<!-- <ol> -->
+
+1.  In Samples, find the card for the data set that you want to add\.
+2.  Click the **Add to Project** icon from the action bar, select the project, and click **Add**\.
+
+<!-- </ol> -->
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Convert files in project storage to assets ##
+
+The storage for the project contains the data assets that you uploaded to the project, but it can also contain other files\. For example, you can save a DataFrame in a notebook in the project environment storage\. You can convert files in project storage to assets\.
+
+To convert files in project storage to assets:
+
+<!-- <ol> -->
+
+1.  From the **Assets** tab of your project, click **Import asset**\.
+2.  Select **Project files**\.
+3.  Select the **data\_asset** folder\.
+4.  Select the asset and click **Import**\.
+
+<!-- </ol> -->
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  [Refine the data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+ *  [Analyze the data and work with models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-science.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Downloading data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/download.html)
+ *  [Publishing data assets to a catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/catalog/publish-asset-project.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Preparing data](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/get-data.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,43 @@
+# Examples #
+
+The `print` keyword prints the arguments immediately following it\. If the statement is followed by a comma, a new line isn't included in the output\. For example:
+
+    print "This demonstrates the use of a",
+    print " comma at the end of a print statement."
+
+This will result in the following output:
+
+    This demonstrates the use of a comma at the end of a print statement.
+
+The `for` statement iterates through a block of code\. For example:
+
+    mylist1 = ["one", "two", "three"]
+    for lv in mylist1:
+        print lv
+        continue
+
+In this example, three strings are assigned to the list `mylist1`\. The elements of the list are then printed, with one element of each line\. This results in the following output:
+
+    one
+    two
+    three
+
+In this example, the iterator `lv` takes the value of each element in the list `mylist1` in turn as the `for` loop implements the code block for each element\. An iterator can be any valid identifier of any length\.
+
+The `if` statement is a conditional statement\. It evaluates the condition and returns either true or false, depending on the result of the evaluation\. For example:
+
+    mylist1 = ["one", "two", "three"]
+    for lv in mylist1:
+        if lv == "two"
+            print "The value of lv is ", lv
+        else
+            print "The value of lv is not two, but ", lv
+        continue
+
+In this example, the value of the iterator `lv` is evaluated\. If the value of `lv` is `two`, a different string is returned to the string that's returned if the value of `lv` is not `two`\. This results in the following output:
+
+    The value of lv is not two, but one
+    The value of lv is two
+    The value of lv is not two, but three
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,30 @@
+# Model input and output data file formats #
+
+With your  Decision Optimization model, you can use the following input and output data identifiers and extension combinations\.
+
+This table shows the supported file type combinations for  Decision Optimization in  Watson Machine Learning:
+
+<!-- <table "summary="" id="topic_modelIOFileFormats__simpletable_iys_hnq_fhb" class="defaultstyle" "> -->
+
+| Model type    | Input file type                                                                                                | Output file type                                                              | Comments                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`cplex`**   | `.lp`  <br>`.mps`  <br>`.sav`  <br>`.feasibility`  <br>`.prm`<br><br>`.jar` for  Java™  <br>models             | `.xml`  <br>`.json`  <br><br>The name of the output file must be **solution** | The output format can be specified by using the API\.<br><br>Files of type `.lp`, `.mps`, and `.sav` can be compressed by using `gzip` or `bzip2`, and uploaded as, for example, `.lp.gz` or `.sav.bz2`\.<br><br>The schemas for the CPLEX formats for solutions, conflicts, and feasibility files are available for you to download in the  cplex\_xsds\.zip archive from the [Decision Optimization github](https://github.com/IBMDecisionOptimization/DO-Samples/blob/watson_studio_cloud/resources/cplex_xsds.zip)\. |
+| **`cpo`**     | `.cpo`<br><br>`.jar` for  Java  <br>models                                                                     | `.xml`  <br>`.json`  <br><br>The name of the output file must be **solution** | The output format can be specified by using the solve parameter\.<br><br>For the native file format for CPO models, see: [CP Optimizer file format syntax](https://www.ibm.com/docs/en/icos/20.1.0?topic=manual-cp-optimizer-file-format-syntax)\.                                                                                                                                                                                                                                                    |
+| **`opl`**     | `.mod`  <br>`.dat`  <br>`.oplproject`  <br>`.xls`  <br>`.json`  <br>`.csv`<br><br>`.jar` for  Java  <br>models | `.xml`  <br>`.json`  <br>`.txt`  <br>`.csv`  <br>`.xls`                       | The output format is consistent with the input type but can be specified by using the solve parameter if needed\. To take advantage of data connectors, use the `.csv` format\.<br><br>Only models that are defined with tuple sets can be deployed; other OPL structures are not supported\.<br><br>To read and write input and output in OPL, see [OPL models](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/OPLmodels.html#topic_oplmodels)\.                                              |
+| **`docplex`** | `.py`  <br>`*.*` (input data)                                                                                  | Any output file type that is specified in the model\.                         | Any format can be used in your Python code, but to take advantage of data connectors, use the `.csv` format\.<br><br>To read and write input and output in Python, use the commands `get_input_stream("filename")` and `get_output_stream("filename")`\. See [DOcplex API sum example](https://ibmdecisionoptimization.github.io/docplex-doc/2.23.222/mp/docplex.util.environment.html)                                                                                                                          |
+
+<!-- </table "summary="" id="topic_modelIOFileFormats__simpletable_iys_hnq_fhb" class="defaultstyle" "> -->
+
+Data identifier restrictions
+:   A file name has the following restrictions:
+    
+    <!-- <ul> -->
+    
+     *  Is limited to 255 characters
+     *  Can include only ASCII characters
+     *  Cannot include the characters `/\?%*:|"<>`, the space character, or the null character
+     *  Cannot include \_ as the first character
+    
+    <!-- </ul> -->
+    
+<!-- </article "role="article" "> -->

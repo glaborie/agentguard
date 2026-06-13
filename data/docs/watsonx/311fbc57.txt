@@ -1,0 +1,38 @@
+# Decision Optimization notebooks #
+
+You can create and run  Decision Optimization models in Python  notebooks by using  DOcplex, a native Python API for  Decision Optimization\. Several  Decision Optimization notebooks are already available for you to use\.
+
+The  Decision Optimization environment currently supports `Python 3.10`\. The following Python environments give you access to the Community Edition of the CPLEX engines\. The Community Edition is limited to solving problems with up to 1000 constraints and 1000 variables, or with a search space of 1000 X 1000 for Constraint Programming problems\.
+
+<!-- <ul> -->
+
+ *  `Runtime 23.1 on Python 3.10 S/XS/XXS`
+ *  `Runtime 22.2 on Python 3.10 S/XS/XXS`
+
+<!-- </ul> -->
+
+To run larger problems, select a runtime that includes the full CPLEX commercial edition\. The  Decision Optimization environment ( DOcplex) is available in the following runtimes (full CPLEX commercial edition):
+
+<!-- <ul> -->
+
+ *  `NLP + DO runtime 23.1 on Python 3.10` with `CPLEX 22.1.1.0`
+ *  `DO + NLP runtime 22.2 on Python 3.10` with `CPLEX 20.1.0.1`
+
+<!-- </ul> -->
+
+You can easily change environments (runtimes and Python version) inside a  notebook by using the  Environment tab (see [Changing the environment of a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-environments.html#change-env))\. Thus, you can formulate optimization models and test them with small data sets in one environment\. Then, to solve models with bigger data sets, you can switch to a different environment, without having to rewrite or copy the  notebook code\.
+
+Multiple examples of  Decision Optimization notebooks are available in the   Samples, including:
+
+<!-- <ul> -->
+
+ *  The Sudoku example, a Constraint Programming example in which the objective is to solve a 9x9 Sudoku grid\.
+ *  The Pasta Production Problem example, a Linear Programming example in which the objective is to minimize the production cost for some pasta products and to ensure that the customers' demand for the products is satisfied\.
+
+<!-- </ul> -->
+
+These and more examples are also available in the **jupyter** folder of the **[DO\-samples](https://github.com/IBMDecisionOptimization/DO-Samples)**
+
+All  Decision Optimization notebooks use  DOcplex\.
+
+<!-- </article "role="article" "> -->

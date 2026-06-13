@@ -1,0 +1,115 @@
+# Managing your account settings #
+
+From the Account window you can view information about your IBM Cloud account and set the **Resource scope**, **Credentials for connections**, and **Regional project storage** settings for IBM watsonx\.
+
+<!-- <ul> -->
+
+ *  [View account information](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html?context=cdpaas&locale=en#view-account-information)
+ *  [Set the scope for resources](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html?context=cdpaas&locale=en#set-the-scope-for-resources)
+ *  [Set the type of credentials for connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html?context=cdpaas&locale=en#set-the-credentials-for-connections)
+ *  [Set the login session expiration](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/account-settings.html?context=cdpaas&locale=en#set-expiration)
+
+<!-- </ul> -->
+
+You must be the IBM Cloud account owner or administrator to manage the account settings\.
+
+## View account information ##
+
+You can see the account name, ID and type\.
+
+<!-- <ol> -->
+
+1.  Select **Administration > Account and billing > Account** to open the account window\.
+2.  If you need to manage your Cloud account, click the **Manage in IBM Cloud** link to navigate to the Account page on IBM Cloud\.
+
+<!-- </ol> -->
+
+## Set the scope for resources ##
+
+By default, account users see resources based on membership\. You can restrict the resource scope to the current account to control access\. By setting the resource scope to the current account, users cannot access resources outside of their account, regardless of membership\. The scope applies to projects, catalogs, and spaces\.
+
+To restrict resources to current account:
+
+<!-- <ol> -->
+
+1.  Select **Administration > Account and billing > Account** to open the account settings window\.
+2.  Set **Resource scope** to **On**\. Access is updated immediately to be restricted to the current account\.
+
+<!-- </ol> -->
+
+## Set the credentials for connections ##
+
+The credentials for connections setting determines the type of credentials users must specify when creating a new connection\. This setting applies only when new connections are created; existing connections are not affected\.
+
+### Either personal or shared credentials ###
+
+You can allow users the ability to specify personal or shared credentials when creating a new connection\. Radio buttons will appear on the new connection form, allowing the user to select personal or shared\.
+
+To allow the credential type to be chosen on the new connection form:
+
+<!-- <ol> -->
+
+1.  Select **Administration > Account and billing > Account** to open the account settings window\.
+2.  Set both **Shared credentials** and **Personal credentials** to **Enabled**\.
+
+<!-- </ol> -->
+
+### Personal credentials ###
+
+When personal credentials are specified, each user enters their own credentials when creating a new connection or when using a connection to access data\.
+
+To require personal credentials for all new connections:
+
+<!-- <ol> -->
+
+1.  Select **Administration > Account and billing > Account** to open the account settings window\.
+2.  Set **Personal credentials** to **Enabled**\.
+3.  Set **Shared credentials** to **Disabled**\.
+
+<!-- </ol> -->
+
+### Shared credentials ###
+
+With shared credentials, the credentials that were entered by the creator of the connection are made available to all other users when accessing data with the connection\.
+
+To require shared credentials for all new connections:
+
+<!-- <ol> -->
+
+1.  Select **Administration > Account and billing > Account** to open the account settings window\.
+2.  Set **Shared credentials** to **Enabled**\.
+3.  Set **Personal credentials** to **Disabled**\.
+
+<!-- </ol> -->
+
+## Set the login session expiration ##
+
+Active and inactive session durations are managed through IBM Cloud\. You are notified of a session expiration 5 minutes before the session expires\. Unless your service supports autosaving, your work is not saved when your session expires\.
+
+You can change the default durations for active and inactive sessions\. For more information on required permissions and duration limits, see [Setting limits for login sessions](https://cloud.ibm.com/docs/account?topic=account-iam-work-sessions&interface=ui)\.
+
+To change the default durations:
+
+<!-- <ol> -->
+
+1.  From the watsonx navigation menu, select **Administration > Access (IAM)**\.
+2.  In IBM Cloud, select **Manage > Access (IAM) > Settings**\.
+3.  Select the **Login session** tab\.
+4.  For each expiration time that you want to change, edit the time and click **Save**\.
+
+<!-- </ol> -->
+
+The inactivity duration cannot be longer than the maximum session duration, and the token lifetime cannot be longer than the inactivity duration\. IBM Cloud prevents you from inputing an invalid combination of settings\.
+
+### Learn more ###
+
+<!-- <ul> -->
+
+ *  [Managing all projects in the account](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-manage-projects.html)
+ *  [Adding connections to projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Managing IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,10 @@
+# Regression node #
+
+Linear regression is a common statistical technique for classifying records based on the values of numeric input fields\. Linear regression fits a straight line or surface that minimizes the discrepancies between predicted and actual output values\.
+
+Requirements\. Only numeric fields can be used in a regression model\. You must have exactly one target field (with the role set to `Target`) and one or more predictors (with the role set to `Input`)\. Fields with a role of `Both` or `None` are ignored, as are non\-numeric fields\. (If necessary, non\-numeric fields can be recoded using a Derive node\. )
+
+Strengths\. Regression models are relatively simple and give an easily interpreted mathematical formula for generating predictions\. Because regression modeling is a long\-established statistical procedure, the properties of these models are well understood\. Regression models are also typically very fast to train\. The Regression node provides methods for automatic field selection in order to eliminate nonsignificant input fields from the equation\.
+
+Note: In cases where the target field is categorical rather than a continuous range, such as `yes`/`no` or `churn`/`don't churn`, logistic regression can be used as an alternative\. Logistic regression also provides support for non\-numeric inputs, removing the need to recode these fields\. See [Logistic node](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/logreg.html#logreg) for more information\.
+<!-- </article "role="article" "> -->

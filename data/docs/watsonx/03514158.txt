@@ -1,0 +1,85 @@
+# Snowflake connection #
+
+To access your data in Snowflake, you must create a connection asset for it\.
+
+Snowflake is a cloud\-based data storage and analytics service\.
+
+## Create a connection to Snowflake ##
+
+To create the connection asset, you need the following connection details:
+
+<!-- <ul> -->
+
+ *  Account name: The full name of your account
+ *  Database name
+ *  Role: The default access control role to use in the Snowflake session
+ *  Warehouse: The virtual warehouse
+
+<!-- </ul> -->
+
+### Credentials ###
+
+Authentication method:
+
+<!-- <ul> -->
+
+ *  Username and password
+ *  Key\-Pair: Enter the contents of the private key and the key passphrase (if configured)\. These properties must be set up by the Snowflake administrator\. For information, see [Key Pair Authentication & Key Pair Rotation](https://docs.snowflake.com/en/user-guide/key-pair-auth) in the Snowflake documentation\.
+ *  Okta URL endpoint: If your company uses native Okta SSO authentication, enter the Okta URL endpoint for your Okta account\. Example: `https://<okta_account_name>.okta.com`\. Leave this field blank if you want to use the default authentication of Snowflake\. For information about federated authentication provided by Okta, see [Native SSO](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use.html#native-sso-okta-only)\.
+
+<!-- </ul> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Snowflake connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Snowflake setup ##
+
+[General Configuration ](https://docs.snowflake.com/en/user-guide/gen-conn-config.html)
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to the [Snowflake SQL Command Reference](https://docs.snowflake.com/en/sql-reference-commands.html) for the correct syntax\.
+
+## Learn more ##
+
+[Snowflake in 20 Minutes](https://docs.snowflake.com/en/user-guide/getting-started-tutorial.html)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,30 @@
+# Governing assets in AI use cases #
+
+Create an AI use case to track and govern AI assets from request through production\. Factsheets capture details about the asset for each stage of the AI lifecycle to help you meet governance and compliance goals\.
+
+To learn about AI use cases, you can follow a tutorial in the *Getting started with watsonx\.governance* sample project\. Assets in the sample are prompt templates for a car insurance claim processing use case\. The prompts use car insurance claims as input and then use large language models to help insurance agents process the claims\. One prompt summarizes claims, another prompt extracts key information such as make and model, and the last prompt generates suggestions for the insurance agent\.
+
+In **Projects**, start a new project, then choose to create a project from a sample\. The project gallery includes the getting started sample\.
+
+![Getting started sample project](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-get-started-project.png)
+
+When your project is ready, open the Readme for a step\-by\-step tutorial\.
+
+![Getting started sample project](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-get-started-project-readme.png)
+
+## Get started with AI use cases ##
+
+Set up or work with AI use cases:
+
+<!-- <ul> -->
+
+ *  [Create an inventory](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-inventory-manage.html) for storing AI use cases
+ *  [Set up an AI use case](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-use-cases.html)
+ *  [Track assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-tracking-overview.html) in an AI use case
+ *  [View factsheets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-factsheet-viewing.html) for tracked assets
+
+<!-- </ul> -->
+
+**Parent topic:**[Governing AI assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-overview.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,17 @@
+# Firewall access for Watson Machine Learning #
+
+To allow Watson Machine Learning to access data that is located behind a firewall, you add the appropriate IP addresses for your region to the inbound rules for your firewall\.
+
+## Dallas (us\-south) ##
+
+<!-- <ul> -->
+
+ *  dal10 \- 169\.60\.39\.152/29
+ *  dal12 \- 169\.48\.198\.96/29
+ *  dal13 \- 169\.61\.47\.128/29,169\.62\.162\.88/29
+
+<!-- </ul> -->
+
+**Parent topic:**[Configuring firewall access](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall_ovrvw.html)
+
+<!-- </article "role="article" "> -->

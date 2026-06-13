@@ -1,0 +1,257 @@
+# Known issues and limitations #
+
+The following limitations and known issues apply to watsonx\.
+
+<!-- <ul> -->
+
+ *  [**Regional limitations**](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/region-lims.html)
+ *  [Notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#notebooks)
+ *  [Machine learning](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#wmlissues)
+ *  [SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#spssissues)
+ *  [Connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#connectissues)
+ *  [Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#pipeline-issues)
+ *  [watsonx\.governance](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#xgov-issues)
+
+<!-- </ul> -->
+
+## Notebook issues ##
+
+You might encounter some of these issues when getting started with and using notebooks\.
+
+### Manual installation of some tensor libraries is not supported ###
+
+Some tensor flow libraries are preinstalled, but if you try to install additional tensor flow libraries yourself, you get an error\.
+
+### Connection to notebook kernel is taking longer than expected after running a code cell ###
+
+If you try to reconnect to the kernel and immediately run a code cell (or if the kernel reconnection happened during code execution), the notebook doesn't reconnect to the kernel and no output is displayed for the code cell\. You need to manually reconnect to the kernel by clicking **Kernel** > **Reconnect**\. When the kernel is ready, you can try running the code cell again\.
+
+### Using the predefined sqlContext object in multiple notebooks causes an error ###
+
+You might receive an Apache Spark error if you use the predefined sqlContext object in multiple notebooks\. Create a new sqlContext object for each notebook\. See [this Stack Overflow explanation](http://stackoverflow.com/questions/38117849/you-must-build-spark-with-hive-export-spark-hive-true/38118112#38118112)\.
+
+### Connection failed message ###
+
+If your kernel stops, your notebook is no longer automatically saved\. To save it, click **File** > **Save** manually, and you should get a **Notebook saved** message in the kernel information area, which appears before the Spark version\. If you get a message that the kernel failed, to reconnect your notebook to the kernel click **Kernel** > **Reconnect**\. If nothing you do restarts the kernel and you can't save the notebook, you can download it to save your changes by clicking **File** > **Download as** > **Notebook (\.ipynb)**\. Then you need to create a new notebook based on your downloaded notebook file\.
+
+### Hyperlinks to notebook sections don't work in preview mode ###
+
+If your notebook contains sections that you link to from an introductory section at the top of the notebook for example, the links to these sections will not work if the notebook was opened in view\-only mode in Firefox\. However, if you open the notebook in edit mode, these links will work\.
+
+### Can't connect to notebook kernel ###
+
+If you try to run a notebook and you see the message `Connecting to Kernel`, followed by `Connection failed. Reconnecting` and finally by a connection failed error message, the reason might be that your firewall is blocking the notebook from running\.
+
+If Watson Studio is installed behind a firewall, you must add the WebSocket connection `wss://dataplatform.cloud.ibm.com` to the firewall settings\. Enabling this WebSocket connection is required when you're using notebooks and RStudio\.
+
+### Insufficient resources available error when opening or editing a notebook ###
+
+If you see the following message when opening or editing a notebook, the environment runtime associated with your notebook has resource issues:
+
+    Insufficient resources available
+    A runtime instance with the requested configuration can't be started at this time because the required hardware resources aren't available.
+    Try again later or adjust the requested sizes.
+
+To find the cause, try checking the status page for IBM Cloud incidents affecting Watson Studio\. Additionally, you can open a support case at the IBM Cloud Support portal\.
+
+## Machine learning issues ##
+
+You might encounter some of these issues when working with machine learning tools\.
+
+### Region requirements ###
+
+You can only associate a Watson Machine Learning service instance with your project when the Watson Machine Learning service instance and the Watson Studio instance are located in the same region\.
+
+### Accessing links if you create a service instance while associating a service with a project ###
+
+While you are associating a Watson Machine Learning service to a project, you have the option of creating a new service instance\. If you choose to create a new service, the links on the service page might not work\. To access the service terms, APIs, and documentation, right click the links to open them in new windows\.
+
+### Federated Learning assets cannot be searched in All assets, search results, or filter results in the new projects UI ###
+
+You cannot search Federated Learning assets from the **All assets** view, the search results, or the filter results of your project\.
+
+**Workaround:** Click the Federated Learning asset to open the tool\.
+
+### Deployment issues ###
+
+<!-- <ul> -->
+
+ *  A deployment that is inactive (no scores) for a set time (24 hours for the free plan or 120 hours for a paid plan) is automatically hibernated\. When a new scoring request is submitted, the deployment is reactivated and the score request is served\. Expect a brief delay of 1 to 60 seconds for the first score request after activation, depending on the model framework\.
+ *  For some frameworks, such as SPSS modeler, the first score request for a deployed model after hibernation might result in a 504 error\. If this happens, submit the request again; subsequent requests should succeed\.
+
+<!-- </ul> -->
+
+## Watson Machine Learning limitations ##
+
+### AutoAI known limitations ###
+
+<!-- <ul> -->
+
+ *  Currently, AutoAI experiments do not support double\-byte character sets\. AutoAI only supports CSV files with ASCII characters\. Users must convert any non\-ASCII characters in the file name or content, and provide input data as a CSV as defined in [this CSV standard](https://tools.ietf.org/html/rfc4180)\.
+ *  To interact programmatically with an AutoAI model, use the REST API instead of the Python client\. The APIs for the Python client required to support AutoAI are not generally available at this time\.
+
+<!-- </ul> -->
+
+### Data module not found in IBM Federated Learning ###
+
+The data handler for IBM Federated Learning is trying to extract a data module from the FL library but is unable to find it\. You might see the following error message:
+
+    ModuleNotFoundError: No module named 'ibmfl.util.datasets'
+
+The issue possibly results from using an outdated DataHandler\. Please review and update your DataHandler to conform to the latest spec\. Here is the link to the most recent [MNIST data handler](https://github.com/IBMDataScience/sample-notebooks/blob/master/Files/mnist_keras_data_handler.py) or ensure your sample versions are up\-to\-date\.
+
+## SPSS Modeler issues ##
+
+You might encounter some of these issues when working in SPSS Modeler\.
+
+### SPSS Modeler runtime restrictions ###
+
+Watson Studio does not include SPSS functionality in Peru, Ecuador, Colombia and Venezuela\.
+
+### Merge node and unicode characters ###
+
+The Merge node treats the following very similar Japanese characters as the same character\.  
+![Japanese characters](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/SPSSmergenode.png)
+
+## Connection issues ##
+
+You might encounter this issue when working with connections\.
+
+### Cloudera Impala connection does not work with LDAP authentication ###
+
+If you create a connection to a Cloudera Impala data source and the Cloudera Impala server is set up for LDAP authentication, the username and password authentication method in IBM watsonx will not work\.
+
+Workaround: Disable the **Enable LDAP Authentication** option on the Impala server\. See [Configuring LDAP Authentication](https://docs.cloudera.com/cdp-private-cloud-base/latest/impala-secure/topics/impala-ldap.html) in the Cloudera documentation\.
+
+## Watson Pipelines known issues ##
+
+The issues pertain to Watson Pipelines\.
+
+### Nesting loops more than 2 levels can result in pipeline error ###
+
+Nesting loops more than 2 levels can result in an error when you run the pipeline, such as Error retrieving the run\. Reviewing the logs can show an error such as `text in text not resolved: neither pipeline_input nor node_output`\. If you are looping with output from a Bash script, the log might list an error like this: `PipelineLoop can't be run; it has an invalid spec: non-existent variable in $(params.run-bash-script-standard-output)`\. To resolve the problem, do not nest loops more than 2 levels\.
+
+### Asset browser does not always reflect count for total numbers of asset type ###
+
+When selecting an asset from the asset browser, such as choosing a source for a Copy node, you see that some of the assets list the total number of that asset type available, but notebooks do not\. That is a current limitation\.
+
+### Cannot delete pipeline versions ###
+
+Currently, you cannot delete saved versions of pipelines that you no longer need\.
+
+### Deleting an AutoAI experiment fails under some conditions ###
+
+Using a *Delete AutoAI experiment* node to delete an AutoAI experiment that was created from the Projects UI does not delete the AutoAI asset\. However, the rest of the flow can complete successfully\.
+
+### Cache appears enabled but is not enabled ###
+
+If the *Copy assets* Pipelines node's *Copy mode* is set to `Overwrite`, cache is displayed as enabled but remains disabled\.
+
+## Watson Pipelines limitations ##
+
+These limitations apply to Watson Pipelines\.
+
+<!-- <ul> -->
+
+ *  [Single pipeline limits](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#pipeline-limits)
+ *  [Limitations by configuration size](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#config-size)
+ *  [Input and output size limits](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#input-limit)
+ *  [Batch input limited to data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/known-issues.html?context=cdpaas&locale=en#batch-input)
+
+<!-- </ul> -->
+
+### Single pipeline limits ###
+
+These limitation apply to a single pipeline, regardless of configuration\.
+
+<!-- <ul> -->
+
+ *  Any single pipeline cannot contain more than 120 standard nodes
+ *  Any pipeline with a loop cannot contain more than 600 nodes across all iterations (for example, 60 iterations \- 10 nodes each)
+
+<!-- </ul> -->
+
+### Limitations by configuration size ###
+
+#### Small configuration ####
+
+A SMALL configuration supports 600 standard nodes (across all active pipelines) or 300 nodes run in a loop\. For example:
+
+<!-- <ul> -->
+
+ *  30 standard pipelines with 20 nodes run in parallel = 600 standard nodes
+ *  3 pipelines containing a loop with 10 iterations and 10 nodes in each iteration = 300 nodes in a loop
+
+<!-- </ul> -->
+
+#### Medium configuration ####
+
+A MEDIUM configuration supports 1200 standard nodes (across all active pipelines) or 600 nodes run in a loop\. For example:
+
+<!-- <ul> -->
+
+ *  30 standard pipelines with 40 nodes run in parallel = 1200 standard nodes
+ *  6 pipelines containing a loop with 10 iterations and 10 nodes in each iteration = 600 nodes in a loop
+
+<!-- </ul> -->
+
+#### Large configuration ####
+
+A LARGE configuration supports 4800 standard nodes (across all active pipelines) or 2400 nodes run in a loop\. For example:
+
+<!-- <ul> -->
+
+ *  80 standard pipelines with 60 nodes run in parallel = 4800 standard nodes
+ *  24 pipelines containing a loop with 10 iterations and 10 nodes in each iteration = 2400 nodes in a loop
+
+<!-- </ul> -->
+
+### Input and output size limits ###
+
+Input and output values, which include pipeline parameters, user variables, and generic node inputs and outputs, cannot exceed 10 KB of data\.
+
+### Batch input limited to data assets ###
+
+Currently, input for batch deployment jobs is limited to data assets\. This means that certain types of deployments, which require JSON input or multiple files as input, are not supported\. For example, SPSS models and Decision Optimization solutions that require multiple files as input are not supported\.
+
+## Issues with Cloud Object Storage ##
+
+These issue apply to working with Cloud Object Storage\.
+
+### Issues with Cloud Object Storage when Key Protect is enabled ###
+
+Key Protect in conjunction with Cloud Object Storage is not supported for working with Watson Machine Learning assets\. If you are using Key Protect, you might encounter these issues when you are working with assets in Watson Studio\.
+
+<!-- <ul> -->
+
+ *  Training or saving these Watson Machine Learning assets might fail:
+    
+    <!-- <ul> -->
+    
+     *  Auto AI
+     *  Federated Learning
+     *  Watson Pipelines
+    
+    <!-- </ul> -->
+    
+ *  You might be unable to save an SPSS model or a notebook model to a project
+
+<!-- </ul> -->
+
+## Issues with watsonx\.governance ##
+
+### Delay showing prompt template deployment data in a factsheet ###
+
+When a deployment is created for a prompt template, the facts for the deployment are not added to factsheet immediately\. You must first evaluate the deployment or view the lifecycle tracking page to add the facts to the factsheet\.
+
+### Display issues for existing Factsheet users ###
+
+If you previously used factsheets with IBM Knowledge Catalog and you create a new AI use case in watsonx\.governance, you might see some display issues, such as duplicate Risk level fields in the General information and Details section of the AI use case interface\.
+
+To resolve display problems, update the `model_entry_user` asset type definition\. For details on updating a use case programmatically, see [Customizing details for a use case or factsheet](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-customize-user-facts.html)\.
+
+### Redundant attachment links in factsheet ###
+
+A factsheet tracks all of the events for an asset over all phases of the lifecycle\. Attachments show up in each stage, creating some redundancy in the factsheet\.
+
+<!-- </article "role="article" "> -->

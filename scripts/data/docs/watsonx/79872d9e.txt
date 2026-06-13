@@ -1,0 +1,100 @@
+# Manage default settings #
+
+You can manage the global settings of your IBM Watson Pipelines such as a default error policy and default rules for node caching\.
+
+Global settings apply to all nodes in the pipeline unless local node settings overwrite them\. To update global settings, click the **Manage default settings** icon ![gear icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ml-setting-icon.png) on the toolbar\. You can configure:
+
+<!-- <ul> -->
+
+ *  [Error policy](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-global-settings.html?context=cdpaas&locale=en#err-pol)
+ *  [Node caching](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-global-settings.html?context=cdpaas&locale=en#node-cache)
+
+<!-- </ul> -->
+
+## Setting global error policy ##
+
+You can define the behavior of Pipelines when an error occurs\.
+
+<!-- <ul> -->
+
+ *  **Fail pipeline on error** stops the flow and initiates an error\-handling flow\.
+ *  **Continue pipeline on error** tries to continue running the pipeline\.
+
+<!-- </ul> -->
+
+### Error handling ###
+
+You can configure the behavior of Pipelines for error handling\.
+
+<!-- <ul> -->
+
+ *  **Create custom\-error handling response**: Customize an error\-handling response\. Add an error handling node to the canvas so you can configure a custom error response\. The response applies to all configured nodes to fail when an error occurs\.
+    
+    <!-- <ul> -->
+    
+     *  **Show icon on nodes linked to error handling pipeline**: An icon flags a node with an error to help debug the flow.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+To learn more about error handling, see [Managing pipeline errors](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-errors.html)
+
+## Setting node caches ##
+
+Manual caching for nodes sets the default for how the pipeline caches and stores information\. You can override these settings for individual nodes\.
+
+### Default cache usage frequency ###
+
+You can change the following cache settings:
+
+#### Caching method ####
+
+Choose whether to enable automatic caching for all nodes or choose to manually set cache conditions for specific nodes\.
+
+<!-- <ul> -->
+
+ *  Enable automatic caching for all nodes (recommended)  
+    All nodes that support caching enable it by default. Setting *Creation Mode* or *Copy Mode* in your node's settings to `Overwrite` automatically disables cache, if the node supports these setting parameters.
+ *  Enable caching for specific nodes in the node properties panel\.  
+    In individual nodes, you can select **Create data cache at this node** in **Output** to allow caching for individual nodes. A save icon appears on nodes that uses this feature.
+
+<!-- </ul> -->
+
+#### Cache usage ####
+
+Choose the conditions for using cached data\.
+
+<!-- <ul> -->
+
+ *  Do not use cache
+ *  Always use cache
+ *  Use cache when all selected conditions are met
+    
+    <!-- <ul> -->
+    
+     *  Retrying from a previous failed run
+     *  Input values for the current pipeline are unchanged from previous run
+     *  Pipeline version is unchanged from previous run
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+To view and download your cache data, see **Run tracker** in your flow\. You can download the results by opening a preview of the node's cache and clicking the download icon\.
+
+### Resetting the cache ###
+
+If your cache was enabled, you can choose to reset your cache when you run a Pipelines job\. When you click **Run again**, you can select *Clear pipeline cache* in **Define run settings**\. By choosing this option, you are overriding the default cache settings to reset the cache for the current run\. However, the pipeline still creates cache for subsequent runs while cache is enabled\.
+
+## Managing your Pipelines settings ##
+
+Configure other global settings for your Pipelines asset\.
+
+### Autosave ###
+
+Choose to automatically save your current Pipelines canvas at a selected frequency\. Only changes that impact core pipeline flow are saved\.
+
+**Parent topic:**[IBM Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-overview.html)
+
+<!-- </article "role="article" "> -->

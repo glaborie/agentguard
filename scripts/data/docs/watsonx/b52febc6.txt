@@ -1,0 +1,21 @@
+# Feature Selection node #
+
+Data mining problems may involve hundreds, or even thousands, of fields that can potentially be used as inputs\. As a result, a great deal of time and effort may be spent examining which fields or variables to include in the model\. To narrow down the choices, the Feature Selection algorithm can be used to identify the fields that are most important for a given analysis\. For example, if you are trying to predict patient outcomes based on a number of factors, which factors are the most likely to be important?
+
+Feature selection consists of three steps:
+
+<!-- <ul> -->
+
+ *  Screening\. Removes unimportant and problematic inputs and records, or cases such as input fields with too many missing values or with too much or too little variation to be useful\.
+ *  Ranking\. Sorts remaining inputs and assigns ranks based on importance\.
+ *  Selecting\. Identifies the subset of features to use in subsequent models—for example, by preserving only the most important inputs and filtering or excluding all others\.
+
+<!-- </ul> -->
+
+In an age where many organizations are overloaded with too much data, the benefits of feature selection in simplifying and speeding the modeling process can be substantial\. By focusing attention quickly on the fields that matter most, you can reduce the amount of computation required; more easily locate small but important relationships that might otherwise be overlooked; and, ultimately, obtain simpler, more accurate, and more easily explainable models\. By reducing the number of fields used in the model, you may find that you can reduce scoring times as well as the amount of data collected in future iterations\.
+
+Example\. A telephone company has a data warehouse containing information about responses to a special promotion by 5,000 of the company's customers\. The data includes a large number of fields containing customers' ages, employment, income, and telephone usage statistics\. Three target fields show whether or not the customer responded to each of three offers\. The company wants to use this data to help predict which customers are most likely to respond to similar offers in the future\.
+
+Requirements\. A single target field (one with its role set to `Target`), along with multiple input fields that you want to screen or rank relative to the target\. Both target and input fields can have a measurement level of `Continuous` (numeric range) or `Categorical`\.
+
+<!-- </article "role="article" "> -->

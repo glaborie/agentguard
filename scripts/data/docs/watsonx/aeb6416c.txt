@@ -1,0 +1,80 @@
+# Column Statistics content model and Pairwise Statistics content model #
+
+The Column Statistics content model provides access to statistics that can be computed for each field (univariate statistics)\. The Pairwise Statistics content model provides access to statistics that can be computed between pairs of fields or values in a field\.
+
+Any of these statistics measures are possible:
+
+<!-- <ul> -->
+
+ *  `Count`
+ *  `UniqueCount`
+ *  `ValidCount`
+ *  `Mean`
+ *  `Sum`
+ *  `Min`
+ *  `Max`
+ *  `Range`
+ *  `Variance`
+ *  `StandardDeviation`
+ *  `StandardErrorOfMean`
+ *  `Skewness`
+ *  `SkewnessStandardError`
+ *  `Kurtosis`
+ *  `KurtosisStandardError`
+ *  `Median`
+ *  `Mode`
+ *  `Pearson`
+ *  `Covariance`
+ *  `TTest`
+ *  `FTest`
+
+<!-- </ul> -->
+
+Some values are only appropriate from single column statistics while others are only appropriate for pairwise statistics\.
+
+Nodes that produce these are:
+
+<!-- <ul> -->
+
+ *  Statistics node produces column statistics and can produce pairwise statistics when correlation fields are specified
+ *  Data Audit node produces column and can produce pairwise statistics when an overlay field is specified\.
+ *  Means node produces pairwise statistics when comparing pairs of fields or comparing a field's values with other field summaries\.
+
+<!-- </ul> -->
+
+Which content models and statistics are available depends on both the particular node's capabilities and the settings within the node\.
+
+<!-- <table "summary="Methods for the Column Statistics content model" class="defaultstyle" "> -->
+
+Methods for the Column Statistics content model  
+
+Table 1\. Methods for the Column Statistics content model
+
+| Method                                                 | Return types                | Description                                                                                                  |
+| ------------------------------------------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `getAvailableStatistics()`                             | `List<StatisticType>` | Returns the available statistics in this model\. Not all fields necessarily have values for all statistics\. |
+| `getAvailableColumns()`                                | `List<String>`        | Returns the column names for which statistics were computed\.                                                |
+| `getStatistic(String column, StatisticType statistic)` | `Number`                    | Returns the statistic values associated with the column\.                                                    |
+| `reset()`                                              | `void`                      | Flushes any internal storage associated with this content model\.                                            |
+
+<!-- </table "summary="Methods for the Column Statistics content model" class="defaultstyle" "> -->
+
+<!-- <table "summary="Methods for the Pairwise Statistics content model" class="defaultstyle" "> -->
+
+Methods for the Pairwise Statistics content model  
+
+Table 2\. Methods for the Pairwise Statistics content model
+
+| Method                                                                                                     | Return types                | Description                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `getAvailableStatistics()`                                                                                 | `List<StatisticType>` | Returns the available statistics in this model\. Not all fields necessarily have values for all statistics\. |
+| `getAvailablePrimaryColumns()`                                                                             | `List<String>`        | Returns the primary column names for which statistics were computed\.                                        |
+| `getAvailablePrimaryValues()`                                                                              | `List<Object>`        | Returns the values of the primary column for which statistics were computed\.                                |
+| `getAvailableSecondaryColumns()`                                                                           | `List<String>`        | Returns the secondary column names for which statistics were computed\.                                      |
+| `getStatistic(String primaryColumn, String secondaryColumn, StatisticType statistic)`                      | `Number`                    | Returns the statistic values associated with the columns\.                                                   |
+| `getStatistic(String primaryColumn, Object primaryValue, String secondaryColumn, StatisticType statistic)` | `Number`                    | Returns the statistic values associated with the primary column value and the secondary column\.             |
+| `reset()`                                                                                                  | `void`                      | Flushes any internal storage associated with this content model\.                                            |
+
+<!-- </table "summary="Methods for the Pairwise Statistics content model" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

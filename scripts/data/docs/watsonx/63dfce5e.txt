@@ -1,0 +1,83 @@
+# Troubleshooting Synthetic Data Generator #
+
+Use this information to resolve questions about using *Synthetic Data Generator*\.
+
+## Typeless columns ignored for an Import node ##
+
+When you use an **Import** node that contains **Typeless** columns, these columns will be ignored when you use the **Mimic** node\. After pressing the **Read Values** button, the **Typeless** columns will be automatically set to **Pass** and will not be present in the final dataset\.
+
+Suggested workaround:
+
+Add a new column in the **Generate** node for the missing column(s)\.
+
+## Size limit notice ##
+
+The *Synthetic Data Generator* environment can import up to ~2\.5GB of data\.
+
+Suggested workaround:
+
+If you receive a related error message or your data fails to import, please reduce the amount of data and try again\.
+
+## Internal error occurred: SCAPI error: The value on row 1,029 is not a valid string ##
+
+For example, preview of data asset using **Import** node gives the following error:
+
+    Node:
+    Import
+    WDP Connector Error: CDICO9999E: Internal error occurred: SCAPI error: The value on row 1,029 is not a valid string of the Bit data type for the SecurityDelay column.
+
+This is expected behavior\. In this particular case, the 1st 1000 rows were binary, 0's or 1's\. The value at row 1,029 was 3\. For most flat files, *Synthetic Data Generator* reads the 1st 1000 records to infer the data type\. In this case, *Synthetic Data Generator* inferred binary values (0 or 1)\. When *Synthetic Data Generator* read a value of 3 at row 1,029, it threw an error, as 3 is not a binary value\.
+
+Suggested workarounds:
+
+<!-- <ol> -->
+
+1.  Users can adjust their `Infer_record_count` parameter to include more data, choosing 2000 rows instead (or more)\.
+2.  Users can update the value in the first 1000 rows that is causing the error, if this is an error in the data\.
+
+<!-- </ol> -->
+
+## Error Mimic Data set no available input record\. ##
+
+The **Mimic** node requires the input dataset to have at least one valid record (a record without any missing values)\. If your dataset is empty, or if the dataset does not contain at least one valid record, clicking **Run selection** gives the following error message:
+
+    Node:
+    Mimic
+    Mimic Data set no available input record.
+
+Suggested workarounds:
+
+<!-- <ol> -->
+
+1.  Fix your dataset so that there is at least one record (row) that contains a value for every column and then try again\.
+2.  Click **Read values** from the **Import** node and run your flow again\. ![Read values](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/td-read-values-sd.png)
+
+<!-- </ol> -->
+
+## Error: Incorrect number of fields detected in the server data model\. or WDP Connector Execution Error ##
+
+Creating a new flow using a `.synth` file, then doing a migration of the **Import** node with a newly uploaded file to the project, and then running the flow, gives one or both of the following errors:
+
+    Error: Incorrect number of fields detected in the server data model.
+
+or
+
+    WDP Connector Execution Error
+
+This error is caused by using different data sets (data models) for the create flow and for the migration data\.
+
+Suggested workaround:
+
+Run the **Mimic** node that creates the **Generate** node a second time\.
+
+## Error: Valid variable does not exist in metadata ##
+
+Doing a migration of the **Import** node and then running the flow fails and gives the error:
+
+    Error: Valid variable does not exist in metadata
+
+Suggested workaround:
+
+Make sure that in your **Import** node you have at least one field that is not **Typeless**\. For example, in the screen capture below, the only field in the **Import** node is **Typeless**\. At least one field that is not **Typeless** should be added to the **Import** node to avoid this error\. ![Typeless field in Import node](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/images/td-import-typeless-sd.png)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,11 @@
+# Neural Net node #
+
+A neural network can approximate a wide range of predictive models with minimal demands on model structure and assumption\. The form of the relationships is determined during the learning process\. If a linear relationship between the target and predictors is appropriate, the results of the neural network should closely approximate those of a traditional linear model\. If a nonlinear relationship is more appropriate, the neural network will automatically approximate the "correct" model structure\.
+
+The trade\-off for this flexibility is that the neural network is not easily interpretable\. If you are trying to explain an underlying process that produces the relationships between the target and predictors, it would be better to use a more traditional statistical model\. However, if model interpretability is not important, you can obtain good predictions using a neural network\.
+
+Field requirements\. There must be at least one Target and one Input\. Fields set to Both or None are ignored\. There are no measurement level restrictions on targets or predictors (inputs)\.
+
+The initial weights assigned to neural networks during model building, and therefore the final models produced, depend on the order of the fields in the data\.  Watsonx\.ai automatically sorts data by field name before presenting it to the neural network for training\. This means that explicitly changing the order of the fields in the data upstream will not affect the generated neural net models when a random seed is set in the model builder\. However, changing the input field names in a way that changes their sort order will produce different neural network models, even with a random seed set in the model builder\. The model quality will not be affected significantly given different sort order of field names\.
+
+<!-- </article "role="article" "> -->

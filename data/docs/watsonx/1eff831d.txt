@@ -1,0 +1,82 @@
+## Managing compute resources ##
+
+If you have the **Admin** role or **Editor** in a project, you can perform management tasks for environments\.
+
+<!-- <ul> -->
+
+ *  [Create an environment template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-customize-env-definition.html)
+ *  [Customize an environment template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/customize-envs.html)
+ *  [Stop active runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html?context=cdpaas&locale=en#stop-active-runtimes)
+ *  [Promote an environment template to a space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/promote-envs.html)
+ *  [Track capacity unit consumption of runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/track-runtime-usage.html)
+
+<!-- </ul> -->
+
+## Stop active runtimes ##
+
+You should stop all active runtimes when you no longer need them to prevent consuming extra capacity unit hours (CUHs)\.
+
+Jupyter notebook runtimes are started per user and not per notebook\. Stopping a notebook kernel doesn't stop the environment runtime in which the kernel is started because you could have started other notebooks in the same environment\. You should only stop a notebook runtime if you are sure that no other notebook kernels are active\.
+
+Only runtimes that are started for jobs are automatically shut down after the scheduled job has completed\. For example, if you schedule to run a notebook once a day for 2 months, the runtime instance will be activated every day for the duration of the scheduled job and deactivated again after the job has finished\.
+
+Project users with **Admin** role can stop all runtimes in the project\. Users added to the project with **Editor** role can stop the runtimes they started, but can't stop other project users' runtimes\. Users added to the project with the viewer role can't see the runtimes in the project\.
+
+You can stop runtimes from:
+
+<!-- <ul> -->
+
+ *  The **Environment Runtimes** page, which lists all active runtimes across all projects for your account, by clicking **Administration > Environment runtimes** from the Watson Studio navigation menu\.
+ *  Under **Tool runtimes** on the **Environments** page on the **Manage** tab of your project, which lists the active runtimes for a specific project\.
+ *  The **Environments** page when you click the Notebook Info icon (![Notebook Info icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/get-information_32.png)) from the notebook toolbar in the notebook editor\. You can stop the runtime under **Runtime status**\.
+
+<!-- </ul> -->
+
+Idle timeouts for:
+
+<!-- <ul> -->
+
+ *  [Jupyter notebook runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html?context=cdpaas&locale=en#cpu)
+ *  [Spark runtimes for notebooks and Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html?context=cdpaas&locale=en#spark)
+ *  [Notebook with GPU runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html?context=cdpaas&locale=en#gpu)
+ *  [RStudio runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html?context=cdpaas&locale=en#rstudio)
+
+<!-- </ul> -->
+
+### Jupyter notebook idle timeout ###
+
+Runtime idle times differ for the Jupyter notebook runtimes depending on your Watson Studio plan\.
+
+<!-- <table> -->
+
+Idle timeout for default CPU runtimes
+
+| Plan                        | Idle timeout                                                 |
+| --------------------------- | ------------------------------------------------------------ |
+| Lite                        | \- Idle stop time: 1 hour  <br>\- CUH limit: 10 CUHs         |
+| Professional                | \- Idle stop time: 1 hour  <br>\- CUH limit: no limit        |
+| Standard (Legacy)           | \- Idle stop time: 1 hour  <br>\- CUH limit: no limit        |
+| Enterprise (Legacy)         | \- Idle stop time: 3 hours  <br>\- CUH limit: no limit       |
+| All plans  <br>Free runtime | \- Idle stop time: 1 hour  <br>\- Maximum lifetime: 12 hours |
+
+<!-- </table ""> -->
+
+Important: A runtime is started per user and not per notebook\. Stopping a notebook kernel doesn't stop the environment runtime in which the kernel is started because you could have started other notebooks in the same environment\. Only stop a runtime if you are sure that no kernels are active\.
+
+### Spark idle timeout ###
+
+All Spark runtimes, for example for notebook and Data Refinery, are stopped after 3 hours of inactivity\. The `Default Data Refinery XS runtime` that is used when you refine data in Data Refinery is stopped after an idle time of 1 hour\.
+
+Spark runtimes that are started when a job is started, for example to run a Data Refinery flow or a notebook, are stopped when the job finishes\.
+
+### GPU idle timeout ###
+
+All GPU runtimes are automatically stopped after 3 hours of inactivity for Enterprise plan users and after 1 hour of inactivity for other paid plan users\.
+
+### RStudio idle timeout ###
+
+An RStudio is stopped for you after an idle time of 2 hour\. During this idle time, you will continue to consume CUHs for which you are billed\. Long compute\-intensive jobs are hard stopped after 24 hours\.
+
+**Parent topic:**[Projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+
+<!-- </article "role="article" "> -->

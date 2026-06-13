@@ -1,0 +1,18 @@
+# C5\.0 node #
+
+This node uses the C5\.0 algorithm to build either a decision tree or a rule set\. A C5\.0 model works by splitting the sample based on the field that provides the maximum information gain\. Each sub\-sample defined by the first split is then split again, usually based on a different field, and the process repeats until the subsamples cannot be split any further\. Finally, the lowest\-level splits are reexamined, and those that do not contribute significantly to the value of the model are removed or pruned\.
+
+Note: The C5\.0 node can predict only a categorical target\. When analyzing data with categorical (nominal or ordinal) fields, the node is likely to group categories together\.
+
+C5\.0 can produce two kinds of models\. A decision tree is a straightforward description of the splits found by the algorithm\. Each terminal (or "leaf") node describes a particular subset of the training data, and each case in the training data belongs to exactly one terminal node in the tree\. In other words, exactly one prediction is possible for any particular data record presented to a decision tree\.
+
+In contrast, a rule set is a set of rules that tries to make predictions for individual records\. Rule sets are derived from decision trees and, in a way, represent a simplified or distilled version of the information found in the decision tree\. Rule sets can often retain most of the important information from a full decision tree but with a less complex model\. Because of the way rule sets work, they do not have the same properties as decision trees\. The most important difference is that with a rule set, more than one rule may apply for any particular record, or no rules at all may apply\. If multiple rules apply, each rule gets a weighted "vote" based on the confidence associated with that rule, and the final prediction is decided by combining the weighted votes of all of the rules that apply to the record in question\. If no rule applies, a default prediction is assigned to the record\.
+
+Example\. A medical researcher has collected data about a set of patients, all of whom suffered from the same illness\. During their course of treatment, each patient responded to one of five medications\. You can use a C5\.0 model, in conjunction with other nodes, to help find out which drug might be appropriate for a future patient with the same illness\.
+
+Requirements\. To train a C5\.0 model, there must be one categorical (i\.e\., nominal or ordinal) `Target` field, and one or more `Input` fields of any type\. Fields set to `Both` or `None` are ignored\. Fields used in the model must have their types fully instantiated\. A weight field can also be specified\.
+
+Strengths\. C5\.0 models are quite robust in the presence of problems such as missing data and large numbers of input fields\. They usually do not require long training times to estimate\. In addition, C5\.0 models tend to be easier to understand than some other model types, since the rules derived from the model have a very straightforward interpretation\. C5\.0 also offers the powerful boosting method to increase accuracy of classification\.
+
+Tip: C5\.0 model building speed may benefit from enabling parallel processing\. Note: When first creating a flow, you select which runtime to use\. By default, flows use the  IBM SPSS Modeler runtime\. If you want to use native Spark algorithms instead of SPSS algorithms, select the  Spark runtime\. Properties for this node will vary depending on which runtime option you choose\.
+<!-- </article "role="article" "> -->

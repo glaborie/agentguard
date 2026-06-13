@@ -1,0 +1,368 @@
+# Sentiment classification #
+
+The Watson Natural Language Processing Sentiment classification models classify the sentiment of the input text\.
+
+**Supported languages**
+
+Sentiment classification is available for the following languages\. For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes)\.
+
+ar, cs, da, de, en, es, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pl, pt, ro, ru, sk, sv, tr, zh\-cn
+
+## Sentiment ##
+
+The sentiment of text can be positive, negative or neutral\.
+
+The sentiment model computes the sentiment for each sentence in the input document\. The aggregated sentiment for the entire document is also calculated using the sentiment transformer workflow in Runtime 23\.1\. If you are using the sentiment models in Runtime 22\.2 the overall document sentiment can be computed by the helper method called `predict_document_sentiment`\.
+
+The classifications returned contain a probability\. The sentiment score varies from \-1 to 1\. A score greater than 0 denotes a positive sentiment, a score less than 0 a negative sentiment, and a score of 0 a neutral sentiment\.
+
+### Sentence sentiment workflows in runtime 23\.1 ###
+
+**Workflow names**
+
+<!-- <ul> -->
+
+ *  `sentiment-aggregated_transformer-workflow_multilingual_slate.153m.distilled`
+ *  `sentiment-aggregated_transformer-workflow_multilingual_slate.153m.distilled-cpu`
+
+<!-- </ul> -->
+
+The `sentiment-aggregated_transformer-workflow_multilingual_slate.153m.distilled` workflow can be used on both CPUs and GPUs\.
+
+The `sentiment-aggregated_transformer-workflow_multilingual_slate.153m.distilled-cpu` workflow is optimized for CPU\-based runtimes\.
+
+**Code sample using the `sentiment-aggregated_transformer-workflow_multilingual_slate.153m.distilled` workflow**
+
+    # Load the Sentiment workflow
+    sentiment_model = watson_nlp.load('sentiment-aggregated_transformer-workflow_multilingual_slate.153m.distilled-cpu')
+    
+    # Run the sentiment model on the result of the syntax results
+    sentiment_result = sentiment_model.run('The rooms are nice. But the beds are not very comfortable.')
+    
+    # Print the sentence sentiment results
+    print(sentiment_result)
+
+**Output of the code sample**
+
+    {
+      "document_sentiment": {
+        "score": -0.339735,
+        "label": "SENT_NEGATIVE",
+        "mixed": true,
+        "sentiment_mentions": [
+          {
+            "span": {
+              "begin": 0,
+              "end": 19,
+              "text": "The rooms are nice."
+            },
+            "sentimentprob": {
+              "positive": 0.9720447063446045,
+              "neutral": 0.011838269419968128,
+              "negative": 0.016117043793201447
+            }
+          },
+          {
+            "span": {
+              "begin": 20,
+              "end": 58,
+              "text": "But the beds are not very comfortable."
+            },
+            "sentimentprob": {
+              "positive": 0.0011594508541747928,
+              "neutral": 0.006315878126770258,
+              "negative": 0.9925248026847839
+            }
+          }
+        ]
+      },
+      "targeted_sentiments": {
+        "targeted_sentiments": {},
+        "producer_id": {
+          "name": "Aggregated Sentiment Workflow",
+          "version": "0.0.1"
+        }
+      },
+      "producer_id": {
+        "name": "Aggregated Sentiment Workflow",
+        "version": "0.0.1"
+      }
+    }
+
+### Sentence sentiment blocks in 22\.2 runtimes ###
+
+**Block name**
+
+`sentiment_sentence-bert_multi_stock`
+
+**Dependencies on other blocks**
+
+The following block must run before you can run the Sentence sentiment block:
+
+<!-- <ul> -->
+
+ *  `syntax_izumo_<language>_stock`
+
+<!-- </ul> -->
+
+**Code sample using the `sentiment_sentence-bert_multi_stock` block**
+
+    import watson_nlp
+    from watson_nlp.toolkit.sentiment_analysis_utils import predict_document_sentiment
+    # Load Syntax and a Sentiment model for English
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    sentiment_model = watson_nlp.load('sentiment_sentence-bert_multi_stock')
+    
+    # Run the syntax model on the input text
+    syntax_result = syntax_model.run('The rooms are nice. But the beds are not very comfortable.')
+    
+    # Run the sentiment model on the result of the syntax results
+    sentiment_result = sentiment_model.run_batch(syntax_result.get_sentence_texts(), syntax_result.sentences)
+    
+    # Print the sentence sentiment results
+    print(sentiment_result)
+    
+    # Get the aggregated document sentiment
+    document_sentiment = predict_document_sentiment(sentiment_result, sentiment_model.class_idxs)
+    print(document_sentiment)
+
+Output of the code sample:
+
+    [{
+      "score": 0.9540348989256836,
+      "label": "SENT_POSITIVE",
+      "sentiment_mention": {
+        "span": {
+          "begin": 0,
+          "end": 19,
+          "text": "The rooms are nice."
+        },
+        "sentimentprob": {
+          "positive": 0.919123649597168,
+          "neutral": 0.05862388014793396,
+          "negative": 0.022252488881349564
+        }
+      },
+      "producer_id": {
+        "name": "Sentence Sentiment Bert Processing",
+        "version": "0.1.0"
+      }
+    }, {
+      "score": -0.9772116371114815,
+      "label": "SENT_NEGATIVE",
+      "sentiment_mention": {
+        "span": {
+          "begin": 20,
+          "end": 58,
+          "text": "But the beds are not very comfortable."
+        },
+        "sentimentprob": {
+          "positive": 0.015949789434671402,
+          "neutral": 0.025898978114128113,
+          "negative": 0.9581512808799744
+        }
+      },
+      "producer_id": {
+        "name": "Sentence Sentiment Bert Processing",
+        "version": "0.1.0"
+      }
+    }]
+    {
+      "score": -0.335185,
+      "label": "SENT_NEGATIVE",
+      "mixed": true,
+      "sentiment_mentions": [
+        {
+          "span": {
+            "begin": 0,
+            "end": 19,
+            "text": "The rooms are nice."
+          },
+          "sentimentprob": {
+            "positive": 0.919123649597168,
+            "neutral": 0.05862388014793396,
+            "negative": 0.022252488881349564
+          }
+        },
+        {
+          "span": {
+            "begin": 20,
+            "end": 58,
+            "text": "But the beds are not very comfortable."
+          },
+          "sentimentprob": {
+            "positive": 0.015949789434671402,
+            "neutral": 0.025898978114128113,
+            "negative": 0.9581512808799744
+          }
+        }
+      ]
+    }
+
+## Targets sentiment extraction ##
+
+Targets sentiment extraction extracts sentiments expressed in text and identifies the targets of those sentiments\.
+
+It can handle multiple targets with different sentiment in one sentence as opposed to the sentiment block described above\.
+
+For example, given the input sentence *The served food was delicious, yet the service was slow\.*, the Targets sentiment block identifies that there is a positive sentiment expressed in the target "food", and a negative sentiment expressed in "service"\.
+
+The model has been fine\-tuned on English data only\. Although you can use the model on the other languages listed under Supported languages, the results might vary\.
+
+### Targets sentiment workflows in Runtime 23\.1 ###
+
+**Workflow names**
+
+<!-- <ul> -->
+
+ *  `targets-sentiment_transformer-workflow_multilingual_slate.153m.distilled`
+ *  `targets-sentiment_transformer-workflow_multilingual_slate.153m.distilled-cpu`
+
+<!-- </ul> -->
+
+The `targets-sentiment_transformer-workflow_multilingual_slate.153m.distilled` workflow can be used on both CPUs and GPUs\.
+
+The `targets-sentiment_transformer-workflow_multilingual_slate.153m.distilled-cpu` workflow is optimized for CPU\-based runtimes\.
+
+**Code sample for the `targets-sentiment_transformer-workflow_multilingual_slate.153m.distilled` workflow**
+
+    import watson_nlp
+    # Load Targets Sentiment model for English
+    targets_sentiment_model = watson_nlp.load('targets-sentiment_transformer-workflow_multilingual_slate.153m.distilled')
+    # Run the targets sentiment model on the input text
+    targets_sentiments = targets_sentiment_model.run('The rooms are nice, but the bed was not very comfortable.')
+    # Print the targets with the associated sentiment
+    print(targets_sentiments)
+
+**Output of the code sample:**
+
+    {
+      "targeted_sentiments": {
+        "rooms": {
+          "score": 0.990798830986023,
+          "label": "SENT_POSITIVE",
+          "mixed": false,
+          "sentiment_mentions": [
+            {
+              "span": {
+                "begin": 4,
+                "end": 9,
+                "text": "rooms"
+              },
+              "sentimentprob": {
+                "positive": 0.990798830986023,
+                "neutral": 0.0,
+                "negative": 0.00920116901397705
+              }
+            }
+          ]
+        },
+        "bed": {
+          "score": -0.9920912981033325,
+          "label": "SENT_NEGATIVE",
+          "mixed": false,
+          "sentiment_mentions": [
+            {
+              "span": {
+                "begin": 28,
+                "end": 31,
+                "text": "bed"
+              },
+              "sentimentprob": {
+                "positive": 0.00790870189666748,
+                "neutral": 0.0,
+                "negative": 0.9920912981033325
+              }
+            }
+          ]
+        }
+      },
+      "producer_id": {
+        "name": "Transformer-based Targets Sentiment Extraction Workflow",
+        "version": "0.0.1"
+      }
+    }
+
+### Targets sentiment blocks in 22\.2 runtimes ###
+
+**Block name**`targets-sentiment_sequence-bert_multi_stock`
+
+**Dependencies on other blocks**
+
+The following block must run before you can run the Targets sentiment extraction block:
+
+<!-- <ul> -->
+
+ *  `syntax_izumo_<language>_stock`
+
+<!-- </ul> -->
+
+**Code sample using the `sentiment-targeted_bert_multi_stock` block**
+
+    import watson_nlp
+    
+    # Load Syntax and the Targets Sentiment model for English
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    targets_sentiment_model = watson_nlp.load('targets-sentiment_sequence-bert_multi_stock')
+    
+    # Run the syntax model on the input text
+    syntax_result = syntax_model.run('The rooms are nice, but the bed was not very comfortable.')
+    
+    # Run the targets sentiment model on the syntax results
+    targets_sentiments = targets_sentiment_model.run(syntax_result)
+    
+    # Print the targets with the associated sentiment
+    print(targets_sentiments)
+
+Output of the code sample:
+
+    {
+      "targeted_sentiments": {
+        "rooms": {
+          "score": 0.9989274144172668,
+          "label": "SENT_POSITIVE",
+          "mixed": false,
+          "sentiment_mentions": [
+            {
+              "span": {
+                "begin": 4,
+                "end": 9,
+                "text": "rooms"
+              },
+              "sentimentprob": {
+                "positive": 0.9989274144172668,
+                "neutral": 0.0,
+                "negative": 0.0010725855827331543
+              }
+            }
+          ]
+        },
+        "bed": {
+          "score": -0.9977545142173767,
+          "label": "SENT_NEGATIVE",
+          "mixed": false,
+          "sentiment_mentions": [
+            {
+              "span": {
+                "begin": 28,
+                "end": 31,
+                "text": "bed"
+              },
+              "sentimentprob": {
+                "positive": 0.002245485782623291,
+                "neutral": 0.0,
+                "negative": 0.9977545142173767
+              }
+            }
+          ]
+        }
+      },
+      "producer_id": {
+        "name": "BERT TSA",
+        "version": "0.0.1"
+      }
+    }
+
+**Parent topic:**[Watson Natural Language Processing task catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)
+
+<!-- </article "role="article" "> -->

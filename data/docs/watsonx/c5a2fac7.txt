@@ -1,0 +1,87 @@
+# Compute options for model training and scoring #
+
+When you train or score a model or function, you choose the type, size, and power of the hardware configuration that matches your computing needs\.
+
+<!-- <ul> -->
+
+ *  [Default hardware configurations](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-cuh-deploy-spaces.html?context=cdpaas&locale=en#default)
+ *  [Compute usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/run-cuh-deploy-spaces.html?context=cdpaas&locale=en#compute)
+
+<!-- </ul> -->
+
+## Default hardware configurations ##
+
+Choose the hardware configuration for your Watson Machine Learning asset when you train the asset or when you deploy it\.
+
+<!-- <table> -->
+
+Hardware configurations available for training and deploying assets
+
+| Capacity type                              | Capacity units per hour |
+| ------------------------------------------ | ----------------------- |
+| Extra small: 1x4 = 1 vCPU and 4 GB RAM     | 0\.5                    |
+| Small: 2x8 = 2 vCPU and 8 GB RAM           | 1                       |
+| Medium: 4x16 = 4 vCPU and 16 GB RAM        | 2                       |
+| Large: 8x32 = 8 vCPU and 32 GB RAM         | 4                       |
+| Extra large: 16x64 = 16 vCPU and 64 GB RAM | 8                       |
+
+<!-- </table ""> -->
+
+## Compute usage for Watson Machine Learning assets ##
+
+Deployments and scoring consume compute resources as capacity unit hours (CUH) from the Watson Machine Learning service\.
+
+To check the total monthly CUH consumption for your Watson Machine Learning services, from the navigation menu, select **Administration** \-> **Environment runtimes**\.
+
+Additionally, you can monitor the monthly resource usage in each specific deployment space\. To do that, from your deployment space, go to the **Manage** tab and then select **Resource usage**\. The summary shows CUHs used by deployment type: separately for AutoAI deployments, Federated Learning deployments, batch deployments, and online deployments\.
+
+### Compute usage details ###
+
+The rate of consumed CUHs is determined by the computing requirements of your deployments\. It is based on such variables as:
+
+<!-- <ul> -->
+
+ *  type of deployment
+ *  type of framework
+ *  complexity of scoring Scaling a deployment to support more concurrent users and requests also increases CUH consumption\. As many variables affect resource consumption for a deployment, it is recommended that you run tests on your models and deployments to analyze CUH consumption\.
+
+<!-- </ul> -->
+
+The way that online deployments consume capacity units is based on framework\. For some frameworks, CUHs are charged for the number of hours that the deployment asset is active in a deployment space\. For example, SPSS models in online deployment mode that run for 24 hours a day, seven days a week, consume CUHs and are charged for that period\. An active online deployment has no idle time\. For other frameworks, CUHs are charged according to scoring duration\. Refer to the CUH consumption table for details on how CUH usage is calculated\.
+
+Compute time is calculated to the millisecond, with a 1\-minute minimum for each distinct operation\. For example:
+
+<!-- <ul> -->
+
+ *  A training run that takes 12 seconds is billed as 1 minute
+ *  A training run that takes 83\.555 seconds is billed exactly as calculated
+
+<!-- </ul> -->
+
+### CUH consumption by deployment and framework type ###
+
+CUH consumption is calculated by using these formulas:
+
+<!-- <table> -->
+
+| Deployment type | Framework                                                                     | CUH calculation                                                                         |
+| --------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Online          | AutoAI, AI function, SPSS, Scikit\-Learn custom libraries, Tensorflow, RShiny | Deployment active duration `*` Number of nodes `*` CUH rate for capacity type framework |
+| Online          | Spark, PMML, Scikit\-Learn, Pytorch, XGBoost                                  | Score duration in seconds `*` Number of nodes `*` CUH rate for capacity type framework  |
+| Batch           | all frameworks                                                                | Job duration in seconds `*` Number of nodes `*` CUH rate for capacity type framework    |
+
+<!-- </table ""> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Deploying assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/wmls/wmls-deploy-overview.html)
+ *  [Watson Machine Learning service](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html)
+ *  [Monitoring account resource usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/monitor-resources.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Managing predictive deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+
+<!-- </article "role="article" "> -->

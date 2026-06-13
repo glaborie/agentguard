@@ -1,0 +1,15 @@
+# Time Series node #
+
+The Time Series node can be used with data in either a local or distributed environment\. With this node, you can choose to estimate and build exponential smoothing, univariate Autoregressive Integrated Moving Average (ARIMA), or multivariate ARIMA (or transfer function) models for time series, and produce forecasts based on the time series data\.
+
+Exponential smoothing is a method of forecasting that uses weighted values of previous series observations to predict future values\. As such, exponential smoothing is not based on a theoretical understanding of the data\. It forecasts one point at a time, adjusting its forecasts as new data come in\. The technique is useful for forecasting series that exhibit trend, seasonality, or both\. You can choose from various exponential smoothing models that differ in their treatment of trend and seasonality\.
+
+ARIMA models provide more sophisticated methods for modeling trend and seasonal components than do exponential smoothing models, and, in particular, they allow the added benefit of including independent (predictor) variables in the model\. This involves explicitly specifying autoregressive and moving average orders as well as the degree of differencing\. You can include predictor variables and define transfer functions for any or all of them, as well as specify automatic detection of outliers or an explicit set of outliers\.
+
+Note: In practical terms, ARIMA models are most useful if you want to include predictors that might help to explain the behavior of the series that is being forecast, such as the number of catalogs that are mailed or the number of hits to a company web page\. Exponential smoothing models describe the behavior of the time series without attempting to understand why it behaves as it does\. For example, a series that historically peaks every 12 months will probably continue to do so even if you don't know why\.
+
+An  Expert Modeler option is also available, which attempts to automatically identify and estimate the best\-fitting ARIMA or exponential smoothing model for one or more target variables, thus eliminating the need to identify an appropriate model through trial and error\. If in doubt, use the Expert Modeler option\.
+
+If predictor variables are specified, the Expert Modeler selects those variables that have a statistically significant relationship with the dependent series for inclusion in ARIMA models\. Model variables are transformed where appropriate using differencing and/or a square root or natural log transformation\. By default, the Expert Modeler considers all exponential smoothing models and all ARIMA models and picks the best model among them for each target field\. You can, however, limit the Expert Modeler only to pick the best of the exponential smoothing models or only to pick the best of the ARIMA models\. You can also specify automatic detection of outliers\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,30 @@
+# Integrations with other cloud platforms #
+
+You can integrate IBM watsonx with other cloud platforms to configure access to the data source services on that platform\. Then, users can easily create connections to those data source services and access the data in those data sources\.
+
+You need to be the Account Owner or Administrator for the IBM Cloud account to configure integrations with other cloud platforms\.
+
+You must have the proper permissions in your cloud platform subscription before you can configure an integration\. If you are using Amazon Web Services (AWS) Redshift (or other AWS data sources) or Microsoft Azure, you must also configure firewall access to allow IBM watsonx to access data\.
+
+After you configure integration and firewall access with another cloud platform, you can access and connect to the services on that platform:
+
+<!-- <ul> -->
+
+ *  The service instances for that platform are shown on the **Service instances** page\. From the main menu, choose **Administration > Services > Services instances**\. Each cloud platform that you integrate with has its own page\.
+ *  The data source services in that platform are shown when you create a connection\. Start adding a connection in a project, catalog, or other workspace\. When the **Add connection** page appears, click the **To service** tab\. The services are listed by cloud platform\.
+
+<!-- </ul> -->
+
+You can configure integrations with these cloud platforms:
+
+<!-- <ul> -->
+
+ *  [Amazon Web Services (AWS)](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/int-aws.html)
+ *  [Microsoft Azure](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/int-azure.html)
+ *  [Google Cloud Platform (GCP)](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/int-google.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Services and integrations](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/svc-int.html)
+
+<!-- </article "role="article" "> -->

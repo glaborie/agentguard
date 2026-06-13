@@ -1,0 +1,63 @@
+# Dropbox connection #
+
+To access your data in Dropbox, create a connection asset for it\.
+
+Dropbox is a cloud storage service that lets you host and synchronize files on your devices\.
+
+## Create a connection to Dropbox ##
+
+To create the connection asset, you need an Access token\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Dropbox connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  SPSS Modeler
+ *  Synthetic Data Generator (Synthetic Data Generator service)
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Dropbox setup ##
+
+[Dropbox plans](https://www.dropbox.com/plans)
+
+## Supported file types ##
+
+The Dropbox connection supports these file types: Avro, CSV, Delimited text, Excel, JSON, ORC, Parquet, SAS, SAV, SHP, and XML\.
+
+## Learn more ##
+
+[Dropbox quick start guides](https://help.dropbox.com/guide)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

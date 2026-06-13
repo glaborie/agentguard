@@ -1,0 +1,37 @@
+# Leaving a project #
+
+You can leave a project from within the project or from the **Projects** page\.
+
+## Restrictions ##
+
+If you are the only collaborator in the project with the **Admin** role, you must [assign the Admin role](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/collaborate.html) to another collaborator before you can leave the project\.
+
+## Leaving a project from within the project ##
+
+To leave a project from within the project:
+
+<!-- <ol> -->
+
+1.  Open the project\.
+2.  On the **Manage** tab, go to the **General** page\.
+3.  In the **Danger zone** section, click **Leave project**\.
+4.  Click **Leave**\.
+
+<!-- </ol> -->
+
+## Leaving multiple projects ##
+
+To leave one or more projects from the **Projects** page:
+
+<!-- <ol> -->
+
+1.  Select **View all projects** from the navigation menu\.
+2.  Select one or more projects to leave\.
+3.  Click **Leave**\.
+4.  Click **Leave** to confirm\.
+
+<!-- </ol> -->
+
+**Parent topic:**[Projects ](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,69 @@
+# Batch deployment input details for Decision Optimization models #
+
+Follow these rules when you are specifying input details for batch deployments of Decision Optimization models\.
+
+Data type summary table:
+
+<!-- <table> -->
+
+| Data         | Description                                             |
+| ------------ | ------------------------------------------------------- |
+| Type         | inline and data references                              |
+| File formats | Refer to [Model input and output data file formats](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/ModelIODataDefn.html)\. |
+
+<!-- </table ""> -->
+
+## Data sources ##
+
+Input/output inline data:
+
+<!-- <ul> -->
+
+ *  Inline input data is converted to CSV files and used by the engine\.
+ *  CSV output data is converted to output inline data\.
+ *  Base64\-encoded raw data is supported as input and output\.
+
+<!-- </ul> -->
+
+Input/output data references:
+
+<!-- <ul> -->
+
+ *  Tabular data is loaded from CSV, XLS, XLSX, JSON files or database data sources supported by the WDP connection library, converted to CSV files, and used by the engine\.
+ *  CSV output data is converted to tabular data and saved to CSV, XLS, XLSX, JSON files, or database data sources supported by the WDP connection library\.
+ *  Raw data can be loaded and saved from or to any file data sources that are supported by the WDP connection library\.
+ *  No support for compressed files\.
+ *  The environment variables parameter of deployment jobs is not applicable\.
+
+<!-- </ul> -->
+
+If you are specifying input/output data references programmatically:
+
+<!-- <ul> -->
+
+ *  Data source reference `type` depends on the asset type\. Refer to the **Data source reference types** section in [Adding data assets to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+ *  For S3 or Db2, connection details must be specified in the `input_data_references.connection` parameter, in the deployment job’s payload\.
+ *  For S3 or Db2, location details such as table name, bucket name, or path must be specified in the `input_data_references.location.path` parameter, in the deployment job’s payload\.
+ *  For `data_asset`, a managed asset can be updated or created\. For creation, you can set the name and description for the created asset\.
+ *  You can use a pattern in ID or connection properties\. For example, see the following code snippet:
+    
+    <!-- <ul> -->
+    
+     *  To collect all output CSV as inline data:
+        
+            "output_data": [ { "id":".*\.csv"}]
+     *  To collect job output in a particular S3 folder:
+        
+            "output_data_references": [ {"id":".*", "type": "s3", "connection": {...}, "location": { "bucket": "do-wml", "path": "${job_id}/${attachment_name}" }}]
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+Note:Support for `s3` and `db2` values for `scoring.input_data_references.type` and `scoring.output_data_references.type` is deprecated and will be removed in the future\. Use `connection_asset` or `data_asset` instead\. See the documentation for the Watson Machine Learning [REST API](https://cloud.ibm.com/apidocs/machine-learning) or Watson Machine Learning [Python client library](https://ibm.github.io/watson-machine-learning-sdk/)\{: new\_window\} for details and examples\.
+
+For more information, see [Model input and output data adaptation](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/ModelIODataDefn.html)\.
+
+**Parent topic:**[Batch deployment input details by framework](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-input-by-framework.html)
+
+<!-- </article "role="article" "> -->

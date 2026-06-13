@@ -1,0 +1,68 @@
+# Sharing notebooks with a URL #
+
+You can create a URL to share the last saved version of a notebook on social media or with people outside of Watson Studio\. The URL shows a read\-only view of the notebook\. Anyone who has the URL can view or download the notebook\.
+
+**Required permissions:**
+
+You must have the **Admin** or **Editor** role in the project to share a notebook URL\. The shared notebook shows the author of the shared version and when the notebook version was last updated\.
+
+## Sharing a notebook URL ##
+
+To share a notebook URL:
+
+<!-- <ol> -->
+
+1.  Open the notebook in edit mode\.
+2.  If necessary, add code to [hide sensitive code cells](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/hide_code.html)\.
+3.  Create a saved version of the notebook by clicking **File > Save Version**\.
+4.  Click the **Share** icon (![Share icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/share_icon.png)) from the notebook action bar\.
+    
+    ![Share notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/share_notebook.png)
+5.  Select to share the link\.
+6.  Choose a sharing option:
+    
+    <!-- <ul> -->
+    
+     *  Choose **Only text and output** to hide all code cells.
+     *  Choose **All content excluding sensitive code cells** to hide code cells that you marked as sensitive.
+     *  Choose **All content, including code** to show everything, even code cells that you marked as sensitive. Make sure that you remove your credential and other sensitive information before you choose this option and every time before you save a new version of the notebook.
+    
+    <!-- </ul> -->
+    
+7.  Copy the link or choose a social media site on which to share the URL\.
+
+<!-- </ol> -->
+
+Note: The URL remains valid while the project and notebook exist and while the notebook is shared\. If you [unshare the notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/share-notebooks.html?context=cdpaas&locale=en#unsharing), the URL becomes invalid\. When you unshare, and then re\-share the notebook, the URL will be the same again\.
+
+## Updating a shared notebook ##
+
+To update a shared notebook:
+
+<!-- <ol> -->
+
+1.  Open the notebook in edit mode\.
+2.  Make changes to the notebook\.
+3.  Create a new version of the notebook by clicking **File > Save Version**\.
+
+<!-- </ol> -->
+
+Note: Clicking File > Save saves your changes but it doesn't create a new version of the notebook; the shared URL still points to the older version of the notebook\.
+
+## Unsharing a notebook URL ##
+
+To unshare a notebook URL:
+
+<!-- <ol> -->
+
+1.  Open the notebook in edit mode\.
+2.  Click the **Share** icon (![Share icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/share_icon.png)) from the notebook action bar\.
+    
+    ![Share notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/share_notebook.png)
+3.  Unselect the **Share with anyone who has the link** toggle\.
+
+<!-- </ol> -->
+
+**Parent topic:**[Managing the lifecycle of notebooks and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-nb-lifecycle.html)
+
+<!-- </article "role="article" "> -->

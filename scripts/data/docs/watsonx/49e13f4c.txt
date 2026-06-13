@@ -1,0 +1,19 @@
+# applydiscriminantnode properties #
+
+You can use Discriminant modeling nodes to generate a Discriminant model nugget\. The scripting name of this model nugget is *applydiscriminantnode*\. For more information on scripting the modeling node itself, see [discriminantnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/discriminantnodeslots.html#discriminantnodeslots)\.
+
+<!-- <table "summary="applydiscriminantnode properties" id="discriminantnuggetnodeslots__table_ekg_tbj_cdb" class="defaultstyle" "> -->
+
+applydiscriminantnode properties  
+
+Table 1\. applydiscriminantnode properties
+
+| `applydiscriminantnode` Properties | Values          | Property description                                                                                                                             |
+| ---------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `calculate_raw_propensities`       | *flag*          |                                                                                                                                                  |
+| `calculate_adjusted_propensities`  | *flag*          |                                                                                                                                                  |
+| `enable_sql_generation`            | `false``native` | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applydiscriminantnode properties" id="discriminantnuggetnodeslots__table_ekg_tbj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

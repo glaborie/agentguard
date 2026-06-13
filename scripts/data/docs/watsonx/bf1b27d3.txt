@@ -1,0 +1,27 @@
+# Data transfer #
+
+![icon for data laws risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-data-laws.svg)Risks associated with inputTraining and tuning phaseData lawsTraditional
+
+### Description ###
+
+Laws and other restrictions that apply to the transfer of data can limit or prohibit transferring or repurposing data from one country to another\. Repurposing data can be further restricted within countries or with local regulations\.
+
+### Why is data transfer a concern for foundation models? ###
+
+Data transfer restrictions can impact the availability of the data required for training an AI model and can lead to poorly represented data\. Failing to comply with data transfer laws might result in fines and other legal consequences\.
+
+Example
+
+#### Data Restriction Laws ####
+
+As stated in the research article, data localization measures which restrict the ability to move data globally will reduce the capacity to develop tailored AI capacities\. It will affect AI directly by providing less training data and indirectly by undercutting the building blocks on which AI is built\.
+
+Examples include [China's data localization laws](https://iapp.org/resources/article/demystifying-data-localization-in-china-a-practical-guide/), GDPR restrictions on the processing and use of personal data, and [Singapore's bilateral data sharing](https://www.imda.gov.sg/how-we-can-help/data-innovation/trusted-data-sharing-framework)\.
+
+Sources:
+
+[Brookings, December 2018](https://www.brookings.edu/articles/the-impact-of-artificial-intelligence-on-international-trade)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

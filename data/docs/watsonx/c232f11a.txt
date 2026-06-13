@@ -1,0 +1,21 @@
+# applyglmmnode properties #
+
+You can use GLMM modeling nodes to generate a GLMM model nugget\. The scripting name of this model nugget is *applyglmmnode*\. For more information on scripting the modeling node itself, see [glmmnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/glmmnodeslots.html#glmmnodeslots)\.
+
+<!-- <table "summary="applyglmmnode properties" id="glmmnuggetnodeslots__table_ywy_scj_cdb" class="defaultstyle" "> -->
+
+applyglmmnode properties  
+
+Table 1\. applyglmmnode properties
+
+| `applyglmmnode` Properties     | Values                      | Property description                                                                                                                                                                                                                       |
+| ------------------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `confidence`                   | `onProbability``onIncrease` | Basis for computing scoring confidence value: highest predicted probability, or difference between highest and second highest predicted probabilities\.                                                                                    |
+| `score_category_probabilities` | *flag*                      | If set to `True`, produces the predicted probabilities for categorical targets\. A field is created for each category\. Default is `False`\.                                                                                               |
+| `max_categories`               | *integer*                   | Maximum number of categories for which to predict probabilities\. Used only if `score_category_probabilities` is `True`\.                                                                                                                  |
+| `score_propensity`             | *flag*                      | If set to `True`, produces raw propensity scores (likelihood of "True" outcome) for models with flag targets\. If partitions are in effect, also produces adjusted propensity scores based on the testing partition\. Default is `False`\. |
+| `enable_sql_generation`        | `false``true``native`       | Used to set SQL generation options during flow execution\. The options are to push back to the database, or to score within SPSS Modeler\.                                                                                                 |
+
+<!-- </table "summary="applyglmmnode properties" id="glmmnuggetnodeslots__table_ywy_scj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

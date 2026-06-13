@@ -1,0 +1,27 @@
+# Deployment spaces #
+
+Deployment spaces contain deployable assets, deployments, deployment jobs, associated input and output data, and the associated environments\. You can use spaces to deploy various assets and manage your deployments\.
+
+Deployment spaces are not associated with projects\. You can publish assets from multiple projects to a space, and you can deploy assets to more than one space\. For example, you might have a test space for evaluating deployments, and a production space for deployments that you want to deploy in business applications\.
+
+The deployments dashboard is an aggregate view of deployment activity available to you, across spaces\. For details, refer to [Deployments dashboard](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/operator-view.html)\.
+
+When you open a space from the UI, you see these elements:
+
+![Detailed information about a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/DeploymentSpace.svg)
+
+You can share a space with other people\. When you add collaborators to a deployment space, you can specify which actions they can do by assigning them access levels\. For details on space collaborator permissions, refer to [Deployment space collaborator roles and permissions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/collaborator-permissions-wml.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Creating deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-create.html)
+ *  [Managing assets in a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets-all.html)
+ *  [Creating deployments from a space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+ *  [Exporting space assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-export.html)
+ *  [Deleting deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-delete.html)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

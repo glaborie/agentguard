@@ -1,0 +1,14 @@
+# Services and integrations #
+
+You can extend the functionality of the platform by provisioning other services and components, and integrating with other cloud platforms\.
+
+<!-- <ul> -->
+
+ *  [Provision instances of services and components from the Services catalog](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/cloud-services.html)\. Add service instances and components to the IBM Cloud account to add functionality to the platform\. You must be the owner or be assigned the **Administrator** or **Editor** role in the IBM Cloud account for IBM watsonx to provision service instances\.
+ *  [Integrate with other cloud platforms](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/int-cloud.html)\. Allow users to easily create connections to data sources on those cloud platforms\. You must have the required roles or permissions on the other cloud platform accounts\.
+ *  [View regional availability and limitations](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/regional-datactr.html)\. Get information about where services are available by region\.
+ *  To integrate with data sources, you can [create many types of connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html) to work with a broad array of data sources\. Refer to [Connecting to data behind a firewall](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html) to create secure connections for data sources that are not externalized to the internet\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

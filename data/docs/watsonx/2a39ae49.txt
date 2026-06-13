@@ -1,0 +1,4 @@
+# Heat map charts #
+
+Heat map charts present data where the individual values that are contained in a matrix are represented as colors\.
+<!-- </article "role="article" "> -->

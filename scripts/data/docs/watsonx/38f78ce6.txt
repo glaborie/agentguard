@@ -1,0 +1,49 @@
+# Reclassifying the data #
+
+Figure 1\. Example flow showing string reclassification for binomial logistic regression
+
+![Example flow showing string reclassification for binomial logistic regression](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_reducing.png)
+
+<!-- <ol> -->
+
+1.  Add a Data Asset node that points to  drug\_long\_name\.csv\.
+2.  Add a Type node after the Data Asset node\. Double\-click the Type node to open its properties, and select `Cholesterol_long` as the target\.
+3.  Add a Logistic Regression node after the Type node\. Double\-click the node and select the  Binomial procedure (instead of the default  Multinomial procedure)\.
+4.  Right\-click the Logistic Regression node and run it\. An error message warns you that the `Cholesterol_long` string values are too long\. When you encounter this type of message, follow the procedure described in the rest of this example to modify your data\.
+    
+    Figure 2. Error message displayed when running the binomial logistic regression node
+    
+    ![Error message displayed when running the binomial logistic regression node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_reducing_error.png)
+5.  Add a Reclassify node after the Type node and double\-click it to open its properties\.
+6.  For the  Reclassify Field, select `Cholesterol_long` and type Cholesterol for the new field name\.
+7.  Click  Get values to add the `Cholesterol_long` values to the original value column\.
+8.  In the new value column, type High next to the original value of `High level of cholesterol` and Normal next to the original value of `Normal level of cholesterol`\.
+    
+    Figure 3. Reclassifying long strings
+    
+    ![Reclassifying long strings](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_reducing_reclassify.png)
+9.  Add a Filter node after the Reclassify node\. Double\-click the node, choose  Filter the selected fields, and select the `Cholesterol_long` field\.
+    
+    Figure 4. Filtering the "Cholesterol\_long" field from the data
+    
+    ![Filtering the "Cholesterol\_long" field from the data](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_reducing_filter.png)
+10. Add a Type node after the Filter node\. Double\-click the node and select `Cholesterol` as the target\.
+    
+    Figure 5. Short string details in the "Cholesterol" field
+    
+    ![Short string details in the "Cholesterol" field](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_reducing_type.png)
+11. Add a Logistic node after the Type node\. Double\-click the node and select the  Binomial procedure\.
+
+<!-- </ol> -->
+
+You can now run the binomial Logistic node and generate a model without encountering the error as you did before\.
+
+This example only shows part of a flow\. For more information about the types of flows in which you might need to reclassify long strings, see the following example:
+
+<!-- <ul> -->
+
+ *  Auto Classifier node\. See [Automated modeling for a flag target](https://dataplatform.cloud.ibm.com/docs/content/wsd/tutorials/tut_autoflag.html)\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

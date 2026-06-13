@@ -1,0 +1,19 @@
+# Decision Optimization Java models #
+
+You can create and run  Decision Optimization models in Java by using the  Watson Machine Learning REST API\.
+
+You can build your  Decision Optimization models in Java or you can use  Java worker to package CPLEX, CPO, and OPL models\.
+
+For more information about these models, see the following reference manuals\.
+
+<!-- <ul> -->
+
+ *  [Java CPLEX reference documentation](https://www.ibm.com/docs/en/SSSA5P_22.1.1/ilog.odms.cplex.help/refjavacplex/html/overview-summary.html)
+ *  [Java CPO reference documentation](https://www.ibm.com/docs/en/SSSA5P_22.1.1/ilog.odms.cpo.help/refjavacpoptimizer/html/overview-summary.html)
+ *  [Java OPL reference documentation](https://www.ibm.com/docs/en/SSSA5P_22.1.1/ilog.odms.ide.help/refjavaopl/html/overview-summary.html)
+
+<!-- </ul> -->
+
+To package and deploy  Java models in  Watson Machine Learning, see [Deploying Java models for Decision Optimization](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/DeployJava.html) and the boilerplate provided in the [Java worker GitHub](https://github.com/IBMDecisionOptimization/cplex-java-worker/blob/master/README.md)\.
+
+<!-- </article "role="article" "> -->

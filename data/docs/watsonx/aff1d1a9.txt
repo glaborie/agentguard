@@ -1,0 +1,7 @@
+# Field Reorder node #
+
+With the Field Reorder node, you can define the natural order used to display fields downstream\. This order affects the display of fields in a variety of places, such as tables, lists, and the Field Chooser\.
+
+This operation is useful, for example, when working with wide datasets to make fields of interest more visible\.
+
+<!-- </article "role="article" "> -->

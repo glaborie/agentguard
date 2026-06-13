@@ -1,0 +1,10 @@
+# CLEM (legacy) language reference #
+
+This section describes the Control Language for Expression Manipulation (CLEM), which is a powerful tool used to analyze and manipulate the data used in SPSS Modeler flows\.
+
+You can use CLEM within nodes to perform tasks ranging from evaluating conditions or deriving values to inserting data into reports\. CLEM expressions consist of values, field names, operators, and functions\. Using the correct syntax, you can create a wide variety of powerful data operations\.
+
+Figure 1\. Expression Builder
+
+![Expression Builder](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/expressionbuilder_full.png)
+<!-- </article "role="article" "> -->

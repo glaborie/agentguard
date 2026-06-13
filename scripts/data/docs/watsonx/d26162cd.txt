@@ -1,0 +1,117 @@
+# Tracking prompt templates #
+
+Track a prompt template in an AI use case to capture and share facts about the asset to help you meet governance and compliance goals\.
+
+## Tracking prompt templates ##
+
+A prompt template is the saved prompt input for a foundation model\. A prompt template can include variables so that it can be run with different options\. For example, if you have a prompt that summarizes meeting notes for project\-X, you can define a variable so that the same prompt can run for project\-Y\.
+
+You can add a saved prompt template to an AI use case to track the details for the prompt template\. In addition to recording details about the prompt template creation information and source model details, the factsheet tracks information from prompt template evaluations to capture performance metrics\. You can evaluate prompt templates before or after you start tracking a prompt template\.
+
+Important: Before you start tracking a prompt template in an AI use case, make sure the prompt template is stable\. After you enable tracking, the prompt template is locked, and you can no longer update it\. This is to preserve the integrity of the prompt template so that all of the facts collected in the factsheet apply to a single version of the prompt template\. If you are still experimenting with a prompt template, do not start tracking it in an AI use case\.
+
+### Before you begin ###
+
+Before you can track a prompt template, these conditions must be met\.
+
+<!-- <ul> -->
+
+ *  Be an administrator or editor for the project that contains the prompt template\.
+ *  The prompt template must include at least one variable\. For more information, see [Building reusable prompts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-variables.html)\.
+
+<!-- </ul> -->
+
+Watch this video to see how to track a prompt template in an AI use case\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+### Tracking a prompt template or machine learning model in an AI use case ###
+
+You can add a prompt template to an AI use case from a project or space\.
+
+<!-- <ol> -->
+
+1.  Open the project or space that contains the prompt template that you want to govern\.
+2.  From the action menu for the asset, click **View AI use case**\. ![Tracking a prompt template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-track-prompt1.png)  
+    
+3.  If this prompt template is not already part of an AI use case, you are prompted to **Track in AI use case\.** When you start tracking a prompt template, it is locked and you can no longer edit it\. To make changes, you must create a new prompt template\. ![Starting to track a prompt template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-prompt-temp-track.png)  
+    
+4.  Select an existing AI use case or follow the prompts to create a new one\.
+5.  Choose an existing approach or create a new approach\. An approach represents one facet of a complete solution\. Each approach creates a version set for all assets in the same approach\.
+6.  Choose a version numbering scheme\. All the assets in an approach share a common version\. Choose from:
+    
+    <!-- <ul> -->
+    
+     *  *Experimental* if you plan to update frequently.
+     *  *Stable* if the assets are not changing rapidly.
+     *  *Custom* if you want to start a new version number. Version numbering must follow a schema of major.minor.patch.
+    
+    <!-- </ul> -->
+    
+<!-- </ol> -->
+
+When tracking is enabled, all collaborators for the use case can review details for the prompt template\.
+
+![Viewing a tracked prompt template in an AI use case](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-track-prompt2.png)  
+
+Details are captured for each lifecycle stage for a prompt template\.
+
+<!-- <ul> -->
+
+ *  **Develop** provides information about how the prompt is defined, including the prompt itself, creation date, foundation model that is used, prompt parameters set, and variables defined\.
+ *  **Evaluate** displays the dimension metrics from evaluating your prompt template\.
+ *  **Operate** provides details that are related to how the prompt template is deployed for productive use\.
+
+<!-- </ul> -->
+
+![Viewing the lifecycle for a tracked prompt template in an AI use case](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-track-prompt3.png)  
+
+## Viewing the factsheet for a tracked prompt template ##
+
+Click the name of the prompt template in an AI use case to view the associated factsheet\.
+
+![Viewing the factsheet for a tracked prompt template in an AI use case](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-prompt-factsheet1.png)  
+
+The factsheet for a prompt template collects this type of data:
+
+<!-- <ul> -->
+
+ *  **Governance** collects basic information such as the name of the AI use case, the description, and the approach name and version data\.
+ *  **Foundation model** displays the name of the foundation model, the license ID, and the model publisher\.
+ *  **Prompt template** shows the prompt name, ID, prompt input, and variables\.
+ *  **Prompt parameters** collect the configuration options for the prompt template, including the decoding method and stopping criteria\.
+ *  **Evaluation** displays the data from evaluation, including alerts, and metric data from the evaluation\. For example, this prompt template shows the metrics data for quality evaluations on the prompt template\. One threshold alert was triggered by the evaluation: ![Viewing evaluation metrics for a prompt template in an AI use case](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-prompt-factsheet2.png)
+ *  **Validate** shows the data for how the prompt template was evaluated, including the data set used for the validation, alerts triggered, and evaluation metric data\.
+ *  **Attachments** shows information about attachments that support the use case\.
+
+<!-- </ul> -->
+
+Note: As the prompt template moves from one stage of the lifecycle to the next, facts are added to the factsheet for the prompt template\. The factsheet always represents the latest state of the prompt template\. For example, if you validate a prompt template in a pre\-production deployment space, and then again in a production deployment space, the details from the production phase are recorded in the factsheet, overwriting previous evaluation results\.
+
+## Moving a prompt template through lifecycle stages ##
+
+When a prompt template is tracked, you can see details from creating the prompt template, and evaluating performance against appropriate metrics\. The next stage in the lifecycle is to \_*validate* the prompt template\. This involves testing the prompt template with new data\. If you are the prompt engineer who is tasked with validating the asset, follow these steps to validate the prompt template and capture the validation data in the associated factsheet\.
+
+<!-- <ol> -->
+
+1.  From the project containing the prompt template, export the project to a compressed ZIP file\.
+2.  Create a new project and populate it with the exported ZIP file\.
+3.  Upload validation data, evaluate the prompt template, and save the results to the validation project\.
+4.  From the project, promote the prompt template to a new or existing deployment space that is designated as a **Production** stage\. The stage is assigned when the space is created and cannot be updated, so create a new space if you do not have a production space available\. ![Create or select a deployment space with Production stage](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-space-prod.png)
+5.  After you promote the prompt template to a deployment space, you can configure continuous monitoring\.
+6.  Details from monitoring the prompt template in a production space are displayed in the **Operate** lifecycle stage of the AI use case\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  See [Deploying a prompt template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/prompt-template-deploy.html) for details on preparing a prompt template for production\.
+ *  See [Evaluating prompt templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-eval-prompt.html) for details on evaluating a prompt template for dimensions such as accuracy or to test for the presence of hateful or abusive speech\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Tracking assets in an AI use case](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-tracking-overview.html)
+
+<!-- </article "role="article" "> -->

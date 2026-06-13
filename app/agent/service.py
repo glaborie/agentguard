@@ -35,7 +35,7 @@ def build_chat_session(model: str | None = None, session_id: str | None = None) 
     """Build a stateful agent session. Returns (graph, thread_id)."""
     from langgraph.checkpoint.memory import MemorySaver
 
-    checkpointer = MemorySaver()
+    checkpointer = MemorySaver(allowed_objects=['messages'])
     graph = build_agent(model=model, checkpointer=checkpointer)
     thread_id = session_id or str(uuid.uuid4())
     return graph, thread_id

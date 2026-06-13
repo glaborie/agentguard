@@ -1,0 +1,10 @@
+# The Categories tab #
+
+In the Text Analytics Workbench, you can use the  Categories tab to create and explore categories as well as tweak the extraction results\.
+
+Extraction results can be refined by modifying the linguistic resources, which you can do directly from the  Categories tab\.
+
+Figure 1\. Categories tab
+
+![Categories tab](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tmwb_categoryview.png)
+<!-- </article "role="article" "> -->

@@ -1,0 +1,40 @@
+# Creating the model #
+
+<!-- <ol> -->
+
+1.  Double\-click the Time Series node to open its properties\.
+2.  Under  FIELDS, add all 5 of the markets to the  Candidate Inputs lists\. Also add the `Total` field to the  Targets list\.
+3.  Under  BUILD OPTIONS \- GENERAL, make sure the  Expert Modeler method is selected using all default settings\. Doing so enables the Expert Modeler to decide the most appropriate model to use for each time series\.
+    
+    Figure 1. Choosing the Expert Modeler method for Time Series
+    
+    ![Choosing the Expert Modeler method for Time Series](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_expert.png)
+4.  Save the settings and then run the flow\. A Time Series model nugget is generated\. Attach it to the Time Series node\.
+5.  Attach a Table node to the Time Series model nugget and run the flow again\.
+    
+    Figure 2. Example flow showing Time Series modeling
+    
+    ![Example flow showing Time Series modeling](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_flow.png)
+
+<!-- </ol> -->
+
+There are now three new rows appended to the end of the original data\. These are the rows for the forecast period, in this case January to March 2004\.
+
+Several new columns are also present now\. The `$TS-` columns are added by the Time Series node\. The columns indicate the following for each row (that is, for each interval in the time series data):
+
+<!-- <table "summary="" class="defaultstyle" "> -->
+
+| Column            | Description                                                                       |
+| ----------------- | --------------------------------------------------------------------------------- |
+| $TS\-*colname*    | The generated model data for each column of the original data\.                   |
+| $TSLCI\-*colname* | The lower confidence interval value for each column of the generated model data\. |
+| $TSUCI\-*colname* | The upper confidence interval value for each column of the generated model data\. |
+| $TS\-Total        | The total of the $TS\-*colname* values for this row\.                             |
+| $TSLCI\-Total     | The total of the $TSLCI\-*colname* values for this row\.                          |
+| $TSUCI\-Total     | The total of the $TSUCI\-*colname* values for this row\.                          |
+
+<!-- </table "summary="" class="defaultstyle" "> -->
+
+The most significant columns for the forecast operation are the `$TS-Market_n`, `$TSLCI-Market_n`, and `$TSUCI-Market_n` columns\. In particular, these columns in the last three rows contain the user subscription forecast data and confidence intervals for each of the local markets\.
+
+<!-- </article "role="article" "> -->

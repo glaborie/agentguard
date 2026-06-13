@@ -1,0 +1,18 @@
+# selectnode properties #
+
+![Select node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/select_node_icon.png) The Select node selects or discards a subset of records from the data stream based on a specific condition\. For example, you might select the records that pertain to a particular sales region\.
+
+<!-- <table "summary="selectnode properties" id="selectnodeslots__table_ucw_bwy_ddb" class="defaultstyle" "> -->
+
+selectnode properties  
+
+Table 1\. selectnode properties
+
+| `selectnode` properties | Data type          | Property description                                       |
+| ----------------------- | ------------------ | ---------------------------------------------------------- |
+| `mode`                  | `Include``Discard` | Specifies whether to include or discard selected records\. |
+| `condition`             | *string*           | Condition for including or discarding records\.            |
+
+<!-- </table "summary="selectnode properties" id="selectnodeslots__table_ucw_bwy_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

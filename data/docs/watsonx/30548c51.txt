@@ -1,0 +1,106 @@
+# Creating and managing jobs in a project #
+
+You create jobs to run assets or files in tools, such as Data Refinery flows, SPSS Modeler flows, Notebooks, and scripts, in a project\.
+
+When you create a job you define the properties for the job, such as the name, definition, environment runtime, schedule and notification specifications on different pages\. You can run a job immediately or wait for the job to run at the next scheduled interval\.
+
+Each time a job is started, a job run is created, which you can monitor and use to compare with the job run history of previous runs\. You can view detailed information about each job run, job state changes, and job failures in the job run log\.
+
+How you create a job depends on the asset or file\.
+
+<!-- <table> -->
+
+Job creation options for assets or files
+
+| Asset or file                           | Create job in tool | Create job from the Assets page | More information                         |
+| --------------------------------------- | ------------------ | ------------------------------- | ---------------------------------------- |
+| Data Refinery flow                      | ✓                  | ✓                               | [Creating jobs in Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-dr.html)       |
+| SPSS Modeler flow                       | ✓                  | ✓                               | [Creating jobs in SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-spss.html)        |
+| Notebook created in the Notebook editor | ✓                  | ✓                               | [Creating jobs in the Notebook editor](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-nb-editor.html) |
+| Pipelines                               | ✓                  |                                 | [Creating jobs for Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-pipelines.html)          |
+
+<!-- </table ""> -->
+
+## Creating jobs from the Assets page ##
+
+You can create a job to run an asset from the project's **Assets** page\.
+
+**Required permissions** : You must have an **Editor** or **Admin** role in the project\.
+
+Restriction:You cannot run a job by using an API key from a [service ID](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html)\.
+
+To create jobs for a listed asset from the **Assets** page of a project:
+
+<!-- <ol> -->
+
+1.  Select the asset from the section for your asset type and choose **New job** from the menu icon with the lists of options (![actions icon three vertical dots](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/actions.png)) at the end of the table row\.
+2.  Define the job details by entering a name and a description (optional)\.
+3.  If you can select **Setting**, specify the settings that you want for the job\.
+4.  If you can select **Configure**, choose an environment runtime for the job\. Depending on the asset type, you can optionally configure more settings, for example environment variables or script arguments\.
+    
+    To avoid accumulating too many finished job runs and job run artifacts, set how long to retain finished job runs and job run artifacts like logs or notebook results. You can either select the number of days to retain the job runs or the last number of job runs to keep.
+5.  On the **Schedule** page, you can optionally add a one\-time or repeating schedule\.
+    
+    If you select the **Repeat** option and unit of **Minutes** with the value of *n*, the job runs at the start of the hour, and then at every multiple of *n*. For example, if you specify a value of 11 it will run at 0, 11, 22, 33, 44 and 55 minutes of each hour.
+    
+    If you also select the **Start of Schedule** option, the job starts to run at the first multiple of *n* of the hour that occurs after the time that you provide in the **Start Time** field. For example, if you enter 10:24 for the **Start of Time** value, and you select **Repeat** and set the job to repeat every 14 minutes, then your job will run at 10:42, 10:56, 11:00, 11:14. 11:28, 11:42, 11:56, and so on.
+    
+    You can't change the time zone; the schedule uses your web browser's time zone setting. If you exclude certain weekdays, the job might not run as you would expect. The reason might be due to a discrepancy between the time zone of the user who creates the schedule, and the time zone of the compute node where the job runs.  
+      
+    An API key is generated when you create a scheduled job, and future runs will use this API key. If you didn't create a scheduled job but choose to modify one, an API key is generated for you when you modify the job and future runs will use this API key.
+6.  (Optional): Select to see notifications for the job\. You can select the type of alerts to receive\.
+7.  Review the job settings\. Then, create the job and run it immediately, or create the job and run it later\.
+
+<!-- </ol> -->
+
+## Managing jobs ##
+
+You can view all of the jobs that exist for your project from the project's **Jobs** page\. With **Admin** or **Editor** role for the project, you can view and edit the job details\. You can run jobs manually and you can delete jobs\. With **Viewer** role for the project, you can only view the job details\. You can't run or delete jobs with Viewer role\.
+
+To view the details of a specific job, click the job\. From the job's details page, you can:
+
+<!-- <ul> -->
+
+ *  *View the runs* for that job and the status of each run\. If a run failed, you can select the run and view the log tail or download the entire log file to help you troubleshoot the run\. A failed run might be related to a temporary connection or environment problem\. Try running the job again\. If the job still fails, you can send the log to Customer Support\.
+ *  *Edit job settings* by clicking **Edit job**, for example to change schedule settings or to pick another environment template\.
+ *  *Run the job manually* by clicking ![the run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/run-job.png) from the job's action bar\. You can start a scheduled job based on the schedule and on demand\.
+ *  *Delete* the job by clicking ![the bin icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/delete-job.png) from the job's action bar\.
+
+<!-- </ul> -->
+
+### Viewing and editing jobs in a tool ###
+
+You can view and edit job settings associated with an asset directly in the following tools:
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  DataStage
+ *  Match 360
+ *  Notebook editor or viewer
+ *  Pipelines
+
+<!-- </ul> -->
+
+#### Viewing and editing jobs in Data Refinery, Notebooks, and Pipelines ####
+
+<!-- <ol> -->
+
+1.  In the tool, click the Jobs icon ![the jobs icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/images/Run-schedule_Blue.png) from the toolbar and select **Save and view jobs**\. This action lists the jobs that exist for the asset\.
+2.  Select a job to see its details\. You can change job settings by clicking **Edit job**\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Creating jobs in Data Refinery](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-dr.html)
+ *  [Creating jobs in the Notebook editor or Notebook viewer](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-nb-editor.html)
+ *  [Creating jobs for Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-job-pipelines.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Working in projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+
+<!-- </article "role="article" "> -->

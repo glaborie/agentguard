@@ -1,0 +1,35 @@
+# analysisnode properties #
+
+![Analysis node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/analysisnodeicon.png)The Analysis node evaluates predictive models' ability to generate accurate predictions\. Analysis nodes perform various comparisons between predicted values and actual values for one or more model nuggets\. They can also compare predictive models to each other\.
+
+<!-- <table "summary="analysisnode properties" id="analysisnodeslots__table_uwc_cj3_cdb" class="defaultstyle" "> -->
+
+analysisnode properties  
+
+Table 1\. analysisnode properties
+
+| `analysisnode` properties | Data type                                             | Property description                                                                                      |
+| ------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `output_mode`             | `Screen``File`                                        | Used to specify target location for output generated from the output node\.                               |
+| `use_output_name`         | *flag*                                                | Specifies whether a custom output name is used\.                                                          |
+| `output_name`             | *string*                                              | If `use_output_name` is true, specifies the name to use\.                                                 |
+| `output_format`           | `Text` (\.*txt*) `HTML` (\.*html*) `Output` (\.*cou*) | Used to specify the type of output\.                                                                      |
+| `by_fields`               | *list*                                                |                                                                                                           |
+| `full_filename`           | *string*                                              | If disk, data, or HTML output, the name of the output file\.                                              |
+| `coincidence`             | *flag*                                                |                                                                                                           |
+| `performance`             | *flag*                                                |                                                                                                           |
+| `evaluation_binary`       | *flag*                                                |                                                                                                           |
+| `confidence`              | *flag*                                                |                                                                                                           |
+| `threshold`               | *number*                                              |                                                                                                           |
+| `improve_accuracy`        | *number*                                              |                                                                                                           |
+| `field_detection_method`  | `Metadata``Name`                                      | Determines how predicted fields are matched to the original target field\. Specify `Metadata` or `Name`\. |
+| `inc_user_measure`        | *flag*                                                |                                                                                                           |
+| `user_if`                 | *expr*                                                |                                                                                                           |
+| `user_then`               | *expr*                                                |                                                                                                           |
+| `user_else`               | *expr*                                                |                                                                                                           |
+| `user_compute`            | `[Mean Sum Min Max SDev]`                             |                                                                                                           |
+| `split_by_partition`      | *boolean*                                             | Whether to separate by partition\.                                                                        |
+
+<!-- </table "summary="analysisnode properties" id="analysisnodeslots__table_uwc_cj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

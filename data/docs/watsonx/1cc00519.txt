@@ -1,0 +1,4 @@
+# Tree charts #
+
+Tree charts represent hierarchy in a tree\-like structure\. The structure of a Tree chart consists of a root node (has no parent node), line connections (named branches), and leaf nodes (have no child nodes)\. Line connections represent the relationships and connections between the members\.
+<!-- </article "role="article" "> -->

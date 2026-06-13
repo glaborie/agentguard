@@ -1,0 +1,27 @@
+# Troubleshooting Data Refinery #
+
+Use this information to resolve questions about using Data Refinery\.
+
+<!-- <ul> -->
+
+ *  [Cannot refine data from an Excel data asset](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/ts_index.html?context=cdpaas&locale=en#dr-excel)
+ *  [Data Refinery flow job fails with a large data asset](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/ts_index.html?context=cdpaas&locale=en#bigdata-dr)
+
+<!-- </ul> -->
+
+## Cannot refine data from an Excel data asset ##
+
+The Data Refinery flow might fail if it cannot read the data\. Confirm the format of the Excel file\. By default, the first line of the file is treated as the header\. You can change this setting in the Flow settings ![settings icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/settings.png)\. Go to the **Source data sets** tab and click the overflow menu (![overflow menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/actions.png)) next to the data source, and select **Edit format**\. You can also specify the first line property, which designates which row is the first row in the data set to be read\. Changing these properties affects how the data is displayed in Data Refinery as well as the Data Refinery job run and flow output\.
+
+## Data Refinery flow job fails with a large data asset ##
+
+If your Data Refinery flow job fails with a large data asset, try these troubleshooting tips to fix the problem:
+
+<!-- <ul> -->
+
+ *  Instead of using a project data asset as the target of the Data Refinery flow (default), use Cloud storage\. For example, IBM Cloud Object Storage, Amazon S3, or Google Cloud Storage\.
+ *  Select a **Spark & R** environment for the Data Refinery flow job or create a new **Spark & R** environment template\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

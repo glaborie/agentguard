@@ -1,0 +1,24 @@
+# anonymizenode properties #
+
+![Anonymize node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/anonymizenodeicon.png)The Anonymize node transforms the way field names and values are represented downstream, thus disguising the original data\. This can be useful if you want to allow other users to build models using sensitive data, such as customer names or other details\.
+
+<!-- <table "summary="anonymizenode properties" id="anonymizenodeslots__table_ycb_2j3_cdb" class="defaultstyle" "> -->
+
+anonymizenode properties  
+
+Table 1\. anonymizenode properties
+
+| `anonymizenode` properties | Data type       | Property description                                                                                                                                                                                                                       |
+| -------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `enable_anonymize`         | *flag*          | When set to `True`, activates anonymization of field values (equivalent to selecting  Yes for that field in the Anonymize Values column)\.                                                                                                 |
+| `use_prefix`               | *flag*          | When set to `True`, a custom prefix will be used if one has been specified\. Applies to fields that will be anonymized by the Hash method and is equivalent to choosing the  Custom option in the Replace Values settings for that field\. |
+| `prefix`                   | *string*        | Equivalent to typing a prefix into the text box in the Replace Values settings\. The default prefix is the default value if nothing else has been specified\.                                                                              |
+| `transformation`           | `Random``Fixed` | Determines whether the transformation parameters for a field anonymized by the Transform method will be random or fixed\.                                                                                                                  |
+| `set_random_seed`          | *flag*          | When set to `True`, the specified seed value will be used (if `transformation` is also set to `Random`)\.                                                                                                                                  |
+| `random_seed`              | *integer*       | When `set_random_seed` is set to `True`, this is the seed for the random number\.                                                                                                                                                          |
+| `scale`                    | *number*        | When `transformation` is set to `Fixed`, this value is used for "scale by\." The maximum scale value is normally 10 but may be reduced to avoid overflow\.                                                                                 |
+| `translate`                | *number*        | When `transformation` is set to `Fixed`, this value is used for "translate\." The maximum translate value is normally 1000 but may be reduced to avoid overflow\.                                                                          |
+
+<!-- </table "summary="anonymizenode properties" id="anonymizenodeslots__table_ycb_2j3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

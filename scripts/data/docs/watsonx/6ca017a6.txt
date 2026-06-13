@@ -1,0 +1,23 @@
+## Accessing the components in your pipeline ##
+
+When you use a pipeline to automate a flow, you must have access to all of the elements in the pipeline\. Make sure that you create and run pipelines with the proper access to all assets, projects, and spaces used in the pipeline\. Collaborators who run the pipeline must also be able to access the pipeline components\.
+
+### Managing pipeline credentials ###
+
+To run a job, the pipeline must have access to IBM Cloud credentials\. Typically, a pipeline uses your personal IBM Cloud API key to execute long\-running operations in the pipeline without disruption\. If credentials are not available when you create the job, you are prompted to supply an API key or create a new one\.
+
+To generate an API key from your IBM Cloud user account, go to [Manage access and users \- API Keys](https://cloud.ibm.com/iam/apikeys) and create or select an API key for your user account\.
+
+You can also generate and rotate API keys from **Profile and settings > User API key**\. For more information, see [Managing the user API key](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-apikeys.html)\.
+
+Alternatively, you can request that a key is generated for the pipeline\. In either scenario, name and copy the key, protecting it as you would a password\.
+
+## Adding assets to a pipeline ##
+
+When you create a pipeline, you add assets, such as data, notebooks, deployment jobs, or Data Refinery jobs to the pipeline to orchestrate a sequential process\. The ***strongly recommended*** method for adding assets to a pipeline is to collect the assets in the project containing the pipeline and use the asset browser to select project assets for the pipeline\.
+
+Attention: Although you can include assets from other projects, doing so can introduce complexities and potential problems in your pipeline and could be prohibited in a future release\. The recommended practice is to use assets from the current project\.
+
+**Parent topic:**[Getting started with Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-get-started.html)
+
+<!-- </article "role="article" "> -->

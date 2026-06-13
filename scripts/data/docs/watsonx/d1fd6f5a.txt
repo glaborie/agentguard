@@ -1,0 +1,24 @@
+# Auto Data Prep node #
+
+Preparing data for analysis is one of the most important steps in any project—and traditionally, one of the most time consuming\. Automated Data Preparation (ADP) handles the task for you, analyzing your data and identifying fixes, screening out fields that are problematic or not likely to be useful, deriving new attributes when appropriate, and improving performance through intelligent screening techniques\. You can use the algorithm in fully automatic fashion, allowing it to choose and apply fixes, or you can use it in interactive fashion, previewing the changes before they are made and accept or reject them as you want\.
+
+Using ADP enables you to make your data ready for model building quickly and easily, without needing prior knowledge of the statistical concepts involved\. Models will tend to build and score more quickly
+
+Note: When ADP prepares a field for analysis, it creates a new field containing the adjustments or transformations, rather than replacing the existing values and properties of the old field\. The old field is not used in further analysis; its role is set to None\.
+
+Example\. An insurance company with limited resources to investigate homeowner's insurance claims wants to build a model for flagging suspicious, potentially fraudulent claims\. Before building the model, they will ready the data for modeling using automated data preparation\. Since they want to be able to review the proposed transformations before the transformations are applied, they will use automated data preparation in interactive mode\.
+
+An automotive industry group keeps track of the sales for a variety of personal motor vehicles\. In an effort to be able to identify over\- and underperforming models, they want to establish a relationship between vehicle sales and vehicle characteristics\. They will use automated data preparation to prepare the data for analysis, and build models using the data "before" and "after" preparation to see how the results differ\.
+
+What is your objective? Automated data preparation recommends data preparation steps that will affect the speed with which other algorithms can build models and improve the predictive power of those models\. This can include transforming, constructing and selecting features\. The target can also be transformed\. You can specify the model\-building priorities that the data preparation process should concentrate on\.
+
+<!-- <ul> -->
+
+ *  Balance speed and accuracy\. This option prepares the data to give equal priority to both the speed with which data are processed by model\-building algorithms and the accuracy of the predictions\.
+ *  Optimize for speed\. This option prepares the data to give priority to the speed with which data are processed by model\-building algorithms\. When you are working with very large datasets, or are looking for a quick answer, select this option\.
+ *  Optimize for accuracy\. This option prepares the data to give priority to the accuracy of predictions produced by model\-building algorithms\.
+ *  Custom analysis\. When you want to manually change the algorithm on the Settings tab, select this option\. Note that this setting is automatically selected if you subsequently make changes to options on the Settings tab that are incompatible with one of the other objectives\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

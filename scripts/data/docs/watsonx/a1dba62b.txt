@@ -1,0 +1,14 @@
+# Summary #
+
+This example  Introduction to Modeling flow demonstrates the basic steps for creating, evaluating, and scoring a model\.
+
+<!-- <ul> -->
+
+ *  The modeling node estimates the model by studying records for which the outcome is known, and creates a model nugget\. This is sometimes referred to as training the model\.
+ *  The model nugget can be added to any flow with the expected fields to score records\. By scoring the records for which you already know the outcome (such as existing customers), you can evaluate how well it performs\.
+ *  After you're satisfied that the model performs acceptably well, you can score new data (such as prospective customers) to predict how they will respond\.
+ *  The data used to train or estimate the model may be referred to as the analytical or historical data; the scoring data may also be referred to as the operational data\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

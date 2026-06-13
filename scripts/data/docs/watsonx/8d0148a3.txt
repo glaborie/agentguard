@@ -1,0 +1,116 @@
+# Publishing notebooks on GitHub #
+
+To collaborate with stakeholders and other data scientists, you can publish your notebooks in GitHub repositories\. You can also use GitHub to back up notebooks for source code management\.
+
+Watch this video to see how to enable GitHub integration\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+<!-- <ul> -->
+
+ *  Transcript
+    
+     Synchronize transcript with video
+    
+    <!-- <table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+    | Time  | Transcript                                                                                                                                                                  |
+    | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | 00:00 | This video shows you how to publish notebooks from your Watson Studio project to your GitHub account.                                                                      |
+    | 00:07 | Navigate to your profile and settings.                                                                                                                                     |
+    | 00:11 | On the "Integrations" tab, visit the link to generate a GitHub personal access token.                                                                                      |
+    | 00:17 | Provide a descriptive name for the token and select the repo and gist scopes, then generate the token.                                                                     |
+    | 00:29 | Copy the token, return to the GitHub integration settings, and paste the token.                                                                                            |
+    | 00:36 | The token is validated when you save it to your profile settings.                                                                                                          |
+    | 00:42 | Now, navigate to your projects.                                                                                                                                            |
+    | 00:44 | You enable GitHub integration at the project level on the "Settings" tab.                                                                                                  |
+    | 00:50 | Simply scroll to the bottom and paste the existing GitHub repository URL.                                                                                                  |
+    | 00:56 | You'll find that on the "Code" tab in the repo.                                                                                                                            |
+    | 01:01 | Click "Update" to make the connection.                                                                                                                                     |
+    | 01:05 | Now, go to the "Assets" tab and open the notebook you want to publish.                                                                                                     |
+    | 01:14 | Notice that this notebook has the credentials replaced with X's.                                                                                                           |
+    | 01:19 | It's a best practice to remove or replace credentials before publishing to GitHub.                                                                                         |
+    | 01:24 | So, this notebook is ready for publishing.                                                                                                                                 |
+    | 01:27 | You can provide the target path along with a commit message.                                                                                                               |
+    | 01:31 | You also have the option to publish content without hidden code, which means that any cells in the notebook that began with the hidden cell comment will not be published. |
+    | 01:42 | When you're, ready click "Publish".                                                                                                                                        |
+    | 01:45 | The message tells you that the notebook was published successfully and provides links to the notebook, the repository, and the commit.                                     |
+    | 01:54 | Let's take a look at the commit.                                                                                                                                           |
+    | 01:57 | So, there's the commit, and you can navigate to the repository to see the published notebook.                                                                              |
+    | 02:04 | Lastly, you can publish as a gist.                                                                                                                                         |
+    | 02:07 | Gists are another way to share your work on GitHub.                                                                                                                        |
+    | 02:10 | Every gist is a git repository, so it can be forked and cloned.                                                                                                            |
+    | 02:15 | There are two types of gists: public and secret.                                                                                                                           |
+    | 02:19 | If you start out with a secret gist, you can convert it to a public gist later.                                                                                            |
+    | 02:24 | And again, you have the option to remove hidden cells.                                                                                                                     |
+    | 02:29 | Follow the link to see the published gist.                                                                                                                                 |
+    | 02:32 | So that's the basics of Watson Studio's GitHub integration.                                                                                                                |
+    | 02:37 | Find more videos in the Cloud Pak for Data as a Service documentation.                                                                                                     |
+    
+    <!-- </table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+<!-- </ul> -->
+
+## Enabling access to GitHub from your account ##
+
+Before you can publish notebooks on GitHub, you must enable your IBM watsonx account to access GitHub\. You enable access by creating a personal access token with the required access scope in GitHub and linking the token to your IBM watsonx account\.
+
+Follow these steps to create a personal access token:
+
+<!-- <ol> -->
+
+1.  Click your avatar in the header, and then click **Profile and settings**\.
+2.  Go to the **Integrations** tab and click the GitHub personal access tokens link on the dialog and generate a new token\.
+3.  On the New personal access token page, select repo scope and then click to generate a token\.
+4.  Copy the generated access token and paste it in the GitHub integration dialog window in IBM watsonx\.
+
+<!-- </ol> -->
+
+## Linking a project to a GitHub repository ##
+
+After you have saved the access token, your project must be connected to an existing GitHub repository\. You can only link to one existing GitHub repository from a project\. Private repositories are supported\.
+
+To link a project to an existing GitHub repository, you must have administrator permission to the project\. All project collaborators, who have adminstrator or editor permission, can publish files to this GitHub repository\. However, these users must have permission to access the repository\. Granting user permissions to repositories must be done in GitHub\.
+
+To connect a project to an existing GitHub repository:
+
+<!-- <ol> -->
+
+1.  Select the **Manage** tab and go to the **Services and Integrations** page\.
+2.  Click the **Third\-party integrations** tab\.
+3.  Click **Connect integration**\.
+4.  Enter your generated access token from Github\.
+
+<!-- </ol> -->
+
+Now you can begin publishing notebooks on GitHub\.
+
+Note:For information on how to change your Git integration, refer to [Managing your integrations](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/personal-settings.html#integrations)\.
+
+## Publishing a notebook on GitHub ##
+
+To publish a notebook on GitHub:
+
+<!-- <ol> -->
+
+1.  Open the notebook in edit mode\.
+2.  Click the GitHub integration icon (![Shows the upload icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/upload.png)) and select **Publish on GitHub** from the opened notebook's action bar\.
+
+<!-- </ol> -->
+
+When you enter the name of the file you want to publish on GitHub, you can specify a folder path in the GitHub repository\. Note that notebook files are always pushed to the master branch\.
+
+If you get this error: `An error occurred while publishing the notebook. Invalid access token permissions or repository does not exist.` make sure that:
+
+<!-- <ul> -->
+
+ *  You generated your personal access token, as described in [Enabling access to GitHub from your account](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/enabling-access.html) and the token was not deleted\.
+ *  The repository that you want to publish your notebook to still exists\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Managing the lifecycle of notebooks and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-nb-lifecycle.html)
+
+<!-- </article "role="article" "> -->

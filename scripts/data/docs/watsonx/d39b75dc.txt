@@ -1,0 +1,6 @@
+# Distribution node #
+
+A distribution graph or table shows the occurrence of symbolic (non\-numeric) values, such as mortgage type or gender, in a dataset\. A typical use of the Distribution node is to show imbalances in the data that you can rectify by using a Balance node before creating a model\. You can automatically generate a Balance node using the Generate menu in the distribution graph or table window\.
+
+Note: To show the occurrence of numeric values, you should use a Histogram node\.
+<!-- </article "role="article" "> -->

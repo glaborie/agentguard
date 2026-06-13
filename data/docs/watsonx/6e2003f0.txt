@@ -1,0 +1,123 @@
+# CLEM expressions and operators supporting SQL pushback #
+
+The tables in this section list the mathematical operations and expressions that support SQL generation and are often used during data mining\. Operations absent from these tables don't support SQL generation\.
+
+<!-- <table "summary="" class="defaultstyle" "> -->
+
+Table 1\. Operators
+
+| Operations supporting SQL generation | Notes                         |
+| ------------------------------------ | ----------------------------- |
+| `+`                                  |                               |
+| `-`                                  |                               |
+| `/`                                  |                               |
+| `*`                                  |                               |
+| `><`                           | Used to concatenate strings\. |
+
+<!-- </table "summary="" class="defaultstyle" "> -->
+
+<!-- <table "summary="" id="sql_clem__table_uqw_jk1_2db" class="defaultstyle" "> -->
+
+Table 2\. Relational operators
+
+| Operations supporting SQL generation | Notes                         |
+| ------------------------------------ | ----------------------------- |
+| `=`                                  |                               |
+| `/=`                                 | Used to specify "not equal\." |
+| `>`                               |                               |
+| `>=`                              |                               |
+| `<`                               |                               |
+| `<=`                              |                               |
+
+<!-- </table "summary="" id="sql_clem__table_uqw_jk1_2db" class="defaultstyle" "> -->
+
+<!-- <table "summary="" id="sql_clem__table_wqw_jk1_2db" class="defaultstyle" "> -->
+
+Table 3\. Functions
+
+| Operations supporting SQL generation | Notes |
+| ------------------------------------ | ----- |
+| `abs`                                |       |
+| `allbutfirst`                        |       |
+| `allbutlast`                         |       |
+| `and`                                |       |
+| `arccos`                             |       |
+| `arcsin`                             |       |
+| `arctan`                             |       |
+| `arctanh`                            |       |
+| `cos`                                |       |
+| `div`                                |       |
+| `exp`                                |       |
+| `fracof`                             |       |
+| `hasstartstring`                     |       |
+| `hassubstring`                       |       |
+| `integer`                            |       |
+| `intof`                              |       |
+| `isaplhacode`                        |       |
+| `islowercode`                        |       |
+| `isnumbercode`                       |       |
+| `isstartstring`                      |       |
+| `issubstring`                        |       |
+| `isuppercode`                        |       |
+| `last`                               |       |
+| `length`                             |       |
+| `locchar`                            |       |
+| `log`                                |       |
+| `log10`                              |       |
+| `lowertoupper`                       |       |
+| `max`                                |       |
+| `member`                             |       |
+| `min`                                |       |
+| `negate`                             |       |
+| `not`                                |       |
+| `number`                             |       |
+| `or`                                 |       |
+| `pi`                                 |       |
+| `real`                               |       |
+| `rem`                                |       |
+| `round`                              |       |
+| `sign`                               |       |
+| `sin`                                |       |
+| `sqrt`                               |       |
+| `string`                             |       |
+| `strmember`                          |       |
+| `subscrs`                            |       |
+| `substring`                          |       |
+| `substring_between`                  |       |
+| `uppertolower`                       |       |
+| `to_string`                          |       |
+
+<!-- </table "summary="" id="sql_clem__table_wqw_jk1_2db" class="defaultstyle" "> -->
+
+<!-- <table "summary="" id="sql_clem__table_yqw_jk1_2db" class="defaultstyle" "> -->
+
+Table 4\. Special functions
+
+| Operations supporting SQL generation | Notes                                                                                                 |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `@NULL`                              |                                                                                                       |
+| `@GLOBAL_AVE`                        | You can use the special global functions to retrieve global values computed by the Set Globals node\. |
+| `@GLOBAL_SUM`                        |                                                                                                       |
+| `@GLOBAL_MAX`                        |                                                                                                       |
+| `@GLOBAL_MEAN`                       |                                                                                                       |
+| `@GLOBAL_MIN`                        |                                                                                                       |
+| `@GLOBALSDEV`                        |                                                                                                       |
+
+<!-- </table "summary="" id="sql_clem__table_yqw_jk1_2db" class="defaultstyle" "> -->
+
+<!-- <table "summary="" id="sql_clem__table_arw_jk1_2db" class="defaultstyle" "> -->
+
+Table 5\. Aggregate functions
+
+| Operations supporting SQL generation | Notes |
+| ------------------------------------ | ----- |
+| `Sum`                                |       |
+| `Mean`                               |       |
+| `Min`                                |       |
+| `Max`                                |       |
+| `Count`                              |       |
+| `SDev`                               |       |
+
+<!-- </table "summary="" id="sql_clem__table_arw_jk1_2db" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

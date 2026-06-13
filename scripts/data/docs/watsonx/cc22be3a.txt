@@ -1,0 +1,11 @@
+# Specifying values for a flag #
+
+Use flag fields to display data that has two distinct values\. The storage types for flags can be string, integer, real number, or date/time\.
+
+True\. Specify a flag value for the field when the condition is met\.
+
+False\. Specify a flag value for the field when the condition is not met\.
+
+Labels\. Specify labels for each value in the flag field\. These labels appear in a variety of locations, such as graphs, tables, output, and model browsers\.
+
+<!-- </article "role="article" "> -->

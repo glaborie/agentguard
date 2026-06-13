@@ -1,0 +1,20 @@
+# XGBoost\-AS node #
+
+XGBoost© is an advanced implementation of a gradient boosting algorithm\. Boosting algorithms iteratively learn weak classifiers and then add them to a final strong classifier\. XGBoost is very flexible and provides many parameters that can be overwhelming to most users, so the XGBoost\-AS node in  Watson Studio exposes the core features and commonly used parameters\. The XGBoost\-AS node is implemented in Spark\.
+
+For more information about boosting algorithms, see the [XGBoost Tutorials](http://xgboost.readthedocs.io/en/latest/tutorials/index.html)\. ^1^
+
+Note that the XGBoost cross\-validation function is not supported in  Watson Studio\. You can use the Partition node for this functionality\. Also note that XGBoost in  Watson Studio performs one\-hot encoding automatically for categorical variables\.
+
+Notes:
+
+<!-- <ul> -->
+
+ *  On Mac, version 10\.12\.3 or higher is required for building XGBoost\-AS models\.
+ *  XGBoost isn't supported on IBM POWER\.
+
+<!-- </ul> -->
+
+^1^ "XGBoost Tutorials\." *Scalable and Flexible Gradient Boosting*\. Web\. © 2015\-2016 DMLC\.
+
+<!-- </article "role="article" "> -->

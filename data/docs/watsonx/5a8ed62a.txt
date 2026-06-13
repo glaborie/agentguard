@@ -1,0 +1,23 @@
+# applyneuralnetworknode properties #
+
+You can use Neural Network modeling nodes to generate a Neural Network model nugget\. The scripting name of this model nugget is *applyneuralnetworknode*\. For more information on scripting the modeling node itself, see [neuralnetworknode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/properties/neuralnetworkslots.html#neuralnetworkslots)\.
+
+<!-- <table "summary="applyneuralnetworknode properties" id="applyneuralnetworkslots__table_x3s_3j3_cdb" class="defaultstyle" "> -->
+
+applyneuralnetworknode properties  
+
+Table 1\. applyneuralnetworknode properties
+
+| `applyneuralnetworknode` Properties | Values                            | Property description                                                                                                                             |
+| ----------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `use_custom_name`                   | *flag*                            |                                                                                                                                                  |
+| `custom_name`                       | *string*                          |                                                                                                                                                  |
+| `confidence`                        | `onProbability`  <br>`onIncrease` |                                                                                                                                                  |
+| `score_category_probabilities`      | *flag*                            |                                                                                                                                                  |
+| `max_categories`                    | *number*                          |                                                                                                                                                  |
+| `score_propensity`                  | *flag*                            |                                                                                                                                                  |
+| `enable_sql_generation`             | `false`  <br>`true`  <br>`native` | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applyneuralnetworknode properties" id="applyneuralnetworkslots__table_x3s_3j3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

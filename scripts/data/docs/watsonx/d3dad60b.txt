@@ -1,0 +1,15 @@
+# Running and interrupting scripts #
+
+You can run scripts in a number of ways\. For example, in the flow script or standalone script pane, click  Run This Script to run the complete script\.
+
+You can run a script using any of the following methods:
+
+<!-- <ul> -->
+
+ *  Click  Run script within a flow script or standalone script\.
+ *  Run a flow where  Run script is set as the default execution method\.
+
+<!-- </ul> -->
+
+Note: A SuperNode script runs when the SuperNode is run as long as you select  Run script within the SuperNode script dialog box\.
+<!-- </article "role="article" "> -->

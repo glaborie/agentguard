@@ -1,0 +1,5 @@
+# Flows, SuperNode streams, and diagrams #
+
+Most of the time, the term flow means the same thing, regardless of whether it's a flow that's loaded from a file or used within a SuperNode\. It generally means a collection of nodes that are connected together and can be executed\. In scripting, however, not all operations are supported in all places\. So as a script author, you should be aware of which flow variant they're using\.
+
+<!-- </article "role="article" "> -->

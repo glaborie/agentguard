@@ -1,0 +1,12 @@
+# Using an Analysis node #
+
+You can assess the accuracy of the model using an Analysis node\. From the Palette, under Outputs, place an Analysis node on the canvas and attach it to the C5\.0 model nugget\. Then right\-click the Analysis node and select  Run\.
+
+Figure 1\. Analysis node
+
+![Analysis node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_analysis.png)The Analysis node output shows that with this artificial dataset, the model correctly predicted the choice of drug for every record in the dataset\. With a real dataset you are unlikely to see 100% accuracy, but you can use the Analysis node to help determine whether the model is acceptably accurate for your particular application\.
+
+Figure 2\. Analysis node output
+
+![Analysis node output](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_analysis_output.png)
+<!-- </article "role="article" "> -->

@@ -1,0 +1,182 @@
+# Quick start: Build and deploy a machine learning model with AutoAI #
+
+You can automate the process of building a machine learning model with the AutoAI tool\. Read about the AutoAI tool, then watch a video and take a tutorial that’s suitable for beginners and does not require coding\.
+
+Your basic workflow includes these tasks:
+
+<!-- <ol> -->
+
+1.  Open your sandbox project\. Projects are where you can collaborate with others to work with data\.
+2.  Add your data to the project\. You can add CSV files or data from a remote data source through a connection\.
+3.  Create an AutoAI experiment in the project\.
+4.  Review the model pipelines and save the desired pipeline as a model to deploy or as a notebook to customize\.
+5.  Deploy and test your model\.
+
+<!-- </ol> -->
+
+## Read about AutoAI ##
+
+The AutoAI graphical tool automatically analyzes your data and generates candidate model pipelines customized for your predictive modeling problem\. These model pipelines are created iteratively as AutoAI analyzes your dataset and discovers data transformations, algorithms, and parameter settings that work best for your problem setting\. Results are displayed on a leaderboard, showing the automatically generated model pipelines ranked according to your problem optimization objective\.
+
+[Read more about AutoAI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-overview.html)
+
+[Learn about other ways to build models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-science.html)
+
+## Watch a video about creating a model using AutoAI ##
+
+![Watch Video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) Watch this video to see how to create and run an AutoAI experiment based on the bank marketing sample\.
+
+Note: This video shows tasks 2\-5 of this tutorial\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Try a tutorial to create a model using AutoAI ##
+
+This tutorial guides you through training a model to predict if a customer is likely subscribe to a term deposit based on a marketing campaign\.
+
+In this tutorial, you will complete these tasks:
+
+<!-- <ul> -->
+
+ *  [Task 1: Open a project\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#step01)
+ *  [Task 2: Build and train the model\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#step02)
+ *  [Task 3: Promote the model to a deployment space and deploy the trained model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#step03)
+ *  [Task 4: Test the deployed model\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#step04)
+ *  [Task 5: Create a batch job to score the model\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#step05)
+
+<!-- </ul> -->
+
+This tutorial will take approximately 30 minutes to complete\.
+
+### Sample data ###
+
+The sample data that is used in the guided experience is UCI: Bank marketing data used to predict whether a customer enrolls in a marketing promotion\.
+
+![Spreadsheet of the Bank marketing data set](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_bank_sample_description.png)
+
+Expand all sections
+
+<!-- <ul> -->
+
+ *  Tips for completing this tutorial
+    
+    \#\#\# Use the video picture-in-picture Tip: Start the video, then as you scroll through the tutorial, the video moves to picture-in-picture mode. Close the video table of contents for the best experience with picture-in-picture. You can use picture-in-picture mode so you can follow the video as you complete the tasks in this tutorial. Click the timestamps for each task to follow along.The following animated image shows how to use the video picture-in-picture and table of contents features: ![How to use picture-in-picture and chapters](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/pip-and-chapters.gif)\{: width="560px" height="315px" data-tearsheet="this"\} \#\#\# Get help in the community If you need help with this tutorial, you can ask a question or find an answer in the [Cloud Pak for Data Community discussion forum](https://community.ibm.com/community/user/cloudpakfordata/communities/community-home/digestviewer?communitykey=c0c16ff2-10ef-4b50-ae4c-57d769937235)\{: new\_window\}. \#\#\# Set up your browser windows For the optimal experience completing this tutorial, open Cloud Pak for Data in one browser window, and keep this tutorial page open in another browser window to switch easily between the two applications. Consider arranging the two browser windows side-by-side to make it easier to follow along. ![Side-by-side tutorial and UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/tutorial-side-by-side.png)\{: width="560px" height="315px" data-tearsheet="this"\} Tip: If you encounter a guided tour while completing this tutorial in the user interface, click **Maybe later**.  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 1: Open a project
+    
+    You need a project to store the data and the AutoAI experiment. You can use your sandbox project or create a project. 1. From the navigation menu ![Navigation menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/navigation-menu.svg)\{: iih\}, choose **Projects > View all projects** 1. Open your sandbox project. If you want to use a new project: 1. Click **New project**. 1. Select **Create an empty project**. 1. Enter a name and optional description for the project. 1. Choose an existing [object storage service instance](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/storage-options.html)\{: new\_window\} or create a new one. 1. Click **Create**. 1. When the project opens, click the **Manage** tab and select the **Services and integrations** page. 1. On the *IBM services* tab, click **Associate service**. 1. Select your Watson Machine Learning instance. If you don't have a Watson Machine Learning service instance provisioned yet, follow these steps: 1. Click **New service**. 1. Select **Watson Machine Learning**. 1. Click **Create**. 1. Select the new service instance from the list. 1. Click **Associate service**. 1. If necessary, click **Cancel** to return to the *Services & Integrations* page. For more information or to watch a video, see [Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)\{: new\_window\}. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the new project.  
+      
+    ![The following image shows the new project.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai-new-project.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 2: Build and train the model
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:08. Now that you have a project, you are ready to build and train the model using AutoAI. Follow these steps to create the AutoAI experiment, review the model pipelines, and select a pipeline to save as a model: 1. Click the **Assets** tab in your project, and then click **New asset > Build machine learning models automatically**. 1. On the *Build machine learning models automatically* page, complete the basic fields: 1. Click the **Samples** panel. 1. Select **Bank marketing sample data**, and click **Next**. The project name and description will be filled in for you. 1. Confirm that the Machine Learning service instance that you associated with your project is selected in the *Watson Machine Learning Service Instance* field. 1. Click **Create**. 1. In this sample AutoAI experiment, you will see that the *Bank marketing sample data* is already selected for your experiment. ![Choose a prediction column](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_bank_sample_predict_label.png)\{: biw\} 1. Review the preset experiment settings. Based on the data set and the selected column to predict, AutoAI analyzes a subset of the data and chooses a prediction type and metric to optimize. In this case, the prediction type is *Binary Classification*, the positive class is *Yes*, and the optimized metric is *ROC AUC & run time*. 1. Click **Run experiment**. As the model trains, you see an infographic that shows the process of building the pipelines.  
+    ![Build model pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_bank_sample_pipeline_build2.png)\{: biw\} For a list of algorithms, or estimators, available with each machine learning technique in AutoAI, see: [AutoAI implementation detail](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-details.html). 1. After the experiment run is complete, you can view and compare the ranked pipelines in a leaderboard. ![Pipeline leaderboard](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_bank_sample_leaderboard2.png)\{: biw\} 1. You can click **Pipeline comparison** to see how they differ. ![Pipeline comparison metric chart](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_bank_sample_metric.png)\{: biw\} 1. Click the highest ranked pipeline to see the pipeline details. 1. Click **Save as**, select **Model**, and click **Create**. This saves the pipeline as a model in your project. 1. When the model is saved, click the **View in project** link in the notification to view the model in your project. Alternatively, you can navigate to the **Assets** tab in the project, and click the model name in the *Models* section. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the model.  
+      
+    ![The following image shows the model.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai-model.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 3: Promote the model to a deployment space and deploy the trained model
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 04:57. Before you can deploy the model, you need to promote the model to a deployment space. Follow these steps to promote the model to a deployment space to deploy the model: 1. Click **Promote to deployment space**. 1. Choose an existing deployment space. If you don't have a deployment space: 1. Click **Create a new deployment space**. 1. Provide a space name and optional description. 1. Select a storage service. 1. Select a machine learning service. 1. Click **Create**. 1. Click **Close**. 1. Select your new deployment space from the list. 1. Select the **Go to the model in the space after promoting it** option. 1. Click **Promote**. Note: If you didn't select the option to go to the model in the space after promoting it, you can use the navigation menu to navigate to **Deployments** to select your deployment space and model.1. With the model open, click **New deployment**. 1. Select **Online** as the *Deployment type*. 1. Specify a name for the deployment. 1. Click **Create**. 1. When the deployment is complete, click the deployment name to view the deployment details page. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the new deployment.  
+      
+    ![The following image shows the new deployment.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai-deployment.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 4: Test the deployed model
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 06:22. Now that you have the model deployed, you can test that that online deployment using the user interface or through the Watson Machine Learning APIs. Follow these steps to use the user interface to test the model with new data: 1. Click the **Test** tab. You can test the deployed model from the deployment details page in two ways: test with a form or test with JSON code. 1. Click the **JSON input** tab, copy the following test data, and paste it to replace the existing JSON text: `json { "input_data": [ { "fields":  "age", "job", "marital", "education", "default", "balance", "housing", "loan", "contact", "day", "month", "duration", "campaign", "pdays", "previous", "poutcome" ], "values":   27, "unemployed", "married", "primary", "no", 1787, "no", "no", "cellular", 19, "oct", 79, 1, -1, 0, "unknown" ] ] } ] }` 1. Click **Predict** to predict whether a customer with the specified attributes is likely to sign up for a particular kind of account. The resulting prediction indicates that this customer has a high probability of not enrolling in the marketing promotion. 1. Click the **X** to close the *Prediction results* window. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the results of testing the deployment. The values for your prediction might differ from the values in the following image.  
+      
+    ![The following image shows the results of testing the deployment.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai-deployment-test.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 5: Create a batch job to score the model
+    
+    Now that you have tested the deployed model with a single prediction, you can create a batch deployment to score multiple records at the same time. \#\#\# Task 5a: Set up batch deployment ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 07:00. For a batch deployment, you provide input data, also known as the model payload, in a CSV file. The data must be structured like the training data, with the same column headers. The batch job processes each row of data and creates a corresponding prediction. Follow these steps to upload the payload data to the deployment space: 1. Copy and paste the following text into a text editor, and save the file as `bank-payload.csv`. `txt age,job,marital,education,default,balance,housing,loan,contact,day,month,duration,campaign,pdays,previous,poutcome 30,unemployed,married,primary,no,1787,no,no,cellular,19,oct,79,1,-1,0,unknown 33,services,married,secondary,no,4789,yes,yes,cellular,11,may,220,1,339,4,failure 35,management,single,tertiary,no,1350,yes,no,cellular,16,apr,185,1,330,1,failure 30,management,married,tertiary,no,1476,yes,yes,unknown,3,jun,199,4,-1,0,unknown 59,blue-collar,married,secondary,no,0,yes,no,unknown,5,may,226,1,-1,0,unknown 35,management,single,tertiary,no,747,no,no,cellular,23,feb,141,2,176,3,failure 36,self-employed,married,tertiary,no,307,yes,no,cellular,14,may,341,1,330,2,other 39,technician,married,secondary,no,147,yes,no,cellular,6,may,151,2,-1,0,unknown 41,entrepreneur,married,tertiary,no,221,yes,no,unknown,14,may,57,2,-1,0,unknown 43,services,married,primary,no,-88,yes,yes,cellular,17,apr,313,1,147,2,failure 39,services,married,secondary,no,9374,yes,no,unknown,20,may,273,1,-1,0,unknown 43,admin.,married,secondary,no,264,yes,no,cellular,17,apr,113,2,-1,0,unknown 36,technician,married,tertiary,no,1109,no,no,cellular,13,aug,328,2,-1,0,unknown 20,student,single,secondary,no,502,no,no,cellular,30,apr,261,1,-1,0,unknown 31,blue-collar,married,secondary,no,360,yes,yes,cellular,29,jan,89,1,241,1,failure 40,management,married,tertiary,no,194,no,yes,cellular,29,aug,189,2,-1,0,unknown 56,technician,married,secondary,no,4073,no,no,cellular,27,aug,239,5,-1,0,unknown 37,admin.,single,tertiary,no,2317,yes,no,cellular,20,apr,114,1,152,2,failure 25,blue-collar,single,primary,no,-221,yes,no,unknown,23,may,250,1,-1,0,unknown 31,services,married,secondary,no,132,no,no,cellular,7,jul,148,1,152,1,other` 1. Click your deployment space in the navigation trail. ![Navigation trail](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai-breadcrumbs.png) 1. Click the **Assets** tab. 1. Drag the **bank-payload.csv** file into the side panel, and wait for the file to upload. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the *Assets* tab in the deployment space.  
+      
+    ![Assets tab in the deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai-assets-tab.png)\{: width="100%" \} \#\#\# Task 5b: Create the batch deployment ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 07:30. To process a batch of inputs and have the output written to a file instead of displayed in real time, create a batch deployment job. 1. Go to the **Assets** tab in the deployment space. 1. Click the ![Overflow menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/overflow-menu--vertical.svg)\{: iih\} **Overflow** menu for your model, and choose **Deploy**. 1. For the *Deployment type*, select **Batch**. 1. Type a name for the deployment. 1. Choose the smallest hardware specification. 1. Click **Create**. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows batch deployment.  
+      
+    ![Batch deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai-batch-page.png)\{: width="100%" \} \#\#\# Task 5c: Create the batch job ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 07:44. The batch job runs the deployment. To create the job, you specify the input data and the name for the output file. You can set up a job to run on a schedule, or run immediately. Follow these steps to create a batch job: 1. On the deployment page, click **New job**. 1. Specify a name for the job, and click **Next**. 1. Select the smallest hardware specification, and click **Next**. 1. Optional: Set a schedule, and click **Next**. 1. Optional: Choose to receive notifications, and click **Next**. 1. On the *Choose data* screen, select the *Input* data: 1. Click **Select data source**. 1. Select **Data asset > bank-payload.csv**. 1. Click **Confirm**. 1. Back on the *Choose data* screen, specify the *Output* file: 1. Click **Add**. 1. Click **Select data source**. 1. Ensure that the **Create new** tab is selected. 1. For the *Name*, type `bank-output.csv`\{: .cp\}. 1. Click **Confirm**. 1. Click **Next** for the final step. 1. Review the settings, and click **Create and run** to run the job immediately. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the job details for the batch deployment.  
+      
+    ![Create a job for the batch deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/autoai_bank_job.png)\{: width="100%" \} \#\#\# Task 5d: View the output ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 08:42. Follow these steps to review the output file from the batch job. 1. Click the job name to see the status. 1. When the status changes to *Completed*, click your deployment space name in the navigation trail. 1. Click the **Assets** tab. 1. Click the **bank-output.csv** file to review the prediction results for the customer information that is submitted for batch processing. For each case, the prediction returned these customers are unlikely to subscribe to the bank promotion. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the results of the batch deployment job.  
+      
+    ![The following image shows the results of the batch deployment job.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/autoai_bank_sample_batch_output.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+## Next steps ##
+
+Now you can use this data set for further analysis\. For example, you or other users can do any of these tasks:
+
+<!-- <ul> -->
+
+ *  [Cleansing and shaping data](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-refine.html)
+ *  [Analyze the data in a Juypter notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-analyze.html)
+
+<!-- </ul> -->
+
+## Additional resources ##
+
+<!-- <ul> -->
+
+ *  Try these additional tutorials to get more hands\-on experience with building models using AutoAI:
+    
+    <!-- <ul> -->
+    
+     *  [Build a Binary classification Model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai_example_binary_classifier.html)
+     *  [Build a univariate time series experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-ts-uni-tutorial.html)
+     *  [Build a text analysis experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-text-analysis.html)
+    
+    <!-- </ul> -->
+    
+ *  Try these other methods to build models:
+    
+    <!-- <ul> -->
+    
+     *  [Build and deploy a model in a Jupyter notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build-notebook.html)
+     *  [Build and deploy a model with SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build-spss.html)
+     *  [Build and deploy a Decision Optimization model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html)
+    
+    <!-- </ul> -->
+    
+ *  View more [videos](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html)\.
+ *  Find sample data sets, projects, models, prompts, and notebooks in the Samples to gain hands\-on experience:
+    
+    ![Notebook icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook.svg)[Notebooks](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=notebook) that you can add to your project to get started analyzing data and building models.
+    
+    ![Project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/ibm-cloud--projects.svg)[Projects](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=project-template) that you can import containing notebooks, data sets, prompts, and other assets.
+    
+    ![Data set icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/data--set.svg)[Data sets](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=dataset) that you can add to your project to refine, analyze, and build models.
+    
+    ![Prompt icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/prompt.svg)[Prompts](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=example-prompt) that you can use in the Prompt Lab to prompt a foundation model.
+    
+    ![Model icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/model.svg)[Foundation models](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=foundation-model) that you can use in the Prompt Lab.
+
+<!-- </ul> -->
+
+**Parent topic:**[Quick start tutorials](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html)
+
+<!-- </article "role="article" "> -->

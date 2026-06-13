@@ -1,0 +1,14 @@
+# Handling records with missing values #
+
+If the majority of missing values are concentrated in a small number of records, you can just exclude those records\. For example, a bank usually keeps detailed and complete records on its loan customers\.
+
+If, however, the bank is less restrictive in approving loans for its own staff members, data gathered for staff loans is likely to have several blank fields\. In such a case, there are two options for handling these missing values:
+
+<!-- <ul> -->
+
+ *  You can use a [Select node](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/select.html) to remove the staff records
+ *  If the data set is large, you can discard all records with blanks
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

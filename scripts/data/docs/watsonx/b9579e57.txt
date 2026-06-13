@@ -1,0 +1,22 @@
+# Configuring model evaluations in watsonx\.governance #
+
+Configure watsonx\.governance evaluations to generate insights about your model performance\.
+
+You can configure the following types of evaluations in watsonx\.governance:
+
+<!-- <ul> -->
+
+ *  [Quality](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-monitor-accuracy.html)  
+    Evaluates how well your model predicts correct outcomes that match labeled test data.
+ *  [Drift v2](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html)  
+    Evaluates changes in your model output, the accuracy of your predictions, and the distribution of your input data
+ *  [Generative AI quality](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-monitor-gen-quality.html)  
+    Measures how well your foundation model performs tasks
+
+<!-- </ul> -->
+
+watsonx\.governance also enables [model health evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-model-health-metrics.html) by default to help you determine how efficiently your model deployment processes transactions\.
+
+**Parent topic:**[Evaluating AI models with Watson OpenScale](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/getting-started.html)
+
+<!-- </article "role="article" "> -->

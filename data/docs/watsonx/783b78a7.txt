@@ -1,0 +1,36 @@
+# Programming IBM Watson Pipelines #
+
+You can program in a pipeline by using a notebook, or running Bash scripts in a pipeline\.
+
+## Programming with Bash scripts ##
+
+[Run Bash scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-config.html#run-bash) in a pipeline to compute or process data as part of the flow\.
+
+## Programming with notebooks ##
+
+You can use a notebook to run an end\-to\-end pipeline or to run parts of a pipeline, such as model training\.
+
+<!-- <ul> -->
+
+ *  For details on creating notebooks and for links to sample notebooks, see [Notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebook-editor.html)\.
+ *  For details on running a notebook as a pipeline job, see [Run notebook job](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-config.html#run-notebook)\.
+
+<!-- </ul> -->
+
+### Using the Python client ###
+
+Use the [Watson Pipelines Python client](https://pypi.org/project/ibm-watson-pipelines/) for working with pipelines in a notebook\.
+
+To install the library, use `pip` to install the latest package of `ibm-watson-pipelines` in your coding environment\. For example, run the following code in your notebook environment or console\.
+
+    !pip install ibm-watson-pipelines
+
+Use the client documentation for syntax and descriptions for commands that access pipeline components\.
+
+### Go further ###
+
+To learn more about how to orchestrate external tasks efficiently, see [Making tasks more efficiently with Tekton](https://medium.com/@rafal.bigaj/tekton-and-friends-how-to-orchestrate-external-tasks-efficiently-3fcacf882f6d), a key continuous delivery framework used for Pipelines\.
+
+**Parent topic:**[Creating a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-create.html)
+
+<!-- </article "role="article" "> -->

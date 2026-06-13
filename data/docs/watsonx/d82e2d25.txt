@@ -1,0 +1,49 @@
+# SPSS predictive analytics algorithms for scoring #
+
+A PMML\-compliant scoring engine supports:
+
+<!-- <ul> -->
+
+ *  PMML\-compliant models (4\.2 and earlier versions) produced by various vendors, except for Baseline Model, ScoreCard Model, Sequence Model, and Text Model\. Refer to the [Data Mining Group (DMG) web site](http://www.dmg.org/) for a list of supported models\.
+ *  Non\-PMML models produced by IBM SPSS products: Discriminant and Bayesian networks
+ *  PMML 4\.2 transformations completely
+
+<!-- </ul> -->
+
+Different kinds of models can produce various scoring results\. For example:
+
+<!-- <ul> -->
+
+ *  Classification models (those with a categorical target: Bayes Net, General Regression, Mining, Naive Bayes, k\-Nearest Neighbor, Neural Network, Regression, Ruleset, Support Vector Machine, and Tree) produce:
+    
+    <!-- <ul> -->
+    
+     *  Predicted values
+     *  Probabilities
+     *  Confidence values
+    
+    <!-- </ul> -->
+    
+ *  Regression models (those with a continuous target: General Regression, Mining, k\-Nearest Neighbor, Neural Network, Regression, and Tree) produce predicted values; some also produce standard errors\.
+ *  Cox regression (in General Regression) produces predicted survival probability and cumulative hazard values\.
+ *  Tree models also produce Node ID\.
+ *  Clustering models produce Cluster ID and Cluster affinity\.
+ *  Anomaly Detection (represented as Clustering) produces anomaly index and top reasons\.
+ *  Association models produce Consequent, Rule ID, and confidence for top matching rules\.
+
+<!-- </ul> -->
+
+**Python example code:**
+
+    from spss.ml.score import Score
+    
+    with open("linear.pmml") as reader:
+        pmmlString = reader.read()
+    
+    score = Score().fromPMML(pmmlString)
+    scoredDf = score.transform(data)
+    scoredDf.show()
+
+**Parent topic:**[SPSS predictive analytics algorithms](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-algorithms.html)
+
+<!-- </article "role="article" "> -->

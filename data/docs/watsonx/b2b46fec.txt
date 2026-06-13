@@ -1,0 +1,36 @@
+# histogramnode properties #
+
+![Histogram node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/histogramnodeicon.png)The Histogram node shows the occurrence of values for numeric fields\. It's often used to explore the data before manipulations and model building\. Similar to the Distribution node, the Histogram node frequently reveals imbalances in the data\.
+
+<!-- <table "summary="histogramnode properties" id="histogramnodeslots__table_ytp_5cj_cdb" class="defaultstyle" "> -->
+
+histogramnode properties  
+
+Table 1\. histogramnode properties
+
+| `histogramnode` properties | Data type                | Property description                                                            |
+| -------------------------- | ------------------------ | ------------------------------------------------------------------------------- |
+| `field`                    | *field*                  |                                                                                 |
+| `color_field`              | *field*                  |                                                                                 |
+| `panel_field`              | *field*                  |                                                                                 |
+| `animation_field`          | *field*                  |                                                                                 |
+| `range_mode`               | `Automatic``UserDefined` |                                                                                 |
+| `range_min`                | *number*                 |                                                                                 |
+| `range_max`                | *number*                 |                                                                                 |
+| `bins`                     | `ByNumber``ByWidth`      |                                                                                 |
+| `num_bins`                 | *number*                 |                                                                                 |
+| `bin_width`                | *number*                 |                                                                                 |
+| `normalize`                | *flag*                   |                                                                                 |
+| `separate_bands`           | *flag*                   |                                                                                 |
+| `x_label_auto`             | *flag*                   |                                                                                 |
+| `x_label`                  | *string*                 |                                                                                 |
+| `y_label_auto`             | *flag*                   |                                                                                 |
+| `y_label`                  | *string*                 |                                                                                 |
+| `use_grid`                 | *flag*                   |                                                                                 |
+| `graph_background`         | *color*                  | Standard graph colors are described at the beginning of this section\.          |
+| `page_background`          | *color*                  | Standard graph colors are described at the beginning of this section\.          |
+| `normal_curve`             | *flag*                   | Indicates whether the normal distribution curve should be shown on the output\. |
+
+<!-- </table "summary="histogramnode properties" id="histogramnodeslots__table_ytp_5cj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

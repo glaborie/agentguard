@@ -1,0 +1,120 @@
+# watsonx\.governance generative AI quality evaluations #
+
+You can use watsonx\.governance generative AI quality evaluations to measure how well your foundation model performs tasks\.
+
+When you [evaluate prompt templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-eval-prompt.html), you can review a summary of generative AI quality evaluation results for the following task types:
+
+<!-- <ul> -->
+
+ *  Text summarization
+ *  Content generation
+ *  Entity extraction
+ *  Question answering
+
+<!-- </ul> -->
+
+The summary displays scores and violations for metrics that are calculated with default settings\.
+
+To configure generative AI quality evaluations with your own settings, you can set a minimum sample size and set threshold values for each metric as shown in the following example:
+
+![Configure generative AI quality evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-config-eval-settings.png)
+
+The minimum sample size indicates the minimum number of model transaction records that you want to evaluate and the threshold values create alerts when your metric scores violate your thresholds\. The metric scores must be higher than the lower threshold values to avoid violations\. Higher metric values indicate better scores\.
+
+## Supported generative AI quality metrics ##
+
+The following generative AI quality metrics are supported by watsonx\.governance:
+
+<!-- <ul> -->
+
+ *  ROUGE
+    
+    [ROUGE](https://github.com/huggingface/evaluate/tree/main/metrics/rouge) is a set of metrics that assess how well a generated summary or translation compares to one or more reference summaries or translations. The generative AI quality evaluation calculates the rouge1, rouge2, and rougeLSum metrics. - **Task types**: - Text summarization - Content generation - Question answering - Entity extraction - **Parameters**: - Use stemmer: If true, users Porter stemmer to strip word suffixes. Defaults to false. - **Thresholds**: - Lower bound: 0.8 - Upper boud: 1.0
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  SARI
+    
+    [SARI](https://github.com/huggingface/evaluate/tree/main/metrics/sari) compares the predicted simplified sentences against the reference and the source sentences and explicitly measures the goodness of words that are added, deleted, and kept by the system. - **Task types**: - Text summarization - **Thresholds**: - Lower bound: 0 - Upper bound: 100
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  METEOR
+    
+    [METEOR](https://github.com/huggingface/evaluate/tree/main/metrics/meteor) is calculated with the harmonic mean of precision and recall to capture how well-ordered the matched words in machine translations are in relation to human-produced reference translations. - **Task types**: - Text summarization - Content generation - **Parameters**: - Alpha: Controls relative weights of precision and recall  
+    - Beta: Controls shape of penalty as a function of fragmentation. - Gamma: The relative weight assigned to fragmentation penalty.  
+    - **Thresholds**: - Lower bound: 0 - Upper bound: 1
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Text quality
+    
+    Text quality evaluates the output of a model against [SuperGLUE](https://github.com/huggingface/evaluate/tree/af3c30561d840b83e54fc5f7150ea58046d6af69/metrics/super_glue) datasets by measuring the [F1 score](https://github.com/huggingface/evaluate/tree/main/metrics/f1), [precision](https://github.com/huggingface/evaluate/tree/main/metrics/precision), and [recall](https://github.com/huggingface/evaluate/tree/main/metrics/recall) against the model predictions and its ground truth data. It is calculated by normalizing the input strings and checking the number of similar tokens between the predictions and references. - **Task types**: - Text summarization - Content generation - **Thresholds**: - Lower bound: 0.8 - Upper bound: 1
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  BLEU
+    
+    [BLEU](https://github.com/huggingface/evaluate/blob/main/metrics/bleu/README.md) evaluates the quality of machine-translated text when translated from one natural language to another by comparing individual translated segments to a set of reference translations. - **Task types**: - Text summarization - Content generation - Question answering - **Parameters**: - Max order: Maximum n-gram order to use when completing BLEU score - Smooth: Whether or not to apply Lin et al. 2004 smoothing - **Thresholds**: - Lower bound: 0.8 - Upper bound: 1
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Sentence similarity
+    
+    [Sentence similarity](https://huggingface.co/tasks/sentence-similarity#:~:text=Sentence%20Similarity%20is%20the%20task,similar%20they%20are%20between%20them) determines how similar two texts are by converting input texts into vectors that capture semantic information and calculating their similarity. It measures Jaccard similarity and Cosine similarity. - **Task types**: Text summarization - **Thresholds**: - Lower limit: 0.8 - Upper limit: 1
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  PII
+    
+    [PII](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html#rule-based-pii) measures if the provided content contains any personally identifiable information in the input and output data by using the Watson Natural Language Processing Entity extraction model. - **Task types**: - Text summarization - Content generation - Question answering - **Thresholds**: - Upper limit: 0
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  HAP
+    
+    HAP measures if there is any toxic content in the input data provided to the model, and also any toxic content in the model generated output. - **Task types**: - Text summarization - Content generation - Question answering - **Thesholds** - Upper limit: 0
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Readability
+    
+    The readability score determines the readability, complexity, and grade level of the model's output. - **Task types**: - Text summarization - Content generation - **Thresholds**: - Lower limit: 60
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Exact match
+    
+    [Exact match](https://github.com/huggingface/evaluate/tree/main/metrics/exact_match) returns the rate at which the input predicted strings exactly match their references. - **Task types**: - Question answering - Entity extraction - **Parameters**: - Regexes to ignore: Regex expressions of characters to ignore when calculating the exact matches. - Ignore case: If True, turns everything to lowercase so that capitalization differences are ignored. - Ignore punctuation: If True, removes punctuation before comparing strings. - Ignore numbers: If True, removes all digits before comparing strings. - **Thresholds**: - Lower limit: 0.8 - Upper limit: 1
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Multi\-label/class metrics
+    
+    Multi-label/class metrics measure model performance for multi-label/multi-class predictions. - **Metrics**: - Micro F1 score - Macro F1 score - Micro precision - Macro precision - Micro recall - Macro recall - **Task types**: Entity extraction - **Thresholds**: - Lower limit: 0.8 - Upper limit: 1
+
+<!-- </ul> -->
+
+**Parent topic:**[Configuring model evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-monitors-overview.html)
+
+<!-- </article "role="article" "> -->

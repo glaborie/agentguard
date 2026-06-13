@@ -1,0 +1,7 @@
+# Modeling #
+
+Watsonx\.ai offers a variety of modeling methods taken from machine learning, artificial intelligence, and statistics\.
+
+The methods available on the palette allow you to derive new information from your data and to develop predictive models\. Each method has certain strengths and is best suited for particular types of problems\. For more information about modeling, see [Creating SPSS Modeler flows](https://dataplatform.cloud.ibm.com/docs/content/wsd/spss-modeler.html#spss-modeler)\.
+
+<!-- </article "role="article" "> -->

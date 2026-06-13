@@ -1,0 +1,737 @@
+# Functions used in Watson Pipelines's Expression Builder #
+
+Use these functions in Pipelines code editors, for example, to define a user variable or build an advanced condition\.
+
+The Experssion Builder uses the categories for coding functions:
+
+<!-- <ul> -->
+
+ *  [Conversion functions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-expr-builder.html?context=cdpaas&locale=en#conversion)
+ *  [Standard functions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-expr-builder.html?context=cdpaas&locale=en#ofext)
+ *  [Accessing advanced global objects](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-expr-builder.html?context=cdpaas&locale=en#advanced)
+
+<!-- </ul> -->
+
+## Conversion functions ##
+
+Converts a single data element format to another\.  
+
+### Table for basic data type conversion ###
+
+<!-- <table> -->
+
+| Type        | Accepts                                | Returns     | Syntax                                                                                                                      |
+| ----------- | -------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `double`    | `int, uint, string`                    | `double`    | `double(val)`                                                                                                               |
+| `duration`  | `string`                               | `duration`  | `duration(string)`  <br>Duration must end with "s", which stands for seconds\.                                              |
+| `int`       | `int, uint, double, string, timestamp` | `int`       | `int(val)`                                                                                                                  |
+| `timestamp` | `string`                               | `timestamp` | `timestamp(string)`  <br>Converts strings to timestamps according to RFC3339, that is "1972\-01\-01T10:00:20\.021\-05:00"\. |
+| `uint`      | `int, double, string`                  | `uint`      | `uint(val)`                                                                                                                 |
+
+<!-- </table ""> -->
+
+#### Example ####
+
+For example, to cast a value to type `double`:
+
+    double(%val%)
+
+When you cast double to `int | uint`, result rounds toward zero and errors if result is out of range\.  
+
+## Standard functions ##
+
+Functions that are unique to IBM Watson Pipelines\.  
+
+### sub ###
+
+Replaces substrings of a string that matches the given regular expression that starts at position offset\.
+
+#### Syntax ####
+
+    (string).sub(substring (string), replacement (string), [occurrence (int), offset (int)]])
+
+returns: the string with substrings updated\.
+
+#### Examples ####
+
+    'aaabbbcccbbb'.sub('[b]+','RE')
+
+Returns 'aaaREcccRE'\.  
+
+### format ###
+
+Formats a string or timestamp according to a format specifier and returns the resulting string\.
+
+#### Syntax ####
+
+***format* as a method of strings**
+
+    (string).format(parameter 1 (string or bool or number)... parameter 10 (string or bool or number))
+
+returns: the string that contains the formatted input values\.
+
+***format* as a method of timestamps**
+
+    (timestamp).format(layout(string))
+
+returns: the formatted timestamp in string format\.
+
+#### Examples ####
+
+    'number=%d, text=%s'.format(1, 'str')
+
+Returns the string 'number=1, text=str'\.
+
+    timestamp('2020-07-24T09:07:29.000-00:00').format('%Y/%m/%d')
+
+Returns the string '2020/07/24'\.  
+
+### now ###
+
+Returns the current timestamp\.
+
+#### Syntax ####
+
+    now()
+
+returns: the current timestamp\.
+
+### parseTimestamp ###
+
+Returns the current timestamp in string format\.
+
+#### Syntax ####
+
+    parseTimestamp([timestamp_string(string)] [layout(string)])
+
+returns: the current timestamp to a string of type string\.
+
+#### Examples ####
+
+    parseTimestamp('2020-07-24T09:07:29Z')
+
+Returns '2020\-07\-24T09:07:29\.000\-00:00'\.  
+
+### min ###
+
+Returns minimum value in list\.
+
+#### Syntax ####
+
+    (list).min()
+
+returns: the minimum value of the list\.
+
+#### Examples ####
+
+    [1,2,3].min()
+
+Returns the integer 1\.  
+
+### max ###
+
+Returns maximum value in list\.
+
+#### Syntax ####
+
+    (list).max()
+
+returns: the maximum value of the list\.
+
+#### Examples ####
+
+    [1,2,3].max()
+
+Returns the integer 3\.  
+
+### argmin ###
+
+Returns index of minimum value in list\.
+
+#### Syntax ####
+
+    (list).argmin()
+
+returns: the index of the minimum value of the list\.
+
+#### Examples ####
+
+    [1,2,3].argmin()
+
+Returns the integer 0\.  
+
+### argmax ###
+
+Returns index of maximum value in list\.
+
+#### Syntax ####
+
+    (list).argmax()
+
+returns: the index of the maximum value of the list\.
+
+#### Examples ####
+
+    [1,2,3].argmax()
+
+Returns the integer 2\.  
+
+### sum ###
+
+Returns the sum of values in list\.
+
+#### Syntax ####
+
+    (list).sum()
+
+returns: the index of the maximum value of the list\.
+
+#### Examples ####
+
+    [1,2,3].argmax()
+
+Returns the integer 2\.  
+
+### base64\.decode ###
+
+Decodes base64\-encoded string to bytes\. This function returns an error if the string input is not base64\-encoded\.
+
+#### Syntax ####
+
+    base64.decode(base64_encoded_string(string))
+
+returns: the decoded base64\-encoded string in byte format\.
+
+#### Examples ####
+
+    base64.decode('aGVsbG8=')
+
+Returns 'hello' in bytes\.  
+
+### base64\.encode ###
+
+Encodes bytes to a base64\-encoded string\.
+
+#### Syntax ####
+
+    base64.encode(bytes_to_encode (bytes))
+
+returns: the encoded base64\-encoded string of the original byte value\.
+
+#### Examples ####
+
+    base64.decode(b'hello')
+
+Returns 'aGVsbG8=' in bytes\.  
+
+### charAt ###
+
+Returns the character at the given position\. If the position is negative, or greater than the length of the string, the function produces an error\.
+
+#### Syntax ####
+
+    (string).charAt(index (int))
+
+returns: the character of the specified position in integer format\.
+
+#### Examples ####
+
+    'hello'.charAt(4)
+
+Returns the character 'o'\.  
+
+### indexOf ###
+
+Returns the integer index of the first occurrence of the search string\. If the search string is not found the function returns \-1\.
+
+#### Syntax ####
+
+    (string).indexOf(search_string (string), [offset (int)])
+
+returns: the index of the first character occurrence after the offset\.
+
+#### Examples ####
+
+    'hello mellow'.indexOf('ello', 2)
+
+Returns the integer 7\.  
+
+### lowerAscii ###
+
+Returns a new string with ASCII characters turned to lowercase\.
+
+#### Syntax ####
+
+    (string).lowerAscii()
+
+returns: the new lowercase string\.
+
+#### Examples ####
+
+    'TacoCat'.lowerAscii()
+
+Returns the string 'tacocat'\.  
+
+### replace ###
+
+Returns a new string based on the target, which replaces the occurrences of a search string with a replacement string if present\. The function accepts an optional limit on the number of substring replacements to be made\.
+
+#### Syntax ####
+
+    (string).replace(search_string (string), replacement (string), [offset (int)])
+
+returns: the new string with occurrences of a search string replaced\.
+
+#### Examples ####
+
+    'hello hello'.replace('he', 'we')
+
+Returns the string 'wello wello'\.  
+
+### split ###
+
+Returns a list of strings that are split from the input by the separator\. The function accepts an optional argument that specifies a limit on the number of substrings that are produced by the split\.
+
+#### Syntax ####
+
+    (string).split(separator (string), [limit (int)])
+
+returns: the split string as a string list\.
+
+#### Examples ####
+
+    'hello hello hello'.split(' ')
+
+Returns the string list \['hello', 'hello', 'hello'\]\.  
+
+### substring ###
+
+Returns the substring given a numeric range corresponding to character positions\. Optionally you might omit the trailing range for a substring from a character position until the end of a string\.
+
+#### Syntax ####
+
+    (string).substring(start (int), [end (int)])
+
+returns: the substring at the specified index of the string\.
+
+#### Examples ####
+
+    'tacocat'.substring(4)
+
+Returns the string 'cat'\.  
+
+### trim ###
+
+Returns a new string, which removes the leading and trailing white space in the target string\. The trim function uses the Unicode definition of white space, which does not include the zero\-width spaces\.
+
+#### Syntax ####
+
+    (string).trim()
+
+returns: the new string with white spaces removed\.
+
+#### Examples ####
+
+    '  \ttrim\n    '.trim()
+
+Returns the string 'trim'\.  
+
+### upperAscii ###
+
+Returns a new string where all ASCII characters are upper\-cased\.
+
+#### Syntax ####
+
+    (string).upperAscii()
+
+returns: the new string with all characters turned to uppercase\.
+
+#### Examples ####
+
+    'TacoCat'.upperAscii()
+
+Returns the string 'TACOCAT'\.  
+
+### size ###
+
+Returns the length of the string, bytes, list, or map\.
+
+#### Syntax ####
+
+    (string | bytes | list | map).size()
+
+returns: the length of the string, bytes, list, or map array\.
+
+#### Examples ####
+
+    'hello'.size()
+
+Returns the integer 5\.
+
+    'hello'.size()
+
+Returns the integer 5\.
+
+    ['a','b','c'].size()
+
+Returns the integer 3\.
+
+    {'key': 'value'}.size()
+
+Returns the integer 1\.  
+
+### contains ###
+
+Tests whether the string operand contains the substring\.
+
+#### Syntax ####
+
+    (string).contains(substring (string))
+
+returns: a Boolean value of whether the substring exists in the string operand\.
+
+#### Examples ####
+
+    'hello'.contains('ll')
+
+Returns true\.  
+
+### endsWith ###
+
+Tests whether the string operand ends with the specified suffix\.
+
+#### Syntax ####
+
+    (string).endsWith(suffix (string))
+
+returns: a Boolean value of whether the string ends with specified suffix in the string operand\.
+
+#### Examples ####
+
+    'hello'.endsWith('llo')
+
+Returns true\.  
+
+### startsWith ###
+
+Tests whether the string operand starts with the prefix argument\.
+
+#### Syntax ####
+
+    (string).startsWith(prefix (string))
+
+returns: a Boolean value of whether the string begins with specified prefix in the string operand\.
+
+#### Examples ####
+
+    'hello'.startsWith('he')
+
+Returns true\.  
+
+### matches ###
+
+Tests whether the string operand matches regular expression\.
+
+#### Syntax ####
+
+    (string).matches(prefix (string))
+
+returns: a Boolean value of whether the string matches the specified regular expression\.
+
+#### Examples ####
+
+    'Hello'.matches('[Hh]ello')
+
+Returns true\.  
+
+### getDate ###
+
+Get the day of the month from the date with time zone (default Coordinated Universal Time), one\-based indexing\.
+
+#### Syntax ####
+
+    (timestamp).getDate([time_zone (string)])
+
+returns: the day of the month with one\-based indexing\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getDate()
+
+Returns 24\.  
+
+### getDayOfMonth ###
+
+Get the day of the month from the date with time zone (default Coordinated Universal Time), zero\-based indexing\.
+
+#### Syntax ####
+
+    (timestamp).getDayOfMonth([time_zone (string)])
+
+returns: the day of the month with zero\-based indexing\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getDayOfMonth()
+
+Returns 23\.  
+
+### getDayOfWeek ###
+
+Get day of the week from the date with time zone (default Coordinated Universal Time), zero\-based indexing, zero for Sunday\.
+
+#### Syntax ####
+
+    (timestamp).getDayOfWeek([time_zone (string)])
+
+returns: the day of the week with zero\-based indexing\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getDayOfWeek()
+
+Returns 5\.  
+
+### getDayOfYear ###
+
+Get the day of the year from the date with time zone (default Coordinated Universal Time), zero\-based indexing\.
+
+#### Syntax ####
+
+    (timestamp).getDayOfYear([time_zone (string)])
+
+returns: the day of the year with zero\-based indexing\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getDayOfYear()
+
+Returns 205\.  
+
+### getFullYear ###
+
+Get the year from the date with time zone (default Coordinated Universal Time)\.
+
+#### Syntax ####
+
+    (timestamp).getFullYear([time_zone (string)])
+
+returns: the year from the date\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getFullYear()
+
+Returns 2020\.  
+
+### getMonth ###
+
+Get the month from the date with time zone, 0\-11\.
+
+#### Syntax ####
+
+    (timestamp).getMonth([time_zone (string)])
+
+returns: the month from the date\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getMonth()
+
+Returns 6\.  
+
+### getHours ###
+
+Get hours from the date with time zone, 0\-23\.
+
+#### Syntax ####
+
+    (timestamp).getHours([time_zone (string)])
+
+returns: the hour from the date\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getHours()
+
+Returns 9\.  
+
+### getMinutes ###
+
+Get minutes from the date with time zone, 0\-59\.
+
+#### Syntax ####
+
+    (timestamp).getMinutes([time_zone (string)])
+
+returns: the minute from the date\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getMinutes()
+
+Returns 7\.  
+
+### getSeconds ###
+
+Get seconds from the date with time zone, 0\-59\.
+
+#### Syntax ####
+
+    (timestamp).getSeconds([time_zone (string)])
+
+returns: the second from the date\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.000-00:00').getSeconds()
+
+Returns 29\.  
+
+### getMilliseconds ###
+
+Get milliseconds from the date with time zone, 0\-999\.
+
+#### Syntax ####
+
+    (timestamp).getMilliseconds([time_zone (string)])
+
+returns: the millisecond from the date\.
+
+#### Examples ####
+
+    timestamp('2020-07-24T09:07:29.021-00:00').getMilliseconds()
+
+Returns 21\.
+
+## Access to advanced global objects ##
+
+Get node outputs, user variables, and pipeline parameters by using the following Pipelines code\.
+
+### Get user variable ###
+
+Gets the most up\-to\-date value of a user variable\.
+
+#### Syntax ####
+
+    vars.<var name>
+
+#### Examples ####
+
+<!-- <table> -->
+
+| Example            | Output                                            |
+| ------------------ | ------------------------------------------------- |
+| `vars.my_user_var` | Gets the value of the user variable `my_user_var` |
+
+<!-- </table ""> -->
+
+### Get parameters ###
+
+Gets the flow parameters\.
+
+#### Syntax ####
+
+    params.<param name>
+
+#### Examples ####
+
+<!-- <table> -->
+
+| Example    | Output                              |
+| ---------- | ----------------------------------- |
+| `params.a` | Gets the value of the parameter `a` |
+
+<!-- </table ""> -->
+
+### Get parameter sets ###
+
+Gets the flow parameter sets\.
+
+#### Syntax ####
+
+    param_set.<param_set_name>.<param_name>
+
+#### Examples ####
+
+<!-- <table> -->
+
+| Example                      | Output                                                             |
+| ---------------------------- | ------------------------------------------------------------------ |
+| `param_set.ps.a`             | Gets the value of the parameter `a` from a parameter set `ps`      |
+| `param_sets.config`          | Gets the pipeline configuration values                             |
+| `param_sets.config.deadline` | Gets a date object from the configurations parameter set           |
+| `param_sets.ps["$PARAM"]`    | Gets the value of the parameter `$PARAM` from a parameter set `ps` |
+
+<!-- </table ""> -->
+
+### Get task results ###
+
+Get a pipeline task's resulting output and other metrics from a pipeline task after it completes its run\.
+
+#### Syntax ####
+
+    tasks.<node id>.<output name>
+
+#### Examples ####
+
+<!-- <table> -->
+
+| Example                                          | Output                                             |
+| ------------------------------------------------ | -------------------------------------------------- |
+| `tasks.run_datastage_job`                        | Gets the results dictionary of job output          |
+| `tasks.run_datastage_job.results.score`          | Gets the value `score` of job output               |
+| `tasks.run_datastage_job.results.timestamp`      | Gets the end timestamp of job run                  |
+| `tasks.run_datastage_job.results.error`          | Gets the number of errors from job run             |
+| `tasks.loop_task.loop.counter`                   | Gets the current loop iterative counter of job run |
+| `tasks.loop_task.loop.item`                      | Gets the current loop iterative item of job run    |
+| `tasks.run_datastage_job.results.status`         | Gets either success or fail status of job run      |
+| `tasks.run_datastage_job.results.status_message` | Gets the status message of job run                 |
+| `tasks.run_datastage_job.results.job_name`       | Gets the job name                                  |
+| `tasks.run_datastage_job.results.job`            | Gets the Cloud Pak for Data path of job            |
+| `tasks.run_datastage_job.results.job_run`        | Gets the Cloud Pak for Data run path of job run    |
+
+<!-- </table ""> -->
+
+### Get pipeline context objects ###
+
+Gets values that are evaluated in the context of a pipeline that is run in a scope (project, space, catalog)\.
+
+#### Examples ####
+
+<!-- <table> -->
+
+| Example                            | Output                                          |
+| ---------------------------------- | ----------------------------------------------- |
+| `ctx.scope.id`                     | Gets scope ID                                   |
+| `ctx.scope.type`                   | Returns either "project", "space", or "catalog" |
+| `ctx.scope.name`                   | Gets scope name                                 |
+| `ctx.pipeline.id`                  | Gets pipeline ID                                |
+| `ctx.pipeline.name`                | Gets pipeline name                              |
+| `ctx.job.id`                       | Gets job ID                                     |
+| `ctx.run_datastage_job.id`         | Gets job run ID                                 |
+| `ctx.run_datastage_job.started_at` | Gets job run start time                         |
+| `ctx.user.id`                      | Gets the user ID                                |
+
+<!-- </table ""> -->
+
+### Get error status ###
+
+If the exception handler is triggered, an error object is created and becomes accessible only within the exception handler\.
+
+#### Examples ####
+
+<!-- <table> -->
+
+| Example                   | Output                                                        |
+| ------------------------- | ------------------------------------------------------------- |
+| `error.status`            | Gets either success or fail status of job run, usually failed |
+| `error.status_message`    | Gets the error status message                                 |
+| `error.job`               | Gets the Cloud Pak for Data path of job                       |
+| `error.run_datastage_job` | Gets the Cloud Pak for Data run path of job                   |
+
+<!-- </table ""> -->
+
+**Parent topic:**[Adding conditions to a Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-conditions.html)
+
+<!-- </article "role="article" "> -->

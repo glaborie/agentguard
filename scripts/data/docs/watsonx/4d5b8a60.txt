@@ -1,0 +1,149 @@
+# Creating the initial model #
+
+Parties can create and save the initial model before training by following a set of examples\.
+
+<!-- <ul> -->
+
+ *  [Save the Tensorflow model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-models.html?context=cdpaas&locale=en#tf-config)
+ *  [Save the Scikit\-learn model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-models.html?context=cdpaas&locale=en#sklearn-config)
+ *  [Save the Pytorch model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-models.html?context=cdpaas&locale=en#pytorch)
+
+<!-- </ul> -->
+
+Consider the configuration examples that match your model type\.  
+
+## Save the Tensorflow model ##
+
+    import tensorflow as tf
+    from tensorflow.keras import *
+    from tensorflow.keras.layers import *
+    import numpy as np
+    import os
+    
+    class MyModel(Model):
+        def __init__(self):
+            super(MyModel, self).__init__()
+            self.conv1 = Conv2D(32, 3, activation='relu')
+            self.flatten = Flatten()
+            self.d1 = Dense(128, activation='relu')
+            self.d2 = Dense(10)
+    
+        def call(self, x):
+            x = self.conv1(x)
+            x = self.flatten(x)
+            x = self.d1(x)
+            return self.d2(x)
+    
+    # Create an instance of the model
+    
+    model = MyModel()
+    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(
+        from_logits=True)
+    optimizer = tf.keras.optimizers.Adam()
+    acc = tf.keras.metrics.SparseCategoricalAccuracy(name='accuracy')
+    model.compile(optimizer=optimizer, loss=loss_object, metrics=[acc])
+    img_rows, img_cols = 28, 28
+    input_shape = (None, img_rows, img_cols, 1)
+    model.compute_output_shape(input_shape=input_shape)
+    
+    dir = "./model_architecture"
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    
+    model.save(dir)
+
+If you choose Tensorflow as the model framework, you need to save a Keras model as the `SavedModel` format\. A Keras model can be saved in `SavedModel` format by using `tf.keras.model.save()`\.
+
+To compress your files, run the command `zip -r mymodel.zip model_architecture`\. The contents of your `.zip` file must contain:
+
+    mymodel.zip
+    └── model_architecture
+        ├── assets
+        ├── keras_metadata.pb
+        ├── saved_model.pb
+        └── variables
+            ├── variables.data-00000-of-00001
+            └── variables.index
+
+## Save the Scikit\-learn model ##
+
+<!-- <ul> -->
+
+ *  [SKLearn classification](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-models.html?context=cdpaas&locale=en#sk-class)
+ *  [SKLearn regression](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-models.html?context=cdpaas&locale=en#sk-reg)
+ *  [SKLearn Kmeans](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-models.html?context=cdpaas&locale=en#sk-k)
+
+<!-- </ul> -->
+
+### SKLearn classification ###
+
+    # SKLearn classification
+    
+    from sklearn.linear_model import SGDClassifier
+    import numpy as np
+    import joblib
+    
+    model = SGDClassifier(loss='log', penalty='l2')
+    model.classes_ = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    # You must specify the class label for IBM Federated Learning using model.classes. Class labels must be contained in a numpy array.
+    # In the example, there are 10 classes.
+    
+    joblib.dump(model, "./model_architecture.pickle")
+
+### SKLearn regression ###
+
+    # Sklearn regression
+    
+    from sklearn.linear_model import SGDRegressor
+    import pickle
+    
+    model = SGDRegressor(loss='huber', penalty='l2')
+    
+    with open("./model_architecture.pickle", 'wb') as f:
+        pickle.dump(model, f)
+
+### SKLearn Kmeans ###
+
+    # SKLearn Kmeans
+    from sklearn.cluster import KMeans
+    import joblib
+    
+    model = KMeans()
+    joblib.dump(model, "./model_architecture.pickle")
+
+You need to create a `.zip` file that contains your model in pickle format by running the command `zip mymodel.zip model_architecture.pickle`\. The contents of your `.zip` file must contain:
+
+    mymodel.zip
+    └── model_architecture.pickle
+
+## Save the PyTorch model ##
+
+    import torch
+    import torch.nn as nn
+    
+    model = nn.Sequential(
+        nn.Flatten(start_dim=1, end_dim=-1),
+        nn.Linear(in_features=784, out_features=256, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=256, out_features=256, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=256, out_features=256, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=256, out_features=100, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=100, out_features=50, bias=True),
+        nn.ReLU(),
+        nn.Linear(in_features=50, out_features=10, bias=True),
+        nn.LogSoftmax(dim=1),
+    ).double()
+    
+    torch.save(model, "./model_architecture.pt")
+
+You need to create a `.zip` file containing your model in pickle format\. Run the command `zip mymodel.zip model_architecture.pt`\. The contents of your `.zip` file should contain:
+
+    mymodel.zip
+    └── model_architecture.pt
+
+**Parent topic:**[Creating a Federated Learning experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-start.html)
+
+<!-- </article "role="article" "> -->

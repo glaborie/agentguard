@@ -1,0 +1,5 @@
+# Python node properties #
+
+Refer to this section for a list of available properties for Python nodes\.
+
+<!-- </article "role="article" "> -->

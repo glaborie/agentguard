@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -31,7 +31,8 @@ def test_agent_model_in_model_list():
 
 
 def test_call_returns_tuple():
-    with patch("app.api.services.agent_llm.asyncio.run", return_value="agent answer"):
+    with patch("app.agent.graph.run_agent_async", new=Mock(return_value="ignored")), \
+         patch("app.api.services.agent_llm.asyncio.run", return_value="agent answer"):
         from app.api.services import agent_llm
         result, cid = agent_llm.call(
             query="hello",
@@ -46,7 +47,8 @@ def test_call_returns_tuple():
 
 def test_call_returns_list_answer():
     raw = [{"text": "part1"}, {"text": "part2"}]
-    with patch("app.api.services.agent_llm.asyncio.run", return_value=raw):
+    with patch("app.agent.graph.run_agent_async", new=Mock(return_value="ignored")), \
+         patch("app.api.services.agent_llm.asyncio.run", return_value=raw):
         from app.api.services import agent_llm
         result, cid = agent_llm.call(
             query="hello",
@@ -60,7 +62,8 @@ def test_call_returns_list_answer():
 
 
 def test_call_uses_provided_model():
-    with patch("app.api.services.agent_llm.asyncio.run", return_value="ok") as mock_run:
+    with patch("app.agent.graph.run_agent_async", new=Mock(return_value="ignored")) as mock_async, \
+         patch("app.api.services.agent_llm.asyncio.run", return_value="ok") as mock_run:
         from app.api.services import agent_llm
         result, cid = agent_llm.call(
             query="hello",
@@ -71,12 +74,18 @@ def test_call_uses_provided_model():
         )
 
     mock_run.assert_called_once()
+    mock_async.assert_called_once_with(
+        question="hello",
+        model="openrouter-claude-haiku",
+        checkpointer=None,
+    )
     assert result == "ok"
     assert cid.startswith("chatcmpl-")
 
 
 def test_call_returns_error_string_on_exception():
-    with patch("app.api.services.agent_llm.asyncio.run", side_effect=RuntimeError("boom")):
+    with patch("app.agent.graph.run_agent_async", new=Mock(return_value="ignored")), \
+         patch("app.api.services.agent_llm.asyncio.run", side_effect=RuntimeError("boom")):
         from app.api.services import agent_llm
         result, cid = agent_llm.call(
             query="hello",

@@ -1,0 +1,8 @@
+# Web node #
+
+Web nodes show the strength of relationships between values of two or more symbolic fields\. The graph displays connections using varying types of lines to indicate connection strength\. You can use a Web node, for example, to explore the relationship between the purchase of various items at an e\-commerce site or a traditional retail outlet\.
+
+Figure 1\. Web graph showing relationships between the purchase of grocery items
+
+![Web graph showing relationships between the purchase of grocery items](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/graphs_web_generated.jpg)
+<!-- </article "role="article" "> -->

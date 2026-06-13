@@ -1,0 +1,179 @@
+# Troubleshooting Watson OpenScale #
+
+You can use the following techniques to work around problems with IBM Watson OpenScale\.
+
+<!-- <ul> -->
+
+ *  [When I use AutoAI, why am I getting an error about mismatched data?](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-trouble-common-autoai-binary)
+ *  [Why am I getting errors during model configuration?](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-trouble-common-xgboost-wml-model-details)
+ *  [Why are my class labels missing when I use XGBoost?](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-trouble-common-xgboost-multiclass)
+ *  [Why are the payload analytics not displaying properly?](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-trouble-common-payloadfileformat)
+ *  [Error: An error occurred while computing feature importance](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-trouble-wos-equals-sign-explainability)
+ *  [Why are some of my active debias records missing?](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-trouble-common-payloadlogging-1000k-limit)
+ *  [Watson OpenScale does not show any available schemas](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-available-schemas)
+ *  [A monitor run fails with an `OutOfResources exception` error message](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/wos-troubleshoot.html?context=cdpaas&locale=en#ts-resources-exception)
+
+<!-- </ul> -->
+
+## When I use AutoAI, why am I getting an error about mismatched data? ##
+
+You receive an error message about mismatched data when using AutoAI for binary classification\. Note that AutoAI is only supported in IBM Watson OpenScale for IBM Cloud Pak for Data\.
+
+For binary classification type, AutoAI automatically sets the data type of the prediction column to boolean\.
+
+To fix this, implement one of the following solutions:
+
+<!-- <ul> -->
+
+ *  Change the label column values in the training data to integer values, such as `0` or `1` depending on the outcome\.
+ *  Change the label column values in the training data to string value, such as `A` and `B`\.
+
+<!-- </ul> -->
+
+## Why am I getting errors during model configuration? ##
+
+The following error messages appear when you are configuring model details: **Field `feature_fields` references column `<name>`, which is missing in `input_schema` of the model\. Feature not found in input schema\.**
+
+The preceding messages while completing the **Model details** section during configuration indicate a mismatch between the model input schema and the model training data schema:
+
+To fix the issue, you must determine which of the following conditions is causing the error and take corrective action: If you use IBM Watson Machine Learning as your machine learning provider and the model type is XGBoost/scikit\-learn refer to the Machine Learning [Python SDK documentation](https://ibm.github.io/watson-machine-learning-sdk/#repository) for important information about how to store the model\. To generate the drift detection model, you must use scikit\-learn version 0\.20\.2 in notebooks\. For all other cases, you must ensure that the training data column names match with the input schema column names\.
+
+## Why are my class labels missing when I use XGBoost? ##
+
+Native XGBoost multiclass classification does not return class labels\.
+
+By default, for binary and multiple class models, the XGBoost framework does not return class labels\.
+
+For XGBoost binary and multiple class models, you must update the model to return class labels\.
+
+## Why are the payload analytics not displaying properly? ##
+
+Payload analytics does not display properly and the following error message displays: **AIQDT0044E Forbidden character `"` in column name `<column name>`**
+
+For proper processing of payload analytics, Watson OpenScale does not support column names with double quotation marks (") in the payload\. This affects both scoring payload and feedback data in CSV and JSON formats\.
+
+Remove double quotation marks (") from the column names of the payload file\.
+
+## Error: An error occurred while computing feature importance ##
+
+You receive the following error message during processing: `Error: An error occurred while computing feature importance`\.
+
+Having an equals sign (=) in the column name of a dataset causes an issue with explainability\.
+
+Remove the equals sign (=) from the column name and send the dataset through processing again\.
+
+## Why are some of my active debias records missing? ##
+
+Active debias records do not reach the payload logging table\.
+
+When you use the active debias API, there is a limit of 1000 records that can be sent at one time for payload logging\.
+
+To avoid loss of data, you must use the active debias API to score in chunks of 1000 records or fewer\.
+
+For more information, see [Reviewing debiased transactions](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-insight-timechart.html)\.
+
+## Watson OpenScale does not show any available schemas ##
+
+When a user attempts to retrieve schema information for Watson OpenScale, none are available\. After attempting directly in DB2, without reference to Watson OpenScale, checking what schemas are available for the database userid also returns none\.
+
+Insufficient permissions for the database userid is causing database connection issues for Watson OpenScale\.
+
+Make sure the database user has the correct permissions needed for Watson OpenScale\.
+
+## A monitor run fails with an `OutOfResources exception` error message ##
+
+You receive an `OutOfResources exception` error message\.
+
+Although there's no longer a limit on the number of rows you can have in the feedback payload, scoring payload, or business payload tables\. The 50,000 limit now applies to the number of records you can run through the quality and bias monitors each billing period\.
+
+After you reach your limit, you must either upgrade to a Standard plan or wait for the next billing period\.
+
+## Missing deployments ##
+
+A deployed model does not show up as a deployment that can be selected to create a subscription\.
+
+There are different reasons that a deployment does not show up in the list of available deployed models\. If the model is not a supported type of model because it uses an unsupported algorithm or framework, it won't appear\. Your machine learning provider might not be configured properly\. It could also be that there are issues with permissions\.
+
+Use the following steps to resolve this issue:
+
+<!-- <ol> -->
+
+1.  Check that the model is a supported type\. Not sure? For more information, see [Supported machine learning engines, frameworks, and models](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-frameworks-ovr.html)\.
+2.  Check that a machine learning provider exists in the Watson OpenScale configuration for the specific deployment space\. For more information, see [Deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html)\.
+3.  Check that the CP4D `admin` user has permission to access the deployment space\.
+
+<!-- </ol> -->
+
+### Watson OpenScale evaluation might fail due to large number of subscriptions ###
+
+If a Watson OpenScale instance contains too many subscriptions, such as 100 subscriptions, your quality evaluations might fail\. You can view the details of the failure in the log for the data mart service pod that displays the following error message:
+
+    "Failure converting response to expected model EntityStreamSizeException: actual entity size (Some(8644836)) exceeded content length limit (8388608 bytes)! You can configure this by setting akka.http.[server|client].parsing.max-content-length or calling HttpEntity.withSizeLimit before materializing the dataBytes stream".
+
+You can use the `oc get pod -l component=aios-datamart` command to find the name of the pod\. You can also use the `oc logs <pod name>` command to the log for the pod\.
+
+To fix this error, you can use the following command to increase the maximum request body size by editing the `"ADDITIONAL_JVM_OPTIONS"` environment variable:
+
+    oc patch woservice <release name> -p '{"spec": {"datamart": {"additional_jvm_options":"-Dakka.http.client.parsing.max-content-length=100m"} }}' --type=merge
+
+The release name is `"aiopenscale"` if you don't customize the release name when you install Watson OpenScale\.
+
+### Microsoft Azure ML Studio ###
+
+<!-- <ul> -->
+
+ *  Of the two types of Azure Machine Learning web services, only the `New` type is supported by Watson OpenScale\. The `Classic` type is not supported\.
+ *  *Default input name must be used*: In the Azure web service, the default input name is `"input1"`\. Currently, this field is mandated for Watson OpenScale and, if it is missing, Watson OpenScale will not work\.
+    
+    If your Azure web service does not use the default name, change the input field name to `"input1"`, then redeploy your web service and reconfigure your OpenScale machine learning provider settings.
+ *  If calls to Microsoft Azure ML Studio to list the machine learning models causes the response to time out, for example when you have many web services, you must increase timeout values\. You may need to work around this issue by changing the `/etc/haproxy/haproxy.cfg` configuration setting:
+    
+    <!-- <ul> -->
+    
+     *  Log in to the load balancer node and update `/etc/haproxy/haproxy.cfg` to set the client and server timeout from `1m` to `5m`:
+        
+            timeout client           5m
+             timeout server           5m
+     *  Run `systemctl restart haproxy` to restart the HAProxy load balancer.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+If you are using a different load balancer, other than HAProxy, you may need to adjust timeout values in a similar fashion\.
+
+<!-- <ul> -->
+
+ *  Of the two types of Azure Machine Learning web services, only the `New` type is supported by Watson OpenScale\. The `Classic` type is not supported\.
+
+<!-- </ul> -->
+
+### Uploading feedback data fails in production subscription after importing settings ###
+
+After importing the settings from your pre\-production space to your production space you might have problems uploading feedback data\. This happens when the datatypes do not match precisely\. When you import settings, the feedback table references the payload table for its column types\. You can avoid this issue by making sure that the payload data has the most precise value type first\. For example, you must prioritize a double datatype over an integer datatype\.
+
+### Microsoft Azure Machine Learning Service ###
+
+When performing model evaluation, you may encounter issues where Watson OpenScale is not able to communicate with Azure Machine Learning Service, when it needs to invoke deployment scoring endpoints\. Security tools that enforce your enterprise security policies, such as Symantec Blue Coat may prevent such access\.
+
+### Watson OpenScale fails to create a new Hive table for the batch deployment subscription ###
+
+When you choose to create a new Apache Hive table with the `Parquet` format during your Watson OpenScale batch deployment configuration, the following error might occur:
+
+    Attribute name "table name" contains invalid character(s) among " ,;{}()\\n\\t=". Please use alias to rename it.;
+
+This error occurs if Watson OpenScale fails to run the `CREATE TABLE` SQL operation due to white space in a column name\. To avoid this error, you can remove any white space from your column names or change the Apache Hive format to `csv`\.
+
+### Watson OpenScale setup might fail with default Db2 database ###
+
+When you set up Watson OpenScale and specify the default Db2 database, the setup might fail to complete\.
+
+To fix this issue, you must run the following command in Cloud Pak for Data to update Db2:
+
+    db2 update db cfg using DFT_EXTENT_SZ 32
+
+After you run the command, you must create a new Db2 database to set up Watson OpenScale\.
+
+**Parent topic:**[Troubleshooting](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/troubleshoot.html)
+
+<!-- </article "role="article" "> -->

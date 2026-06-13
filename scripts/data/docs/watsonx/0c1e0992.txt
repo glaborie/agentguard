@@ -1,0 +1,27 @@
+# Building a model #
+
+By exploring and manipulating the data, you have been able to form some hypotheses\. The ratio of sodium to potassium in the blood seems to affect the choice of drug, as does blood pressure\. But you cannot fully explain all of the relationships yet\. This is where modeling will likely provide some answers\. In this case, you will try to fit the data using a rule\-building model called  C5\.0\.
+
+Since you're using a derived field, `Na_to_K`, you can filter out the original fields, `Na` and `K`, so they're not used twice in the modeling algorithm\. You can do this by using a Filter node\.
+
+<!-- <ol> -->
+
+1.  Place a Filter node on the canvas and connect it to the Derive node\.
+    
+    Figure 1. Filter node
+    
+    ![Derive node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_build_flow.png)
+2.  Double\-click the Filter node to edit its properties\. Name it  Discard Fields\.
+3.  For Mode, make sure  Filter the selected fields is selected\. Then select the `K` and `Na` fields\. Click `Save`\.
+4.  Place a Type node on the canvas and connect it to the Filter node\. With the Type node, you can indicate the types of fields you're using and how they're used to predict the outcomes\.
+    
+    Figure 2. Type node
+    
+    ![Type node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_drug_build_flow2.png)
+5.  Double\-click the Type node to edit its properties\. Name it  Define Types\.
+6.  Set the role for the `Drug` field to  Target, indicating that `Drug` is the field you want to predict\. Leave the role for the other fields set to  Input so they'll be used as predictors\. Click  Save\.
+7.  To estimate the model, place a C5\.0 node on the canvas and attach it to the end of the flow\. Then click the  Run button on the toolbar to run the flow\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

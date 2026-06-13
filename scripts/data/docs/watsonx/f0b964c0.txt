@@ -1,0 +1,97 @@
+# Model input and output data adaptation #
+
+When submitting your job you can include your data inline or reference your data in your request\. This data will be mapped to a file named with data identifier and used by the model\. The data identifier extension will define the format of the file used\.
+
+The following adaptations are supported:
+
+<!-- <ul> -->
+
+ *  **Tabular inline data** to embed your data in your request\. For example:
+    
+        "input_data": [{
+             "id":"diet_food.csv",
+             "fields" : "name","unit_cost","qmin","qmax"],
+             "values" : 
+        	 	"Roasted Chicken", 0.84, 0, 10]
+             ]
+        }]
+    
+    This will generate the corresponding `diet_food.csv` file that is used as the model input file. Only csv adaptation is currently supported.
+ *  **Inline data**, that is, non\-tabular data (such as an OPL `.dat` file or an `.lp`file) to embed data in your request\. For example:
+    
+        "input_data": [{
+             "id":"diet_food.csv",
+             "content":"Input data as a base64 encoded string"
+        }]
+ *  **URL** referenced data allowing you to reference files stored at a particular URL or REST data service\. For example:
+    
+        "input_data_references": {
+           "type": "url",
+           "id": "diet_food.csv",
+           "connection": {
+              "verb": "GET",
+              "url": "https://myserver.com/diet_food.csv",
+              "headers": {
+                 "Content-Type": "application/x-www-form-urlencoded"
+              }
+           },
+           "location": {}
+        }
+    
+    This will copy the corresponding `diet_food.csv` file that is used as the model input file.
+ *  **Data assets** allowing you to reference any data asset or connected data asset present in your space and benefit from the data connector integration capabilities\. For example:
+    
+        "input_data_references": [{
+               "name": "test_ref_input",
+               "type": "data_asset",
+               "connection": {},
+               "location": {
+                       "href": "/v2/assets/ASSET-ID?space_id=SPACE-ID"
+               }
+        }],
+        "output_data_references": [{
+               "type": "data_asset",
+               "connection": {},
+               "location": {
+                       "href": "/v2/assets/ASSET-ID?space_id=SPACE-ID"
+               }
+        }]
+    
+    With this data asset type there are many different connections available. For more information, see [Batch deployment details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-details.html#do).
+ *  **Connection assets** allowing you to reference any data and then refer to the connection, without having to specify credentials each time\. For more information, see [Supported data sources in Decision Optimization](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/DOconnections.html)\. Referencing a secure connection without having to use inline credentials in the payload also offers you better security\. For more information, see [Example connection\_asset payload](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html#connection_asset_payload)\.For example, to connect to a COS/S3 via a Connection asset:
+    
+        {
+              "type" : "connection_asset",
+              "id" : "diet_food.csv",
+              "connection" : {
+                "id" : <connection_guid>      
+              },
+              "location" : {
+                "file_name" : "FILENAME.csv",
+                "bucket" : "BUCKET-NAME"
+              }
+        }
+    
+    For information about the parameters used in these examples, see [Deployment job definitions](https://cloud.ibm.com/apidocs/machine-learning-cp#deployment-job-definitions-create).
+    
+    Another example showing you how to connect to a DB2 asset via a connection asset:
+    
+        {
+                "type" : "connection_asset",
+                "id" : "diet_food.csv",
+                "connection" : {
+                  "id" : <connection_guid>
+                },
+                "location" : {
+                  "table_name" : "TABLE-NAME",
+                  "schema_name" : "SCHEMA-NAME"
+                }
+        }
+
+<!-- </ul> -->
+
+With this connection asset type there are many different connections available\. For more information, see [Batch deployment details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-details.html#do)\.
+
+You can combine different adaptations in the same request\. For more information about data definitions see [Adding data to an analytics project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html)\.
+
+<!-- </article "role="article" "> -->

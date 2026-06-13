@@ -1,0 +1,34 @@
+# Administering a project #
+
+If you have the **Admin** role in a project, you can perform administrative tasks for the project\.
+
+<!-- <ul> -->
+
+ *  [Manage collaborators](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/collaborate.html)
+ *  [Mark data assets in project as sensitive](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/mark-sensitive.html)
+ *  [Stop all active runtimes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/manage-envs-new.html#stop-active-runtimes)
+ *  [Export a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/export-project.html)
+ *  [Manage project access tokens](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/token.html)
+ *  [Remove assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-assets.html#remove-asset)
+ *  [Edit a locked asset](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-assets.html#editassets)
+ *  [Delete the project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/admin-project.html?context=cdpaas&locale=en#delete-project)
+ *  [Copy a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/admin-project.html?context=cdpaas&locale=en#copy-project)
+ *  [Switch the platform for a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/switch-platform.html)
+
+<!-- </ul> -->
+
+Note: In the activity log, the user ID for some activities might display `icp4d-dev` instead of `admin`\.
+
+## Delete a project ##
+
+If you have the **Admin** role in a project, you can delete it\. All project assets, associated files in the project's storage, and the associated storage for the project are also deleted\. Data in a remote data source that is accessed through a connection is not affected\.
+
+To delete a project, choose **Project > View All Projects** and then choose **Delete** from the **ACTIONS** menu next to the project name\.
+
+## Copy a project ##
+
+You can copy an existing project by [exporting it](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/export-project.html), and then [importing it](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/import-project.html) with a different name\.
+
+**Parent topic:**[Projects ](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+
+<!-- </article "role="article" "> -->

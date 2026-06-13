@@ -1,0 +1,17 @@
+# Troubleshooting connections #
+
+Use these solutions to resolve problems that you might encounter with connections\.
+
+## IBM Db2 for z/OS: Error retrieving the schema list when you try to connect to a Db2 for z/OS server ##
+
+When you test the connection to a Db2 for z/OS server and the connection cannot retrieve the schema list, you might receive the following error:
+
+    CDICC7002E: The assets request failed: CDICO2064E: The metadata for the column TABLE_SCHEM could not
+     be obtained: Sql error: [jcc] [10300] Invalid parameter: Unknown column name
+     TABLE_SCHEM. ERRORCODE=-4460, SQLSTATE=null
+
+**Workaround:** On the Db2 for z/OS server, set the **DESCSTAT** subsystem parameter to `No`\. For more information, see [DESCRIBE FOR STATIC field (DESCSTAT subsystem parameter)](https://www.ibm.com/docs/SSEPEK_13.0.0/inst/src/tpc/db2z_ipf_descstat.html)\.
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

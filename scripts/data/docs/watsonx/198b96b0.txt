@@ -1,0 +1,154 @@
+# Creating online deployments in Watson Machine Learning #
+
+Create an online (also called `Web service`) deployment to load a model or Python code when the deployment is created to generate predictions online, in real time\. For example, if you create a classification model to test whether a new customer is likely to participate in a sales promotion, you can create an online deployment for the model\. Then, you can enter the new customer data to get an immediate prediction\.
+
+### Supported frameworks ###
+
+Online deployment is supported for these frameworks:
+
+<!-- <ul> -->
+
+ *  PMML
+ *  Python Function
+ *  PyTorch\-Onnx
+ *  Tensorflow
+ *  Scikit\-Learn
+ *  Spark MLlib
+ *  SPSS
+ *  XGBoost
+
+<!-- </ul> -->
+
+You can create an online deployment [from the user interface](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-online.html?context=cdpaas&locale=en#online-interface) or [programmatically](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-online.html?context=cdpaas&locale=en#online-programmatically)\.
+
+To send payload data to an asset that is deployed online, you must know the endpoint URL of the deployment\. Examples include, classification of data, or making predictions from the data\. For more information, see [Retrieving the deployment endpoint](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-online.html?context=cdpaas&locale=en#get-online-endpoint)\.
+
+Additionally, you can:
+
+<!-- <ul> -->
+
+ *  [Test your online deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-online.html?context=cdpaas&locale=en#test-online-deployment)
+ *  [Access the deployment details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-online.html?context=cdpaas&locale=en#access-online-details)
+
+<!-- </ul> -->
+
+## Creating an online deployment from the User Interface ##
+
+<!-- <ol> -->
+
+1.  From the deployment space, click the name of the asset that you want to deploy\. The details page opens\.
+2.  Click **New deployment**\.
+3.  Choose **Online** as the deployment type\.
+4.  Provide a name and an optional description for the deployment\.
+5.  If you want to specify a name to be used instead of deployment ID, use the **Serving name** field\.
+    
+    <!-- <ul> -->
+    
+     *  The name must be validated to be unique per IBM cloud region (all names in a specific region share a global namespace).
+     *  The name must contain only these characters: \[a-z,0-9,\_\] and must be a maximum 36 characters long.
+     *  Serving name works only as part of the prediction URL. In some cases, you must still use the deployment ID.
+    
+    <!-- </ul> -->
+    
+6.  Click **Create** to create the deployment\.
+
+<!-- </ol> -->
+
+## Creating an online deployment programmatically ##
+
+Refer to [Machine learning samples and examples](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-samples-overview.html) for links to sample notebooks\. These notebooks demonstrate creating online deployments that use the Watson Machine Learning [REST API](https://cloud.ibm.com/apidocs/machine-learning) and Watson Machine Learning [Python client library](https://ibm.github.io/watson-machine-learning-sdk/)\.
+
+## Retrieving the online deployment endpoint ##
+
+You can find the endpoint URL of a deployment in these ways:
+
+<!-- <ul> -->
+
+ *  From the **Deployments** tab of your space, click your deployment name\. A page with deployment details opens\. You can find the endpoint there\.
+ *  Using the Watson Machine Learning Python client:
+    
+    <!-- <ol> -->
+    
+    1.  List the deployments by calling the [Python client method](https://ibm.github.io/watson-machine-learning-sdk/core_api.html#client.Deployments.list)`client.deployments.list()`
+    2.  Find the row with your deployment. The deployment endpoint URL is listed in the `url` column.
+    
+    <!-- </ol> -->
+    
+<!-- </ul> -->
+
+**Notes**:  
+
+<!-- <ul> -->
+
+ *  If you added **Serving name** to the deployment, two alternative endpoint URLs show on the screen; one containing the deployment ID, and the other containing your serving name\. You can use either one of these URLs with your deployment\.
+ *  The **API Reference** tab also shows code snippets in various programming languages that illustrate how to access the deployment\.
+
+<!-- </ul> -->
+
+For more information, see [Endpoint URLs](https://cloud.ibm.com/apidocs/machine-learning#endpoint-url)\.
+
+## Testing your online deployment ##
+
+From the **Deployments** tab of your space, click your deployment name\. A page with deployment details opens\. The **Test** tab provides a place where you can enter data and get a prediction back from the deployed model\. If your model has a defined schema, a form shows on screen\. In the form, you can enter data in one of these ways:
+
+<!-- <ul> -->
+
+ *  Enter data directly in the form
+ *  Download a CSV template, enter values, and upload the input data
+ *  Upload a file that contains input data from your local file system or from the space
+ *  Change to the JSON tab and enter your input data as JSON code Regardless of method, the input data must match the schema of the model\. Submit the input data and get a score, or prediction, back\.
+
+<!-- </ul> -->
+
+### Sample deployment code ###
+
+When you submit JSON code as the payload, or input data, for a deployment, your input data must match the schema of the model\. The 'fields' must match the column headers for the data, and the 'values' must contain the data, in the same order\. Use this format:
+
+    {"input_data":[{
+            "fields": <field1>, <field2>, ...],
+            "values": <value1>, <value2>, ...]]
+    }]}
+
+Refer to this example:  
+
+    {"input_data":[{
+            "fields": "PassengerId","Pclass","Name","Sex","Age","SibSp","Parch","Ticket","Fare","Cabin","Embarked"],
+            "values": 1,3,"Braund, Mr. Owen Harris",0,22,1,0,"A/5 21171",7.25,null,"S"]]
+    }]}
+
+**Notes:**
+
+<!-- <ul> -->
+
+ *  All strings are enclosed in double quotation marks\. The Python notation for dictionaries looks similar, but Python strings in single quotation marks are not accepted in the JSON data\.
+ *  Missing values can be indicated with `null`\.
+ *  You can specify a hardware specification for an online deployment, for example if you are [scaling a deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-scaling.html)\.
+
+<!-- </ul> -->
+
+### Preparing payload that matches the schema of an existing model ###
+
+Refer to this sample code:
+
+    model_details = client.repository.get_details("<model_id>")  # retrieves details and includes schema
+    columns_in_schema = []
+    for i in range(0, len(model_details['entity']['input'].get('fields'))):
+        columns_in_schema.append(model_details['entity']['input'].get('fields')[i])
+    
+    X = X[columns_in_schema] # where X is a pandas dataframe that contains values to be scored
+    #(...)
+    scoring_values = X.values.tolist()
+    array_of_input_fields = X.columns.tolist()
+    payload_scoring = {"input_data": [{"fields": array_of_input_fields],"values": scoring_values}]}
+
+## Accessing the online deployment details ##
+
+To access your online deployment details: From the **Deployments** tab of your space, click your deployment name and then click the **Deployment details** tab\. The **Deployment details** tab contains specific information that is related to the currently opened online deployment and allows for adding a model to the model inventory, to enable activity tracking and model comparison\.
+
+## Additional information ##
+
+Refer to [Assets in deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets-all.html) for details on managing deployment jobs, and updating, scaling, or deleting an online deployment\.
+
+**Parent topic:**[Managing predictive deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+
+<!-- </article "role="article" "> -->

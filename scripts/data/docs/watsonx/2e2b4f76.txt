@@ -1,0 +1,23 @@
+# Deploying scripts in Watson Machine Learning #
+
+When a script is copied to a deployment space, you can deploy it for use\. Supported script types are Python scripts\. [Batch deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-details.html) is the only supported deployment type for a script\.
+
+<!-- <ul> -->
+
+ *  When the script is promoted from a project, your software specification is included\.
+ *  When you create a deployment job for a script, you must manually override the default environment with the correct environment for your script\. For more information, see [Creating a deployment job](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-jobs.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  To learn more about supported input and output types and setting environment variables, see [Batch deployment details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-details.html)\.
+ *  To learn more about software specifications, see [Software specifications and hardware specifications for deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/pm_service_supported_frameworks.html)\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Managing predictive deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+
+<!-- </article "role="article" "> -->

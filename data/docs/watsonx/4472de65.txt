@@ -1,0 +1,23 @@
+# Missing data values #
+
+During the data preparation phase of data mining, you will often want to replace missing values in the data\.
+
+Missing values are values in the data set that are unknown, uncollected, or incorrectly entered\. Usually, such values aren't valid for their fields\. For example, the field `Sex` should contain the values `M` and `F`\. If you discover the values `Y` or `Z` in the field, you can safely assume that such values aren't valid and should therefore be interpreted as blanks\. Likewise, a negative value for the field `Age` is meaningless and should also be interpreted as a blank\. Frequently, such obviously wrong values are purposely entered, or fields are left blank, during a questionnaire to indicate a nonresponse\. At times, you may want to examine these blanks more closely to determine whether a nonresponse, such as the refusal to give one's age, is a factor in predicting a specific outcome\.
+
+Some modeling techniques handle missing data better than others\. For example, the [C5\.0 node](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/c50.html) and the [Apriori node](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/apriori.html) cope well with values that are explicitly declared as "missing" in a [Type node](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/type.html)\. Other modeling techniques have trouble dealing with missing values and experience longer training times, resulting in less\-accurate models\.
+
+There are several types of missing values recognized by :
+
+<!-- <ul> -->
+
+ *  Null or system\-missing values\. These are nonstring values that have been left blank in the database or source file and have not been specifically defined as "missing" in an [Import](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/_nodes_import.html) or Type node\. System\-missing values are displayed as `$null$`\. Note that empty strings are not considered nulls in , although they may be treated as nulls by certain databases\.
+ *  Empty strings and white space\. Empty string values and white space (strings with no visible characters) are treated as distinct from null values\. Empty strings are treated as equivalent to white space for most purposes\. For example, if you select the option to treat white space as blanks in an Import or Type node, this setting applies to empty strings as well\.
+ *  Blank or user\-defined missing values\. These are values such as `unknown`, `99`, or `–1` that are explicitly defined in an Import node or Type node as missing\. Optionally, you can also choose to treat nulls and white space as blanks, which allows them to be flagged for special treatment and to be excluded from most calculations\. For example, you can use the `@BLANK` function to treat these values, along with other types of missing values, as blanks\.
+
+<!-- </ul> -->
+
+Reading in mixed data\. Note that when you're reading in fields with numeric storage (either integer, real, time, timestamp, or date), any non\-numeric values are set to `null` or `system missing`\. This is because, unlike some applications, doesn't allow mixed storage types within a field\. To avoid this, you should read in any fields with mixed data as strings by changing the storage type in the Import node or external application as necessary\.
+
+Reading empty strings from Oracle\. When reading from or writing to an Oracle database, be aware that, unlike and unlike most other databases, Oracle treats and stores empty string values as equivalent to null values\. This means that the same data extracted from an Oracle database may behave differently than when extracted from a file or another database, and the data may return different results\.
+
+<!-- </article "role="article" "> -->

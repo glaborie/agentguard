@@ -1,0 +1,32 @@
+# Viewing a factsheet for a tracked asset #
+
+Review the details that are captured for each tracked asset in an AI use case or print a report to share or archive\.
+
+## What is captured in a factsheet? ##
+
+From the point where you start tracking an asset in an AI use case, facts are collected in a factsheet for the asset\. As the asset moves from one phase of the lifecycle to the next, the facts are added to the appropriate section\. For example, a factsheet for a prompt template collects information for these categories:
+
+<!-- <table> -->
+
+| Category          | Description                                                                                                    |
+| ----------------- | -------------------------------------------------------------------------------------------------------------- |
+| Governance        | basic details for the governance, including the name of the use case, version number, and approach information |
+| Foundation model  | name and provider for the foundation model                                                                     |
+| Prompt template   | prompt template name, description, input, and variables                                                        |
+| Prompt parameters | options used to create the prompt template, such as decoding method                                            |
+| Evaluation        | results of the most recent evaluation                                                                          |
+| Attachments       | attached files and supporting documents                                                                        |
+
+<!-- </table ""> -->
+
+Important: The factsheet records the most recent activity in any category\. For example, if you evaluate a deployed prompt template in a pre\-production space, and then evaluate it in a production space, the details from the production evaluation are captured in the factsheet, over\-writing the previous data\. Thus, the factsheet maintains a complete record of the current state of the asset\.
+
+![Vewing a factsheet for a tracked prompt template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-view-factsheet1.png)
+
+## Next steps ##
+
+Click **Export report** to save a report of the factsheet\.
+
+**Parent topic:**[Governing assets in AI use cases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-create-use-case.html)
+
+<!-- </article "role="article" "> -->

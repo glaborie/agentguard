@@ -1,0 +1,21 @@
+# Create new scenario #
+
+To solve with different versions of your model or data you can create new scenarios in the  Decision Optimization experiment UI\.
+
+## Procedure ##
+
+To create a new scenario:
+
+<!-- <ol> -->
+
+1.  Click the **Open scenario pane** icon ![Open scenario pane button](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/CPDscenariomanage.jpg) to open the **Scenario** panel\. 
+2.  Use the  Create Scenario drop\-down menu to create a new scenario from the current one\.
+3.  Add a name for the duplicate scenario and click **Create**\.
+4.  Working in your new scenario, in the  Prepare data view, open the `diet_food` data table in full mode\.
+5.  Locate the entry for *Hotdog* at row 9, and set the `qmax` value to 0 to exclude hot dog from possible solutions\.
+6.  Switch to the **Build model** view and run the model again\.
+7.  You can see the impact of your changes on the solution by switching from one scenario to the other\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

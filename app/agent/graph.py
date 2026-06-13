@@ -1,7 +1,14 @@
 """LangGraph ReAct agent for AgentGuard."""
 
 import asyncio
+import warnings
 from typing import Any
+
+warnings.filterwarnings(
+    "ignore",
+    message=r".*allowed_objects.*",
+    category=PendingDeprecationWarning,
+)
 
 from langchain_core.messages import SystemMessage, ToolMessage
 from langchain_openai import ChatOpenAI
@@ -21,7 +28,7 @@ def _get_llm(model: str | None = None) -> ChatOpenAI:
         base_url=f"{settings.litellm_base_url}/v1",
         api_key=settings.litellm_master_key,  # type: ignore[arg-type]
         temperature=0.0,
-        model_kwargs={"metadata": {"x-agentguard-internal": True}},
+        metadata={"x-agentguard-internal": True},
     )
 
 

@@ -6,7 +6,7 @@
 
 **Architecture:** A `QdrantSemanticCache(BaseCache)` class is mounted at `/app/semantic_cache.py` in the LiteLLM container. LiteLLM doesn't support `type: "custom"` in `cache_params`, so registration uses the `custom_callbacks` hook: when LiteLLM imports `SemanticCacheActivator` at startup, module-level code runs `litellm.cache = QdrantSemanticCache()` in the same process. The existing `cache: true / cache_params` block is removed from `litellm_config.yaml` so LiteLLM doesn't overwrite our assignment.
 
-**Tech Stack:** Python 3.11, `qdrant-client` (AsyncQdrantClient), `redis.asyncio`, `httpx` (Ollama embed calls), `litellm.caching.BaseCache`, `litellm.integrations.custom_logger.CustomLogger`
+**Tech Stack:** Python 3.13, `qdrant-client` (AsyncQdrantClient), `redis.asyncio`, `httpx` (Ollama embed calls), `litellm.caching.BaseCache`, `litellm.integrations.custom_logger.CustomLogger`
 
 ---
 

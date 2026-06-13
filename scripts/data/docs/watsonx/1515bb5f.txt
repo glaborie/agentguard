@@ -1,0 +1,26 @@
+# reportnode properties #
+
+![Report node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/reportnodeicon.png)The Report node creates formatted reports containing fixed text as well as data and other expressions derived from the data\. You specify the format of the report using text templates to define the fixed text and data output constructions\. You can provide custom text formatting by using HTML tags in the template and by setting output options\. You can include data values and other conditional output by using CLEM expressions in the template\.
+
+<!-- <table "summary="reportnode properties" class="defaultstyle" "> -->
+
+reportnode properties  
+
+Table 1\. reportnode properties
+
+| `reportnode` properties | Data type                                             | Property description                                                                                                                                                   |
+| ----------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `output_mode`           | `Screen``File`                                        | Used to specify target location for output generated from the output node\.                                                                                            |
+| `output_format`         | `HTML` (\.*html*) `Text` (\.*txt*) `Output` (\.*cou*) | Used to specify the type of file output\.                                                                                                                              |
+| `format`                | `Auto``Custom`                                        | Used to choose whether output is automatically formatted or formatted using HTML included in the template\. To use HTML formatting in the template, specify `Custom`\. |
+| `use_output_name`       | *flag*                                                | Specifies whether a custom output name is used\.                                                                                                                       |
+| `output_name`           | *string*                                              | If `use_output_name` is true, specifies the name to use\.                                                                                                              |
+| `text`                  | *string*                                              |                                                                                                                                                                        |
+| `full_filename`         | *string*                                              |                                                                                                                                                                        |
+| `highlights`            | *flag*                                                |                                                                                                                                                                        |
+| `title`                 | *string*                                              |                                                                                                                                                                        |
+| `lines_per_page`        | *number*                                              |                                                                                                                                                                        |
+
+<!-- </table "summary="reportnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

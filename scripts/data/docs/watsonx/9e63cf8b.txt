@@ -1,0 +1,15 @@
+# Formulating and running a model: house construction scheduling #
+
+This tutorial shows you how to use the  Modeling Assistant to define, formulate and run a model for a house construction scheduling problem\. The completed model with data is also provided in the **DO\-samples**, see [Importing Model Builder samples](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/docExamples.html#Examples__section_modelbuildersamples)\.
+
+In this section:
+
+<!-- <ul> -->
+
+ *  [Modeling Assistant House construction scheduling tutorial](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/exhousebuild.html?context=cdpaas&locale=en#cogusercase__section_The_problem)
+ *  [More about the model view](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/exhousebuild.html?context=cdpaas&locale=en#cogusercase__section_tbl_kdj_t1b)
+ *  [Generating a Python notebook from your scenario](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/exhousebuild.html?context=cdpaas&locale=en#cogusercase__section_j2m_xnh_4bb)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

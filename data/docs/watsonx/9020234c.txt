@@ -1,0 +1,144 @@
+# Planning your notebooks and scripts experience #
+
+To make a plan for using Jupyter notebooks and scripts, first understand the choices that you have, the implications of those choices, and how those choices affect the order of implementation tasks\.
+
+You can perform most notebook and script related tasks with Editor or Admin role in an analytics project\.
+
+Before you start working with notebooks and scripts, you should consider the following questions as most tasks need to be completed in a particular order:
+
+<!-- <ul> -->
+
+ *  Which programming language do you want to work in?
+ *  What will your notebooks be doing?
+ *  What libraries do you want to work with?
+ *  How can you use the notebook or script in IBM watsonx?
+
+<!-- </ul> -->
+
+To create a plan for using Jupyter notebooks or scripts, determine which of the following tasks you must complete\.
+
+<!-- <table> -->
+
+| Task                                              | Mandatory? | Timing                                      |
+| ------------------------------------------------- | ---------- | ------------------------------------------- |
+| [Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#project)                            | Yes        | This must be your very first task           |
+| [Adding data assets to the project](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#data-assets)             | Yes        | Before you begin creating notebooks         |
+| [Picking a programming language](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#programming-lang)                | Yes        | Before you select the tool                  |
+| [Selecting a tool](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#select-tool)                              | Yes        | After you've picked the language            |
+| [Checking the library packages](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#programming-libs)                 | Yes        | Before you select a runtime environment     |
+| [Choosing an appropriate runtime environment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#runtime-env)   | Yes        | Before you open the development environment |
+| [Managing the notebooks and scripts lifecycle](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#manage-lifecycle)  | No         | When the notebook or script is ready        |
+| [Uses for notebooks and scripts after creation](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/planning-for-notebooks.html?context=cdpaas&locale=en#use-options) | No         | When the notebook is ready                  |
+
+<!-- </table ""> -->
+
+## Creating a project ##
+
+You need to create a project before you can start working in notebooks\.
+
+**Projects** You can create an empty project, one from file, or from URL\. In this project:
+
+<!-- <ul> -->
+
+ *  You can use the Juypter Notebook and RStudio\.
+ *  Notebooks are assets in the project\.
+ *  Notebook collaboration is based on locking by user at the project level\.
+ *  R scripts and Shiny apps are not assets in the project\.
+ *  There is no collaboration on R scripts or Shiny apps\.
+
+<!-- </ul> -->
+
+## Picking a programming language ##
+
+You can choose to work in the following languages:
+
+**Notebooks** : Python and R
+
+**Scripts** : R scripts and R Shiny apps
+
+## Selecting a tool ##
+
+In IBM watsonx, you can work with notebook and scripts in the following tool:
+
+**Juypter Notebook editor** : In the Juypter Notebook editor, you can create Python or R notebooks\. Notebooks are assets in a project\. Collaboration is only at the project level\. The notebook is locked by a user when opened and can only be unlocked by the same user or a project admin\.
+
+**RStudio** : In RStudio, you can create R scripts and Shiny apps\. R scripts are not assets in a project, which means that there is no collaboration at the project level\.
+
+## Checking the library packages ##
+
+When you open a notebook in a runtime environment, you have access to a large selection of preinstalled data science library packages\. Many environments also include libraries provided by IBM at no extra charge, such as the Watson Natural Language Processing library in Python environments, libraries to help you access project assets, or libraries for time series or geo\-spatial analysis in Spark environments\.
+
+For a list of the library packages and the versions included in an environment template, select the template on the **Templates** page from the **Manage** tab on the project's **Environments** page\.
+
+If libraries are missing in a template, you can add them:
+
+**Through the notebook or script** : You can use familiar package install commands for your environment\. For example, in Python notebooks, you can use `mamba`, `conda` or `pip`\.
+
+**By creating a custom environment template** : When you create a custom template, you can create a software customization and add the libraries you want to include\. For details, see [Customizing environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/customize-envs.html)\.
+
+## Choosing a runtime environment ##
+
+Choosing the compute environment for your notebook depends on the amount of data you want to process and the complexity of the data analysis processes\.
+
+Watson Studio offers many default environment templates with different hardware sizes and software configurations to help you quickly get started, without having to create your own templates\. These included templates are listed on the **Templates** page from the **Manage** tab on the project's **Environments** page\. For more information about the included environments, see [Environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/environments-parent.html)\.
+
+If the available templates don't suit your needs, you can create custom templates and determine the hardware size and software configuration\. For details, see [Customizing environment templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/customize-envs.html)\.
+
+Important: Make sure that the environment has enough memory to store the data that you load to the notebook\. Oftentimes this means that the environment must have significantly more memory than the total size of the data loaded to the notebook because some data frameworks, like pandas, can hold multiple copies of the data in memory\.
+
+## Working with data ##
+
+To work with data in a notebook, you need to:
+
+<!-- <ul> -->
+
+ *  Add the data to your project, which turns the data into a project asset\. See [Adding data to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj//manage-data/add-data-project.html) for the different methods for adding data to a project\.
+ *  Use generated code that loads data from the asset to a data structure in your notebook\. For a list of the supported data types, see [Data load support](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-load-support.html)\.
+ *  Write your own code to load data if the data source isn't added as a project asset or support for adding generated code isn't available for the project asset\.
+
+<!-- </ul> -->
+
+## Managing the notebooks and scripts lifecycle ##
+
+After you have created and tested a notebook in your tool, you can:
+
+<!-- <ul> -->
+
+ *  Publish it to a catalog so that other catalog members can use the notebook in their projects\. See [Publishing assets from a project into a catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/catalog/publish-asset-project.html)\.
+ *  Share a read\-only copy outside of Watson Studio so that people who aren't collaborators in your projects can see and use it\. See [Sharing notebooks with a URL](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/share-notebooks.html)\.
+ *  Publish it to a GitHub repository\. See [Publishing notebooks on GitHub](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/github-integration.html)\.
+ *  Publish it as a gist\. See [Publishing a notebook as a gist](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-gist.html)\.
+
+<!-- </ul> -->
+
+R scripts and Shiny apps can't be published or shared using functionality in a project\.
+
+## Uses for notebooks and scripts after creation ##
+
+The options for a notebook that is created and ready to use in IBM watsonx include:
+
+<!-- <ul> -->
+
+ *  Running it as a job in a project\. See [Creating and managing jobs in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html)\.
+ *  Running it as part of a Watson Pipeline\. See [Configuring pipeline nodes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-config.html)\.
+    
+    To ensure that a notebook can be run as a job or in a pipeline:
+    
+    <!-- <ul> -->
+    
+     *  Ensure that no cells require interactive input by a user.
+     *  Ensure that the notebook logs enough detailed information to enable understanding the progress and any failures by looking at the log.
+     *  Use environment variables in the code to access configurations if a notebook or script requires them, for example the input data file or the number of training runs.
+    
+    <!-- </ul> -->
+    
+ *  Using the Watson Machine Learning Python client to build, train and then deploy your models\. See [Watson Machine Learning Python client samples and examples](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-samples-overview.html)\.
+ *  Using the Watson Machine Learning REST API to build, train and then deploy your models\.
+
+<!-- </ul> -->
+
+R scripts and Shiny apps can only be created and used in the RStudio IDE in IBM watsonx\. You can't create jobs for R scripts or R Shiny deployments\.
+
+**Parent topic:**[Notebooks and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebooks-and-scripts.html)
+
+<!-- </article "role="article" "> -->

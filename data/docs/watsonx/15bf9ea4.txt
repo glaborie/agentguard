@@ -1,0 +1,15 @@
+# TwoStep\-AS cluster node #
+
+TwoStep Cluster is an exploratory tool that is designed to reveal natural groupings (or clusters) within a data set that would otherwise not be apparent\. The algorithm that is employed by this procedure has several desirable features that differentiate it from traditional clustering techniques\.
+
+<!-- <ul> -->
+
+ *  Handling of categorical and continuous variables\. By assuming variables to be independent, a joint multinomial\-normal distribution can be placed on categorical and continuous variables\.
+ *  Automatic selection of number of clusters\. By comparing the values of a model\-choice criterion across different clustering solutions, the procedure can automatically determine the optimal number of clusters\.
+ *  Scalability\. By constructing a cluster feature (CF) tree that summarizes the records, the TwoStep algorithm can analyze large data files\.
+
+<!-- </ul> -->
+
+For example, retail and consumer product companies regularly apply clustering techniques to information that describes their customers' buying habits, gender, age, income level, and other attributes\. These companies tailor their marketing and product development strategies to each consumer group to increase sales and build brand loyalty\.
+
+<!-- </article "role="article" "> -->

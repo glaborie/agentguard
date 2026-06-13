@@ -1,0 +1,52 @@
+# Security for IBM watsonx #
+
+Security mechanisms in IBM watsonx provide protection for data, applications, identity, and resources\. You can configure security mechanisms on five levels for IBM Cloud security functions\.
+
+## Security levels in IBM watsonx ##
+
+Security for IBM watsonx is configured on levels to ensure that your data, application endpoints, and identity are protected on any cloud\. The security levels are:
+
+<!-- <ol> -->
+
+1.  [Network security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-network.html) – Network security protects the network infrastructure and the points where your database or applications interact with the cloud\. For example, you can protect your network by allowing IP addresses, by connecting securely to databases and third\-party clouds, and by securing endpoints\.
+2.  [Enterprise security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-enterprise.html) – Enterprises are multiple IBM Cloud accounts in a hierarchy\. For example, your company might have many teams that require one or more separate accounts for development, testing, and production environments\. Or, you can configure an enterprise to isolate workloads in separate accounts to meet compliance guidelines\.
+3.  [Account security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-account.html) – Account security includes IAM and Access group roles, Service IDs, monitoring, and other security mechanisms that are configured on IBM Cloud for your IBM Cloud account\.
+4.  [Data security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-data.html) – Data security protects the IBM Cloud Object Storage service instance, provides data encryption for at\-rest and in\-motion data, and other security mechanisms related to data\.
+5.  [Collaborator security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-collab.html) – Protect your workspaces by assigning role\-based access controls to collaborators in IBM watsonx\.
+
+<!-- </ol> -->
+
+IBM watsonx conforms to IBM Cloud security requirements\. See [IBM Cloud docs: How do I know that my data is safe?](https://cloud.ibm.com/docs/overview?topic=overview-security)\.
+
+## Resiliency ##
+
+IBM watsonx is disaster resistant:
+
+<!-- <ul> -->
+
+ *  The metadata for your projects and catalogs is stored in a three\-node dedicated Cloudant Enterprise cluster that spans multiple geographic locations\.
+ *  The files that are associated with projects and catalogs are protected by the level of resiliency that is specified by the IBM Cloud Object Storage plan\.
+
+<!-- </ul> -->
+
+## Compliance ##
+
+See [Keep your data secure and compliant](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [watsonx terms](https://www.ibm.com/support/customer/csol/terms/?id=i126-9640&lc=en#detail-document)
+ *  [IBM Watson Machine Learning terms](http://www.ibm.com/support/customer/csol/terms/?id=i126-6883)
+ *  [IBM Watson Studio terms](https://www.ibm.com/support/customer/csol/terms/?id=i126-7747)
+ *  [IBM Cloud Object Storage terms](https://www.ibm.com/software/sla/sladb.nsf/sla/bm-7857-03)
+ *  [Managing security and compliance in IBM Cloud](https://cloud.ibm.com/docs/overview?topic=overview-manage-security-compliance)
+ *  [Software Product Compatibility Reports: IBM Watson Studio](https://www.ibm.com/software/reports/compatibility/clarity-reports/report/html/softwareReqsForProduct?deliverableId=95E9BEA0B35711E7A9EB066095601ABB)\.
+ *  [Software Product Compatibility Reports: IBM Watson Machine Learning service](https://www.ibm.com/software/reports/compatibility/clarity-reports/report/html/softwareReqsForProduct?deliverableId=850D9360405711E5B2E4A36A7B0C4479)\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Administering your accounts and services](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/administer-accounts.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,104 @@
+# IBM Watson Query connection #
+
+To access your data in Watson Query, create a connection asset for it\. A Watson Query connection is created automatically in a catalog or project when you publish a virtual object to a catalog or assign it to a project\. The Watson Query connection was formerly named the Data Virtualization connection\.
+
+Watson Query integrates data sources across multiple types and locations and turns all this data into one logical data view\. This virtual data view makes the job of getting value out of your data easy\.
+
+## Create a Watson Query connection ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  **Database name**
+ *  **Hostname or IP address** of the database
+ *  **Port number**
+ *  **Instance ID**
+ *  [Credentials information](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-data-virtual.html?context=cdpaas&locale=en#creds)
+ *  **Application name** (optional): The name of the application that is currently using the connection\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client accounting information** (optional): The value of the accounting string from the client information that is specified for the connection\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client hostname** (optional): The hostname of the machine on which the application that is using the connection is running\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **Client user** (optional): The name of the user on whose behalf the application that is using the connection is running\. For information, see [Client info properties support by the IBM Data Server Driver for JDBC and SQLJ](https://www.ibm.com/docs/SSEPGG_11.5.0/Javadocs/src/tpc/imjcc_r0052001.html)\.
+ *  **SSL certificate** (if required by the database server)
+
+<!-- </ul> -->
+
+### Credentials ###
+
+**Connecting to a Watson Query instance in IBM Cloud**
+
+<!-- <ul> -->
+
+ *  **API key**: Enter an IAM API key\. Prerequisites:
+    
+    <!-- <ol> -->
+    
+    1.  Add the user ID as an IAM user or as a service ID to your IBM Cloud account. For instructions, see the **Console user experience** section of the [Identity and access management (IAM) on IBM Cloud](https://cloud.ibm.com/docs/Db2whc?topic=Db2whc-iam#console-ux) topic.
+    2.  The Watson Query Manager of the Watson Query instance must add IAM users by selecting **Data > Watson Query > Administration > User management** from the IBM watsonx navigation menu.
+    
+    <!-- </ol> -->
+    
+<!-- </ul> -->
+
+**Connecting to a Watson Query instance in Cloud Pak for Data (on\-prem)**
+
+<!-- <ul> -->
+
+ *  **User credentials**: Enter your Cloud Pak for Data username and password\.
+ *  **API key**: Enter an API key value with your Cloud Pak for Data username and a Cloud Pak for Data API key\. Use this syntax: `user_name:api_key`
+
+<!-- </ul> -->
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Watson Query connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Setup ##
+
+[Getting started with Watson Query ](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-virtualize.html)
+
+## Restriction ##
+
+You can use this connection only for source data\. You cannot write to data with this connection\.
+
+## Learn more ##
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

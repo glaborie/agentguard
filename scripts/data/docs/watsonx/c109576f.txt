@@ -1,0 +1,78 @@
+# Importing scripts into a notebook #
+
+If you want to streamline your notebooks, you can move some of the code from your notebooks into a script that your notebook can import\. For example, you can move all helper functions, classes, and visualization code snippets into a script, and the script can be imported by all of the notebooks that share the same runtime\. Without all of the extra code, your notebooks can more clearly communicate the results of your analysis\.
+
+To import a script from your local machine to a notebook and write to the script from the notebook, use one of the following options:
+
+<!-- <ul> -->
+
+ *  Copy the code from your local script file into a notebook cell\.
+    
+    <!-- <ul> -->
+    
+     *  For Python:
+        
+        At the beginning of this cell, add `%%writefile myfile.py` to save the code as a Python file to your working directory. Notebooks that use the same runtime can also import this file.
+        
+        The advantage of this method is that the code is available in your notebook, and you can edit and save it as a new Python script at any time.
+     *  For R:
+        
+        If you want to save code in a notebook as an R script to the working directory, you can use the `writeLines(myfile.R)` function.
+    
+    <!-- </ul> -->
+    
+ *  Save your local script file in Cloud Object Storage and then make the file available to the runtime by adding it to the runtime's local file system\. This is only supported for Python\.
+    
+    <!-- <ol> -->
+    
+    1.  Click the **Upload asset to project** icon (![Shows the Upload asset to project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/find_data_icon.png)), and then browse the script file or drag it into your notebook sidebar. The script file is added to Cloud Object Storage bucket associated with your project.
+    2.  Make the script file available to the Python runtime by adding the script to the runtime's local file system:
+        
+        <!-- <ol> -->
+        
+        1.  Click the **Code snippets icon** (![Code snippets icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/code-snippets-icon.png)), and then select **Read data**.  
+            ![Read data](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/code-snippets-read-data.png)
+        2.  Click **Select data from project** and then select **Data asset**.
+        3.  From the list of data assets available in your project's COS, select your script and then click **Select**.  
+            ![Select data from project](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/select-data-from-project.png).
+        4.  Click an empty cell in your notebook and then from the **Load as** menu in the notebook sidebar select **Insert StreamingBody object**.  
+            ![Insert StreamingBody object to notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/read-as-streaming-body.png)
+        5.  Write the contents of the StreamingBody object to a file in the local runtime\`s file system:
+            
+                f = open('<myScript>.py', 'wb')
+                 f.write(streaming_body_1.read())
+                 f.close()
+            
+            This opens a file with write access and calls the write method to write to the file.
+        6.  Import the script:
+            
+                import <myScript>
+        
+        <!-- </ol> -->
+        
+    <!-- </ol> -->
+    
+<!-- </ul> -->
+
+To import the classes to access the methods in a script in your notebook, use the following command:
+
+<!-- <ul> -->
+
+ *  For Python:
+    
+        from <python file name> import <class name>
+ *  For R:
+    
+        source("./myCustomFunctions.R")
+          ## available in base R
+    
+    To source an R script from the web:
+    
+        source_url("<insert URL here>")
+          ## available in devtools
+
+<!-- </ul> -->
+
+**Parent topic:**[Libraries and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/libraries.html)
+
+<!-- </article "role="article" "> -->

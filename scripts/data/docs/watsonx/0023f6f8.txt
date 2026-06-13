@@ -1,0 +1,9 @@
+# Extension Transform node #
+
+With the Extension Transform node, you can take data from an  SPSS Modeler flow and apply transformations to the data using R scripting or Python for Spark scripting\.
+
+When the data has been modified, it's returned to the flow for further processing, model building, and model scoring\. The Extension Transform node makes it possible to transform data using algorithms that are written in R or Python for Spark, and enables you to develop data transformation methods that are tailored to a particular problem\.
+
+After adding the node to your canvas, double\-click the node to open its properties\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,23 @@
+# balancenode properties #
+
+![Balance node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/balancenodeicon.png) The Balance node corrects imbalances in a dataset, so it conforms to a specified condition\. The balancing directive adjusts the proportion of records where a condition is true by the factor specified\.
+
+<!-- <table "summary="balancenode properties" id="balancenodeslots__table_zvt_pj3_cdb" class="defaultstyle" "> -->
+
+balancenode properties  
+
+Table 1\. balancenode properties
+
+| `balancenode` properties | Data type | Property description                                                                                                                 |
+| ------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `directives`             |           | Structured property to balance proportion of field values based on number specified\.                                                |
+| `training_data_only`     | *flag*    | Specifies that only training data should be balanced\. If no partition field is present in the stream, then this option is ignored\. |
+
+<!-- </table "summary="balancenode properties" id="balancenodeslots__table_zvt_pj3_cdb" class="defaultstyle" "> -->
+
+This node property uses the format:
+
+\[\[ *number, string* \] \\ \[ *number, string*\] \\ \.\.\. \[*number, string* \]\]\.
+
+Note: If strings (using double quotation marks) are embedded in the expression, they must be preceded by the escape character `" \ "`\. The `" \ "` character is also the line continuation character, which you can use to align the arguments for clarity\.
+<!-- </article "role="article" "> -->

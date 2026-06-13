@@ -1,0 +1,7 @@
+# Working with times and dates #
+
+Time and date formats may vary depending on your data source and locale\. The formats of date and time are specific to each flow and are set in the flow properties\.
+
+The following examples are commonly used functions for working with date/time fields\.
+
+<!-- </article "role="article" "> -->

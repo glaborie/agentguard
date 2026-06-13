@@ -1,0 +1,13 @@
+# K\-Means node #
+
+The K\-Means node provides a method of cluster analysis\. It can be used to cluster the dataset into distinct groups when you don't know what those groups are at the beginning\. Unlike most learning methods in  SPSS Modeler, K\-Means models do not use a target field\. This type of learning, with no target field, is called unsupervised learning\. Instead of trying to predict an outcome, K\-Means tries to uncover patterns in the set of input fields\. Records are grouped so that records within a group or cluster tend to be similar to each other, but records in different groups are dissimilar\.
+
+K\-Means works by defining a set of starting cluster centers derived from data\. It then assigns each record to the cluster to which it is most similar, based on the record's input field values\. After all cases have been assigned, the cluster centers are updated to reflect the new set of records assigned to each cluster\. The records are then checked again to see whether they should be reassigned to a different cluster, and the record assignment/cluster iteration process continues until either the maximum number of iterations is reached, or the change between one iteration and the next fails to exceed a specified threshold\.
+
+Note: The resulting model depends to a certain extent on the order of the training data\. Reordering the data and rebuilding the model may lead to a different final cluster model\.
+
+Requirements\. To train a K\-Means model, you need one or more fields with the role set to `Input`\. Fields with the role set to `Output`, `Both`, or `None` are ignored\.
+
+Strengths\. You do not need to have data on group membership to build a K\-Means model\. The K\-Means model is often the fastest method of clustering for large datasets\.
+
+<!-- </article "role="article" "> -->

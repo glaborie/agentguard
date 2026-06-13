@@ -1,0 +1,80 @@
+# Noun phrase extraction #
+
+The Watson Natural Language Processing Noun phrase extraction block extracts noun phrases from input text\.
+
+**Block name**
+
+`noun-phrases_rbr_<language>_stock`
+
+Note: The "rbr" abbreviation in model name means rule\-based reasoning\. RBR models handle syntactically regular entity types such as number, email and phone\.
+
+**Supported languages**
+
+Noun phrase extraction is available for the following languages\. For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes)\.
+
+ar, cs, da, de, es, en, fi, fr, he, hi, it, ja, ko, nb, nl, nn, pt, ro, ru, sk, sv, tr, zh\_cn, zh\_tw
+
+**Capabilities**
+
+The Noun phrase extraction block extracts non\-overlapping noun phrases from the input text\.
+
+<!-- <table> -->
+
+Capabilities of noun phrase extraction based on an example
+
+| Capabilities                                | Examples                                                                                                              |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Extraction of non\-overlapping noun phrases | "Anna went to school at University of California Santa Cruz" \-> Anna, school, University of California Santa Cruz |
+
+<!-- </table ""> -->
+
+**Dependencies on other blocks**
+
+None
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load the model for English
+    noun_phrases_model = watson_nlp.load('noun-phrases_rbr_en_stock')
+    
+    # Run the model on the input text
+    noun_phrases = noun_phrases_model.run('Anna went to school at University of California Santa Cruz')
+    print(noun_phrases)
+
+Output of the code sample:
+
+    {
+      "noun_phrases": [
+        {
+          "span": {
+            "begin": 0,
+            "end": 4,
+            "text": "Anna"
+          }
+        },
+        {
+          "span": {
+            "begin": 13,
+            "end": 19,
+            "text": "school"
+          }
+        },
+        {
+          "span": {
+            "begin": 23,
+            "end": 58,
+            "text": "University of California Santa Cruz"
+          }
+        }
+      ],
+      "producer_id": {
+        "name": "RBR Noun phrases",
+        "version": "0.0.1"
+      }
+    }
+
+**Parent topic:**[Watson Natural Language Processing task catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)
+
+<!-- </article "role="article" "> -->

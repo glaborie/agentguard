@@ -384,7 +384,7 @@ services:
       - langfuse
 
   litellm-init:
-    image: python:3.11-slim
+    image: python:3.13-slim
     restart: on-failure
     env_file: .env
     depends_on:

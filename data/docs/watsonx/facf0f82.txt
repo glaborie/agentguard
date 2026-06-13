@@ -1,0 +1,9 @@
+# Integers #
+
+Integers are represented as a sequence of decimal digits\.
+
+Optionally, you can place a minus sign (−) before the integer to denote a negative number (for example, `1234`, `999`, −`77`)\.
+
+The CLEM language handles integers of arbitrary precision\. The maximum integer size depends on your platform\. If the values are too large to be displayed in an integer field, changing the field type to `Real` usually restores the value\.
+
+<!-- </article "role="article" "> -->

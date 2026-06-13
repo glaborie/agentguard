@@ -1,0 +1,36 @@
+# c50node properties #
+
+![C5\.0 node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/c50nodeicon.png)The C5\.0 node builds either a decision tree or a rule set\. The model works by splitting the sample based on the field that provides the maximum information gain at each level\. The target field must be categorical\. Multiple splits into more than two subgroups are allowed\.
+
+<!-- <table "summary="c50node properties" id="c50nodeslots__table_c5j_xj3_cdb" class="defaultstyle" "> -->
+
+c50node properties  
+
+Table 1\. c50node properties
+
+| `c50node` Properties              | Values                  | Property description                                                                                                                                                     |
+| --------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `target`                          | *field*                 | C50 models use a single target field and one or more input fields\. You can also specify a weight field\. See [Common modeling node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/modelingnodeslots_common.html#modelingnodeslots_common) for more information\. |
+| `output_type`                     | `DecisionTree``RuleSet` |                                                                                                                                                                          |
+| `group_symbolics`                 | *flag*                  |                                                                                                                                                                          |
+| `use_boost`                       | *flag*                  |                                                                                                                                                                          |
+| `boost_num_trials`                | *number*                |                                                                                                                                                                          |
+| `use_xval`                        | *flag*                  |                                                                                                                                                                          |
+| `xval_num_folds`                  | *number*                |                                                                                                                                                                          |
+| `mode`                            | `Simple``Expert`        |                                                                                                                                                                          |
+| `favor`                           | `Accuracy``Generality`  | Favor accuracy or generality\.                                                                                                                                           |
+| `expected_noise`                  | *number*                |                                                                                                                                                                          |
+| `min_child_records`               | *number*                |                                                                                                                                                                          |
+| `pruning_severity`                | *number*                |                                                                                                                                                                          |
+| `use_costs`                       | *flag*                  |                                                                                                                                                                          |
+| `costs`                           | *structured*            | This is a structured property\. See the example for usage\.                                                                                                              |
+| `use_winnowing`                   | *flag*                  |                                                                                                                                                                          |
+| `use_global_pruning`              | *flag*                  | On (`True`) by default\.                                                                                                                                                 |
+| `calculate_variable_importance`   | *flag*                  |                                                                                                                                                                          |
+| `calculate_raw_propensities`      | *flag*                  |                                                                                                                                                                          |
+| `calculate_adjusted_propensities` | *flag*                  |                                                                                                                                                                          |
+| `adjusted_propensity_partition`   | `Test``Validation`      |                                                                                                                                                                          |
+
+<!-- </table "summary="c50node properties" id="c50nodeslots__table_c5j_xj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

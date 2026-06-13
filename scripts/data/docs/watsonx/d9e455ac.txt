@@ -1,0 +1,7 @@
+# Generating a model nugget #
+
+When you're working in the Text Analytics Workbench, you may want to use the work you've done to generate a category model nugget\.
+
+A model generated from a Text Analytics Workbench session is a  category model nugget\. You must first have at least one category before you can generate a category model nugget\.
+
+<!-- </article "role="article" "> -->

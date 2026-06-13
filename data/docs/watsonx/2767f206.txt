@@ -1,0 +1,18 @@
+# Promoting an environment template to a space #
+
+If you created an environment template and associated it with an asset that you promoted to a deployment space, you can also promote the environment template to the same space\. Promoting the environment template to the same space enables running the asset in the same environment that was used in the project\.
+
+You can only promote environment templates that you created\.
+
+To promote an environment template associated with an asset that you promoted to a deployment space:
+
+<!-- <ol> -->
+
+1.  From the **Manage** tab of your project on the **Environments** page under **Templates**, select the custom environment template and click **Actions > Promote**\.
+2.  Select the space that you promoted your asset to as the target deployment space and optionally provide a description and tags\.
+
+<!-- </ol> -->
+
+**Parent topic:**[Environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/environments-parent.html)
+
+<!-- </article "role="article" "> -->

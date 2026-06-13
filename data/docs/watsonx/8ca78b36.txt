@@ -1,0 +1,13 @@
+# Working with your data #
+
+To see a quick sample of a flow's data, right\-click a node a select  Preview\. To more thoroughly examine your data, use a Charts node to launch the chart builder\.
+
+With the chart builder, you can use advanced visualizations to explore your data from different perspectives and identify patterns, connections, and relationships within your data\. You can also visualize your data with these same charts in a Data Refinery flow\.
+
+Figure 1\. Sample visualizations available for a flow
+
+![Shows four example charts available in Visualizations](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/charts_thumbnail4.png)
+
+For more information, see [Visualizing your data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/visualizations.html)\.
+
+<!-- </article "role="article" "> -->

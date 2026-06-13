@@ -1,0 +1,47 @@
+# Deleting a deployment #
+
+Delete your deployment when you no longer need it to free up resources\. You can delete a deployment from a deployment space, or programmatically, by using the Python client or Watson Machine Learning APIs\.
+
+## Deleting a deployment from a space ##
+
+To remove a deployment:
+
+<!-- <ol> -->
+
+1.  Open the **Deployments** page of your deployment space\.
+2.  Choose **Delete** from the action menu for the deployment name\.  
+    ![Deleting a deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/deploy-delete.png)
+
+<!-- </ol> -->
+
+## Deleting a deployment by using the Python client ##
+
+Use the following method to delete the deployment\.
+
+    client.deployments.delete(deployment_uid)
+
+Returns a `SUCCESS` message\. To check that the deployment was removed, you can list deployments and make sure that the deleted deployment is no longer listed\.
+
+    client.deployments.list()
+
+Returns:
+
+    ----  ----  -----  -------  -------------
+    GUID  NAME  STATE  CREATED  ARTIFACT_TYPE
+    ----  ----  -----  -------  -------------
+
+## Deleting a deployment by using the REST API ##
+
+Use the `DELETE` method for deleting a deployment\.
+
+    DELETE /ml/v4/deployments/{deployment_id}
+
+For more information, see [Delete](https://cloud.ibm.com/apidocs/machine-learning#deployments-delete)\.
+
+For example, see the following code snippet:
+
+    curl --location --request DELETE 'https://us-south.ml.cloud.ibm.com/ml/v4/deployments/:deployment_id?space_id=<string>&version=2020-09-01'
+
+**Parent topic:**[Managing predictive deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+
+<!-- </article "role="article" "> -->

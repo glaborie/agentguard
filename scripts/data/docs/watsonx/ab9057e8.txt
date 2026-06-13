@@ -1,0 +1,19 @@
+# CLEM datatypes #
+
+This section covers CLEM datatypes\.
+
+CLEM datatypes can be made up of any of the following:
+
+<!-- <ul> -->
+
+ *  Integers
+ *  Reals
+ *  Characters
+ *  Strings
+ *  Lists
+ *  Fields
+ *  Date/Time
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

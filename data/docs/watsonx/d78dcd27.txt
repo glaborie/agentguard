@@ -1,0 +1,17 @@
+# Browsing the model #
+
+<!-- <ul> -->
+
+ *  Right\-click the Logistic node and run it to generate its model nugget\. Right\-click the nugget and select  View Model\.The Parameter Estimates page shows the target (churn) and inputs (predictor fields) used by the model\. These are the fields that were actually chosen based on the Forwards Stepwise method, not the complete list submitted for consideration\.
+    
+    Figure 1. Parameter estimates showing input fields
+    
+    ![Parameter estimates showing input fields](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_churn_estimates.png)
+    
+    To assess how well the model actually fits your data, a number of diagnostics are available in the expert node settings when you're building the flow.
+    
+    Note also that these results are based on the training data only. To assess how well the model generalizes to other data in the real world, you would use a Partition node to hold out a subset of records for purposes of testing and validation.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

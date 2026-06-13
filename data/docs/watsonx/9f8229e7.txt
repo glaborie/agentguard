@@ -1,0 +1,85 @@
+# Profiles of data assets #
+
+An asset profile includes generated information and statistics about the asset content\. You can see the profile on an asset's **Profile** page\.
+
+<!-- <ul> -->
+
+ *  [Requirements and restrictions](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html?context=cdpaas&locale=en#prereqs)
+ *  [Creating a profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html?context=cdpaas&locale=en#create-profile)
+ *  [Profile information](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html?context=cdpaas&locale=en#profile-results)
+
+<!-- </ul> -->
+
+## Requirements and restrictions ##
+
+You can view the profile of assets under the following circumstances\.
+
+**Required permissions**  
+: To view a data asset's **Profile** page, you can have any role in a project or catalog\. : To create or update a profile, you must have the **Admin** or **Editor** role in the project or catalog\.
+
+**Workspaces**  
+: You can view the asset profile in projects\.
+
+**Types of assets**  
+: These types of assets have a profile:
+
+<!-- <ul> -->
+
+ *  Data assets from relational or nonrelational databases from a connection to the data sources, except Cloudant
+ *  Data assets from partitioned data sets, where a partitioned data set consists of multiple files and is represented by a single folder uploaded from the local file system or from file\-based connections to the data sources
+ *  Data assets from files uploaded from the local file system or from file\-based connections to the data sources, with these formats:
+    
+    <!-- <ul> -->
+    
+     *  CSV
+     *  XLS, XLSM, XLSX (Only the first sheet in a workbook is profiled.)
+     *  TSV
+     *  Avro
+     *  Parquet
+    
+    <!-- </ul> -->
+    
+    However, structured data files are not profiled when data assets do not explicitly reference them, such as in these circumstances:
+    
+    <!-- <ul> -->
+    
+     *  The files are within a connected folder asset. Files that are accessible from a connected folder asset are not treated as assets and are not profiled.
+     *  The files are within an archive file. The archive file is referenced by the data asset and the compressed files are not profiled.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+## Creating a profile ##
+
+In projects, you can create a profile for a data asset by clicking **Create profile**\. You can update an existing profile when the data changes\.
+
+## Profiling results ##
+
+When you create or update an asset profile, the columns in the data asset are analyzed\. By default, the profile is created based on the first 5,000 rows of data\. If the data asset has more than 250 columns, the profile is created based on the first 1,000 rows of data\.
+
+The profile of a data asset shows information about each column in the data set:
+
+<!-- <ul> -->
+
+ *  When was the profile created or last updated\.
+ *  How many columns and rows were analyzed\.
+ *  The data types for columns and data types distribution\.
+ *  The data formats for columns and formats distribution\.
+ *  The percentage of matching, mismatching, or missing data for each column\.
+ *  The frequency distribution for all values identified in a column\.
+ *  Statistics about the data for each column:
+    
+    <!-- <ul> -->
+    
+     *  The number of *distinct* values indicates how many different values exist in the sampled data for the column.
+     *  The percentage of *unique* values indicates the percentage of distinct values that appear only once in the column.
+     *  The minimum, maximum, or mean, and sometimes the standard deviation in that column. Depending on a column’s data format, the statistics vary slightly. For example, statistics for a column of data type integer have minimum, maximum, and mean values and a standard deviation value while statistics for a column of data type string have minimum length, maximum length, and mean length values.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+**Parent topic:**[Asset types and properties](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assets.html)
+
+<!-- </article "role="article" "> -->

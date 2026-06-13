@@ -1,0 +1,42 @@
+# Batch deployment input details for Pytorch models #
+
+Follow these rules when you are specifying input details for batch deployments of Pytorch models\.
+
+Data type summary table:
+
+<!-- <table> -->
+
+| Data         | Description                            |
+| ------------ | -------------------------------------- |
+| Type         | inline, data references                |
+| File formats | \.zip archive that contains JSON files |
+
+<!-- </table ""> -->
+
+## Data sources ##
+
+Input or output data references:
+
+<!-- <ul> -->
+
+ *  Local or managed assets from the space
+ *  Connected (remote) assets: Cloud Object Storage
+
+<!-- </ul> -->
+
+If you are specifying input/output data references programmatically:
+
+<!-- <ul> -->
+
+ *  Data source reference `type` depends on the asset type\. Refer to the **Data source reference types** section in [Adding data assets to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+ *  If you deploy Pytorch models with ONNX format, specify the `keep_initializers_as_inputs=True` flag and set `opset_version` to `9` (always set `opset_version` to the most recent version that is supported by the deployment runtime)\.
+    
+        torch.onnx.export(net, x, 'lin_reg1.onnx', verbose=True, keep_initializers_as_inputs=True, opset_version=9)
+
+<!-- </ul> -->
+
+Note: The environment variables parameter of deployment jobs is not applicable\.
+
+**Parent topic:**[Batch deployment input details by framework](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-batch-input-by-framework.html)
+
+<!-- </article "role="article" "> -->

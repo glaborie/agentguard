@@ -1,0 +1,7 @@
+# Record Operations #
+
+Record Operations nodes are useful for making changes to data at the record level\. These operations are important during the data understanding and data preparation phases of data mining because they allow you to tailor the data to your particular business need\.
+
+For example, based on the results of a data audit conducted using the Data Audit node (Outputs palette), you might decide that you would like to merge customer purchase records for the past three months\. Using a Merge node, you can merge records based on the values of a key field, such as `Customer ID`\. Or you might discover that a database containing information about web site hits is unmanageable with over one million records\. Using a Sample node, you can select a subset of data for use in modeling\.
+
+<!-- </article "role="article" "> -->

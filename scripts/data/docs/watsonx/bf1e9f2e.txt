@@ -1,0 +1,95 @@
+# IBM Cognos Analytics connection #
+
+To access your data in Cognos Analytics, create a connection asset for it\.
+
+Cognos Analytics is an AI\-fueled business intelligence platform that supports the entire analytics cycle, from discovery to operationalization\.
+
+## Supported versions ##
+
+IBM Cognos Analytics 11
+
+## Supported content types ##
+
+<!-- <ul> -->
+
+ *  Report (except Reports that require prompts)
+ *  Query
+
+<!-- </ul> -->
+
+## Create a connection to Cognos Analytics ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  Gateway URL
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+### Credentials ###
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Cognos Analytics connections in the following workspaces and tools:
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Notebooks\. Click **Read data** on the **Code snippets** pane to get the connection credentials and load the data into a data structure\. See [Load data from data source connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/load-and-access-data.html#conns)\.
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Cognos Analytics setup ##
+
+Instructions for setting up Cognos Analytics: [Getting started in Cognos Analytics](https://www.ibm.com/support/knowledgecenter/SSEP7J_11.1.0/com.ibm.swg.ba.cognos.ca_gtstd.doc/c_gtstd_ica_overview.html)\.
+
+## Restrictions ##
+
+<!-- <ul> -->
+
+ *  You can use this connection only for source data\. You cannot write to data or export data with this connection\.
+ *  Notebooks: Self\-signed certificates are not supported for notebooks\. The SSL certificate that is imported into the Cognos Analytics server must be signed by a trusted root authority\. To confirm that the certificate is signed by a trusted root authority, enter the Cognos Analytics URL into a browser and verify that there is a padlock to the left of the URL\. If the certificate is self\-signed, the Cognos Analytics server administrator must replace it with a trusted TLS certificate\.
+
+<!-- </ul> -->
+
+### Running SQL statements ###
+
+To ensure that your SQL statements run correctly, refer to [Working with Queries in SQL](https://www.ibm.com/docs/SSEP7J_11.2.0/com.ibm.swg.ba.cognos.ug_cr_rptstd.doc/c_cr_rptstd_wrkdat_working_with_sql_mdx_rel.html) in the Cognos Analytics documentation for the correct syntax\.
+
+## Learn more ##
+
+[Cognos Analytics documentation](https://www.ibm.com/docs/cognos-analytics/11.0.0)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,7 @@
+# Graphs #
+
+Several phases of the data mining process use graphs and charts to explore data brought in to  watsonx\.ai\.
+
+For example, you can connect a Plot or Distribution node to a data source to gain insight into data types and distributions\. You can then perform record and field manipulations to prepare the data for downstream modeling operations\. Another common use of graphs is to check the distribution and relationships between newly derived fields\.
+
+<!-- </article "role="article" "> -->

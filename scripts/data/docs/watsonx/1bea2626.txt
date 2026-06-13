@@ -1,0 +1,15 @@
+# Confidential data disclosure #
+
+![icon for intellectual property risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-intellectual-property.svg)Risks associated with inputTraining and tuning phaseIntellectual propertyTraditional
+
+### Description ###
+
+Models might be trained or fine\-tuned using confidential data or the company’s intellectual property, which could result in unwanted disclosure of that information\.
+
+### Why is confidential data disclosure a concern for foundation models? ###
+
+If not developed in accordance with data protection rules and regulations, the model might expose confidential information or IP in the generated output or through an adversarial attack\.
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

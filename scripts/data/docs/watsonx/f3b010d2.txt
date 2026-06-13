@@ -1,0 +1,4 @@
+# Dendrogram charts #
+
+Dendrogram charts are similar to tree charts and are typically used to illustrate a network structure (for example, a hierarchical structure)\. Dendrogram charts consist of a root node that is connected to subordinate nodes through edges or branches\. The last nodes in the hierarchy are called leaves\.
+<!-- </article "role="article" "> -->

@@ -1,0 +1,5 @@
+# Outputs #
+
+Output nodes provide the means to obtain information about your data and models\. They also provide a mechanism for exporting data in various formats to interface with your other software tools\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,16 @@
+# QUEST node #
+
+QUEST—or Quick, Unbiased, Efficient Statistical Tree—is a binary classification method for building decision trees\. A major motivation in its development was to reduce the processing time required for large C&R Tree analyses with either many variables or many cases\. A second goal of QUEST was to reduce the tendency found in classification tree methods to favor inputs that allow more splits, that is, continuous (numeric range) input fields or those with many categories\.
+
+<!-- <ul> -->
+
+ *  QUEST uses a sequence of rules, based on significance tests, to evaluate the input fields at a node\. For selection purposes, as little as a single test may need to be performed on each input at a node\. Unlike C&R Tree, all splits are not examined, and unlike C&R Tree and CHAID, category combinations are not tested when evaluating an input field for selection\. This speeds the analysis\.
+ *  Splits are determined by running quadratic discriminant analysis using the selected input on groups formed by the target categories\. This method again results in a speed improvement over exhaustive search (C&R Tree) to determine the optimal split\.
+
+<!-- </ul> -->
+
+Requirements\. Input fields can be continuous (numeric ranges), but the target field must be categorical\. All splits are binary\. Weight fields cannot be used\. Any ordinal (ordered set) fields used in the model must have numeric storage (not string)\. If necessary, the Reclassify node can be used to convert them\.
+
+Strengths\. Like CHAID, but unlike C&R Tree, QUEST uses statistical tests to decide whether or not an input field is used\. It also separates the issues of input selection and splitting, applying different criteria to each\. This contrasts with CHAID, in which the statistical test result that determines variable selection also produces the split\. Similarly, C&R Tree employs the impurity\-change measure to both select the input field and to determine the split\.
+
+<!-- </article "role="article" "> -->

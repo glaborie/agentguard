@@ -1,0 +1,86 @@
+# Importing space and project assets into deployment spaces #
+
+You can import assets that you export from a deployment space or a project (either a project export or a Git archive) into a new or existing deployment space\. This way, you can add assets or update existing assets (for example, replacing a model with its newer version) to use for your deployments\.
+
+You can import a space or a project export file to [a new deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-import-to-space.html?context=cdpaas&locale=en#import-to-new) or an [existing deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-import-to-space.html?context=cdpaas&locale=en#import-to-existing) to populate the space with assets\.
+
+Tip: The export file can come from a Git\-enabled project and a Watson Studio project\. To create the file to export, create a compressed file for the project that contains the assets to import\. Then, follow the steps for importing the compressed file into a new or existing space\.
+
+## Importing a space or a project to a new deployment space ##
+
+To import a space or a project when you are creating a new deployment space:
+
+<!-- <ol> -->
+
+1.  Click **New deployment space**\.
+2.  Enter the details for the space\. For more information, see [Creating deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-create.html)\.
+3.  In the *Upload space assets* section, upload the exported compressed file that contains data assets and click **Create**\.
+
+<!-- </ol> -->
+
+The assets from the exported file is added as space assets\.
+
+## Importing a space or a project to an existing deployment space ##
+
+To import a space or a project into an existing space:
+
+<!-- <ol> -->
+
+1.  From your deployment space, click the import and export space (![Import or Export space icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/import-export-icon.png)) icon\. From the list, select **Import space**\.
+2.  Add your compressed file that contains assets from a Watson Studio project or deployment space\.  
+    **Tip:** If the space that you are importing is encrypted, enter the password in the **Password** field.
+3.  After your asset is imported, click **Done**\.
+
+<!-- </ol> -->
+
+The assets from the exported file is added as space assets\.
+
+## Resolving issues with asset duplication ##
+
+The importing mechanism compares assets that exist in your space with the assets that are being imported\. If it encounters an asset with the same name and of the same type:
+
+<!-- <ul> -->
+
+ *  If the asset type supports revisions, the importing mechanism creates a new revision of the existing asset and fixes the new revision\.
+ *  If the asset type does not support revisions, the importing mechanism fixes the existing asset\.
+
+<!-- </ul> -->
+
+This table describes how import works to resolve cases where assets are duplicated between the import file and the existing space\.
+
+<!-- <table> -->
+
+Scenarios for importing duplicated assets
+
+| Your space                                 | File being imported                            | Result                                                                                                                                                                                                                     |
+| ------------------------------------------ | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No assets with matching name or type       | One or more assets with matching name or type  | All assets are imported\. If multiple assets in the import file have the same name, they are imported as duplicate assets in the target space\.                                                                            |
+| One asset with matching name or type       | One asset with matching name or type           | Matching asset is updated with new version\. Other assets are imported normally\.                                                                                                                                          |
+| One asset with matching name or type       | More than one asset with matching name or type | The first matching asset that is processed is imported as a new version for the existing asset in the space, extra assets with matching name are created as duplicates in the space\. Other assets are imported normally\. |
+| Multiple assets with matching name or type | One or more assets with matching name or type  | Assets with matching names fail to import\. Other assets are imported normally\.                                                                                                                                           |
+
+<!-- </table ""> -->
+
+Warning: Multiple assets of the same name in an existing space or multiple assets of the same name in an import file are not fully supported scenarios\. The import works as described for the scenarios in the table, but you cannot use versioning capabilities specific to the import\.
+
+Existing deployments get updated differently, depending on deployment type:
+
+<!-- <ul> -->
+
+ *  If a batch deployment was created by using the previous version of the asset, the next invocation of the batch deployment job will refer to the updated state of the asset\.
+ *  If an online deployment was created by using the previous version of the asset, the next "restart" of the deployment refers to the updated state of the asset\.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  To learn about adding other types of assets to a space, refer to [Assets in deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets-all.html)\.
+ *  To learn about exporting assets from a deployment space, refer to [Exporting space assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-export.html)\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html)
+
+<!-- </article "role="article" "> -->

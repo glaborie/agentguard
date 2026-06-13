@@ -1,0 +1,40 @@
+# Examining the data #
+
+It's always a good idea to have a feel for the nature of your data before building a model\.
+
+Does the data exhibit seasonal variations? Although  Watson Studio can automatically find the best seasonal or nonseasonal model for each series, you can often obtain faster results by limiting the search to nonseasonal models when seasonality is not present in your data\. Without examining the data for each of the local markets, we can get a rough picture of the presence or absence of seasonality by plotting the total number of subscribers over all five markets\.
+
+Figure 1\. Plotting the total number of subscribers
+
+![Plotting the total number of subscribers](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_data1.png)
+
+<!-- <ol> -->
+
+1.  From the Graphs palette, attach a Time Plot node to the Filter node\.
+2.  Add the `Total` field to the Series list\.
+3.  Deselect the  Display series in separate panel and  Normalize options\. Save the changes\.
+4.  Right\-click the Time Plot node and run it, then open the output that was generated\.
+    
+    Figure 2. Time plot of the Total field
+    
+    ![Time plot of the Total field](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_data2.png)
+    
+    The series exhibits a very smooth upward trend with no hint of seasonal variations. There might be individual series with seasonality, but it appears that seasonality isn't a prominent feature of the data in general.
+    
+    Of course, you should inspect each of the series before ruling out seasonal models. You can then separate out series exhibiting seasonality and model them separately.
+    
+    Watson Studio makes it easy to plot multiple series together.
+5.  Double\-click the Time Plot node to open its properties again\.
+6.  Remove the `Total` field from the Series list\.
+7.  Add the `Market_1` through `Market_5` fields to the list\.
+8.  Run the Time Plot node again\.
+    
+    Figure 3. Time plot of multiple fields
+    
+    ![Time plot of multiple fields](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_data3.png)
+    
+    Inspection of each of the markets reveals a steady upward trend in each case. Although some markets are a little more erratic than others, there's no evidence of seasonality.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

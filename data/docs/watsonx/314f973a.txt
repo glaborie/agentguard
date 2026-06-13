@@ -1,0 +1,33 @@
+# Payload logging in watsonx\.governance #
+
+You can enable payload logging in watsonx\.governance to configure model evaluations\.
+
+To [manage payload data](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-manage-payload-data.html) for configuring drift v2, generative AI quality, and model health evaluations, watsonx\.governance must log your payload data in the payload logging table\.
+
+Generative AI quality evaluations use payload data to generate results for the following task types when you evaluate prompt templates:
+
+<!-- <ul> -->
+
+ *  Text summarization
+ *  Content generation
+ *  Question answering
+
+<!-- </ul> -->
+
+Drift v2 and model health evaluations use payload data to generate results for the following task types when you evaluate prompt templates:
+
+<!-- <ul> -->
+
+ *  Text classification
+ *  Text summarization
+ *  Content generation
+ *  Entity extraction
+ *  Question answering
+
+<!-- </ul> -->
+
+You can log your payload data with the payload logging endpoint or by uploading a CSV file\. For more information, see [Sending model transactions](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-send-model-transactions.html)
+
+**Parent topic:**[Managing payload data in Watson OpenScale](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-manage-payload-data.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,27 @@
+# Abbreviations #
+
+Standard abbreviations are used throughout the syntax for node properties\. Learning the abbreviations is helpful in constructing scripts\.
+
+<!-- <table "summary="Standard abbreviations used throughout the syntax" id="slot_parameters_abbreviations__table_fw3_qwy_ddb" class="defaultstyle" "> -->
+
+Standard abbreviations used throughout the syntax  
+
+Table 1\. Standard abbreviations used throughout the syntax
+
+| Abbreviation | Meaning                                |
+| ------------ | -------------------------------------- |
+| abs          | Absolute value                         |
+| len          | Length                                 |
+| min          | Minimum                                |
+| max          | Maximum                                |
+| correl       | Correlation                            |
+| covar        | Covariance                             |
+| num          | Number or numeric                      |
+| pct          | Percent or percentage                  |
+| transp       | Transparency                           |
+| xval         | Cross\-validation                      |
+| var          | Variance or variable (in source nodes) |
+
+<!-- </table "summary="Standard abbreviations used throughout the syntax" id="slot_parameters_abbreviations__table_fw3_qwy_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

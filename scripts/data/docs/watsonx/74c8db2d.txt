@@ -1,0 +1,99 @@
+## Running a pipeline ##
+
+You can run a pipeline in real time to test a flow as you work\. When you are satisfied with a pipeline, you can then define a job to run a pipeline with parameters or to run on a schedule\.
+
+To run a pipeline:
+
+<!-- <ol> -->
+
+1.  Click **Run pipeline** on the toolbar\.
+2.  Choose an option:
+    
+    <!-- <ul> -->
+    
+     *  **Trial run** runs the pipeline without creating a job. Use this to test a pipeline.
+     *  **Create a job** presents you with an interface for configuring and scheduling a job to run the pipeline. You can save and reuse run details, such as pipeline parameters, for a version of your pipeline.
+     *  **View history** compares all of your runs over time.
+    
+    <!-- </ul> -->
+    
+<!-- </ol> -->
+
+You must make sure requirements are met when you run a pipeline\. For example, you might need a deployment space or an API key to run some of your nodes before you can begin\.
+
+### Using a job run name ###
+
+You can optionally specify a job run name when running a pipeline flow or a pipeline job and see the different jobs in the **Job details** dashboard\. Otherwise, you can also assign a local parameter `DSJobInvocationId` to either a **Run pipeline job** node or **Run DataStage job** node\.
+
+If both the parameter `DSJobInvocationId` and job name of the node are set, `DSJobInvocationId` will be used\. If neither are set, the default value "job run" is used\.
+
+### Notes on running a pipeline ###
+
+<!-- <ul> -->
+
+ *  When you run a pipeline from a trial run or a job, click the node output to view the results of a successful run\. If the run fails, error messages and logs are provided to help you correct issues\.
+ *  Errors in the pipeline are flagged with an error badge\. Open the node or condition with an error to change or complete the configuration\.
+ *  View the consolidated logs to review operations or identify issues with the pipeline\.
+
+<!-- </ul> -->
+
+## Creating a pipeline job ##
+
+The following are all the configuration options for defining a job to run the pipeline\.
+
+<!-- <ol> -->
+
+1.  Name your pipeline job and choose a version\.
+2.  Input your IBM API key\.
+3.  **(Optional)** Schedule your job by toggling the **Schedule** button\.
+    
+    <!-- <ol> -->
+    
+    1.  Choose the start date and fine tune your schedule to repeat by any minute, hour, day, week, month.
+    2.  Add exception days to prevent the job from running on certain days.
+    3.  Add a time for terminating the job.
+    
+    <!-- </ol> -->
+    
+4.  **(Optional)** Enter the pipeline parameters needed for your job, for example assigning a space to a deployment node\. To see how to create a pipeline parameter, see **Defining pipeline parameters** in [Creating a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-create.html)\.
+5.  **(Optional)** Choose if you want to be notified of pipeline job status after running\.
+
+<!-- </ol> -->
+
+## Saving a version of a pipeline ##
+
+You can save a version of a pipeline and revert to it at a later time\. For example, if you want to preserve a particular configuration before you make changes, save a version\. You can revert the pipeline to a previous version\. When you share a pipeline, the latest version is used\.
+
+To save a version:
+
+<!-- <ol> -->
+
+1.  Click the Versions icon on the toolbar\.
+2.  In the Versions pane, click **Save version** to create a new version with a version number incremented by 1\.
+
+<!-- </ol> -->
+
+When you run the pipeline, you can choose from available saved versions\.
+
+Note: You cannot delete a saved version\.
+
+## Exporting pipeline assets ##
+
+When you export project or space assets to import them into a deployment space, you can include pipelines in the list of assets you export to a zip file and then import into a project or space\.
+
+Importing a pipeline into a space extends your MLOps capabilities to run jobs for various assets from a space, or to move all jobs from a pre\-production to a production space\. Note these considerations for working with pipelines in a space:
+
+<!-- <ul> -->
+
+ *  Pipelines in a space are read\-only\. You cannot edit the pipeline\. You must edit the pipeline from the project, then export the updated pipeline and import it into the space\.
+ *  Although you cannot edit the pipeline in a space, you can create new jobs to run the pipeline\. You can also use parameters to assign values for jobs so you can have different values for each job you configure\.
+ *  If there is already a pipeline in the space with the same name, the pipeline import will fail\.
+ *  If there is no pipeline in the space with the same name, a pipeline with version 1 is created in the space\.
+ *  Any supporting assets or references required to run a pipeline job must also be part of the import package or the job will fail\.
+ *  If your pipeline contains assets or tools not supported in a space, such as an SPSS modeler job, the pipeline job will fail\.
+
+<!-- </ul> -->
+
+**Parent topic:**[IBM Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-overview.html)
+
+<!-- </article "role="article" "> -->

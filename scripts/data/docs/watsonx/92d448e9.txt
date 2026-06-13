@@ -1,0 +1,30 @@
+# Managing users and access #
+
+As the account owner or administrator, you add the people in your organization to the IBM Cloud account and then assign them access permissions using roles that provide access to the services that they need\.
+
+## User management on IBM Cloud ##
+
+People who work in IBM watsonx must have a valid IBMid and be a member of the IBM Cloud account\. Alternately, they must have a valid ID in a supported user registry\. User management includes adding users to the account and then assigning appropriate roles to provide access to the services and actions that they need\. See [Adding users to the account](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-addl-users.html)\.
+
+## Access management using IBM Cloud Identity and Access Management (IAM) ##
+
+You control the actions that a user can perform for a specific service by assigning permissions with IBM Cloud IAM\. You create user access groups containing roles to provide permissions for users\. You can also assign roles and permissions to individual users\. If necessary, you can create custom roles to satisfy your business requirements\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Signing up for your organization's watsonx account](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html#orgacct)
+ *  [Logging in to watsonx\.ai through IBM Cloud App ID (beta)](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html#appid)
+ *  [IBM Cloud docs: Assigning access to resources by using access groups](https://cloud.ibm.com/docs/account?topic=account-access-getstarted)
+ *  [IBM Cloud docs: Creating custom roles](https://cloud.ibm.com/docs/account?topic=account-custom-roles)
+ *  [IBM Cloud docs: IAM access](https://cloud.ibm.com/docs/account?topic=account-userroles)
+ *  [IBM Cloud docs: What is IBM Cloud Identity and Access Management](https://cloud.ibm.com/docs/account?topic=account-iamoverview)
+ *  [IBM Cloud docs: Setting up access groups](https://cloud.ibm.com/docs/account?topic=account-groups)
+ *  [IBM Cloud docs: Best practices for organizing resources and assigning access](https://cloud.ibm.com/docs/account?topic=account-account_setup&interface=ui)
+
+<!-- </ul> -->
+
+**Parent topic:**[Setting up the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)
+
+<!-- </article "role="article" "> -->

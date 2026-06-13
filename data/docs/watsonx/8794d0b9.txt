@@ -1,0 +1,29 @@
+# extensionmodelnode properties #
+
+![Extension Model node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/extensionmodelnode.png)With the Extension Model node, you can run R or Python for Spark scripts to build and score results\.
+
+Note that many of the properties and much of the information on this page is only applicable to SPSS Modeler Desktop streams\.
+
+<!-- <table "summary="extensionmodelnode properties" class="defaultstyle" "> -->
+
+extensionmodelnode properties  
+
+Table 1\. extensionmodelnode properties
+
+| `extensionmodelnode` Properties | Values                                   | Property description                                                                      |
+| ------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `syntax_type`                   | *R**Python*                              | Specify which script runs: R or Python (R is the default)\.                               |
+| `r_build_syntax`                | *string*                                 | The R scripting syntax for model building\.                                               |
+| `r_score_syntax`                | *string*                                 | The R scripting syntax for model scoring\.                                                |
+| `python_build_syntax`           | *string*                                 | The Python scripting syntax for model building\.                                          |
+| `python_score_syntax`           | *string*                                 | The Python scripting syntax for model scoring\.                                           |
+| `convert_flags`                 | `StringsAndDoubles`  <br>`LogicalValues` | Option to convert flag fields\.                                                           |
+| `convert_missing`               | *flag*                                   | Option to convert missing values to R NA value\.                                          |
+| `convert_datetime`              | *flag*                                   | Option to convert variables with date or datetime formats to R date/time formats\.        |
+| `convert_datetime_class`        | `POSIXct`  <br>  <br>`POSIXlt`  <br>     | Options to specify to what format variables with date or datetime formats are converted\. |
+| `output_html`                   | *flag*                                   | Option to display graphs in the R model nugget\.                                          |
+| `output_text`                   | *flag*                                   | Option to write R console text output to the R model nugget\.                             |
+
+<!-- </table "summary="extensionmodelnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

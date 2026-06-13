@@ -1,0 +1,66 @@
+# samplenode properties #
+
+![Sample node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/samplenodeicon.png) The Sample node selects a subset of records\. A variety of sample types are supported, including stratified, clustered, and nonrandom (structured) samples\. Sampling can be useful for improving performance, and for selecting groups of related records or transactions for analysis\.
+
+Example
+
+    /* Create two Sample nodes to extract 
+       different samples from the same data */
+    
+    node = stream.create("sample", "My node") 
+    node.setPropertyValue("method", "Simple")
+    node.setPropertyValue("mode", "Include")
+    node.setPropertyValue("sample_type", "First")
+    node.setPropertyValue("first_n", 500)
+    
+    node = stream.create("sample", "My node") 
+    node.setPropertyValue("method", "Complex")
+    node.setPropertyValue("stratify_by", ["Sex", "Cholesterol"])
+    node.setPropertyValue("sample_units", "Proportions")
+    node.setPropertyValue("sample_size_proportions", "Custom")
+    node.setPropertyValue("sizes_proportions", ["M", "High", "Default"], "M", "Normal", "Default"],
+     "F", "High", 0.3], "F", "Normal", 0.3]])
+
+<!-- <table "summary="samplenode properties" id="samplenodeslots__table_fft_wvs_ddb" class="defaultstyle" "> -->
+
+samplenode properties  
+
+Table 1\. samplenode properties
+
+| `samplenode` properties   | Data type                                                 | Property description                                                                                                                                                              |
+| ------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `method`                  | Simple Complex                                            |                                                                                                                                                                                   |
+| `mode`                    | `Include``Discard`                                        | Include or discard records that meet the specified condition\.                                                                                                                    |
+| `sample_type`             | `First``OneInN``RandomPct`                                | Specifies the sampling method\.                                                                                                                                                   |
+| `first_n`                 | *integer*                                                 | Records up to the specified cutoff point will be included or discarded\.                                                                                                          |
+| `one_in_n`                | *number*                                                  | Include or discard every *n*th record\.                                                                                                                                           |
+| `rand_pct`                | *number*                                                  | Specify the percentage of records to include or discard\.                                                                                                                         |
+| `use_max_size`            | *flag*                                                    | Enable use of the `maximum_size` setting\.                                                                                                                                        |
+| `maximum_size`            | *integer*                                                 | Specify the largest sample to be included or discarded from the data stream\. This option is redundant and therefore disabled when `First` and `Include` are specified\.          |
+| `set_random_seed`         | *flag*                                                    | Enables use of the random seed setting\.                                                                                                                                          |
+| `random_seed`             | *integer*                                                 | Specify the value used as a random seed\.                                                                                                                                         |
+| `complex_sample_type`     | `Random``Systematic`                                      |                                                                                                                                                                                   |
+| `sample_units`            | `Proportions``Counts`                                     |                                                                                                                                                                                   |
+| `sample_size_proportions` | `Fixed``Custom``Variable`                                 |                                                                                                                                                                                   |
+| `sample_size_counts`      | `Fixed``Custom``Variable`                                 |                                                                                                                                                                                   |
+| `fixed_proportions`       | *number*                                                  |                                                                                                                                                                                   |
+| `fixed_counts`            | *integer*                                                 |                                                                                                                                                                                   |
+| `variable_proportions`    | *field*                                                   |                                                                                                                                                                                   |
+| `variable_counts`         | *field*                                                   |                                                                                                                                                                                   |
+| `use_min_stratum_size`    | *flag*                                                    |                                                                                                                                                                                   |
+| `minimum_stratum_size`    | *integer*                                                 | This option only applies when a Complex sample is taken with `Sample units=Proportions`\.                                                                                         |
+| `use_max_stratum_size`    | *flag*                                                    |                                                                                                                                                                                   |
+| `maximum_stratum_size`    | *integer*                                                 | This option only applies when a Complex sample is taken with `Sample units=Proportions`\.                                                                                         |
+| `clusters`                | *field*                                                   |                                                                                                                                                                                   |
+| `stratify_by`             | *\[field1 \.\.\. fieldN\]*                                |                                                                                                                                                                                   |
+| `specify_input_weight`    | *flag*                                                    |                                                                                                                                                                                   |
+| `input_weight`            | *field*                                                   |                                                                                                                                                                                   |
+| `new_output_weight`       | *string*                                                  |                                                                                                                                                                                   |
+| `sizes_proportions`       | \[\[`string`*string value*\]\[`string`*string value*\]…\] | If `sample_units=proportions` and `sample_size_proportions=Custom`, specifies a value for each possible combination of values of stratification fields\.                          |
+| `default_proportion`      | *number*                                                  |                                                                                                                                                                                   |
+| `sizes_counts`            | \[\[`string`*string value*\]\[`string`*string value*\]…\] | Specifies a value for each possible combination of values of stratification fields\. Usage is similar to `sizes_proportions` but specifying an integer rather than a proportion\. |
+| `default_count`           | *number*                                                  |                                                                                                                                                                                   |
+
+<!-- </table "summary="samplenode properties" id="samplenodeslots__table_fft_wvs_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

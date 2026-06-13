@@ -1,0 +1,52 @@
+# Creating and managing IBM Cloud services #
+
+You can create IBM Cloud service instances within IBM watsonx from the Services catalog\.
+
+**Prerequisite** : You must be [signed up for watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html)\.
+
+**Required permissions** : For creating or managing a service instance, you must have **Administrator** or **Editor** platform access roles in the IBM Cloud account for IBM watsonx\. If you signed up for IBM watsonx with your own IBM Cloud account, you are the owner of the account\. Otherwise, you can [check your IBM Cloud account roles and permissions](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/your-roles.html)\.
+
+## Creating a service ##
+
+To view the Services catalog, select **Administration > Services > Services catalog** from the main menu\. For a description of each service, see [Services](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/cloud-services.html)\.
+
+To check which service instances you have, select **Administration > Services > Service instances** from the main menu\. You can filter which services you see by resource group, organization, and region\.
+
+To create a service:
+
+<!-- <ol> -->
+
+1.  Log in to IBM watsonx\.
+2.  Select **Administration > Services > Services catalog** from the main menu\.
+3.  Click the service you want to create\.
+4.  Specify the IBM Cloud service region\.
+5.  Select a plan\.
+6.  If necessary, select the resource group or organization\.
+7.  Click **Create**\.
+
+<!-- </ol> -->
+
+## Managing services ##
+
+To manage a service:
+
+<!-- <ol> -->
+
+1.  Select **Administration > Services > Services instances** from the main menu\.
+2.  Click the Action menu next to the service name and select **Manage in IBM Cloud**\. The service page in IBM Cloud opens in a separate browser tab\.
+3.  To change pricing plans, select **Plan** and choose the desired plan\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Associate a service with a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assoc-services.html)
+ *  [Managing the platform](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[IBM Cloud services](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/cloud-services.html)
+
+<!-- </article "role="article" "> -->

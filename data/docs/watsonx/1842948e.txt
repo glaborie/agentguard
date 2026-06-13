@@ -1,0 +1,35 @@
+# Advanced frequency settings #
+
+You can build categories based on a straightforward and mechanical frequency technique\. With this technique, you can build one category for each item (type, concept, or pattern) that was found to be higher than a given record or document count\. Additionally, you can build a single category for all of the less frequently occurring items\. By count, we refer to the number of records or documents containing the extracted concept (and any of its synonyms), type, or pattern in question as opposed to the total number of occurrences in the entire text\.
+
+Grouping frequently occurring items can yield interesting results, since it may indicate a common or significant response\. The technique is very useful on the unused extraction results after other techniques have been applied\. Another application is to run this technique immediately after extraction when no other categories exist, edit the results to delete uninteresting categories, and then extend those categories so that they match even more records or documents\.
+
+Instead of using this technique, you could sort the concepts or concept patterns by descending number of records or documents in the extraction results pane and then drag\-and\-drop the ones with the most records into the categories pane to create the corresponding categories\.
+
+The following advanced settings are available for the  Use frequencies to build categories option in the category settings\.
+
+Generate category descriptors at\. Select the kind of input for descriptors\.
+
+<!-- <ul> -->
+
+ *  Concepts level\. Selecting this option means that concepts or concept patterns frequencies will be used\. Concepts will be used if types were selected as input for category building and concept patterns are used, if type patterns were selected\. In general, applying this technique to the concept level will produce more specific results, since concepts and concept patterns represent a lower level of measurement\.
+ *  Types level\. Selecting this option means that type or type patterns frequencies will be used\. Types will be used if types were selected as input for category building and type patterns are used, if type patterns were selected\. By applying this technique to the type level, you can get a quick view of the kind of information given\.
+
+<!-- </ul> -->
+
+Minimum record/doc\. count for items to have their own category\. With this option, you can build categories from frequently occurring items\. This option restricts the output to only those categories containing a descriptor that occurred in at least X number of records or documents, where X is the value to enter for this option\.
+
+Group all remaining items into a category called\. Use this option if you want to group all concepts or types occurring infrequently into a single catch\-all category with the name of your choice\. By default, this category is named Other\.
+
+Category input\. Select the group to which to apply the techniques:
+
+<!-- <ul> -->
+
+ *  Unused extraction results\. This option enables categories to be built from extraction results that aren't used in any existing categories\. This minimizes the tendency for records to match multiple categories and limits the number of categories produced\.
+ *  All extraction results\. This option enables categories to be built using any of the extraction results\. This is most useful when no or few categories already exist\.
+
+<!-- </ul> -->
+
+Resolve duplicate category names by\. Select how to handle any new categories or subcategories whose names would be the same as existing categories\. You can either merge the new ones (and their descriptors) with the existing categories with the same name, or you can choose to skip the creation of any categories if a duplicate name is found in the existing categories\.
+
+<!-- </article "role="article" "> -->

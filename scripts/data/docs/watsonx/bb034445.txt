@@ -1,0 +1,36 @@
+# Exporting space assets from deployment spaces #
+
+You can export assets from a deployment space so that you can share the space with others or reuse the assets in another space\.
+
+For a list of assets that you can export from space, refer to [Assets in a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets-all.html)\.
+
+## Exporting space assets from the UI ##
+
+Important:To avoid problems with importing the space, export all dependencies together with the space\. For more information, see [Exporting a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/export-project.html)\.
+
+To export space assets from the UI:
+
+<!-- <ol> -->
+
+1.  From your deployment space, click the import and export space (![Import or Export space icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/import-export-icon.png)) icon\. From the list, select **Export space**\.
+2.  Click **New export file**\. Specify a file name and an optional description\.  
+    **Tip:** To encrypt sensitive data in the exported archive, type the password in the **Password** field.
+3.  Select the assets that you want to export with the space\.
+4.  Click **Create** to create the export file\.
+5.  After the space is exported, click the download (![Download icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/download-icon.png)) to save the file\.
+
+<!-- </ol> -->
+
+You can reuse this space by choosing **Create a space from a file** when you create a new space\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Importing spaces and projects into existing deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-import-to-space.html)\.
+
+<!-- </ul> -->
+
+**Parent topic:**[Deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html)
+
+<!-- </article "role="article" "> -->

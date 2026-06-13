@@ -1,0 +1,7 @@
+# Selecting fields #
+
+The field list displays all fields available at this point in the data stream\. Double\-click a field from the list to add it to your expression\.
+
+After selecting a field, you can also select an associated value from the value list\.
+
+<!-- </article "role="article" "> -->

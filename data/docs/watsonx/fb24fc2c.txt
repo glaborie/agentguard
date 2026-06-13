@@ -1,0 +1,195 @@
+# SPSS predictive analytics classification and regression algorithms in notebooks #
+
+You can use generalized linear model, linear regression, linear support vector machine, random trees, or CHAID SPSS predictive analytics algorithms in notebooks\.
+
+## Generalized Linear Model ##
+
+The Generalized Linear Model (GLE) is a commonly used analytical algorithm for different types of data\. It covers not only widely used statistical models, such as linear regression for normally distributed targets, logistic models for binary or multinomial targets, and log linear models for count data, but also covers many useful statistical models via its very general model formulation\. In addition to building the model, Generalized Linear Model provides other useful features such as variable selection, automatic selection of distribution and link function, and model evaluation statistics\. This model has options for regularization, such as LASSO, ridge regression, elastic net, etc\., and is also capable of handling very wide data\.
+
+For more details about how to choose distribution and link function, see Distribution and Link Function Combination\.
+
+**Example code 1:**
+
+This example shows a GLE setting with specified distribution and link function, specified effects, intercept, conducting ROC curve, and printing correlation matrix\. This scenario builds a model, then scores the model\.
+
+Python example:
+
+    from spss.ml.classificationandregression.generalizedlinear import GeneralizedLinear
+    from spss.ml.classificationandregression.params.effect import Effect
+    
+    gle1 = GeneralizedLinear(). \
+        setTargetField("Work_experience"). \
+        setInputFieldList(["Beginning_salary", "Sex_of_employee", "Educational_level", "Minority_classification", "Current_salary"]). \
+        setEffects([
+            Effect(fields="Beginning_salary"], nestingLevels=0]),
+            Effect(fields="Sex_of_employee"], nestingLevels=0]),
+            Effect(fields="Educational_level"], nestingLevels=0]),
+            Effect(fields="Current_salary"], nestingLevels=0]),
+            Effect(fields="Sex_of_employee", "Educational_level"], nestingLevels=0, 0])]). \
+        setIntercept(True). \
+        setDistribution("NORMAL"). \
+        setLinkFunction("LOG"). \
+        setAnalysisType("BOTH"). \
+        setConductRocCurve(True)
+    
+    gleModel1 = gle1.fit(data)
+    PMML = gleModel1.toPMML()
+    statXML = gleModel1.statXML()
+    predictions1 = gleModel1.transform(data)
+    predictions1.show()
+
+**Example code 2:**
+
+This example shows a GLE setting with unspecified distribution and link function, and variable selection using the forward stepwise method\. This scenario uses the forward stepwise method to select distribution, link function and effects, then builds and scores the model\.
+
+Python example:
+
+    from spss.ml.classificationandregression.generalizedlinear import GeneralizedLinear
+    from spss.ml.classificationandregression.params.effect import Effect
+    
+    gle2 = GeneralizedLinear(). \
+        setTargetField("Work_experience"). \
+        setInputFieldList(["Beginning_salary", "Sex_of_employee", "Educational_level", "Minority_classification", "Current_salary"]). \
+        setEffects([
+            Effect(fields="Beginning_salary"], nestingLevels=0]),
+            Effect(fields="Sex_of_employee"], nestingLevels=0]),
+            Effect(fields="Educational_level"], nestingLevels=0]),
+            Effect(fields="Current_salary"], nestingLevels=0])]). \
+        setIntercept(True). \
+        setDistribution("UNKNOWN"). \
+        setLinkFunction("UNKNOWN"). \
+        setAnalysisType("BOTH"). \
+        setUseVariableSelection(True). \
+        setVariableSelectionMethod("FORWARD_STEPWISE")
+    
+    gleModel2 = gle2.fit(data)
+    PMML = gleModel2.toPMML()
+    statXML = gleModel2.statXML()
+    predictions2 = gleModel2.transform(data)
+    predictions2.show()
+
+**Example code 3:**
+
+This example shows a GLE setting with unspecified distribution, specified link function, and variable selection using the LASSO method, with two\-way interaction detection and automatic penalty parameter selection\. This scenario detects two\-way interaction for effects, then uses the LASSO method to select distribution and effects using automatic penalty parameter selection, then builds and scores the model\.
+
+Python example:
+
+    from spss.ml.classificationandregression.generalizedlinear import GeneralizedLinear
+    from spss.ml.classificationandregression.params.effect import Effect
+    
+    gle3 = GeneralizedLinear(). \
+        setTargetField("Work_experience"). \
+        setInputFieldList(["Beginning_salary", "Sex_of_employee", "Educational_level", "Minority_classification", "Current_salary"]). \
+        setEffects([
+            Effect(fields="Beginning_salary"], nestingLevels=0]),
+            Effect(fields="Sex_of_employee"], nestingLevels=0]),
+            Effect(fields="Educational_level"], nestingLevels=0]),
+            Effect(fields="Current_salary"], nestingLevels=0])]). \
+        setIntercept(True). \
+        setDistribution("UNKNOWN"). \
+        setLinkFunction("LOG"). \
+        setAnalysisType("BOTH"). \
+        setDetectTwoWayInteraction(True). \
+        setUseVariableSelection(True). \
+        setVariableSelectionMethod("LASSO"). \
+        setUserSpecPenaltyParams(False)
+    
+    gleModel3 = gle3.fit(data)
+    PMML = gleModel3.toPMML()
+    statXML = gleModel3.statXML()
+    predictions3 = gleModel3.transform(data)
+    predictions3.show()
+
+## Linear Regression ##
+
+The linear regression model analyzes the predictive relationship between a continuous target and one or more predictors which can be continuous or categorical\.
+
+Features of the linear regression model include automatic interaction effect detection, forward stepwise model selection, diagnostic checking, and unusual category detection based on Estimated Marginal Means (EMMEANS)\.
+
+**Example code:**
+
+Python example:
+
+    from spss.ml.classificationandregression.linearregression import LinearRegression
+    
+    le = LinearRegression(). \
+        setTargetField("target"). \
+        setInputFieldList(["predictor1", "predictor2", "predictorn"]). \
+        setDetectTwoWayInteraction(True). \
+        setVarSelectionMethod("forwardStepwise")
+    
+    leModel = le.fit(data)
+    predictions = leModel.transform(data)
+    predictions.show()
+
+## Linear Support Vector Machine ##
+
+The Linear Support Vector Machine (LSVM) provides a supervised learning method that generates input\-output mapping functions from a set of labeled training data\. The mapping function can be either a classification function or a regression function\. LSVM is designed to resolve large\-scale problems in terms of the number of records and the number of variables (parameters)\. Its feature space is the same as the input space of the problem, and it can handle sparse data where the average number of non\-zero elements in one record is small\.
+
+**Example code:**
+
+Python example:
+
+    from spss.ml.classificationandregression.linearsupportvectormachine import LinearSupportVectorMachine
+    
+    lsvm = LinearSupportVectorMachine().\
+        setTargetField("BareNuc").\
+        setInputFieldList(["Clump", "UnifSize", "UnifShape", "MargAdh", "SingEpiSize", "BlandChrom", "NormNucl", "Mit", "Class"]).\
+        setPenaltyFunction("L2")
+    
+    lsvmModel = lsvm.fit(df)
+    predictions = lsvmModel.transform(data)
+    predictions.show()
+
+## Random Trees ##
+
+Random Trees is a powerful approach for generating strong (accurate) predictive models\. It's comparable and sometimes better than other state\-of\-the\-art methods for classification or regression problems\.
+
+Random Trees is an ensemble model consisting of multiple CART\-like trees\. Each tree grows on a bootstrap sample which is obtained by sampling the original data cases with replacement\. Moreover, during the tree growth, for each node the best split variable is selected from a specified smaller number of variables that are drawn randomly from the full set of variables\. Each tree grows to the largest extent possible, and there is no pruning\. In scoring, Random Trees combines individual tree scores by majority voting (for classification) or average (for regression)\.
+
+**Example code:**
+
+Python example:
+
+    from spss.ml.classificationandregression.ensemble.randomtrees import RandomTrees
+    
+    # Random trees required a "target" field and some input fields. If "target" is continuous, then regression trees will be generate else classification .
+    # You can use the SPSS Attribute or Spark ML Attribute to indicate the field to categorical or continuous.
+    randomTrees = RandomTrees(). \
+        setTargetField("target"). \
+        setInputFieldList(["feature1", "feature2", "feature3"]). \
+        numTrees(10). \
+        setMaxTreeDepth(5)
+    
+    randomTreesModel = randomTrees.fit(df)
+    predictions = randomTreesModel.transform(scoreDF)
+    predictions.show()
+
+## CHAID ##
+
+CHAID, or Chi\-squared Automatic Interaction Detection, is a classification method for building decision trees by using chi\-square statistics to identify optimal splits\. An extension applicable to regression problems is also available\.
+
+CHAID first examines the crosstabulations between each of the input fields and the target, and tests for significance using a chi\-square independence test\. If more than one of these relations is statistically significant, CHAID will select the input field that's the most significant (smallest p value)\. If an input has more than two categories, these are compared, and categories that show no differences in the outcome are collapsed together\. This is done by successively joining the pair of categories showing the least significant difference\. This category\-merging process stops when all remaining categories differ at the specified testing level\. For nominal input fields, any categories can be merged; for an ordinal set, only contiguous categories can be merged\. Continuous input fields other than the target can't be used directly; they must be binned into ordinal fields first\.
+
+Exhaustive CHAID is a modification of CHAID that does a more thorough job of examining all possible splits for each predictor but takes longer to compute\.
+
+**Example code:**
+
+Python example:
+
+    from spss.ml.classificationandregression.tree.chaid import CHAID
+    
+    chaid = CHAID(). \
+        setTargetField("salary"). \
+        setInputFieldList(["educ", "jobcat", "gender"])
+    
+    chaidModel = chaid.fit(data)
+    pmmlStr = chaidModel.toPMML()
+    statxmlStr = chaidModel.statXML()
+    
+    predictions = chaidModel.transform(data)
+    predictions.show()
+
+**Parent topic:**[SPSS predictive analytics algorithms](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/spss-algorithms.html)
+
+<!-- </article "role="article" "> -->

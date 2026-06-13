@@ -1,0 +1,27 @@
+# Data bias #
+
+![icon for fairness risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-fairness.svg)Risks associated with inputTraining and tuning phaseFairnessAmplified
+
+### Description ###
+
+Historical, representational, and societal biases present in the data used to train and fine tune the model can adversely affect model behavior\.
+
+### Why is data bias a concern for foundation models? ###
+
+Training an AI system on data with bias, such as historical or representational bias, could lead to biased or skewed outputs that may unfairly represent or otherwise discriminate against certain groups or individuals\. In addition to negative societal impacts, business entities could face legal consequences or reputational harms from biased model outcomes\.
+
+Example
+
+#### Healthcare Bias ####
+
+Research on reinforcing disparities in medicine highlights that using data and AI to transform how people receive healthcare is only as strong as the data behind it, meaning use of training data with poor minority representation can lead to growing health inequalities\.
+
+Sources:
+
+[Science, September 2022](https://www.science.org/doi/10.1126/science.abo2788)
+
+[Forbes, December 2022](https://www.forbes.com/sites/adigaskell/2022/12/02/minority-patients-often-left-behind-by-health-ai/?sh=31d28a225b41)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

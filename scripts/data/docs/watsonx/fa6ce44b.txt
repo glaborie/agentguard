@@ -1,0 +1,9 @@
+# Disabling nodes in a flow #
+
+You can disable process nodes that have a single input so that they're ignored when the flow runs\. This saves you from having to remove or bypass the node and means you can leave it connected to the remaining nodes\.
+
+You can still open and edit the node settings; however, any changes will not take effect until you enable the node again\.
+
+For example, you might use a Filter node to filter several fields, and then build models based on the reduced data set\. If you want to also build the same models *without* fields being filtered, to see if they improve the model results, you can disable the Filter node\. When you disable the Filter node, the connections to the modeling nodes pass directly through from the Derive node to the Type node\.
+
+<!-- </article "role="article" "> -->

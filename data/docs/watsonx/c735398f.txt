@@ -1,0 +1,31 @@
+# Checking type values #
+
+Turning on the  Check option for each field examines all values in that field to determine whether they comply with the current type settings or the values that you've specified\. This is useful for cleaning up datasets and reducing the size of a dataset within a single operation\.
+
+The  Check column in the Type node determines what happens when a value outside of the type limits is discovered\. To change the check settings for a field, use the drop\-down list for that field in the  Check column\. To set the check settings for all fields, select the check box for the top\-level  Field column heading\. Then use the top\-level drop\-down above the  Check column\.
+
+The following check options are available:
+
+None\. Values will be passed through without checking\. This is the default setting\.
+
+Nullify\. Change values outside of the limits to the system null (`$null$`)\.
+
+Coerce\. Fields whose measurement levels are fully instantiated will be checked for values that fall outside the specified ranges\. Unspecified values will be converted to a legal value for that measurement level using the following rules:
+
+<!-- <ul> -->
+
+ *  For flags, any value other than the true and false value is converted to the false value
+ *  For sets (nominal or ordinal), any unknown value is converted to the first member of the set's values
+ *  Numbers greater than the upper limit of a range are replaced by the upper limit
+ *  Numbers less than the lower limit of a range are replaced by the lower limit
+ *  Null values in a range are given the midpoint value for that range
+
+<!-- </ul> -->
+
+Discard\. When illegal values are found, the entire record is discarded\.
+
+Warn\. The number of illegal items is counted and reported in the flow properties dialog when all of the data has been read\.
+
+Abort\. The first illegal value encountered terminates the running of the flow\. The error is reported in the flow properties dialog\.
+
+<!-- </article "role="article" "> -->

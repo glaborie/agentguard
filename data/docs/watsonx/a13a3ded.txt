@@ -1,0 +1,36 @@
+# Creating  SPSS Modeler flows #
+
+With  SPSS Modeler flows, you can quickly develop predictive models using business expertise and deploy them into business operations to improve decision making\. Designed around the long\-established  SPSS Modeler client software and the industry\-standard CRISP\-DM model it uses, the flows interface supports the entire data mining process, from data to better business results\.
+
+SPSS Modeler offers a variety of modeling methods taken from machine learning, artificial intelligence, and statistics\. The methods available on the node palette allow you to derive new information from your data and to develop predictive models\. Each method has certain strengths and is best suited for particular types of problems\.
+
+Data format
+:   Relational: Tables in relational data sources
+:   Tabular:  \.xls,  \.xlsx,  \.csv,  \.sav,  \.json,  \.xml, or  \.sas\. For Excel files, only the first sheet is read\.
+:   Textual: In the supported relational tables or files
+
+Data size
+:   Any
+
+How can I prepare data?
+:   Use automatic data preparation functions
+:   Write SQL statements to manipulate data
+:   Cleanse, shape, sample, sort, and derive data
+
+How can I analyze data?
+:   Visualize data with many chart options
+:   Identify the natural language of a text field
+
+How can I build models?
+:   Build predictive models
+:   Choose from over 40 modeling algorithms, and many other nodes
+:   Use automatic modeling functions
+:   Model time series or geospatial data
+:   Classify textual data
+:   Identify relationships between the concepts in textual data
+
+Getting started
+:   To create an  SPSS Modeler flow from the project's  Assets tab, click \.
+
+Note: Watsonx\.ai doesn't include SPSS functionality in Peru, Ecuador, Colombia, or Venezuela\.
+<!-- </article "role="article" "> -->

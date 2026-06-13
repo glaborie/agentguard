@@ -1,0 +1,23 @@
+# simfitnode properties #
+
+![Sim Fit node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/simfitnodeicon.png)The Simulation Fitting (Sim Fit) node examines the statistical distribution of the data in each field and generates (or updates) a Simulation Generate node, with the best fitting distribution assigned to each field\. The Simulation Generate node can then be used to generate simulated data\.
+
+<!-- <table "summary="simfitnode properties" class="defaultstyle" "> -->
+
+simfitnode properties  
+
+Table 1\. simfitnode properties
+
+| `simfitnode` properties  | Data type | Property description                                                                                                                                                        |
+| ------------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `custom_gen_node_name`   | *boolean* | You can generate the name of the generated (or updated) Simulation Generate node automatically by selecting Auto\.                                                          |
+| `gen_node_name`          | *string*  | Specify a custom name for the generated (or updated) node\.                                                                                                                 |
+| `used_cases_type`        | *string*  | Specifies the number of cases to use when fitting distributions to the fields in the data set\. Use `AllCases` or `FirstNCases`\.                                           |
+| `used_cases`             | *integer* | The number of cases                                                                                                                                                         |
+| `good_fit_type`          | *string*  | For continuous fields, specify either the `AnderDarling` test or the `KolmogSmirn` test of goodness of fit to rank distributions when fitting distributions to the fields\. |
+| `bins`                   | *integer* | For continuous fields, the Empirical distribution is the cumulative distribution function of the historical data\.                                                          |
+| `frequency_weight_field` | *field*   | Specify the weight field if your data set contains one\. The weight field is then excluded from the distribution fitting process\.                                          |
+
+<!-- </table "summary="simfitnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

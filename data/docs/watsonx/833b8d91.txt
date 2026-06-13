@@ -1,0 +1,37 @@
+# Sequence functions #
+
+For some operations, the sequence of events is important\.
+
+The application allows you to work with the following record sequences:
+
+<!-- <ul> -->
+
+ *  Sequences and time series
+ *  Sequence functions
+ *  Record indexing
+ *  Averaging, summing, and comparing values
+ *  Monitoring change—differentiation
+ *  `@SINCE`
+ *  Offset values
+ *  Additional sequence facilities
+
+<!-- </ul> -->
+
+For many applications, each record passing through a stream can be considered as an individual case, independent of all others\. In such situations, the order of records is usually unimportant\.
+
+For some classes of problems, however, the record sequence is very important\. These are typically time series situations, in which the sequence of records represents an ordered sequence of events or occurrences\. Each record represents a snapshot at a particular instant in time; much of the richest information, however, might be contained not in instantaneous values but in the way in which such values are changing and behaving over time\.
+
+Of course, the relevant parameter may be something other than time\. For example, the records could represent analyses performed at distances along a line, but the same principles would apply\.
+
+Sequence and special functions are immediately recognizable by the following characteristics:
+
+<!-- <ul> -->
+
+ *  They are all prefixed by `@`
+ *  Their names are given in uppercase
+
+<!-- </ul> -->
+
+Sequence functions can refer to the record currently being processed by a node, the records that have already passed through a node, and even, in one case, records that have yet to pass through a node\. Sequence functions can be mixed freely with other components of CLEM expressions, although some have restrictions on what can be used as their arguments\.
+
+<!-- </article "role="article" "> -->

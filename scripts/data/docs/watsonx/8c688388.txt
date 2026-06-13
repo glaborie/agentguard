@@ -1,0 +1,21 @@
+# applycartnode properties #
+
+You can use C&R Tree modeling nodes to generate a C&R Tree model nugget\. The scripting name of this model nugget is *applycartnode*\. For more information on scripting the modeling node itself, see [cartnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/cartnodeslots.html#cartnodeslots)\.
+
+<!-- <table "summary="applycartnode properties" id="cartnuggetnodeslots__table_ffc_ck3_cdb" class="defaultstyle" "> -->
+
+applycartnode properties  
+
+Table 1\. applycartnode properties
+
+| `applycartnode` Properties        | Values                                          | Property description                                                                                                                             |
+| --------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `calculate_conf`                  | *flag*                                          | Available when SQL generation is enabled; this property includes confidence calculations in the generated tree\.                                 |
+| `display_rule_id`                 | *flag*                                          | Adds a field in the scoring output that indicates the ID for the terminal node to which each record is assigned\.                                |
+| `calculate_raw_propensities`      | *flag*                                          |                                                                                                                                                  |
+| `calculate_adjusted_propensities` | *flag*                                          |                                                                                                                                                  |
+| `sql_generate`                    | `Never``NoMissingValues``MissingValues``native` | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applycartnode properties" id="cartnuggetnodeslots__table_ffc_ck3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

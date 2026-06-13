@@ -1,0 +1,71 @@
+# Managing deployment jobs #
+
+A job is a way of running a batch deployment, script, or notebook in Watson Machine Learning\. You can choose to run a job manually or on a schedule that you specify\. After you create one or more jobs, you can view and manage them from the **Jobs** tab of your deployment space\.
+
+From the **Jobs** tab of your space, you can:
+
+<!-- <ul> -->
+
+ *  See the list of the jobs in your space
+ *  View the details of each job\. You can change the schedule settings of a job and pick a different environment template\.
+ *  Monitor job runs
+ *  Delete jobs
+
+<!-- </ul> -->
+
+See the following sections for various aspects of job management:
+
+<!-- <ul> -->
+
+ *  [Creating a job for a batch deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-jobs.html?context=cdpaas&locale=en#create-jobs-batch)
+ *  [Viewing jobs in a space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-jobs.html?context=cdpaas&locale=en#viewing-jobs-in-a-space)
+ *  [Managing job metadata retention ](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/deploy-jobs.html?context=cdpaas&locale=en#delete-jobs)
+
+<!-- </ul> -->
+
+## Creating a job for a batch deployment ##
+
+Important: You must have an existing batch deployment to create a batch job\.
+
+To learn how to create a job for a batch deployment, see [Creating jobs in a batch deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-jobs.html)\.
+
+## Viewing jobs in a space ##
+
+You can view all of the jobs that exist for your deployment space from the Jobs page\. You can also delete a job\.
+
+To view the details of a specific job, click the job\. From the job's details page, you can do the following:
+
+<!-- <ul> -->
+
+ *  View the runs for that job and the status of each run\. If a run failed, you can select the run and view the log tail or download the entire log file to help you troubleshoot the run\. A failed run might be related to a temporary connection or environment problem\. Try running the job again\. If the job still fails, you can send the log to Customer Support\.
+ *  When a job is running, a progress indicator on the information page displays information about relative progress of the run\. You can use the progress indicator to monitor a long run\.
+ *  Edit schedule settings or pick another environment template\.
+ *  Run the job manually by clicking the run icon from the job action bar\. You must deselect the schedule to run the job manually\.
+
+<!-- </ul> -->
+
+## Managing job metadata retention ##
+
+The Watson Machine Learning plan that is associated with your IBM Cloud account sets limits on the number of running and stored deployments that you can create\. If you exceed your limit, you cannot create new deployments until you delete existing deployments or upgrade your plan\. For more information, see [Watson Machine Learning plans](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html)\.
+
+### Managing metadata retention and deletion programmatically ###
+
+If you are managing a job programmatically by using the Python client or REST API, you can retrieve metadata from the deployment endpoint by using the `GET` method during the 30 days\.
+
+To keep the metadata for more or less than 30 days, change the query parameter from the default of `retention=30` for the `POST` method to override the default and preserve the metadata\.
+
+Note:Changing the value to `retention=-1` cancels the auto\-delete and preserves the metadata\.
+
+To delete a job programmatically, specify the query parameter `hard_delete=true` for the Watson Machine Learning `DELETE` method to completely remove the job metadata\.
+
+The following example shows how to use `DELETE` method:
+
+    DELETE /ml/v4/deployment_jobs/{JobsID}
+
+## Learn from samples ##
+
+Refer to [Machine learning samples and examples](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-samples-overview.html) for links to sample notebooks that demonstrate creating batch deployments and jobs by using the Watson Machine Learning [REST API](https://cloud.ibm.com/apidocs/machine-learning) and Watson Machine Learning [Python client library](https://ibm.github.io/watson-machine-learning-sdk/)\.
+
+**Parent topic:**[Managing predictive deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+
+<!-- </article "role="article" "> -->

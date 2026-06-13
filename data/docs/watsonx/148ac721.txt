@@ -1,0 +1,7 @@
+# Setting options #
+
+You can access settings in various panes of the Text Analytics Workbench, such as extraction settings for concepts\.
+
+On the  Concepts,  Text links, and  Categories tabs, categories are built from descriptors derived from either types or type patterns\. In the table, you can select the individual types or patterns to include in the category building process\. A description of all settings on each tab follows\.
+
+<!-- </article "role="article" "> -->

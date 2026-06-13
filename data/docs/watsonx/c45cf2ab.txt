@@ -1,0 +1,83 @@
+# Regional availability for services and features #
+
+IBM watsonx is deployed on the IBM Cloud multi\-zone region network\. The availability of services and features can vary across regional data centers\.
+
+You can view the regional availability for every service in the [Services catalog](https://dataplatform.cloud.ibm.com/data/catalog?target=services&context=wx)\.
+
+## Regional availability of the Watson Studio and Watson Machine Learning services ##
+
+Watsonx\.ai includes the Watson Studio and Watson Machine Learning services to provide foundation and machine learning model tools\.
+
+The Watson Studio and Watson Machine Learning services are available in the following regional data centers:
+
+<!-- <ul> -->
+
+ *  Dallas (us\-south), in Texas US
+ *  Frankfurt (eu\-de), in Germany
+
+<!-- </ul> -->
+
+### Regional availability of foundation models ###
+
+The following table shows the IBM Cloud data centers where each foundation model is available\. A checkmark indicates that the model is hosted in the region\.
+
+<!-- <table> -->
+
+Table 1\. IBM Cloud data center support
+
+| Model name                 | Dallas | Frankfurt |
+| -------------------------- | ------ | --------- |
+| flan\-t5\-xl\-3b           | ✓      |           |
+| flan\-t5\-xxl\-11b         | ✓      | ✓         |
+| flan\-ul2\-20b             | ✓      | ✓         |
+| gpt\-neox\-20b             | ✓      | ✓         |
+| granite\-13b\-chat\-v2     | ✓      | ✓         |
+| granite\-13b\-chat\-v1     | ✓      | ✓         |
+| granite\-13b\-instruct\-v2 | ✓      | ✓         |
+| granite\-13b\-instruct\-v1 | ✓      | ✓         |
+| llama\-2\-13b\-chat        | ✓      | ✓         |
+| llama\-2\-70b\-chat        | ✓      | ✓         |
+| mpt\-7b\-instruct2         | ✓      | ✓         |
+| mt0\-xxl\-13b              | ✓      | ✓         |
+| starcoder\-15\.5b          | ✓      | ✓         |
+
+<!-- </table ""> -->
+
+### Tool and environment limitations for the Frankfurt region ###
+
+<!-- <table> -->
+
+Table 2\. Frankfurt regional limitations
+
+| Service       | Limitation                                                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Watson Studio | If you need a Spark runtime, you must use the [Spark environment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/jupyter-spark.html) in Watson Studio for the SPSS Modeler and notebook editor tools\. |
+| Watson Studio | [Synthetic Data Generator](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/synthetic_data_overview_sd.html) is not supported\.                                                                                       |
+| Watson Studio | [Tuning Studio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-studio.html) is not supported\.                                                                                                  |
+
+<!-- </table ""> -->
+
+## Regional availability of watsonx\.governance ##
+
+Watsonx\.governance Lite and Essentials plans are available only in the Dallas region\.
+
+## Regional availability of Watson OpenScale ##
+
+Watson OpenScale legacy plans are available only in the Frankfurt region\.
+
+## Regional availability of the Cloud Object Storage service ##
+
+The region for the Cloud Object Storage service is **Global**\. Cloud Object Storage buckets for workspaces are Regional buckets\. For more information, see [IBM Cloud docs: Cloud Object Storage endpoints and storage locations](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-endpoints)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [IBM Cloud docs: IBM Cloud global data centers](https://www.ibm.com/cloud/data-centers)
+ *  [Services in the IBM watsonx catalog](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/cloud-services.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Services and integrations](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/svc-int.html)
+
+<!-- </article "role="article" "> -->

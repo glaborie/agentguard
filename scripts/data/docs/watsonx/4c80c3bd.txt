@@ -1,0 +1,17 @@
+# Statement syntax #
+
+The statement syntax for Python is very simple\.
+
+In general, each source line is a single statement\. Except for `expression` and `assignment` statements, each statement is introduced by a keyword name, such as `if` or `for`\. Blank lines or remark lines can be inserted anywhere between any statements in the code\. If there's more than one statement on a line, each statement must be separated by a semicolon (`;`)\.
+
+Very long statements can continue on more than one line\. In this case, the statement that is to continue on to the next line must end with a backslash (`\`)\. For example:
+
+    x = "A loooooooooooooooooooong string" + \
+         "another looooooooooooooooooong string"
+
+When you enclose a structure by parentheses (`()`), brackets (`[]`), or curly braces (`{}`), the statement can be continued on a new line after any comma, without having to insert a backslash\. For example:
+
+    x = (1, 2, 3, "hello",
+          "goodbye", 4, 5, 6)
+
+<!-- </article "role="article" "> -->

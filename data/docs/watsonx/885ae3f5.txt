@@ -1,0 +1,43 @@
+# Your sandbox project #
+
+A project is where you work with data and models by using tools\. When you sign up for watsonx\.ai, your sandbox project is created automatically, and you can start working in it immediately\.
+
+Initially, your sandbox project is empty\. To start working, click a task tile on the home page or go to the **Assets** page in your project, click **New asset**, and select a task\. Each task can result in an asset that is saved in the project\. Many tasks include samples that you can use\. You can find sample prompts, notebooks, data sets, and other assets in the Samples from the home page\. You can share your work by [adding collaborators](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/collaborate.html) to your project\. If you need to work with data, you can [add data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html) to your project\.
+
+If your sandbox project is your only project, then any task that you select occurs in the context of your sandbox project\. When you have multiple projects, you can change the default project by selecting a project from the **Open in** list on the home page\.
+
+Other projects that you create have the same functionality as your sandbox project, except that your Watson Machine Learning service instance is automatically associated with your sandbox project\. You must manually associate your Watson Machine Learning service instance with other projects\.
+
+## Manually creating a sandbox project ##
+
+If you switch from Cloud Pak for Data as a Service to watsonx, you can create a sandbox project from the watsonx home page when the following conditions are met:
+
+<!-- <ul> -->
+
+ *  You have one or more instances of the Watson Machine Learning service\.
+ *  You have exactly one instance of the IBM Cloud Object Storage service\.
+
+<!-- </ul> -->
+
+To manually create a sandbox project, click **Create sandbox** in the **Projects** section\.
+
+Otherwise, you can create a different project\. See [Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)\. You are guided through associating a Watson Machine Learning service with the project when you open certain tools\.
+
+You can switch an existing project from the Cloud Pak for Data as a Service to watsonx\. See [Switching the platform for a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/switch-platform.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Asset types and properties](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assets.html)
+ *  [Adding collaborators](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/collaborate.html)
+ *  [Add data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html)
+ *  [Manage assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-assets.html)
+ *  [Adding associated services to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assoc-services.html)
+ *  [Object storage for workspaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/storage-options.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+
+<!-- </article "role="article" "> -->

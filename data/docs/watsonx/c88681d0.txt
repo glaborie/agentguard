@@ -1,0 +1,18 @@
+# Evaluation charts #
+
+Evaluation charts are similar to histograms or collection graphs\. Evaluation charts show how accurate models are in predicting particular outcomes\. They work by sorting records based on the predicted value and confidence of the prediction, splitting the records into groups of equal size (quantiles), and then plotting the value of the criterion for each quantile, from highest to lowest\. Multiple models are shown as separate lines in the plot\.
+
+Outcomes are handled by defining a specific value or range of values as a "hit"\. Hits usually indicate success of some sort (such as a sale to a customer) or an event of interest (such as a specific medical diagnosis)\.
+
+Flag
+:   Output fields are straightforward; hits correspond to `true` values\.
+
+Nominal
+:   For nominal output fields, the first value in the set defines a hit\.
+
+Continuous
+:   For continuous output fields, hits equal values greater than the midpoint of the field's range\.
+
+Evaluation charts can also be cumulative so that each point equals the value for the corresponding quantile plus all higher quantiles\. Cumulative charts usually convey the overall performance of models better, whereas noncumulative charts often excel at indicating particular problem areas for models\.
+
+<!-- </article "role="article" "> -->

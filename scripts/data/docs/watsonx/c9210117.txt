@@ -1,0 +1,99 @@
+# Adding data from a connection to a project #
+
+A *connected data asset* is a pointer to data that is accessed through a connection to an external data source\. You create a connected data asset by specifying a connection, any intermediate structures or paths, and a relational table or view, a set of partitioned data files, or a file\. When you access a connected data asset, the data is dynamically retrieved from the data source\.
+
+You can also add a connected folder asset that is accessed through a connection in the same way\. See [Add a connected folder asset to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/folder-asset.html)\.
+
+Partitioned data assets have previews and profiles like relational tables\. However, you cannot yet shape and cleanse partitioned data assets with the Data Refinery tool\.
+
+To add a data asset from a connection to a project:
+
+<!-- <ol> -->
+
+1.  From the project page, click the **Assets** tab, and then click **Import assets > Connected data**\.
+2.  Select an existing connection asset as the source of the data\. If you don't have any connection assets, cancel and go to **New asset > Connect to a data source**, and [create a connection asset](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+3.  Select the data you want\. You can select multiple connected data assets from the same connection\. Click **Import**\. For partitioned data, select the folder that contains the files\. If the files are recognized as partitioned data, you see the message `This folder contains a partitioned data set.`
+4.  Type a name and description\.
+5.  Click **Create**\. The asset appears on the project **Assets** page\.
+
+<!-- </ol> -->
+
+When you click on the asset name, you can see this information about connected assets:
+
+<!-- <ul> -->
+
+ *  The asset name and description
+ *  The tags for the asset
+ *  The name of the person who created the asset
+ *  The size of the data
+ *  The date when the asset was added to the project
+ *  The date when the asset was last modified
+ *  A [preview](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/previews.html) of relational data
+ *  A [profile](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/profile.html) of relational data
+
+<!-- </ul> -->
+
+Watch this video to see how to create a connection and add connected data to a project\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+<!-- <ul> -->
+
+ *  Transcript
+    
+     Synchronize transcript with video
+    
+    <!-- <table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+    | Time  | Transcript                                                                                                                                                             |
+    | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | 00:00 | This video shows you how to set up a connection to a data source and add connected data to a Watson Studio project.                                                   |
+    | 00:08 | If you have data stored in a data source, you can set up a connection to that data source from any project.                                                           |
+    | 00:16 | From here, you can add different elements to the project.                                                                                                             |
+    | 00:20 | In this case, you want to add a connection.                                                                                                                           |
+    | 00:24 | You can create a new connection to an IBM service, such as IBM Db2 and Cloud Object Storage, or to a service from third parties, such as Amazon, Microsoft or Apache. |
+    | 00:39 | And you can filter the list based on compatible services.                                                                                                             |
+    | 00:45 | You can also add a connection that was created at the platform level, which can be used across projects and catalogs.                                                 |
+    | 00:54 | Or you can create a connection to one of your provisioned IBM Cloud services.                                                                                         |
+    | 00:59 | In this case, select the provisioned IBM Cloud service for Db2 Warehouse on Cloud.                                                                                    |
+    | 01:08 | If the credentials are not prepopulated, you can get the credentials for the instance from the IBM Cloud service launch page.                                         |
+    | 01:17 | First, test the connection and then create the connection.                                                                                                            |
+    | 01:25 | The new connection now displays in the list of data assets.                                                                                                           |
+    | 01:30 | Next, add connected data assets to this project.                                                                                                                      |
+    | 01:37 | Select the source - in this case, it's the Db2 Warehouse on Cloud connection just created.                                                                           |
+    | 01:43 | Then select the schema and table.                                                                                                                                     |
+    | 01:50 | You can see that this will add a reference to the data within this connection and include it in the target project.                                                   |
+    | 01:58 | Provide a name and a description and click "Create".                                                                                                                  |
+    | 02:06 | The data now displays in the list of data assets.                                                                                                                     |
+    | 02:09 | Open the data set to get a preview; and from here you can move directly into refining the data.                                                                       |
+    | 02:17 | Find more videos in the Cloud Pak for Data as a Service documentation.                                                                                                |
+    
+    <!-- </table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+<!-- </ul> -->
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  [Refine the data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+ *  [Analyze the data or build models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/data-science.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Connected folder assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/folder-asset.html)
+ *  [Connection assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)
+
+<!-- </ul> -->
+
+**Parent topic:**
+
+[Adding data to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/add-data-project.html)
+
+<!-- </article "role="article" "> -->

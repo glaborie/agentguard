@@ -1,0 +1,49 @@
+# Expressions and conditions #
+
+CLEM expressions can return a result (used when deriving new values)\.
+
+For example:
+
+    Weight * 2.2
+    Age + 1
+    sqrt(Signal-Echo)
+
+Or, they can evaluate *true* or *false* (used when selecting on a condition)\. For example:
+
+    Drug = "drugA"
+    Age < 16
+    not(PowerFlux) and Power > 2000
+
+You can combine operators and functions arbitrarily in CLEM expressions\. For example:
+
+    sqrt(abs(Signal))* max(T1, T2) + Baseline
+
+Brackets and operator precedence determine the order in which the expression is evaluated\. In this example, the order of evaluation is:
+
+<!-- <ul> -->
+
+ *  `abs(Signal`) is evaluated, and `sqrt` is applied to its result
+ *  `max(T1, T2)` is evaluated
+ *  The two results are multiplied:  x has higher precedence than `+`
+ *  Finally, `Baseline` is added to the result
+
+<!-- </ul> -->
+
+The descending order of precedence (that is, operations that are performed first to operations that are performed last) is as follows:
+
+<!-- <ul> -->
+
+ *  Function arguments
+ *  Function calls
+ *  xx
+ *  x / mod div rem
+ *  `+ –`
+ *  `> < >= <= /== == = /=`
+
+<!-- </ul> -->
+
+If you want to override precedence, or if you're in any doubt of the order of evaluation, you can use parentheses to make it explicit\. For example:
+
+    sqrt(abs(Signal))* (max(T1, T2) + Baseline)
+
+<!-- </article "role="article" "> -->

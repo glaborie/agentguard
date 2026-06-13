@@ -1,0 +1,4 @@
+# Bubble charts #
+
+Bubble charts display categories in your groups as nonhierarchical packed circles\. The size of each circle (bubble) is proportional to its value\. Bubble charts are useful for comparing relationships in your data\.
+<!-- </article "role="article" "> -->

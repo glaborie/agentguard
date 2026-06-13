@@ -1,0 +1,12 @@
+# Creating nodes and modifying flows #
+
+In some situations, you might want to add new nodes to existing flows\. Adding nodes to existing flows typically involves the following tasks:
+
+<!-- <ol> -->
+
+1.  Creating the nodes\.
+2.  Linking the nodes into the existing flow\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

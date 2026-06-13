@@ -1,0 +1,4 @@
+# Circle packing charts #
+
+Circle packing charts display hierarchical data as a set of nested areas to visualize a large amount of hierarchically structured data\. It's similar to a treemap, but uses circles instead of rectangles\. Circle packing charts use containment (nesting) to display hierarchy data\.
+<!-- </article "role="article" "> -->

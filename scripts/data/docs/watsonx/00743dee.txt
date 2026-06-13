@@ -1,0 +1,93 @@
+# Working with pre\-trained models #
+
+Watson Natural Language Processing provides pre\-trained models in over 20 languages\. They are curated by a dedicated team of experts, and evaluated for quality on each specific language\. These pre\-trained models can be used in production environments without you having to worry about license or intellectual property infringements\.
+
+## Loading and running a model ##
+
+To load a model, you first need to know its name\. Model names follow a standard convention encoding the type of model (like classification or entity extraction), type of algorithm (like BERT or SVM), language code, and details of the type system\.
+
+To find the model that matches your needs, use the task catalog\. See [Watson NLP task catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)\.
+
+You can find the expected input for a given block class (for example to the Entity Mentions model) by using `help()` on the block class `run()` method:
+
+    import watson_nlp
+    
+    help(watson_nlp.blocks.keywords.TextRank.run)
+
+Watson Natural Language Processing encapsulates natural language functionality through blocks and workflows\. Each block or workflow supports functions to:
+
+<!-- <ul> -->
+
+ *  `load()`: load a model
+ *  `run()`: run the model on input arguments
+ *  `train()`: train the model on your own data (not all blocks and workflows support training)
+ *  `save()`: save the model that has been trained on your own data
+
+<!-- </ul> -->
+
+### Blocks ###
+
+Two types of blocks exist:
+
+<!-- <ul> -->
+
+ *  [Blocks that operate directly on the input document](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-pretrained.html?context=cdpaas&locale=en#operate-data)
+ *  [Blocks that depend on other blocks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-pretrained.html?context=cdpaas&locale=en#operate-blocks)
+
+<!-- </ul> -->
+
+[Workflows](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-pretrained.html?context=cdpaas&locale=en#workflows) run one more blocks on the input document, in a pipeline\.
+
+#### Blocks that operate directly on the input document ####
+
+An example of a block that operates directly on the input document is the Syntax block, which performs natural language processing operations such as tokenization, lemmatization, part of speech tagging or dependency parsing\.
+
+Example: running syntax analysis on a text snippet:
+
+    import watson_nlp
+    
+    # Load the syntax model for English
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    
+    # Run the syntax model and print the result
+    syntax_prediction = syntax_model.run('Welcome to IBM!')
+    print(syntax_prediction)
+
+#### Blocks that depend on other blocks ####
+
+Blocks that depend on other blocks cannot be applied on the input document directly\. They are applied on the output of one or more preceeding blocks\. For example, the Keyword Extraction block depends on the Syntax and Noun Phrases block\.
+
+These blocks can be loaded but can only be run in a particular order on the input document\. For example:
+
+    import watson_nlp
+    text = "Anna went to school at University of California Santa Cruz. \
+            Anna joined the university in 2015."
+    
+    # Load Syntax, Noun Phrases and Keywords models for English
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    noun_phrases_model = watson_nlp.load('noun-phrases_rbr_en_stock')
+    keywords_model = watson_nlp.load('keywords_text-rank_en_stock')
+    
+    # Run the Syntax and Noun Phrases models
+    syntax_prediction = syntax_model.run(text, parsers=('token', 'lemma', 'part_of_speech'))
+    noun_phrases = noun_phrases_model.run(text)
+    
+    # Run the keywords model
+    keywords = keywords_model.run(syntax_prediction, noun_phrases, limit=2)
+    print(keywords)
+
+### Workflows ###
+
+Workflows are predefined end\-to\-end pipelines from a raw document to a final block, where all necessary blocks are chained as part of the workflow pipeline\. For instance, the Entity Mentions block offered in Runtime 22\.2 requires syntax analysis results, so the end\-to\-end process would be: input text \-> Syntax analysis \-> Entity Mentions \-> Entity Mentions results\. Starting with Runtime 23\.1, you can call the Entity Mentions workflow\. Refer to this sample:
+
+    import watson_nlp
+    
+    # Load the workflow model
+    mentions_workflow = watson_nlp.load('entity-mentions_transformer-workflow_multilingual_slate.153m.distilled')
+    
+    # Run the entity extraction workflow on the input text
+    mentions_workflow.run('IBM announced new advances in quantum computing', language_code="en")
+
+**Parent topic:**[Watson Natural Language Processing library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp.html)
+
+<!-- </article "role="article" "> -->

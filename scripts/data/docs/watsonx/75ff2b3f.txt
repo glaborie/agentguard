@@ -1,0 +1,13 @@
+# Creating the flow #
+
+<!-- <ol> -->
+
+1.  Add a Data Asset node that points to  broadband\_1\.csv\.
+2.  To simplify the model, use a Filter node to filter out the `Market_6` to `Market_85` fields and the `MONTH_` and `YEAR_` fields\.
+
+<!-- </ol> -->
+
+Figure 1\. Example flow to show Time Series modeling
+
+![Example flow to show Time Series modeling](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_build.png)
+<!-- </article "role="article" "> -->

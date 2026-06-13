@@ -1,0 +1,25 @@
+# Harmful code generation #
+
+![icon for harmful code generation risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-harmful-code-generation.svg)Risks associated with outputHarmful code generationNew
+
+### Description ###
+
+Models might generate code that causes harm or unintentionally affects other systems\.
+
+### Why is harmful code generation a concern for foundation models? ###
+
+Without human review and testing of generated code, its use might cause unintentional behavior and open new system vulnerabilities\. Business entities could face fines, reputational harms, and other legal consequences\.
+
+Example
+
+#### Undisclosed AI Interaction ####
+
+According to their paper, researchers at Stanford University have investigated the impact of code\-generation tools on code quality and found that programmers tend to include *more* bugs in their final code when using AI assistants\. These bugs could increase the code's security vulnerabilities, yet the programmers believed their code to be *more* secure\.
+
+Sources:
+
+[Neil Perry, Megha Srivastava, Deepak Kumar, and Dan Boneh\. 2023\. Do Users Write More Insecure Code with AI Assistants?\. In Proceedings of the 2023 ACM SIGSAC Conference on Computer and Communications Security (CCS '23), November 26\-30, 2023, Copenhagen, Denmark\. ACM, New York, NY, USA, 15 pages\.](https://dl.acm.org/doi/10.1145/3576915.3623157)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

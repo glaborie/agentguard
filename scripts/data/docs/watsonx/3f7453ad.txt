@@ -1,0 +1,95 @@
+# Global visualization preferences #
+
+You can override the default settings for titles, range slider, grid lines, and mouse tracking\. You can also specify a different color scheme template\.
+
+<!-- <ol> -->
+
+1.  In Visualizations, click the Global visualization preferences control in the  Actions section\.
+    
+    The Global visualization preferences dialog provides the following settings.
+    
+    Titles
+    :   Provides global chart title settings.
+        
+        Global titles
+        :   Enables or disables the global titles for all charts.
+        
+        Global primary title
+        :   Enables or disables the display of global, primary chart titles. When enabled, the top-level chart title that you enter here is applied to all chart's, effectively overriding each chart's individual  Primary title setting.
+        
+        Global subtitle
+        :   Enables or disables the display of global chart subtitles. When enabled, the chart subtitle that you enter here is applied to all chart's, effectively overriding each chart's individual  Subtitle setting.
+        
+        Default titles
+        :   Enables or disables the default titles for all charts.
+        
+        Title alignment
+        :   Provides the title alignment options  Left,  Center (the default setting), and  Right.
+    
+    Tools
+    :   Provides options that control chart behavior.
+        
+        Range slider
+        :   Enables or disables the range slider for each chart. When enabled, you can control the amount of chart data that displays with a range slider that is provided for each chart.
+        
+        Grid lines
+        :   Controls the display of X axis (vertical) and Y axis (horizontal) grid lines.
+        
+        Mouse tracker
+        :   When enabled, the mouse cursor location, in relation to the chart data, is tracked and displayed when placed anywhere over the chart.
+        
+        Toolbox
+        :   Enables or disables the toolbox for each chart. Depending on the chart type, the toolbox on the right of the screen provides tools such as zoom, save as image, restore, select data, and clear selection.
+        
+        ARIA
+        :   When enabled, web content and web applications are more accessible to users with disabilities.
+        
+        Filter out null
+        :   Enables or disables the filtering of null chart data.
+        
+        X axis on zero
+        :   When enabled, the X axis lies on the other's origin position. When not enabled, the X axis always starts at 0.
+        
+        Y axis on zero
+        :   When enabled, the Y axis lies on the other's origin position. When not enabled, the Y axis always starts at 0.
+        
+        Show xAxis Label
+        :   Enables or disables the xAxis label.
+        
+        Show yAxis Label
+        :   Enables or disables the yAxis label.
+        
+        Show xAxis Line
+        :   Enables or disables the xAxis line.
+        
+        Show yAxis Line
+        :   Enables or disables the yAxis line.
+        
+        Show xAxis Name
+        :   Enables or disables the xAxis name.
+        
+        Show yAxis Name
+        :   Enables or disables the yAxis name.
+        
+        yAxis Name Location
+        :   The drop-down list provides options for specifying the yAxis name location. Options include  Start,  Middle, and  End.
+        
+        Truncation length
+        :   The specified value sets the string length. Strings that are longer than the specified length are truncated. The default value is 10. When 0 is specified, truncation is turned off.
+        
+        xAxis tick label decimal
+        :   Sets the tick label decimal value for the xAxis. The default value is 3.
+        
+        yAxis tick label decimal
+        :   Sets the tick label decimal value for the yAxis. The default value is 3.
+        
+        xAxis tick label rotate
+        :   Sets the xAxis tick label rotation value. The default value is 0 (no rotation). You can specify value in the range -90 to 90 degrees.
+    
+    Theme
+    :   Select a template to change the colors that are used in charts that have a grouping or stacking variable. Any element attributes defined in the selected template file override the default template settings for those element attributes.
+2.  Click  Apply to save your settings or  Cancel to disregard the changes\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

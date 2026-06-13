@@ -1,0 +1,4 @@
+# t\-SNE charts #
+
+T\-distributed Stochastic Neighbor Embedding (t\-SNE) is a machine learning algorithm for visualization\. t\-SNE charts model each high\-dimensional object by a two\-or\-three dimensional point in such a way that similar objects are modeled by nearby points and dissimilar objects are modeled by distant points with high probability\.
+<!-- </article "role="article" "> -->

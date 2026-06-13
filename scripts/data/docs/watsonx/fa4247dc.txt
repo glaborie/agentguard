@@ -1,0 +1,18 @@
+# SuperNode properties #
+
+The tables in this section describe properties that are specific to SuperNodes\. Note that common node properties also apply to SuperNodes\.
+
+<!-- <table "summary="Terminal supernode properties" id="defining_slot_parameters_in_supernodes__table_epf_pbj_cdb" class="defaultstyle" "> -->
+
+Terminal supernode properties  
+
+Table 1\. Terminal supernode properties
+
+| Property name    | Property type/List of values | Property description |
+| ---------------- | ---------------------------- | -------------------- |
+| `execute_method` | `Script``Normal`             |                      |
+| `script`         | *string*                     |                      |
+
+<!-- </table "summary="Terminal supernode properties" id="defining_slot_parameters_in_supernodes__table_epf_pbj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

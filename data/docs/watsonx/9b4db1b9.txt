@@ -1,0 +1,11 @@
+# SLRM node #
+
+Use the Self\-Learning Response Model (SLRM) node to build a model that you can continually update, or reestimate, as a dataset grows without having to rebuild the model every time using the complete dataset\. For example, this is useful when you have several products and you want to identify which one a customer is most likely to buy if you offer it to them\. This model allows you to predict which offers are most appropriate for customers and the probability of the offers being accepted\.
+
+Initially, you can build the model using a small dataset with randomly made offers and the responses to those offers\. As the dataset grows, the model can be updated and therefore becomes more able to predict the most suitable offers for customers and the probability of their acceptance based upon other input fields such as age, gender, job, and income\. You can change the offers available by adding or removing them from within the node, instead of having to change the target field of the dataset\.
+
+Before running an SLRM node, you must specify both the target and target response fields in the node properties\. The target field must have string storage, not numeric\. The target response field must be a flag\. The true value of the flag indicates offer acceptance and the false value indicates offer refusal\.
+
+Example\. A financial institution wants to achieve more profitable results by matching the offer that is most likely to be accepted to each customer\. You can use a self\-learning model to identify the characteristics of customers most likely to respond favorably based on previous promotions and to update the model in real time based on the latest customer responses\.
+
+<!-- </article "role="article" "> -->

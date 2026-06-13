@@ -1,0 +1,89 @@
+# Continuous machine learning #
+
+As a result of IBM research, and inspired by natural selection in biology, continuous machine learning is available for the Auto Classifier node and the Auto Numeric node\.
+
+An inconvenience with modeling is models getting outdated due to changes to your data over time\. This is commonly referred to as model drift or concept drift\. To help overcome model drift effectively, SPSS Modeler provides continuous automated machine learning\.
+
+What is model drift? When you build a model based on historical data, it can become stagnant\. In many cases, new data is always coming in—new variations, new patterns, new trends, etc\.—that the old historical data doesn't capture\. To solve this problem, IBM was inspired by the famous phenomenon in biology called the natural selection of species\. Think of models as species and think of data as nature\. Just as nature selects species, we should let data select the model\. There's one big difference between models and species: species can evolve, but models are static after they're built\.
+
+There are two preconditions for species to evolve; the first is gene mutation, and the second is population\. Now, from a modeling perspective, to satisfy the first precondition (gene mutation), we should introduce new data changes into the existing model\. To satisfy the second precondition (population), we should use a number of models rather than just one\. What can represent a number of models? An Ensemble Model Set (EMS)\!
+
+The following figure illustrates how an EMS can evolve\. The upper left portion of the figure represents historical data with hybrid partitions\. The hybrid partitions ensure a rich initial EMS\. The upper right portion of the figure represents a new chunk of data that becomes available, with vertical bars on each side\. The left vertical bar represents current status, and the right vertical bar represents the status when there's a risk of model drift\. In each new round of continuous machine learning, two steps are performed to evolve your model and avoid model drift\.
+
+First, you construct an ensemble model set (EMS) using existing training data\. After that, when a new chunk of data becomes available, new models are built against that new data and added to the EMS as component models\. The weights of existing component models in the EMS are reevaluated using the new data\. As a result of this reevaluation, component models having higher weights are selected for the current prediction, and component models having lower weights may be deleted from the EMS\. This process refreshes the EMS for both model weights and model instances, thus evolving in a flexible and efficient way to address the inevitable changes to your data over time\.
+
+Figure 1\. Continuous auto machine learning
+
+![Continuous auto machine learning](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/caml.png)
+
+The ensemble model set (EMS) is a generated auto model nugget, and there's a refresh link between the auto modeling node and the generated auto model nugget that defines the refresh relationship between them\. When you enable continuous auto machine learning, new data assets are continuously fed to auto modeling nodes to generate new component models\. The model nugget is updated instead of replaced\.
+
+The following figure provides an example of the internal structure of an EMS in a continuous machine learning scenario\. Only the top three component models are selected for the current prediction\. For each component model (labeled as M1, M2, and M3), two kinds of weights are maintained\. Current Model Weight (CMW) describes how a component model performs with a new chunk of data, and Accumulated Model Weight (AMW) describes the comprehensive performance of a component model against recent chunks of data\. AMW is calculated iteratively via CMW and previous values of itself, and there's a hyper parameter beta to balance between them\. The formula to calculate AMW is called exponential moving average\.
+
+When a new chunk of data becomes available, first SPSS Modeler uses it to build a few new component models\. In this example figure, model four (M4) is built with CMW and AMW calculated during the initial model building process\. Then SPSS Modeler uses the new chunk of data to reevaluate measures of existing component models (M1, M2, and M3) and update their CMW and AMW based on the reevaluation results\. Finally, SPSS Modeler might reorder the component models based on CMW or AMW and select the top three component models accordingly\.
+
+In this figure, CMW is described using normalized value (sum = 1) and AMW is calculated based on CMW\. In SPSS Modeler, the absolute value (equal to evaluation\-weighted measure selected \- for example, accuracy) is chosen to represent CMW and AMW for simplicity\.
+
+Figure 2\. EMS structure
+
+![EMS structure](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/caml_details.png)Note that there are two types of weights defined for each EMS component model, both of which could be used for selecting top N models and component model drop out:
+
+<!-- <ul> -->
+
+ *  Current Model Weight (CMW) is computed via evaluation against the new data chunk (for example, evaluation accuracy on the new data chunk)\.
+ *  Accumulated Model Weight (AMW) is computed via combining both CMW and existing AMW (for example, exponentially weighted moving average (EWMA)\.
+    
+    Exponential moving average formula for calculating AMW:  
+    ![Exponential moving average formula for calculating AMW](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/caml_alg.png)
+
+<!-- </ul> -->
+
+In SPSS Modeler, after running an Auto Classifier node to generate a model nugget, the following model options are available for continuous machine learning:
+
+<!-- <ul> -->
+
+ *  Enable continuous auto machine learning during model refresh\. Select this option to enable continuous machine learning\. Keep in mind that consistent metadata (data model) must be used to train the continuous auto model\. If you select this option, other options are enabled\.
+ *  Enable automatic model weights reevaluation\. This option controls whether evaluation measures (accuracy, for example) are computed and updated during model refresh\. If you select this option, an automatic evaluation process will run after the EMS (during model refresh)\. This is because it's usually necessary to reevaluate existing component models using new data to reflect the current state of your data\. Then the weights of the EMS component models are assigned according to reevaluation results, and the weights are used to decide the proportion a component model contributes to the final ensemble prediction\. This option is selected by default\.
+    
+    Figure 3. Model settings
+    
+    ![Model settings](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/caml_settings.png)
+    
+    Figure 4. Flag target
+    
+    ![Flag target](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/caml_models.png)Following are the supported CMW and AMW for the Auto Classifier node:
+    
+    <!-- <table "summary="" class="defaultstyle" "> -->
+    
+    Table 1. Supported CMW and AMW
+    
+    | Target type | CMW                                    | AMW                                       |
+    | ----------- | -------------------------------------- | ----------------------------------------- |
+    | flag target | Overall Accuracy  <br>Area Under Curve | Accumulated Accuracy  <br>Accumulated AUC |
+    | set target  | Overall Accuracy                       | Accumulated Accuracy                      |
+    
+    <!-- </table "summary="" class="defaultstyle" "> -->
+    
+    The following three options are related to AMW, which is used to evaluate how a component model performs during recent data chunk periods:
+ *  Enable accumulated factor during model weights reevaluation\. If you select this option, AMW computation will be enabled during model weights reevaluation\. AMW represents the comprehensive performance of an EMS component model during recent data chunk periods, related to the accumulated factor β defined in the AMW formula listed previously, which you can adjust in the node properties\. When this option isn't selected, only CMW will be computed\. This option is selected by default\.
+ *  Perform model reduction based on accumulated limit during model refresh\. Select this option if you want component models with an AMW value below the specified limit to be removed from the auto model EMS during model refresh\. This can be helpful in discarding component models that are useless to prevent the auto model EMS from becoming too heavy\.The accumulated limit value evaluation is related to the weighted measure used when  Evaluation\-weighted voting is selected as the ensemble method\. See the following\.
+    
+    Figure 5. Set and flag targets
+    
+    ![Set and flag targets](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/caml_targets.png)
+    
+    Note that if you select  Model Accuracy for the evaluation-weighted measure, models with an accumulated accuracy below the specified limit will be deleted. And if you select  Area under curve for the evaluation-weighted measure, models with an accumulated AUC below the specified limit will be deleted.
+    
+    By default,  Model Accuracy is used for the evaluation-weighted measure for the Auto Classifier node, and there's an optional AUC ROC measure in the case of flag targets.
+ *  Use accumulated evaluation\-weighted voting\. Select this option if you want AMW to be used for the current scoring/prediction\. Otherwise, CMW will be used by default\. This option is enabled when  Evaluation\-weighted voting is selected for the ensemble method\.
+    
+    Note that for flag targets, by selecting this option, if you select  Model Accuracy for the evaluation-weighted measure, then  Accumulated Accuracy will be used as the AMW to perform the current scoring. Or if you select  Area under curve for the evaluation-weighted measure, then  Accumulated AUC will be used as the AMW to perform the current scoring. If you don't select this option and you select  Model Accuracy for the evaluation-weighted measure, then  Overall Accuracy will be used as the CMW to perform the current scoring. If you select  Area under curve,  Area under curve will be used as the CMW to perform the current scoring.
+    
+    For set targets, if you select this  Use accumulated evaluation-weighted voting option, then  Accumulated Accuracy will be used as the AMW to perform the current scoring. Otherwise,  Overall Accuracy will be used as the CMW to perform the current scoring.
+
+<!-- </ul> -->
+
+With continuous auto machine learning, the auto model nugget is evolving all the time by rebuilding the auto model, which ensures that you get the most updated version reflecting the current state of your data\. SPSS Modeler provides the flexibility for different top N component models in the EMS to be selected according to their current weights, which keeps pace with varying data during different periods\.
+
+Note: The Auto Numeric node is a much simpler case, providing a subset of the options in the Auto Classifier node\.
+<!-- </article "role="article" "> -->

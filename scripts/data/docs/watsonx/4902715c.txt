@@ -1,0 +1,34 @@
+# Random Trees node #
+
+The Random Trees node can be used with data in a distributed environment\. In this node, you build an ensemble model that consists of multiple decision trees\.
+
+The Random Trees node is a tree\-based classification and prediction method that is built on Classification and Regression Tree methodology\. As with C&R Tree, this prediction method uses recursive partitioning to split the training records into segments with similar output field values\. The node starts by examining the input fields available to it to find the best split, which is measured by the reduction in an impurity index that results from the split\. The split defines two subgroups, each of which is then split into two more subgroups, and so on, until one of the stopping criteria is triggered\. All splits are binary (only two subgroups)\.
+
+The Random Trees node uses bootstrap sampling with replacement to generate sample data\. The sample data is used to grow a tree model\. During tree growth, Random Trees will not sample the data again\. Instead, it randomly selects part of the predictors and uses the best one to split a tree node\. This process is repeated when splitting each tree node\. This is the basic idea of growing a tree in random forest\.
+
+Random Trees uses C&R Tree\-like trees\. Since such trees are binary, each field for splitting results in two branches\. For a categorical field with multiple categories, the categories are grouped into two groups based on the inner splitting criterion\. Each tree grows to the largest extent possible (there is no pruning)\. In scoring, Random Trees combines individual tree scores by majority voting (for classification) or average (for regression)\.
+
+Random Trees differ from C&R Trees as follows:
+
+<!-- <ul> -->
+
+ *  Random Trees nodes randomly select a specified number of predictors and uses the best one from the selection to split a node\. In contrast, C&R Tree finds the best one from all predictors\.
+ *  Each tree in Random Trees grows fully until each leaf node typically contains a single record\. So the tree depth could be very large\. But standard C&R Tree uses different stopping rules for tree growth, which usually leads to a much shallower tree\.
+
+<!-- </ul> -->
+
+Random Trees adds two features compared to C&R Tree:
+
+<!-- <ul> -->
+
+ *  The first feature is bagging, where replicas of the training dataset are created by sampling with replacement from the original dataset\. This action creates bootstrap samples that are of equal size to the original dataset, after which a component model is built on each replica\. Together these component models form an ensemble model\.
+ *  The second feature is that, at each split of the tree, only a sampling of the input fields is considered for the impurity measure\.
+
+<!-- </ul> -->
+
+Requirements\. To train a Random Trees model, you need one or more Input fields and one Target field\. Target and input fields can be continuous (numeric range) or categorical\. Fields that are set to either Both or None are ignored\. Fields that are used in the model must have their types fully instantiated, and any ordinal (ordered set) fields that are used in the model must have numeric storage (not string)\. If necessary, the Reclassify node can be used to convert them\.
+
+Strengths\. Random Trees models are robust when you are dealing with large data sets and numbers of fields\. Due to the use of bagging and field sampling, they are much less prone to overfitting and thus the results that are seen in testing are more likely to be repeated when you use new data\.
+
+Note: When first creating a flow, you select which runtime to use\. By default, flows use the  IBM SPSS Modeler runtime\. If you want to use native Spark algorithms instead of SPSS algorithms, select the  Spark runtime\. Properties for this node will vary depending on which runtime option you choose\.
+<!-- </article "role="article" "> -->

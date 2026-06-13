@@ -1,0 +1,55 @@
+# Getting started with IBM watsonx as a Service #
+
+You can sign up for IBM watsonx\.ai or IBM watsonx\.governance and explore the tutorials, resources, and tools to immediately get started working with models or governing models\. If you are an administrator, follow the steps to set up watsonx for your organization\.
+
+## Start working ##
+
+To start working:
+
+<!-- <ol> -->
+
+1.  If you haven't already, [sign up](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/signup-wx.html) for watsonx\.ai or watsonx\.governance\.
+2.  Click a task tile on the watsonx home page and start working\. For example, click **Experiment with foundation models and build prompts** to open the Prompt Lab\. Then, choose a sample prompt and start experimenting\. Your first project, where you save your work, is created automatically\. See [Your sandbox project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/sandbox.html)\.
+3.  Explore your resources:
+    
+    <!-- <ul> -->
+    
+     *  Take a [Quick start tutorial](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html)
+     *  Click a category in the **Samples** area of the home page to try out a notebook, a prompt, or a sample project.
+    
+    <!-- </ul> -->
+    
+<!-- </ol> -->
+
+If you are an existing Cloud Pak for Data as a Service user, you can [switch to watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/platform-switcher.html)\.
+
+## Set up the platform as an administrator ##
+
+To set up the watsonx platform for your organization, see [Setting up the platform as an administrator](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)\.
+
+## Learn about watsonx ##
+
+To understand watsonx, start with these resources:
+
+<!-- <ul> -->
+
+ *  [Overview of watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/overview-wx.html)
+ *  [Video library](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html)
+ *  [Projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/manage-projects.html)
+ *  [Foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-overview.html)
+ *  [Read blogs on Medium and the IBM Community](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html#community)
+
+<!-- </ul> -->
+
+Other information:
+
+<!-- <ul> -->
+
+ *  [Get help](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-help.html)
+ *  [Browser support](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/browser-support.html)
+ *  [Language support](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/localization.html)
+ *  [IBM watsonx APIs](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wdp-apis.html)
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

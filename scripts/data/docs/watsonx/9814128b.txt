@@ -1,0 +1,5 @@
+# Sim Gen node #
+
+The Simulation Generate node provides an easy way to generate simulated data, either without historical data using user specified statistical distributions, or automatically using the distributions obtained from running a Simulation Fitting node on existing historical data\. Generating simulated data is useful when you want to evaluate the outcome of a predictive model in the presence of uncertainty in the model inputs\.
+
+<!-- </article "role="article" "> -->

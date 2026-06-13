@@ -1,0 +1,111 @@
+# Data formats for tuning foundation models #
+
+Prepare a set of prompt examples to use to tune the model\. The examples must contain the type of input that the model will need to process at run time and the appropriate output for the model to generate in response\.
+
+You can add one file as training data\. The maximum file size that is allowed is 200 MB\.
+
+Prompt input\-and\-output example pairs are sometimes also referred to as *samples* or *records*\.
+
+Follow these guidelines when you create your training data:
+
+<!-- <ul> -->
+
+ *  Add 100 to 1,000 labeled prompt examples to a file\. Between 50 to 10,000 examples are allowed\.
+ *  Use one of the following formats:
+    
+    <!-- <ul> -->
+    
+     *  JavaScript Object Notation (JSON)
+     *  JSON Lines (JSONL) format
+    
+    <!-- </ul> -->
+    
+ *  Each example must include one `input` and `output` pair\.
+ *  The language of the training data must be English\.
+ *  If the input or output text includes quotation marks, escape each quotation mark with a backslash(`\`)\. For example, `He said, \"Yes.\"`\.
+ *  To represent a carriage return or line break, you can use a backslash followed by `n` (`\n`) to represent the new line\. For example, `...end of paragraph.\nStart of new paragraph`\.
+
+<!-- </ul> -->
+
+You can control the number of tokens from the input and output that are used during training\. If an input or output example from the training data is longer than the specified limit, it will be truncated\. Only the allowed maximum number of tokens will be used by the experiment\. For more information, see [Controlling the number of tokens used](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-tune.html#tuning-tokens)\.
+
+How tokens are counted differs by model, which makes the number of tokens difficult to estimate\. For language\-based foundation models, you can think of 256 tokens as about 130—170 words and 128 tokens as about 65—85 words\. To learn more about tokens, see [Tokens and tokenization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tokens.html)\.
+
+If you are using the model to classify data, follow these extra guidelines:
+
+<!-- <ul> -->
+
+ *  Try to limit the number of class labels to 10 or fewer\.
+ *  Include an equal number of examples of each class type\.
+
+<!-- </ul> -->
+
+You can use the Prompt Lab to craft examples for the training data\. For more information, see [Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html)\.
+
+## JSON example ##
+
+The following example shows an excerpt from a training data file with labeled prompts for a classification task in JSON format\.
+
+    {
+      [
+        {
+          "input":"Message: When I try to log in, I get an error.",
+          "output":"Class name: Problem"
+        }
+        {
+          "input":"Message: Where can I find the plan prices?",
+          "output":"Class name: Question"
+        }
+        {
+          "input":"Message: What is the difference between trial and paygo?",
+          "output":"Class name: Question"
+        }
+        {
+          "input":"Message: The registration page crashed, and now I can't create a new account.",
+          "output":"Class name: Problem"
+        }
+        {
+          "input":"Message: What regions are supported?",
+          "output":"Class name: Question"
+        }
+        {
+          "input":"Message: I can't remember my password.",
+          "output":"Class name: Problem"
+        }
+        {
+          "input":"Message: I'm having trouble registering for a new account.",
+          "output":"Classname: Problem"
+        }
+        {
+          "input":"Message: A teammate shared a service instance with me, but I can't access it. What's wrong?",
+          "output":"Class name: Problem"
+        }
+        {
+          "input":"Message: What extra privileges does an administrator have?",
+          "output":"Class name: Question"
+        }
+        {
+          "input":"Message: Can I create a service instance for data in a language other than English?",
+          "output":"Class name: Question"
+        }
+      ]
+    }
+
+## JSONL example ##
+
+The following example shows an excerpt from a training data file with labeled prompts for a classification task in JSONL format\.
+
+    {"input":"Message: When I try to log in, I get an error.","output":"Class name: Problem"}
+    {"input":"Message: Where can I find the plan prices?","output":"Class name: Question"}
+    {"input":"Message: What is the difference between trial and paygo?","output":"Class name: Question"}
+    {"input":"Message: The registration page crashed, and now I can't create a new account.","output":"Class name: Problem"}
+    {"input":"Message: What regions are supported?","output":"Class name: Question"}
+    {"input":"Message: I can't remember my password.","output":"Class name: Problem"}
+    {"input":"Message: I'm having trouble registering for a new account.","output":"Classname: Problem"}
+    {"input":"Message: A teammate shared a service instance with me, but I can't access it. What's wrong?","output":"Class name: Problem"}
+    {"input":"Message: What extra privileges does an administrator have?","output":"Class name: Question"}
+    {"input":"Message: Can I create a service instance for data in a language other than English?","output":"Class name: Question"}
+
+**Parent topic:**[Tuning a model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-tuning-tune.html)
+
+<!-- </article "role="article" "> -->

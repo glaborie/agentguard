@@ -1,0 +1,14 @@
+# Creating a class instance #
+
+You can use classes to hold class (or shared) attributes or to create class instances\. To create an instance of a class, you call the class as if it were a function\. For example, consider the following class:
+
+    class MyClass:
+        pass
+
+Here, the `pass` statement is used because a statement is required to complete the class, but no action is required programmatically\.
+
+The following statement creates an instance of the class `MyClass`:
+
+    x = MyClass()
+
+<!-- </article "role="article" "> -->

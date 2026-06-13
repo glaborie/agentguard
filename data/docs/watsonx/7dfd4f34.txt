@@ -1,0 +1,16 @@
+# Flow scripts #
+
+You can use scripts to customize operations within a particular flow, and they're saved with that flow\. You can specify a particular execution order for the terminal nodes within a flow\. You use the flow script settings to edit the script that's saved with the current flow\.
+
+To access the flow script settings:
+
+<!-- <ol> -->
+
+1.  Click the  Flow Properties icon on the toolbar\.
+2.  Open the  Scripting section to work with scripts for the current flow\. You can also launch the Expression Builder from here by clicking the calculator icon\. ![Expression Builder icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/expressionbuilder.png)
+
+<!-- </ol> -->
+
+You can specify whether a script does or doesn't run when the flow runs\. To run the script each time the flow runs, respecting the execution order of the script, select  Run the script\. This setting provides automation at the flow level for quicker model building\. However, the default setting is to ignore this script during flow execution ( Run all terminal nodes\.
+
+<!-- </article "role="article" "> -->

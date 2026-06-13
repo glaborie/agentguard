@@ -1,0 +1,16 @@
+# Reals #
+
+*Real* refers to a floating\-point number\. Reals are represented by one or more digits followed by a decimal point followed by one or more digits\. CLEM reals are held in double precision\.
+
+Optionally, you can place a minus sign (−) before the real to denote a negative number (for example, `1.234`, `0.999`, −`77.001`)\. Use the form <*number*> e <*exponent*> to express a real number in exponential notation (for example, `1234.0e5`, `1.7e`−`2`)\. When SPSS Modeler reads number strings from files and converts them automatically to numbers, numbers with no leading digit before the decimal point or with no digit after the point are accepted (for example, `999.` or `.11`)\. However, these forms are illegal in CLEM expressions\.
+
+Note: When referencing real numbers in CLEM expressions, a period must be used as the decimal separator, regardless of any settings for the current flow or locale\. For example, specify
+
+    Na > 0.6
+
+rather than
+
+    Na > 0,6
+
+This applies even if a comma is selected as the decimal symbol in the flow properties and is consistent with the general guideline that code syntax should be independent of any specific locale or convention\.
+<!-- </article "role="article" "> -->

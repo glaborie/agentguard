@@ -1,0 +1,5 @@
+# Matrix node #
+
+Use the Matrix to create a table that shows relationships between fields\. It is most commonly used to show the relationship between two categorical fields (flag, nominal, or ordinal), but it can also be used to show relationships between continuous (numeric range) fields\.
+
+<!-- </article "role="article" "> -->

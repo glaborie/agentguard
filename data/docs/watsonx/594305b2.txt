@@ -1,0 +1,45 @@
+# knnnode properties #
+
+![KNN node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/knn_nodeicon.png)The *k*\-Nearest Neighbor (KNN) node associates a new case with the category or value of the *k* objects nearest to it in the predictor space, where *k* is an integer\. Similar cases are near each other and dissimilar cases are distant from each other\.
+
+<!-- <table "summary="knnnode properties" id="knnnodeslots__table_nfn_1dj_cdb" class="defaultstyle" "> -->
+
+knnnode properties  
+
+Table 1\. knnnode properties
+
+| `knnnode` Properties              | Values                             | Property description                                         |
+| --------------------------------- | ---------------------------------- | ------------------------------------------------------------ |
+| `analysis`                        | `PredictTarget``IdentifyNeighbors` |                                                              |
+| `objective`                       | `Balance``Speed``Accuracy``Custom` |                                                              |
+| `normalize_ranges`                | *flag*                             |                                                              |
+| `use_case_labels`                 | *flag*                             | Check box to enable next option\.                            |
+| `case_labels_field`               | *field*                            |                                                              |
+| `identify_focal_cases`            | *flag*                             | Check box to enable next option\.                            |
+| `focal_cases_field`               | *field*                            |                                                              |
+| `automatic_k_selection`           | *flag*                             |                                                              |
+| `fixed_k`                         | *integer*                          | Enabled only if `automatic_k_selectio` is `False`\.          |
+| `minimum_k`                       | *integer*                          | Enabled only if `automatic_k_selectio` is `True`\.           |
+| `maximum_k`                       | *integer*                          |                                                              |
+| `distance_computation`            | `Euclidean``CityBlock`             |                                                              |
+| `weight_by_importance`            | *flag*                             |                                                              |
+| `range_predictions`               | `Mean``Median`                     |                                                              |
+| `perform_feature_selection`       | *flag*                             |                                                              |
+| `forced_entry_inputs`             | \[*field1 \.\.\. fieldN*\]         |                                                              |
+| `stop_on_error_ratio`             | *flag*                             |                                                              |
+| `number_to_select`                | *integer*                          |                                                              |
+| `minimum_change`                  | *number*                           |                                                              |
+| `validation_fold_assign_by_field` | *flag*                             |                                                              |
+| `number_of_folds`                 | *integer*                          | Enabled only if `validation_fold_assign_by_field` is `False` |
+| `set_random_seed`                 | *flag*                             |                                                              |
+| `random_seed`                     | *number*                           |                                                              |
+| `folds_field`                     | *field*                            | Enabled only if `validation_fold_assign_by_field` is `True`  |
+| `all_probabilities`               | *flag*                             |                                                              |
+| `save_distances`                  | *flag*                             |                                                              |
+| `calculate_raw_propensities`      | *flag*                             |                                                              |
+| `calculate_adjusted_propensities` | *flag*                             |                                                              |
+| `adjusted_propensity_partition`   | `Test``Validation`                 |                                                              |
+
+<!-- </table "summary="knnnode properties" id="knnnodeslots__table_nfn_1dj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,634 @@
+# Managing feature groups with assetframe\-lib for Python (beta) #
+
+You can use the `assetframe-lib` to create, view and edit feature group information for data assets in Watson Studio notebooks\.
+
+Feature groups define additional metadata on columns of your data asset that can be used in downstream Machine Learning tasks\. See [Managing feature groups](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/feature-group.html) for more information about using feature groups in the UI\.
+
+## Setting up the `assetframe-lib` and `ibm-watson-studio-lib` libraries ##
+
+The `assetframe-lib` library for Python is pre\-installed and can be imported directly in a notebook in Watson Studio\. However, it relies on the [`ibm-watson-studio-lib`](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/using-ibm-ws-lib.html) library\. The following steps describe how to set up both libraries\.  
+
+To insert the project token to your notebook:
+
+<!-- <ol> -->
+
+1.  Click the **More** icon on your notebook toolbar and then click **Insert project token**\.
+    
+    If a project token exists, a cell is added to your notebook with the following information:
+    
+        from ibm_watson_studio_lib import access_project_or_space
+         wslib = access_project_or_space({"token":"<ProjectToken>"})
+    
+    `<ProjectToken>` is the value of the project token.
+    
+    If you are told in a message that no project token exists, click the link in the message to be redirected to the project's **Access Control** page where you can create a project token. You must be eligible to create a project token.
+    
+    To create a project token:
+    
+    <!-- <ol> -->
+    
+    1.  From the **Manage** tab, select the **Access Control** page, and click **New access token** under **Access tokens**.
+    2.  Enter a name, select **Editor** role for the project, and create a token.
+    3.  Go back to your notebook, click the **More** icon on the notebook toolbar and then click **Insert project token**.
+    
+    <!-- </ol> -->
+    
+2.  Import `assetframe-lib` and initialize it with the created `ibm-watson-studio-lib` instance\.
+    
+        from assetframe_lib import AssetFrame
+         AssetFrame._wslib = wslib
+
+<!-- </ol> -->
+
+## The assetframe\-lib functions and methods ##
+
+The assetframe\-lib library exposes a set of functions and methods that are grouped in the following way:
+
+<!-- <ul> -->
+
+ *  [Creating an asset frame](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#create-assetframe)
+ *  [Creating, retrieving and removing features](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#create-features)
+ *  [Specifying feature attributes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#specify-featureatt)
+    
+    <!-- <ul> -->
+    
+     *  [Role](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#role)
+     *  [Description](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#description)
+     *  [Fairness information for favorable and unfavorable outcomes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#fairnessinfo)
+     *  [Fairness information for monitored and reference groups](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#monitoredreference)
+     *  [Value descriptions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#value-desc)
+     *  [Recipe](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#recipe)
+     *  [Tags](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#tags)
+    
+    <!-- </ul> -->
+    
+ *  [Previewing data](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#preview-data)
+ *  [Getting fairness information](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/py_assetframe.html?context=cdpaas&locale=en#get-fairness)
+
+<!-- </ul> -->
+
+## Creating an asset frame ##
+
+An asset frame is used to define feature group metadata on an existing data asset or on a pandas DataFrame\. You can have exactly one feature group for each asset\. If you create an asset frame on a pandas DataFrame, you can store the pandas DataFrame along with the feature group metadata as a data asset in your project\.
+
+You can use one of the following functions to create your asset frame:
+
+<!-- <ul> -->
+
+ *  `AssetFrame.from_data_asset(asset_name, create_default_features=False)`
+    
+    This function creates a new asset frame wrapping an existing data asset in your project. If there is already a feature group for this asset, for example created in the user interface, it is read from the asset metadata.
+
+<!-- </ul> -->
+
+    **Parameters:**
+    - `asset_name`: (Required) The name of a data asset in your project.
+    - `create_default_features`: (Optional) Creates features for all columns in the data asset.
+
+<!-- <ul> -->
+
+ *  `AssetFrame.from_pandas(name, dataframe, create_default_features=False)`
+    
+    This function creates a new asset frame wrapping a pandas DataFrame.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `name`: (Required) The name of the asset frame. This name will be used as the name of the data asset if you store your feature group in your project in a later step.
+     *  `dataframe`: (Required) A pandas DataFrame that you want to store along with feature group information.
+     *  `create_default_features`: (Optional) Create features for all columns in the dataframe.
+        
+        Example of creating a asset frame from a pandas DataFrame:
+        
+            # Create an asset frame from a pandas DataFrame and set
+              # the name of the asset frame.
+              af = AssetFrame.from_pandas(dataframe=credit_risk_df, name="Credit Risk Training Data")
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+## Creating, retrieving and removing features ##
+
+A feature defines metadata that can be used by downstream Machine Learning tasks\. You can create one feature per column in your data set\.
+
+You can use one of the following functions to create, retrieve or remove columns from your asset frame:
+
+<!-- <ul> -->
+
+ *  `add_feature(column_name, role='Input')`
+    
+    This function adds a new feature to your asset frame with the given role.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `column_name`: (Required) The name of the column to create a feature for.
+     *  `role`: (Optional) The role of the feature. It defaults to *Input*.  
+        
+        Valid roles are:  
+        
+        <!-- <ul> -->
+        
+         *  *Input*: The input for a machine learning model  
+            
+         *  *Target*: The target of a prediction model  
+            
+         *  *Identifier*: The identifier of a row in your data set.  
+            
+        <!-- </ul> -->
+        
+    <!-- </ul> -->
+    
+ *  `create_default_features()`
+    
+    This function creates features for all columns in your data set. The roles of the features will default to *Input*.
+ *  `get_features()`
+    
+    This function retrieves all features of the asset frame.
+ *  `get_feature(column_name)`
+    
+    This function retrieves the feature for the given column name.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `column_name`: (Required) The string name of the column to create the feature for.
+    
+    <!-- </ul> -->
+    
+ *  `get_features_by_role(role)`
+    
+    This function retrieves all features of the dataframe with the given role.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `role`: (Required) The role that the features must have. This can be *Input*, *Target* or *Identifier*.
+    
+    <!-- </ul> -->
+    
+ *  `remove_feature(feature_or_column_name)`
+    
+    This function removes the feature from the asset frame.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `feature_or_column_name`: (Required) A feature or the name of the column to remove the feature for.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+Example that shows creating features for all columns in the data set and retrieving one of those columns for further specifications:
+
+    # Create features for all columns in the data set and retrieve a column
+    # for further specifications.
+    af.create_default_features()
+    risk_feat = af.get_feature('Risk')
+
+## Specifying feature attributes ##
+
+Features specify additional metadata on columns that may be used in downstream Machine Learning tasks\.
+
+You can use the following function to retrieve the column that the feature is defined for:
+
+<!-- <ul> -->
+
+ *  `get_column_name()`
+    
+    This function retrieves the column name that the feature is defined for.
+
+<!-- </ul> -->
+
+### Role ###
+
+The role specifies the intended usage of the feature in a Machine Learning task\.  
+
+Valid roles are:
+
+<!-- <ul> -->
+
+ *  `Input`: The feature can be used as an input to a Machine Learning model\.
+ *  `Identifier`: The feature uniquely identifies a row in the data set\.
+ *  `Target`: The feature can be used as a target in a prediction algorithm\.  
+    
+<!-- </ul> -->
+
+At this time, a feature must have exactly one role\.
+
+You can use the following methods to work with the role:
+
+<!-- <ul> -->
+
+ *  `set_roles(roles)`
+    
+    This method sets the roles of the feature.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `roles` : (Required) The roles to be used. Either as a single string or an array of strings.
+    
+    <!-- </ul> -->
+    
+ *  `get_roles()`
+    
+    This method returns all roles of the feature.
+
+<!-- </ul> -->
+
+Example that shows getting a feature and setting a role:
+
+    # Set the role of the feature 'Risk' to 'Target' to use it as a target in a prediction model.
+    risk_feat = af.get_feature('Risk')
+    risk_feat.set_roles('Target')
+
+### Description ###
+
+An optional description of the feature\. It defaults to `None`\.
+
+You can use the following methods to work with the description\.
+
+<!-- <ul> -->
+
+ *  `set_description(description)`
+    
+    This method sets the description of the feature.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `description`: (Required) Either a string or `None` to remove the description.
+    
+    <!-- </ul> -->
+    
+ *  `get_description()`
+    
+    This method returns the description of the feature.
+
+<!-- </ul> -->
+
+### Fairness information for favorable and unfavorable outcomes ###
+
+You can specify favorable and unfavorable labels for a feature with a `Target` role\.
+
+You can use the following methods to set and retrieve favorable or unfavorable labels\.
+
+#### Favorable outcomes ####
+
+You can use the following methods to set and get favorable labels:
+
+<!-- <ul> -->
+
+ *  `set_favorable_labels(labels)`
+    
+    This method sets favorable labels for the feature.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `labels`: (Required) A string or list of strings with favorable labels.
+    
+    <!-- </ul> -->
+    
+ *  `get_favorable_labels()`
+    
+    This method returns the favorable labels of the feature.
+
+<!-- </ul> -->
+
+#### Unfavorable outcomes ####
+
+You can use the following methods to set and get unfavorable labels:
+
+<!-- <ul> -->
+
+ *  `set_unfavorable_labels(labels)`
+    
+    This method sets unfavorable labels for the feature.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `labels`: (Required) A string or list of strings with unfavorable labels.
+    
+    <!-- </ul> -->
+    
+ *  `get_unfavorable_labels()`
+    
+    This method gets the unfavorable labels of the feature.
+
+<!-- </ul> -->
+
+Example that shows setting favorable and unfavorable labels:
+
+    # Set favorable and unfavorable labels for the target feature 'Risk'.
+    risk_feat = af.get_feature('Risk')
+    risk_feat.set_favorable_labels("No Risk")
+    risk_feat.set_unfavorable_labels("Risk")
+
+### Fairness information for monitored and reference groups ###
+
+Some columns in your data might by prone to unfair bias\. You can specify monitored and reference groups for further usage in Machine Learning tasks\. They can be specified for features with the role `Input`\.
+
+You can either specify single values or ranges of numeric values as a string with square brackets and a start and end value, for example `[0,15]`\.
+
+You can use the following methods to set and retrieve monitored and reference groups:
+
+<!-- <ul> -->
+
+ *  `set_monitored_groups(groups)`
+    
+    This method sets monitored groups for the feature.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `groups`: (Required) A string or list of strings with monitored groups.
+    
+    <!-- </ul> -->
+    
+ *  `get_monitored_groups()`
+    
+    This method gets the monitored groups of the feature.
+ *  `set_reference_groups(groups)`
+    
+    This method sets reference groups for the feature.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `groups`: (Required) A string or list of strings with reference groups.
+    
+    <!-- </ul> -->
+    
+ *  `get_reference_groups()`
+    
+    This method gets the reference groups of the feature.
+
+<!-- </ul> -->
+
+Example that shows setting monitored and reference groups:
+
+    # Set monitored and reference groups for the features 'Sex' and 'Age'.
+    sex_feat = af.get_feature("Sex")
+    sex_feat.set_reference_groups("male")
+    sex_feat.set_monitored_groups("female")
+    
+    age_feat = af.get_feature("Age")
+    age_feat.set_monitored_groups("[0,25]")
+    age_feat.set_reference_groups("[26,80]")
+
+### Value descriptions ###
+
+You can use value descriptions to specify descriptions for column values in your data\.
+
+You can use the following methods to set and retrieve descriptions:
+
+<!-- <ul> -->
+
+ *  `set_value_descriptions(value_descriptions)`
+    
+    This method sets value descriptions for the feature.
+    
+    **Parameters:**
+    
+    <!-- <ul> -->
+    
+     *  `value_descriptions`: (Required) A Pyton dictionary or list of dictionaries of the following format: `{'value': '<value>', 'description': '<description>'}`
+    
+    <!-- </ul> -->
+    
+ *  `get_value_descriptions()`
+    
+    This method returns all value descriptions of the feature.
+ *  `get_value_description(value)`
+    
+    This method returns the value description for the given value.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `value`: (Required) The value to retrieve the value description for.
+    
+    <!-- </ul> -->
+    
+ *  `add_value_description(value, description)`
+    
+    This method adds a value description with the given value and description to the list of value descriptions for the feature.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `value`: (Required) The string value of the value description.
+     *  `description`: (Required) The string description of the value description.
+    
+    <!-- </ul> -->
+    
+ *  `remove_value_description(value)`
+    
+    This method removes the value description with the given value from the list of value descriptions of the feature.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `value`: (Required) A value of the value description to be removed.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+Example that shows how to set value descriptions:
+
+    plan_feat = af.get_feature("InstallmentPlans")
+    val_descriptions = [
+        {'value': 'stores',
+         'description': 'customer has additional business installment plan'},
+        {'value': 'bank',
+         'description': 'customer has additional personal installment plan'},
+        {'value': 'none',
+         'description': 'customer has no additional installment plan'}
+    ]
+    plan_feat.set_value_descriptions(val_descriptions)
+
+### Recipe ###
+
+You can use the recipe to describe how a feature was created, for example with a formula or a code snippet\. It defaults to `None`\.
+
+You can use the following methods to work with the recipe\.
+
+<!-- <ul> -->
+
+ *  `set_recipe(recipe)`
+    
+    This method sets the recipe of the feature.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `recipe`: (Required) Either a string or None to remove the recipe.
+    
+    <!-- </ul> -->
+    
+ *  `get_recipe()`
+    
+    This method returns the recipe of the feature.
+
+<!-- </ul> -->
+
+### Tags ###
+
+You can use tags to attach additional labels or information to your feature\.
+
+You can use the following methods to work with tags:
+
+<!-- <ul> -->
+
+ *  `set_tags(tags)`
+    
+    This method sets the tags of the feature.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `tags`: (Required) Either as a single string or an array of strings.
+    
+    <!-- </ul> -->
+    
+ *  `get_tags()`
+    
+    This method returns all tags of the feature.
+
+<!-- </ul> -->
+
+## Previewing data ##
+
+You can preview the data of your data asset or pandas DataFrame with additional information about your features like fairness information\.
+
+The data is displayed like a pandas DataFrame with optional header information about feature roles, descriptions or recipes\. Fairness information is displayed with coloring for favorable or unfavorable labels, monitored and reference groups\.
+
+At this time, you can retrieve up to 100 rows of sample data for a data asset\.
+
+Use the following function to preview data:
+
+<!-- <ul> -->
+
+ *  `head(num_rows=5, display_options=['role'])`
+    
+    This function returns the first `num_rows` rows of the data set in a pandas DataFrame.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `num_rows` : (Optional) The number of rows to retrieve.
+     *  `display_options`: (Optional) The column header can display additional information for a column in your data set.
+        
+        Use these options to display feature attributes:
+        
+        <!-- <ul> -->
+        
+         *  `role`: Displays the role of a feature for this column.
+         *  `description`: Displays the description of a feature for this column.
+         *  `recipe`: Displays the recipe of a feature for this column.
+        
+        <!-- </ul> -->
+        
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+## Getting fairness information ##
+
+You can retrieve the fairness information of all features in your asset frame as a Python dictionary\. This includes all features containing monitored or reference groups (or both) as protected attributes and the target feature with favorable or unfavorable labels\.
+
+If the data type of a column with fairness information is numeric, the values of labels and groups are transformed to numeric values if possible\.
+
+Fairness information can be used directly in [AutoAI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/autoai-fairness.html) or [AI Fairness 360](https://www.ibm.com/opensource/open/projects/ai-fairness-360/)\.
+
+You can use the following function to retrieve fairness information of your asset frame:
+
+<!-- <ul> -->
+
+ *  `get_fairness_info(target=None)`
+    
+    This function returns a Python dictionary with favorable and unfavorable labels of the target column and protected attributes with monitored and reference groups.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  target: (Optional) The target feature. If there is only one feature with role `Target`, it will be used automatically.
+        
+        Example that shows how to retrieve fairness information:
+        
+            af.get_fairness_info()
+        
+        Output showing fairness information:
+        
+            {
+              'favorable_labels': ['No Risk'],
+              'unfavorable_labels': ['Risk'],
+              'protected_attributes': [
+                  {'feature': 'Sex',
+                  'monitored_group': 'female'],
+                  'reference_group': 'male']},
+                  {'feature': 'Age',
+                  'monitored_group': 0.0, 25]],
+                  'reference_group': 26, 80]]
+                  }]
+              }
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+## Saving feature group information ##
+
+After you have fully specified or updated your features, you can save the whole feature group definition as metadata for your data asset\.
+
+If you created the asset frame from a pandas DataFrame, a new data asset will be created in the project storage with the name of the asset frame\.
+
+You can use the following method to store your feature group information:
+
+<!-- <ul> -->
+
+ *  `to_data_asset(overwrite_data=False)`
+    
+    This method saves feature group information to the assets metadata. It creates a new data asset, if the asset frame was created from a pandas DataFrame.
+    
+    **Parameters**:
+    
+    <!-- <ul> -->
+    
+     *  `overwrite_data`: (Optional) Also overwrite the asset contents with the data from the asset frame. Defaults to `False`.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+## Learn more ##
+
+See the [Creating and using feature store data](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e756adfa2855bdfc20f588f9c1986382) sample project in the Samples\.
+
+**Parent topic:**[Loading and accessing data in a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/load-and-access-data.html)
+
+<!-- </article "role="article" "> -->

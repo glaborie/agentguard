@@ -1,0 +1,89 @@
+# Managing an inventory for AI use cases #
+
+Create or manage an inventory for storing and reviewing AI use cases\. AI use cases collect governance facts for AI assets your organization tracks\. You can view all the AI use cases in an inventory or open one to explore the details of an AI asset\.
+
+## Creating an inventory for AI use cases ##
+
+You must have Admin rights to create and manage an inventory\. For more information, see [Collaboration roles](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-collab-roles.html)\.
+
+<!-- <ol> -->
+
+1.  Click **AI use cases** from the navigation menu\.
+2.  Click the settings icon ![gear icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/ml-setting-icon.png) for the AI use cases view\.
+    
+    ![Opening settings for AI use cases inventory](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/xgov-use-case-settings.png)
+3.  Click **New inventory** on the **Inventory management** tab\.
+4.  Assign a name, add an optional description, and associate a Cloud Object Storage instance\.
+5.  (Optional) Click **General** to extend the functions of an inventory with these options:
+    
+    <!-- <ul> -->
+    
+     *  If there is no Platform Access Catalog available for your account, you are prompted to create one. A Platform Access Catalog (PAC) is a platform catalog that provides a repository for inventory assets. It is required for governing external models or managing attachments and reports.
+     *  Enable the option for **External model governance** to govern models that are trained with machine learning providers other than the Watson Machine Learning. For a list of supported providers, see [Supported machine learning providers](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-frameworks-ovr.html).
+    
+    <!-- </ul> -->
+    
+<!-- </ol> -->
+
+## Adding collaborators to an inventory ##
+
+Inventories are meant to be collaborative so that multiple people that perform different roles can contribute to governance of key assets\. To add collaborators to an inventory:
+
+<!-- <ol> -->
+
+1.  From the **Inventory management** tab, click **Set access** from the overflow menu for the inventory\.
+2.  Click **Add collaborators** to add collaborators individually, or by user group\.
+3.  Assign a role of Admin, Editor, or Viewer\.
+4.  Collaborators are added to the list for the inventory\. You can remove or change the assigned access as needed\.
+
+<!-- </ol> -->
+
+## Managing external models, report templates, and attachments ##
+
+You can extend inventory management to include the ability to govern external models, customize report templates, and manage attachments for factsheets\.
+
+Before you can access these services, you must have access to a Platform Access Catalog\. A Platform Access Catalog is a common catalog for storing data connections and is required for governing external models and notebooks, and for customizing report templates and creating attachment groups\.
+
+### Creating a Platform Assets Catalog ###
+
+If you have Admin access, you can create a Platform Access Catalog if one does not exist\.
+
+<!-- <ol> -->
+
+1.  From the **General** tab of Inventory Management, you are prompted to create a Platform Access Catalog\.
+2.  Click **Get started** and follow the prompts to name the catalog, associate it with a Cloud Object Storage instance, and specify some configuration details\.
+3.  After the catalog is created, you can add users as collaborators in the catalog\.
+
+<!-- </ol> -->
+
+### Enabling governance of external models ###
+
+Enable governance for models that are created in notebooks or outside of Cloud Pak for Data\. Track the results of model evaluations and model details in factsheets\.
+
+<!-- <ol> -->
+
+1.  From the General tab of an inventory, enable the option for **External model management**\.
+2.  Select an inventory for tracking external models\.
+3.  Select an owner, then click **Apply\.**
+
+<!-- </ol> -->
+
+Note: When external models are added, they are listed under AI use cases in the main navigation menu\.
+
+### Managing report templates ###
+
+As an inventory administrator, you can manage report templates to customize the report templates for inventory users\.
+
+For details, see [Managing report templates](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-manage-reports.html)\.
+
+### Managing attachments ###
+
+As an inventory administrator, you can create and manage attachment groups for AI use cases to provide the structure for users to attach supporting files to enrich a use case or a factsheet\. For example, if you want every use case to include approval documents, you can create a group to define placeholders for those documents in each use case\. Users can then upload the documents to those placeholder slots\.
+
+For more information, see [Managing attachments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-manage-attachments.html)
+
+## Learn more ##
+
+**Parent topic:**[Governing assets in AI use cases](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-use-cases.html)
+
+<!-- </article "role="article" "> -->

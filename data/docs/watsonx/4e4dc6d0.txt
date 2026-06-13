@@ -1,0 +1,179 @@
+# Quick start: Build, run, and deploy a Decision Optimization model #
+
+You can build and run Decision Optimization models to help you make the best decisions to solve business problems based on your objectives\. Read about Decision Optimization, then watch a video and take a tutorial that’s suitable for users with some knowledge of prescriptive analytics, but does not require coding\.
+
+Your basic workflow includes these tasks:
+
+<!-- <ol> -->
+
+1.  Open your sandbox project\. Projects are where you can collaborate with others to work with data\.
+2.  Add a Decision Optimization Experiment to the project\. You can add compressed files or data from sample files\.
+3.  Associate a Watson Machine Learning Service with the project\.
+4.  Create a deployment space to associate with the project's Watson Machine Learning Service\.
+5.  Review the data, model objectives, and constraints in the Modeling Assistant\.
+6.  Run one or more scenarios to test your model and review the results\.
+7.  Deploy your model\.
+
+<!-- </ol> -->
+
+## Read about Decision Optimization ##
+
+Decision Optimization can analyze data and create an optimization model (with the Modeling Assistant) based on a business problem\. First, an optimization model is derived by converting a business problem into a mathematical formulation that can be understood by the optimization engine\. The formulation consists of objectives and constraints that define the model that the final decision is based on\. The model, together with your input data, forms a scenario\. The optimization engine solves the scenario by applying the objectives and constraints to limit millions of possibilities and provides the best solution\. This solution satisfies the model formulation or relaxes certain constraints if the model is infeasible\. You can test scenarios using different data, or by modifying the objectives and constraints and re\-running them and viewing solutions\. Once satisfied you can deploy your model\.
+
+[Read more about Decision Optimization](https://dataplatform.cloud.ibm.com/docs/content/DO/DOWS-Cloud_home.html)
+
+## Watch a video about creating a Decision Optimization model ##
+
+![Watch Video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) Watch this video to see how to run a sample Decision Optimization experiment to create, solve, and deploy a Decision Optimization model with Watson Studio and Watson Machine Learning\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\. The user interface is frequently improved\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Try a tutorial to create a model that uses Decision Optimization ##
+
+In this tutorial, you will complete these tasks:
+
+<!-- <ul> -->
+
+ *  [Task 1: Open a project\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#step01)
+ *  [Task 2: Create a Decision Optimization experiment in the project\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#step02)
+ *  [Task 3: Build a model and visualize a scenario result\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#step03)
+ *  [Task 4: Change model objectives and constraints\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#step04)
+ *  [Task 5: Deploy the model\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#step05)
+ *  [Task 6: Test the model\.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#step06)
+
+<!-- </ul> -->
+
+This tutorial will take approximately 30 minutes to complete\.
+
+Expand all sections
+
+<!-- <ul> -->
+
+ *  Tips for completing this tutorial
+    
+    \#\#\# Use the video picture-in-picture Tip: Start the video, then as you scroll through the tutorial, the video moves to picture-in-picture mode. Close the video table of contents for the best experience with picture-in-picture. You can use picture-in-picture mode so you can follow the video as you complete the tasks in this tutorial. Click the timestamps for each task to follow along.The following animated image shows how to use the video picture-in-picture and table of contents features: ![How to use picture-in-picture and chapters](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/pip-and-chapters.gif)\{: width="560px" height="315px" data-tearsheet="this"\} \#\#\# Get help in the community If you need help with this tutorial, you can ask a question or find an answer in the [Cloud Pak for Data Community discussion forum](https://community.ibm.com/community/user/cloudpakfordata/communities/community-home/digestviewer?communitykey=c0c16ff2-10ef-4b50-ae4c-57d769937235)\{: new\_window\}. \#\#\# Set up your browser windows For the optimal experience completing this tutorial, open Cloud Pak for Data in one browser window, and keep this tutorial page open in another browser window to switch easily between the two applications. Consider arranging the two browser windows side-by-side to make it easier to follow along. ![Side-by-side tutorial and UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/tutorial-side-by-side.png)\{: width="560px" height="315px" data-tearsheet="this"\} Tip: If you encounter a guided tour while completing this tutorial in the user interface, click **Maybe later**.  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 1: Open a project
+    
+    You need a project to store the data and the AutoAI experiment. You can use your sandbox project or create a project. 1. From the navigation menu ![Navigation menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/navigation-menu.svg)\{: iih\}, choose **Projects > View all projects** 1. Open your sandbox project. If you want to use a new project: 1. Click **New project**. 1. Select **Create an empty project**. 1. Enter a name and optional description for the project. 1. Choose an existing [object storage service instance](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/storage-options.html)\{: new\_window\} or create a new one. 1. Click **Create**. 1. When the project opens, click the **Manage** tab and select the **Services and integrations** page. 1. On the *IBM services* tab, click **Associate service**. 1. Select your Watson Machine Learning instance. If you don't have a Watson Machine Learning service instance provisioned yet, follow these steps: 1. Click **New service**. 1. Select **Watson Machine Learning**. 1. Click **Create**. 1. Select the new service instance from the list. 1. Click **Associate service**. 1. If necessary, click **Cancel** to return to the *Services & Integrations* page. For more information, see [Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)\{: new\_window\}. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the new project.  
+      
+    ![The following image shows the new project.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/do-new-project.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 2: Create a Decision Optimization experiment
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:20. Now, follow these steps to create the Decision Optimization experiment in your project: 1. From your new project, click **New asset > Solve optimization problems**. 1. Select **Local file**. 1. Click **Get sample files** to view the GitHub repository containing the sample files. 1. In the *DO-Samples* repository, open the **watsonx.ai and Cloud Pak for Data as a Service** folder. 1. Click the `HouseConstructionScheduling.zip` file containing the house construction sample files. 1. Click **Download** to save the zip file to your computer. 1. Return to the *Create a Decision Optimization experiment* page, and click **Browse**. 1. Select the `HouseConstructionScheduling.zip` file from your computer. 1. Click **Open**. 1. If you don't already have a Watson Machine Learning service associated with this project, click **Add a Machine Learning service**. 1. Review your Watson Machine Learning service instances. You can use an existing service, or create a new service instance from here: click **New service**, select **Machine Learning**, and click **Create**. 1. Select your **Watson Machine Learning** instance from the list, and click **Associate**. 1. If necessary, click **Cancel** to return to the *Services & integrations* page. For more information on associated services, see [Adding associated services](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assoc-services.html)\{: new\_window\}. 1. Choose a deployment space to associate with this experiment. If you do not have an existing deployment space, create one: 1. In the *Select deployment space* section, click **New deployment space**. 1. In the *Name* field, type `House sample`\{: .cp\} to provide a name for the deployment space. 1. Click **Create**. 1. When the space is ready, and click **Close** to return to the *Create a Decision Optimization experiment* page. Your new deployment space is selected. 1. Click **Create** to open the Decision Optimization experiment. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the experiment with the sample files.  
+      
+    ![The following image shows the experiment with the sample files.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/do-exp-builder.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 3: Build a model and visualize a scenario result
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 01:47. Follow these steps to build a model and visualize the result using the Decision Optimization Modeling Assistant. 1. In the left pane, click **Build model** to open the Modeling Assistant. This model was built with the Modeling Assistant so you can see that the objectives and constraints are in natural language, but you can also formulate your model in Python, OPL or import CPLEX and CPO models. 1. Click **Run** to run the scenario to solve the model and wait for the run to complete. 1. When the run completes, the *Explore solution* view displays. Under the *Results* tab, click **Solution assets** to see the resulting (best) values for the decision variables. These solution tables are displayed in alphabetical order by default. 1. In the left pane, select **Visualization**. 1. Under the *Solutions* tab, select **Gantt** to view the scenario with the optimal schedule. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the Visualization page with a Gantt chart.  
+      
+    ![The following image shows the Visualization page with a Gantt chart.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/do-gantt-chart.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 4: Change model objectives and constraints
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 03:01. Now, you want to make a change to your model formulation to consider an additional objective. Follow these steps to change the model objectives and constraints: 1. Click **Build model**. 1. In the left pane, click the **Overflow** menu ![Overflow menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/overflow-menu--vertical.svg)\{: iih\} next to *Scenario 1*, and select **Duplicate**. 1. For the name, type `Scenario 2`\{: .cp\}, and click **Create**. 1. For *Scenario 2*, add an objective to the model to optimize the quality of work based on the expertise of each contractor. 1. Under *Add to model*, in the search field, type `overall quality`\{: .cp\}, and press `Enter`. 1. Expand the **Objective** section. 1. Click **Maximize overall quality of Subcontractor-Activity assignments according to table of assignment values** to add it as an objective. This new objective is now listed under the *Objectives* section along with the *Minimize time to complete all Activities* objective. 1. For the objective that you just added, click **table of assignment values**, and select **Expertise**. A list of *Expertise* parameters displays. 1. From this list, click **definition** to change the field that defines contractor expertise, and select **Skill Level**. 1. Click **Run** to run the scenario to build the model and wait for the run to complete. 1. Return to the *Explore solution* page to view the **Objectives** and **Solution assets**. 1. In the left pane, select **Visualization**. 1. Under the *Solutions* tab, select **Gantt** to view the scenario with the optimal schedule. 1. Click **Overview** in the left pane to compare statistics between *Scenario 1* and *Scenario 2*. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the Visualization page with the new Gantt chart.  
+      
+    ![The following image shows the Visualization page with the new Gantt chart.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/do-gantt-chart-02.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 5: Deploy the model
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 04:07. Next, follow these steps to promote the model to a deployment space, and create a deployment: 1. Click the **Overflow** menu ![Overflow menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/overflow-menu--vertical.svg)\{: iih\} next to *Scenario 1*, and select **Save for deployment**. 1. In the *Model name* field, type `House Construction`\{: .cp\}, and click **Next**. 1. Review the model information, and click **Save**. 1. After the model is successfully saved, a notification bar displays with a link to the model. Click **View in project**. 1. If you miss the notification, then click the project name in the navigation trail. 1. Click the **Assets** tab in the project. 1. Click the **House Construction** model. 1. Click **Promote to deployment space**. 1. For the *Target space*, select **House sample** (or your deployment space) from the list. 1. Check the option to Check **Go to the model in the space after deploying it**. 1. Click **Promote**. 1. After the model is successfully promoted, the *House Construction* model displays in the deployment space. 1. Click **New deployment**. 1. For the deployment name, type `House deployment`\{: .cp\}. 1. For the *Hardware definition*, select **2 CPU and 8 GB RAM** from the list. 1. Click **Create**. 1. Wait for the deployment status to change to *Deployed*. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the House deployment.  
+      
+    ![The following image shows the Visualization page with the House deployment.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/do-house-deployment.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 6: Test a model
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 04:55. To test the model with a scenario, you must upload data files from your computer to the deployment space. Follow these steps to test the model by creating a job using the CSV files included with the sample zip file: 1. Click **House sample** (or your deployment space) in the navigation trail to return to the deployment space. 1. Click the **Assets** tab. 1. In the `HouseConstructionScheduling.zip` file on your computer, you will find several CSV files in the *.containers > Scenario 1* folder. 1. Click the **Upload asset** icon ![Upload asset to project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/data--set.svg)\{: iih\} to open the *Data* panel. 1. Drag the `Subcontractor.csv`, `Activity.csv`, and `Expertise.csv` files into the *Drop files here or browse for files to upload* area in the *Data* panel. 1. Click the **Deployments** tab. 1. Click **House deployment**. 1. Now to submit a job to score the model, click **New job**. 1. For the job name, type `House construction job`\{: .cp\}. 1. Click **Next**. 1. Select the default values on the *Configure* page, and click **Next**. 1. Select the default values on the *Schedule* page, and click **Next**. 1. Select the default values on the *Notify* page, and click **Next**. 1. On the *Choose data* page, in the *Input* section, select the corresponding data assets that you previously loaded into your space for each input ID. 1. In the *Output* section, you will provide the name for each solution table to be created. 1. For *Output ID ScheduledActivities.csv*, click **Select data source > Create new**, type `ScheduledActivities.csv`\{: .cp\} for the name, and click **Confirm**. 1. For *Output ID NotScheduledActivities.csv*, click **Select data source > Create new**, type `NotScheduledActivities.csv`\{: .cp\} for the name, and click **Confirm**. 1. For *Output ID stats.csv*, click **Select data source > Create new**, type `stats.csv`\{: .cp\} for the name, and click **Confirm**. 1. For *Output ID kpis.csv*, click **Select data source > Create new**, type `kpis.csv`\{: .cp\} for the name, and click **Confirm**. 1. For *Output ID solution.json*, click **Select data source > Create new**, type `solution.json`\{: .cp\} for the name, and click **Confirm**. 1. For *Output ID log.txt*, click **Select data source > Create new**, type `log.txt`\{: .cp\} for the name, and click **Confirm**. 1. Review the information on the *Choose data* page, and then click **Next**. 1. Review the information on the *Review and create* page, and then click **Create and run**. 1. From the *House deployment* model page, click the job that you created named *House construction job* to see its status. 1. After the job run completes, click **House sample** (or your deployment space) to return to the deployment space. 1. On the *Assets tab*, you will see the output files: - ScheduledActivities.csv - NotScheduledactivities.csv - stats.csv - kpis.csv - solution.json - log.txt 1. For each of these assets, click the **Download** icon, and then view each of these files. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the completed batch job.  
+      
+    ![The following image shows the Visualization page with the completed batch job.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/do-completed-batch-job.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+## Next steps ##
+
+Now you can use this data set for further analysis\. For example, you or other users can do any of these tasks:
+
+<!-- <ul> -->
+
+ *  [Learn to build this model from scratch with the Modeling Assistant](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Mdl_Assist/exhousebuild.html)
+ *  [Leverage this deployed model in an end user application using the Watson Machine Learning Rest API](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/DeployModelRest.html)
+ *  [Deploy Decision Optimization models using the Watson Machine Learning Python Client](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/DeployPythonClient.html)
+
+<!-- </ul> -->
+
+## Additional resources ##
+
+<!-- <ul> -->
+
+ *  Try these other methods to build models:
+    
+    <!-- <ul> -->
+    
+     *  [Build and deploy a machine learning model with AutoAI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build.html)
+     *  [Build and deploy a machine learning model with SPSS Modeler](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-build-spss.html)
+     *  [Build and deploy a Decision Optimization model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-do.html)
+     *  [Submit jobs by using the Watson Machine Learning API](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/Paralleljobs.html)
+    
+    <!-- </ul> -->
+    
+ *  [Building and running Decision Optimization Experiments](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/buildingmodels.html)
+ *  [Deploying Decision Optimization models with UI](https://dataplatform.cloud.ibm.com/docs/content/DO/WML_Deployment/DeployModelUI-WML.html)
+ *  View more [videos](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html)\.
+ *  Find sample data sets, projects, models, prompts, and notebooks in the Samples to gain hands\-on experience:
+    
+    ![Notebook icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook.svg)[Notebooks](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=notebook) that you can add to your project to get started analyzing data and building models.
+    
+    ![Project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/ibm-cloud--projects.svg)[Projects](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=project-template) that you can import containing notebooks, data sets, prompts, and other assets.
+    
+    ![Data set icon]Upload asset to project iconData sets][] that you can add to your project to refine, analyze, and build models.
+    
+    ![Prompt icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/prompt.svg)[Prompts](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=example-prompt) that you can use in the Prompt Lab to prompt a foundation model.
+    
+    ![Model icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/model.svg)[Foundation models](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=foundation-model) that you can use in the Prompt Lab.
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Contribute to the [Decision Optimization community](https://ibm.biz/decision-optimization-community)
+
+<!-- </ul> -->
+
+**Parent topic:**[Quick start tutorials](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html)
+
+<!-- </article "role="article" "> -->

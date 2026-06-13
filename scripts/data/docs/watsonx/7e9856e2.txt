@@ -1,0 +1,23 @@
+# Defining a class #
+
+Within a Python class, you can define both variables and methods\. Unlike in Java, in Python you can define any number of public classes per source file (or module)\. Therefore, you can think of a module in Python as similar to a package in Java\.
+
+In Python, classes are defined using the `class` statement\. The `class` statement has the following form:
+
+    class name (superclasses): statement
+
+or
+
+    class name (superclasses): 
+        assignment
+        .
+        .
+        function
+        .
+        .
+
+When you define a class, you have the option to provide zero or more assignment statements\. These create class attributes that are shared by all instances of the class\. You can also provide zero or more function definitions\. These function definitions create methods\. The `superclasses` list is optional\.
+
+The class name should be unique in the same scope, that is within a module, function, or class\. You can define multiple variables to reference the same class\.
+
+<!-- </article "role="article" "> -->

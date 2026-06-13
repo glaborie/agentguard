@@ -1,0 +1,19 @@
+# Identifiers #
+
+Identifiers are used to name variables, functions, classes, and keywords\.
+
+Identifiers can be any length, but must start with either an alphabetical character of uppercase or lowercase, or the underscore character (`_`)\. Names that start with an underscore are generally reserved for internal or private names\. After the first character, the identifier can contain any number and combination of alphabetical characters, numbers from 0\-9, and the underscore character\.
+
+There are some reserved words in Jython that can't be used to name variables, functions, or classes\. They fall under the following categories:
+
+<!-- <ul> -->
+
+ *  Statement introducers:`assert`, `break`, `class`, `continue`, `def`, `del`, `elif`, `else`, `except`, `exec`, `finally`, `for`, `from`, `global`, `if`, `import`, `pass`, `print`, `raise`, `return`, `try`, and `while`
+ *  Parameter introducers:`as`, `import`, and `in`
+ *  Operators:`and`, `in`, `is`, `lambda`, `not`, and `or`
+
+<!-- </ul> -->
+
+Improper keyword use generally results in a SyntaxError\.
+
+<!-- </article "role="article" "> -->

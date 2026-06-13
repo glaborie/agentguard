@@ -1,0 +1,25 @@
+# Setting field format options #
+
+With the  FORMAT settings in the Type and Table nodes you can specify formatting options for current or unused fields\.
+
+Under each formatting type, click  Add Columns and add one or more fields\. The field name and format setting will be displayed for each field you select\. Then click the gear icon to specify formatting options\.
+
+The following formatting options are available on a per\-field basis:
+
+Date format\. Select a date format to use for date storage fields or when strings are interpreted as dates by CLEM date functions\.
+
+Time format\. Select a time format to use for time storage fields or when strings are interpreted as times by CLEM time functions\.
+
+Number format\. You can choose from standard (`####.###`), scientific (`#.###E+##`), or currency display formats (`$###.##`)\.
+
+Decimal symbol\. Select either a comma (`,`) or period (`.`) as the decimal separator\.
+
+Number grouping symbol\. For number display formats, select the symbol used to group values (for example, the comma in `3,000.00`)\. Options include none, period, comma, space, and locale\-defined (in which case the default for the current locale is used)\.
+
+Decimal places (standard, scientific, currency, export)\. For number display formats, specify the number of decimal places to use when displaying real numbers\. This option is specified separately for each display format\. Note that the  Export decimal places setting only applies to flat file exports\. The number of decimal places exported by the XML Export node is always 6\.
+
+Justify\. Specifies how the values should be justified within the column\. The default setting is  Auto, which left\-justifies symbolic values and right\-justifies numeric values\. You can override the default by selecting left, right, or center\.
+
+Column width\. By default, column widths are automatically calculated based on the values of the field\. You can specify a custom width, if needed\.
+
+<!-- </article "role="article" "> -->

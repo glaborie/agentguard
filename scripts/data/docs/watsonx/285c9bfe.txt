@@ -1,0 +1,134 @@
+# Examples of environment template customizations #
+
+You can follow examples of how to add custom libraries through conda or pip using the provided templates for Python and R when you create an environment template\.
+
+You can use mamba in place of conda in the following examples with conda\. Remember to select the checkbox to install from mamba if you add channels or packages from mamba to the existing environment template\.
+
+Examples exist for:
+
+<!-- <ul> -->
+
+ *  [Adding conda packages](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/example-customizations.html?context=cdpaas&locale=en#add-conda-package)
+ *  [Adding pip packages](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/example-customizations.html?context=cdpaas&locale=en#add-pip-package)
+ *  [Combining conda and pip packages](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/example-customizations.html?context=cdpaas&locale=en#combine-conda-pip)
+ *  [Adding complex packages with internal dependencies](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/example-customizations.html?context=cdpaas&locale=en#complex-packages)
+ *  [Adding conda packages for R notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/example-customizations.html?context=cdpaas&locale=en#conda-in-r)
+ *  [Setting environment variables](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/example-customizations.html?context=cdpaas&locale=en#set-vars)
+
+<!-- </ul> -->
+
+Hints and tips:
+
+<!-- <ul> -->
+
+ *  [Best practices](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/example-customizations.html?context=cdpaas&locale=en#best-practices)
+
+<!-- </ul> -->
+
+## Adding conda packages ##
+
+To get latest versions of pandas\-profiling:
+
+    dependencies:
+      - pandas-profiling
+
+This is equivalent to running `conda install pandas-profiling` in a notebook\.
+
+## Adding pip packages ##
+
+You can also customize an environment using `pip` if a particular package is not available in conda channels:
+
+    dependencies:
+      - pip:
+        - ibm-watson-machine-learning
+
+This is equivalent to running `pip install ibm-watson-machine-learning` in a notebook\.
+
+The customization will actually do more than just install the specified `pip` package\. The default behavior of `conda` is to also look for a new version of `pip` itself and then install it\. Checking all the implicit dependencies in `conda` often takes several minutes and also gigabytes of memory\. The following customization will shortcut the installation of `pip`:
+
+    channels:
+      - empty
+      - nodefaults
+    
+    dependencies:
+      - pip:
+        - ibm-watson-machine-learning
+
+The conda channel `empty` does not provide any packages\. There is no `pip` package in particular\. `conda` won't try to install `pip` and will use the already pre\-installed version instead\. Note that the keyword `nodefaults` in the list of channels needs at least one other channel in the list\. Otherwise `conda` will silently ignore the keyword and use the default channels\.
+
+## Combining conda and pip packages ##
+
+You can list multiple packages with one package per line\. A single customization can have both conda packages and pip packages\.
+
+    dependencies:
+      - pandas-profiling
+      - scikit-learn=0.20
+      - pip:
+        - watson-machine-learning-client-V4
+        - sklearn-pandas==1.8.0
+
+Note that the required template notation is sensitive to leading spaces\. Each item in the list of conda packages must have two leading spaces\. Each item in the list of pip packages must have four leading spaces\. The version of a conda package must be specified using a single equals symbol (`=`), while the version of a pip package must be added using two equals symbols (`==`)\.
+
+## Adding complex packages with internal dependencies ##
+
+When you add many packages or a complex package with many internal dependencies, the conda installation might take long or might even stop without you seeing any error message\. To avoid this from happening:
+
+<!-- <ul> -->
+
+ *  Specify the versions of the packages you want to add\. This reduces the search space for conda to resolve dependencies\.
+ *  Increase the memory size of the environment\.
+ *  Use a specific channel instead of the default conda channels that are defined in the `.condarc` file\. This avoids running lengthy searches through big channels\.
+
+<!-- </ul> -->
+
+Example of a customization that doesn't use the default conda channels:
+
+    # get latest version of the prophet package from the conda-forge channel
+    channels:
+      - conda-forge
+      - nodefaults
+    
+    dependencies:
+      - prophet
+
+This customization corresponds to the following command in a notebook:
+
+    !conda install -c conda-forge --override-channels prophet -y
+
+## Adding conda packages for R notebooks ##
+
+The following example shows you how to create a customization that adds conda packages to use in an R notebook:
+
+    channels:
+      - defaults
+    
+    dependencies:
+      - r-plotly
+
+This customization corresponds to the following command in a notebook:
+
+    print(system("conda install r-plotly", intern=TRUE))
+
+The names of R packages in conda generally start with the prefix `r-`\. If you just use `plotly` in your customization, the installation would succeed but the Python package would be installed instead of the R package\. If you then try to use the package in your R code as in `library(plotly)`, this would return an error\.
+
+## Setting environment variables ##
+
+You can set environment variables in your environment by adding a variables section to the software customization template as shown in the following example:
+
+    variables:
+      my_var: my_value
+      HTTP_PROXY: https://myproxy:3128
+      HTTPS_PROXY: https://myproxy:3128
+      NO_PROXY: cluster.local
+
+The example also shows that you can use the variables section to set a proxy server for an environment\.
+
+**Limitation**: You cannot override existing environment variables, for example LD\_LIBRARY\_PATH, using this approach\.
+
+## Best practices ##
+
+To avoid problems that can arise finding packages or resolving conflicting dependencies, start by installing the packages you need manually through a notebook in a test environment\. This enables you to check interactively if packages can be installed without errors\. After you have verified that the packages were all correctly installed, create a customization for your development or production environment and add the packages to the customization template\.
+
+**Parent topic:**[Customizing environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/customize-envs.html)
+
+<!-- </article "role="article" "> -->

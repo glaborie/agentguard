@@ -1,0 +1,105 @@
+# Assets in deployment spaces #
+
+Learn about various ways of adding and promoting assets to a space\. Find the list of asset types that you can add to a space\.
+
+Note these considerations for importing assets into a space:
+
+<!-- <ul> -->
+
+ *  Upon import, some assets are automatically assigned a version number, starting with version 1\. This version numbering prevents overwriting existing assets if you import their updated versions later\.
+ *  Assets or references that are required to run jobs in the space must be part of the import package, or must be added separately\. If you don't add these supporting assets or references, jobs fail\.
+
+<!-- </ul> -->
+
+The way to add an asset to a space depends on the asset type\. You can add some assets directly to a space (for example a model that was created outside of watsonx)\. Other asset types originate in a project and must be transferred from a project to a space\. The third class includes asset types that you can add to a space only as a dependency of another asset\. These asset types do not display in the **Assets** tab in the UI\.
+
+For more information, see:
+
+<!-- <ul> -->
+
+ *  [Asset types that you can directly add to a space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets-all.html?context=cdpaas&locale=en#add_directly)
+ *  [Asset types that are created in projects and can be transferred into a space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets-all.html?context=cdpaas&locale=en#add_transfer)
+ *  [Asset types that can be added to a space only as a dependency](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets-all.html?context=cdpaas&locale=en#add_dependency)
+
+<!-- </ul> -->
+
+For more information about working with space assets, see:
+
+<!-- <ul> -->
+
+ *  [Accessing asset details](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-access-detailed-info.html)
+
+<!-- </ul> -->
+
+## Asset types that you can directly add to a space ##
+
+<!-- <ul> -->
+
+ *  Connection
+ *  Data asset (from a connection or an uploaded file)
+ *  Model
+
+<!-- </ul> -->
+
+For more information, see:
+
+<!-- <ul> -->
+
+ *  For data assets and connections: [Adding data assets to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)
+ *  For models: [Importing models into a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-importing-model.html)
+
+<!-- </ul> -->
+
+## Assets types that are created in projects and can be transferred into a space ##
+
+<!-- <ul> -->
+
+ *  Connection
+ *  Data Refinery flow
+ *  Environment
+ *  Function
+ *  Job
+ *  Model
+ *  Script
+
+<!-- </ul> -->
+
+If your asset is located in a standard Watson Studio project, you can transfer the asset to the deployment space by promoting it\.
+
+For more information, see [Promoting assets to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-promote-assets.html)\.
+
+Alternatively, you can export the project and then import it into the deployment space\. For more information, see:
+
+<!-- <ul> -->
+
+ *  [Exporting a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/export-project.html)
+ *  [Importing spaces and projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-import-to-space.html)
+
+<!-- </ul> -->
+
+If you export the whole project, any matching custom environments are exported as well\.
+
+## Asset types that can be added to a space only as a dependency ##
+
+<!-- <ul> -->
+
+ *  Hardware Specification
+ *  Package Extension
+ *  Software Specification
+ *  Watson Machine Learning Experiment
+ *  Watson Machine Learning Model Definition
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Deploying assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+ *  [Training and deploying machine learning models in notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-samples-overview.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html)
+
+<!-- </article "role="article" "> -->

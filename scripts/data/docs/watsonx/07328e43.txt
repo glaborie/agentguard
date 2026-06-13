@@ -1,0 +1,111 @@
+# MongoDB connection #
+
+To access your data in MongoDB, create a connection asset for it\.
+
+MongoDB is a distributed database that stores data in JSON\-like documents\.
+
+## Supported editions and versions ##
+
+### MongoDB editions ###
+
+<!-- <ul> -->
+
+ *  MongoDB Community
+ *  IBM Cloud Databases for MongoDB\. See [IBM Cloud Databases for MongoDB connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-mongodb.html) for this data source\.
+ *  MongoDB Atlas
+ *  WiredTiger Storage Engine
+
+<!-- </ul> -->
+
+### MongoDB versions ###
+
+<!-- <ul> -->
+
+ *  MongoDB 3\.6 and later, 4\.x, 5\.x, and 6\.x
+ *  Microsoft Azure Cosmos DB for MongoDB 3\.6 and later, 4\.x
+
+<!-- </ul> -->
+
+## Create a connection to MongoDB ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  Database name
+ *  Hostname or IP address
+ *  Port number
+ *  Authentication database: The name of the database in which the user was created\.
+ *  Username and password
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+For **Private connectivity**, to connect to a database that is not externalized to the internet (for example, behind a firewall), you must set up a [secure connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/securingconn.html)\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use MongoDB connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## MongoDB setup ##
+
+[MongoDB installation](https://docs.mongodb.com/manual/installation/)  
+
+## Restrictions ##
+
+<!-- <ul> -->
+
+ *  You can only use this connection for source data\. You cannot write to data or export data with this connection\.
+ *  MongoDB Query Language (MQL) is not supported\.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [MongoDB tutorials](https://docs.mongodb.com/manual/tutorial/)
+ *  [mongodb\.com](https://www.mongodb.com/)
+
+<!-- </ul> -->
+
+**Related connection**: [IBM Cloud Databases for MongoDB connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-mongodb.html)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

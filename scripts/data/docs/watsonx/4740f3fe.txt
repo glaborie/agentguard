@@ -1,0 +1,25 @@
+# Downstream retraining #
+
+![icon for value alignment risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-value-alignment.svg)Risks associated with inputTraining and tuning phaseValue alignmentNew
+
+### Description ###
+
+Using data from user\-generated content or AI\-generated content from downstream applications for retraining a model can result in misalignment, undesirable output, and inaccurate or inappropriate model behavior\.
+
+### Why is downstream retraining a concern for foundation models? ###
+
+Repurposing downstream output for re\-training a model without implementing proper human vetting increases the chances of undesirable outputs being incorporated into the training or tuning data of the model, resulting in an echo chamber effect\. Improper model behavior can result in business entities facing legal consequences or reputational harms\.
+
+Example
+
+#### Model collapse due to training using AI\-generated content ####
+
+As stated in the source article, a group of researchers from the UK and Canada have investigated the problem of using AI\-generated content for training instead of human\-generated content\. They found that using model\-generated content in training causes irreversible defects in the resulting models and that learning from data produced by other models causes [model collapse](https://arxiv.org/pdf/2305.17493v2.pdf)\.
+
+Sources:
+
+[VentureBeat, June 2023](https://venturebeat.com/ai/the-ai-feedback-loop-researchers-warn-of-model-collapse-as-ai-trains-on-ai-generated-content/)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

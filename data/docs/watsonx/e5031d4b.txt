@@ -1,0 +1,15 @@
+# Improper usage #
+
+![icon for value alignment risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-value-alignment.svg)Risks associated with outputValue alignmentNew
+
+### Description ###
+
+Using a model for a purpose the model was not designed for might result in inaccurate or undesired behavior\. Without proper documentation of the model purpose and constraints, models can be used or repurposed for tasks for which they are not suited\.
+
+### Why is improper usage a concern for foundation models? ###
+
+Reusing a model without understanding its original data, design intent, and goals might result in unexpected and unwanted model behaviors\.
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

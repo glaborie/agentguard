@@ -1,0 +1,197 @@
+# RStudio #
+
+R is a popular statistical analysis and machine\-learning package that enables data management and includes tests, models, analyses and graphics\. RStudio, included in IBM Watson Studio, provides an integrated development environment for working with R scripts\.
+
+## Accessing RStudio ##
+
+RStudio is integrated in IBM Watson Studio projects and can be launched after you create a project\. With RStudio integration in projects, you can access and use the data files that are stored in the IBM Cloud Object Storage bucket associated with your project in RStudio\.
+
+To start RStudio in your project:
+
+<!-- <ol> -->
+
+1.  Click **RStudio** from the **Launch IDE** menu on your project's action bar\.
+2.  Select an environment\.
+3.  Click **Launch**\.
+    
+    The environment runtime is initiated and the development environment opens.
+
+<!-- </ol> -->
+
+Sometimes, when you start an RStudio session, you might experience a corrupted RStudio state from a previous session and your session will not start\. If this happens, select to reset the workspace at the time you select the RStudio environment and then start the RStudio IDE again\. By resetting the workspace, RStudio is started using the default settings with a clean RStudio workspace\.
+
+## Working with data files ##
+
+In RStudio, you can work with data files from different sources:
+
+<!-- <ul> -->
+
+ *  *Files* in the RStudio server file structure, which you can view by clicking **Files** in the bottom right section of RStudio\. This is where you can create folders, upload files from your local system, and delete files\.
+    
+    To access these files in R, you need to set the working directory to the directory with the files. You can do this by navigating to the directory with the files and clicking **More > Set as Working Directory**.
+    
+    Be aware that files stored in the `Home` directory of your RStudio instance are persistent within your instance only and cannot be shared across environments nor within your project.
+
+<!-- </ul> -->
+
+Video disclaimer: Some minor steps and graphical elements in the videos on this page may differ from your deployment\.
+
+Watch this video to see how to load data to RStudio\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+<!-- <ul> -->
+
+ *  *Project data assets* that are stored in the IBM Cloud Object Storage bucket associated with your project\. When RStudio is launched, the IBM Cloud Object Storage bucket content is mounted to the `project-objectstorage` directory in your RStudio `Home` directory\.
+    
+    If you want data files to appear in the `project-objectstorage` directory, you must add them as assets to your project. See [Adding files as project assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/rstudio-overview.html?context=cdpaas&locale=en#adding-files).
+    
+    If new data assets are added to the project while you are in RStudio and you want to access them, you need to refresh the `project-objectstorage` folder.
+    
+    See how to [read and write data to and from Cloud Object Storage](https://medium.com/ibm-data-science-experience/read-and-write-data-to-and-from-bluemix-object-storage-in-rstudio-276282347ce1).
+ *  *Data* stored in a database system\.
+    
+    Watch this video to see how to connect to external data sources in RStudio.
+    
+    This video provides a visual method to learn the concepts and tasks in this documentation.
+ *  *Files stored in local storage* that are mounted to `/home/rstudio`\. The `home` directory has a storage limitation of 2 GB and is used to store the RStudio session workspace\. Note that you are allocated 2 GB for your `home` directory storage across all of your projects, irrespective of whether you use RStudio in each project\. As a consequence, you should only store R script files and small data files in the `home` directory\. It is not intended for large data files or large generated output\. All large data files should be uploaded as project assets, which are mounted to the `project-objectstorage` directory from where you can access them\.
+
+<!-- </ul> -->
+
+## Adding files as project assets ##
+
+If you worked with data files and want them appear in the `project-objectstorage` directory, you must add them to your project as data assets\. To add these files as data assets to the project:
+
+<!-- <ol> -->
+
+1.  On the Assets page of the project, click the **Upload asset to project** icon (![Shows the Upload asset to project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/find_data_icon.png)) and select the **Files** tab\.
+2.  Select the files you want to add to the project as assets\.
+3.  From the Actions list, select **Add as data asset** and apply your changes\.
+
+<!-- </ol> -->
+
+## Capacity consumption and runtime scope ##
+
+An RStudio environment runtime is always scoped to an environment template and an RStudio session user\. Only one RStudio session can be active per Watson Studio user at one time\. If you started RStudio in another project, you are asked if you want to stop that session and start a new RStudio session in the context of the current project you're working in\.
+
+Runtime usage is calculated by the number of capacity unit hours (CUHs) consumed by the active environment runtime\. The CUHs consumed by an active RStudio runtime in a project are billed to the account of the project creator\. See [Capacity units per hour billing for RStudio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/track-runtime-usage.html#rstudio)\.
+
+You can see which RStudio environment runtimes are active on the project's **Environments** page\. You can stop your runtime from this page\.
+
+**Remember:** The CUH counter continues to increase while the runtime is active so stop the runtime if you aren't using RStudio\. If you don't explicitly stop the runtime, it is stopped for you after an idle time of 2 hour\. During this idle time, you will continue to consume CUHs for which you are billed\. Long compute\-intensive jobs are hard stopped after 24 hours\.
+
+Watch this video to see an overview of the RStudio IDE\.
+
+Video disclaimer: Some minor steps and graphical elements in this video might differ from your platform\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+<!-- <ul> -->
+
+ *  Transcript
+    
+     Synchronize transcript with video
+    
+    <!-- <table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+    | Time  | Transcript                                                                                                                                                               |
+    | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | 00:00 | This video is a quick tour of the RStudio integrated development environment inside a Watson Studio project.                                                            |
+    | 00:07 | From any project, you can launch the RStudio IDE.                                                                                                                       |
+    | 00:12 | RStudio is a free and open-source integrated development environment for R, a programming language for statistical computing and graphics.                             |
+    | 00:22 | In RStudio, there are four panes: the source pane, the console pane, the environment pane, and the files pane.                                                          |
+    | 00:32 | The panes help you organize your work and separate the different tasks you'll do with R.                                                                                |
+    | 00:39 | You can drag to resize the panes or use the icons to minimize and maximize a pane.                                                                                      |
+    | 00:47 | You can also rearrange the panes in global options.                                                                                                                     |
+    | 00:53 | The console pane is your interface to R.                                                                                                                                |
+    | 00:56 | It's exactly what you would see in terminal window or user interfaces bundled with R.                                                                                   |
+    | 01:01 | The console pane does have some added features that you'll find helpful.                                                                                                |
+    | 01:06 | To run code from the console, just type the command.                                                                                                                    |
+    | 01:11 | Start typing a command to see a list of commands that begin with the letters you started typing.                                                                        |
+    | 01:17 | Highlight a command in the list and press "Enter" to insert it.                                                                                                         |
+    | 01:24 | Use the up arrow to scroll through the commands you've previously entered.                                                                                              |
+    | 01:31 | As you issue more commands, you can scroll through the results.                                                                                                         |
+    | 01:36 | Use the menu option to clear the console.                                                                                                                               |
+    | 01:39 | You can also use tab completion to see a list of the functions, objects, and data sets beginning with that text.                                                        |
+    | 01:47 | And use the arrows to highlight a command to see help for that command.                                                                                                 |
+    | 01:51 | When you're ready, just press "Enter" to insert it.                                                                                                                     |
+    | 01:55 | Next, you'll see a list of the options for that command in the current context.                                                                                         |
+    | 01:59 | For example, the first argument for the read.csv function is the file.                                                                                                 |
+    | 02:05 | RStudio will display a list of the folders and files in your working directory, so you can easily locate the file to include with the argument.                         |
+    | 02:16 | Lastly, if you use the tab completion with a function that expects a package name, such as a library, you'll see a list of all the installed packages.                  |
+    | 02:28 | Next, let's look at the source pane, which is simply a text editor for you to write your R code.                                                                        |
+    | 02:34 | The text editor supports R command files and plain text, as well as several other languages, and includes language-specific highlighting in context.                   |
+    | 02:47 | And you'll notice the tab completion is also available in the text editor.                                                                                              |
+    | 02:53 | From the text editor, you can run a single line of code, or select several lines of code to run, and you'll see the results in the console pane.                        |
+    | 03:08 | You can save your code as an R script to share or run again later.                                                                                                      |
+    | 03:15 | The view function opens a new tab that shows the dataframe in spreadsheet format.                                                                                       |
+    | 03:22 | Or you can display it in its own window.                                                                                                                                |
+    | 03:25 | Now, you can scroll through the data, sort the columns, search for specific values, or filter the rows using the sliders and drop-down menus.                          |
+    | 03:41 | The environment pane contains an "Environment" tab, a "History" tab, and a "Connections" tab, and keeps track of what's been happening in this R session.               |
+    | 03:51 | The "Environment" tab contains the R objects that exist in your global environment, created during the session.                                                         |
+    | 03:58 | So, when you create a new object in the console pane, it automatically displays in the environment pane.                                                                |
+    | 04:04 | You can also view the objects related to a specific package, and even see the source code for a specific function.                                                      |
+    | 04:12 | You can also see a list of the data sets, expand a data set to inspect its individual elements, and view them in the source pane.                                       |
+    | 04:22 | You can save the contents of an environment as an .RData file, so you can load that .RData file at a later date.                                                      |
+    | 04:29 | From here, you can also clear the objects from the workspace.                                                                                                           |
+    | 04:33 | If you want to delete specific items, use the grid view.                                                                                                                |
+    | 04:38 | For example, you can easily find large items to delete to free up memory in your R session.                                                                             |
+    | 04:45 | The "Environment" tab also allows you to import a data set.                                                                                                             |
+    | 04:50 | You can see a preview of the data set and change options before completing the import.                                                                                  |
+    | 04:55 | The imported data will display in the source pane.                                                                                                                      |
+    | 05:00 | The "History" tab displays a history of each of the commands that you run at the command line.                                                                          |
+    | 05:05 | Just like the "Environment" tab, you can save the history as an .Rhistory file, so you can open it at a later date.                                                    |
+    | 05:11 | And this tab has the same options to clear all of the history and individual entries in the history.                                                                    |
+    | 05:17 | Select a command and send it to the console to rerun the command.                                                                                                       |
+    | 05:23 | You can also copy a command to the source pane to include it in a script.                                                                                               |
+    | 05:31 | On the "Connections" tab, you can create a new connection to a data source.                                                                                             |
+    | 05:36 | The choices in this dialog box are dependent upon which packages you have installed.                                                                                    |
+    | 05:41 | For example, a "BLUDB" connection allows you to connect to a Db2 Warehouse on Cloud service.                                                                            |
+    | 05:49 | The files pane contains the "Files", "Plots", "Packages", "Help", and "Viewer" tabs.                                                                                    |
+    | 05:55 | The "Files" tab displays the contents of your working directory.                                                                                                        |
+    | 05:59 | RStudio will load files from this directory and save files to this directory.                                                                                           |
+    | 06:04 | Navigate to a file and click the file to view it in the source pane.                                                                                                    |
+    | 06:09 | From here, you can create new folders and upload files, either by selecting individual files to upload or selecting a .zip file containing all of the files to upload. |
+    | 06:25 | From here, you can also delete and rename files and folders.                                                                                                            |
+    | 06:30 | In order to access the file in R, you need to set the data folder as a working directory.                                                                               |
+    | 06:36 | You'll see that the setwd command was executed in the console.                                                                                                          |
+    | 06:43 | You can access the data assets in your project by opening the project folder.                                                                                           |
+    | 06:50 | The "Plots" tab displays the results of R's plot functions, such as: plot, hist, ggplot, and xyplot                                                                      |
+    | 07:00 | You can navigate through different plots using the arrows or zoom to see a graph full screen.                                                                           |
+    | 07:09 | You can also delete individual plots or all plots from here.                                                                                                            |
+    | 07:13 | Use the "Export" option to save the plot as a graphic or print file at the specified resolution.                                                                        |
+    | 07:21 | The "Packages" tab displays the packages you currently have installed in your system library.                                                                           |
+    | 07:26 | The search bar lets you quickly find a specific package.                                                                                                                |
+    | 07:30 | The checked packages are the packages that were already loaded, using the library command, in the current session.                                                      |
+    | 07:38 | You can check additional packages from here to load them or uncheck packages to detach them from the current session.                                                   |
+    | 07:45 | The console pane displays the results.                                                                                                                                  |
+    | 07:48 | Use the "X" next to a package name to remove it from the system library.                                                                                                |
+    | 07:54 | You can also find new packages to install or update to the latest version of any package.                                                                               |
+    | 08:03 | Clicking any of the packages opens the "Help" tab with additional information for that package.                                                                         |
+    | 08:09 | From here, you can search for functions to get more help.                                                                                                               |
+    | 08:13 | And from the console, you can use the help command, or simply type a question mark followed by the function, to get help with that function.                            |
+    | 08:21 | The "Viewer" tab displays HTML output.                                                                                                                                  |
+    | 08:25 | Some R functions generate HTML to display reports and interactive graphs.                                                                                               |
+    | 08:31 | The R Markdown package creates reports that you can view in the "Viewer" tab.                                                                                           |
+    | 08:38 | The Shiny package creates web apps that you can view in the "Viewer" tab.                                                                                               |
+    | 08:44 | And other packages build on the htmlwidgets framework and include Java-based, interactive visualizations.                                                              |
+    | 08:54 | You can also publish the visualization to the free site, called "RPubs.com".                                                                                           |
+    | 09:01 | This is been a brief overview of the RStudio IDE.                                                                                                                       |
+    | 09:05 | Find more videos on RStudio in the Cloud Pak for Data as a Service documentation.                                                                                       |
+    
+    <!-- </table "class="bx--data-table bx--data-table--zebra" style="border-collapse: collapse; border: none;" "> -->
+    
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [RStudio environments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/rstudio-envs.html)
+ *  [Using Spark in RStudio](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/rstudio-spark.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Notebooks and scripts](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/notebooks-and-scripts.html)
+
+<!-- </article "role="article" "> -->

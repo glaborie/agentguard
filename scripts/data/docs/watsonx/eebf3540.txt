@@ -1,0 +1,136 @@
+# Quick start: Generate synthetic tabular data #
+
+Take this tutorial to learn how to generate synthetic tabular data in IBM watsonx\.ai\. The benefit to synthetic data is that you can procure the data on\-demand, then customize to fit your use case, and produce it in large quantities\. This tutorial helps you learn how to use the graphical flow editor tool, Synthetic Data Generator, to generate synthetic tabular data based on production data or a custom data schema using visual flows and modeling algorithms\.
+
+**Required services** : Watson Studio
+
+Your basic workflow includes these tasks:
+
+<!-- <ol> -->
+
+1.  Open a project\. Projects are where you can collaborate with others to work with data\.
+2.  Add your data to the project\. You can add CSV files or data from a remote data source through a connection\.
+3.  Create and run a synthetic data flow to the project\. You use the graphical flow editor tool Synthetic Data Generator to generate synthetic tabular data based on production data or a custom data schema using visual flows and modeling algorithms\.
+4.  Review the synthetic data flow and output\.
+
+<!-- </ol> -->
+
+## Read about synthetic data ##
+
+Synthetic data is information that has been generated on a computer to augment or replace real data to improve AI models, protect sensitive data, and mitigate bias\. Synthetic data helps to mitigate many of the logistical, ethical, and privacy issues that come with training machine learning models on real\-world examples\.
+
+[Read more about Synthetic data](https://dataplatform.cloud.ibm.com/docs/content/wsj/synthetic/synthetic_data_overview_sd.html)
+
+## Watch a video about generating synthetic tabular data ##
+
+![Watch Video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) Watch this video to preview the steps in this tutorial\. There might be slight differences in the user interface shown in the video\. The video is intended to be a companion to the written tutorial\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Try a tutorial to generate synthetic tabular data ##
+
+In this tutorial, you will complete these tasks:
+
+<!-- <ul> -->
+
+ *  [Task 1: Open a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#step01)
+ *  [Task 2: Add data to your project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#step02)
+ *  [Task 3: Create a synthetic data flow](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#step03)
+ *  [Task 4: Review the data flow and output](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#step04)
+
+<!-- </ul> -->
+
+Expand all sections
+
+<!-- <ul> -->
+
+ *  Tips for completing this tutorial
+    
+    \#\#\# Use the video picture-in-picture Tip: Start the video, then as you scroll through the tutorial, the video moves to picture-in-picture mode. Close the video table of contents for the best experience with picture-in-picture. You can use picture-in-picture mode so you can follow the video as you complete the tasks in this tutorial. Click the timestamps for each task to follow along.The following animated image shows how to use the video picture-in-picture and table of contents features: ![How to use picture-in-picture and chapters](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/pip-and-chapters.gif)\{: width="560px" height="315px" data-tearsheet="this"\} \#\#\# Get help in the community If you need help with this tutorial, you can ask a question or find an answer in the [Cloud Pak for Data Community discussion forum](https://community.ibm.com/community/user/cloudpakfordata/communities/community-home/digestviewer?communitykey=c0c16ff2-10ef-4b50-ae4c-57d769937235)\{: new\_window\}. \#\#\# Set up your browser windows For the optimal experience completing this tutorial, open Cloud Pak for Data in one browser window, and keep this tutorial page open in another browser window to switch easily between the two applications. Consider arranging the two browser windows side-by-side to make it easier to follow along. ![Side-by-side tutorial and UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/tutorial-side-by-side.png)\{: width="560px" height="315px" data-tearsheet="this"\} Tip: If you encounter a guided tour while completing this tutorial in the user interface, click **Maybe later**.  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 1: Open a project
+    
+    You need a project to to store the assets. Watch a video to see how to create a sandbox project and associate a service. Then follow the steps to verify that you have an existing project or create a sandbox project.
+    
+    This video provides a visual method to learn the concepts and tasks in this documentation.
+    
+    1. From the watsonx home screen, scroll to the *Projects* section. If you see any projects listed, then skip to [Task 2](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#step02). If you don't see any projects, then follow these steps to create a project. 1. Click **Create a sandbox project**. When the project is created, you will see the sandbox project in the *Projects* section. For more information or to watch a video, see [Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)\{: new\_window\}. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the home screen with the sandbox listed in the Projects section. You are now ready to open the Prompt Lab.  
+      
+    ![Home screen with sandbox project listed.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-home-screen.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 2: Add data to your project
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:24. The data set used in this tutorial contains typical information that a company gathers about their customers, and is available in the Samples. Follow these steps to find the data set in the Samples and add it to your project: 1. Access the [Customers data set](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/4bfbe430a82e23821aed0647b506da93)\{: new\_window\} in the Samples. 1. Click **Add to project**. 1. Select your project from the list, and click **Add**. 1. After the data set is added, click **View Project**. For more information on adding data assets from the Samples to your project, see [Loading and accessing data in a notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/load-and-access-data.html). \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the Assets tab in the project. Now you are ready to create the synthetic data flow.  
+      
+    ![The following image shows the Assets tab in the project.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-synthetic-data-assets-tab.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 3: Create a synthetic data flow
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:43. Use the Synthetic Data Generator to create a data flow that generates synthetic tabular data based on production data or a custom data schema using visual flows and modeling algorithms. Follow these steps to create a synthetic data flow asset in your project: 1. From the *Assets* tab in your project, click **New asset > Generate synthetic tabular data**. 1. For the name, type `Bank customers`\{: .cp\}. 1. Click **Create**. 1. On the *Welcome to Synthetic Data Generator* screen, click **First time user**, and click **Continue**. This option provides a guided experience for you to build the data flow. 1. Review the two use cases: - Leverage your existing data: Generate a structured synthetic data set based on your production data. You can connect to a database, import or upload a file, mask, and generate your output before exporting. - Create from custom data: Generate a structured synthetic data set based on meta data. You can define the data within each table column, their distributions, and any correlations. 1. Select the **Leverage your existing data** use case, and click **Next** to import existing data. 1. Click **Select data from project** to use the customers data asset that you added from the Samples. 1. Select **Data asset > customers.csv**. 1. Click **Select**. 1. Click **Next**. 1. In the list of columns, search for `creditcard_number`\{: .cp\}. 1. In the *Anonymize* column for `CREDITCARD_NUMBER`, select **Yes** to mask customers' credit card numbers. 1. Click **Next**. 1. Accept the default settings on the *Mimic options* page. These options generate synthetic data, based on your production data, using a set of candidate statistical distributions to modify each column in your data. Click **Next**. 1. For the *File name*, type `bank_customers.csv`\{: .cp\}, and click **Next**. 1. Review the settings, and click **Save and run**. The Synthetic Data Generator tool displays with the data flow. Wait for the run to complete. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the data flow open in the Synthetic Data Generator. Now you can explore the data flow and view the output.  
+      
+    ![The following image shows the data flow open in the Synthetic Data Generator.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-synthetic-data-flow.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 4: Review the data flow and output
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 01:48. When the run completes, you can explore the data flow. Follow these steps to review the synthetic data flow and the results: 1. Click the **Palette** icon ![Palette icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/side-panel-close-filled.svg)\{: iih\} to close the node panel. 1. Double-click the **Import** node to see the settings. 1. Review the *Data* properties. The tool read the data set from the project and filled in the appropriate data properties. 1. Expand the **Types** section. The tool read the values and columns in the data set. 1. Click **Cancel**. 1. Double-click the **Anonymize** node to see the settings. 1. Verify that the *CREDITCARD\_NUMBER* column is set to be anonymized. 1. Expand the **Anonymize values** section. Here you can customize how the values are anonymized. 1. Click **Cancel**. 1. Double-click the **Mimic** node to see the settings. 1. Review the default settings to mimic the data in the source customers data set. 1. Click **Cancel**. 1. Double-click the **Generate** node to see the settings. 1. Review the list of *Synthesized columns*. 1. Optional: Review the *Correlations* and *Advanced Options*. 1. Click **Cancel**. 1. Double-click the **Export** node to see the settings. 1. Optional: By default the exported data is stored in the project. Click **Change path** to store the exported data in a connection, such as Db2 Warehouse. 1. Click **Cancel**. 1. Click your project name to return to the *Assets* tab. ![Project breadcrumbs](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-sandbox-breadcrumbs.png)\{: biw\} 1. Click **bank\_customers.csv** to see a preview of the generated synthetic tabular data. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the exported, generated synthetic tabular data set.  
+      
+    ![The following image shows the exported, generated synthetic tabular data set.](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-synthetic-data.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-generate-data.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+## Next steps ##
+
+Try these additional tutorials to get more hands\-on experience with watsonx\.ai:
+
+<!-- <ul> -->
+
+ *  [Refine data](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-refine.html)
+ *  [Analyze data in a Jupyter notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-analyze.html)
+ *  [Build machine learning models](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html#tutorials-for-building-deploying-and-trusting-models)
+
+<!-- </ul> -->
+
+## Additional resources ##
+
+<!-- <ul> -->
+
+ *  View more [videos](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html)\.
+ *  Find sample data sets, projects, models, prompts, and notebooks in the Samples to gain hands\-on experience:
+    
+    ![Notebook icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook.svg)[Notebooks](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=notebook) that you can add to your project to get started analyzing data and building models.
+    
+    ![Project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/ibm-cloud--projects.svg)[Projects](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=project-template) that you can import containing notebooks, data sets, prompts, and other assets.
+    
+    ![Data set icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/data--set.svg)[Data sets](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=dataset) that you can add to your project to refine, analyze, and build models.
+    
+    ![Prompt icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/prompt.svg)[Prompts](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=example-prompt) that you can use in the Prompt Lab to prompt a foundation model.
+    
+    ![Model icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/model.svg)[Foundation models](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=foundation-model) that you can use in the Prompt Lab.
+ *  [Overview of watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/overview-wx.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Quick start tutorials](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html)
+
+<!-- </article "role="article" "> -->

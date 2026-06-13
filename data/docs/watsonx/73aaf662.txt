@@ -1,0 +1,5 @@
+# User Input node #
+
+The User Input node provides an easy way for you to create synthetic data\-\-either from scratch or by altering existing data\. This is useful, for example, when you want to create a test dataset for modeling\.
+
+<!-- </article "role="article" "> -->

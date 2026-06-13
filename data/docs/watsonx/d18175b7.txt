@@ -1,0 +1,20 @@
+# Setting the time intervals #
+
+<!-- <ol> -->
+
+1.  Add a Time Series node and attach it to the Type node\. Double\-click the node to edit its properties\.
+2.  Under  OBSERVATIONS AND TIME INTERVAL, select `DATE_` as the  Time/Date field\.
+3.  Select  Months as the time interval\.
+    
+    Figure 1. Setting the time interval
+    
+    ![Setting the time interval](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_interval.png)
+4.  Under  MODEL OPTIONS, select the  Extend records into the future option and set the value to  3\.
+    
+    Figure 2. Setting the forecast period
+    
+    ![Setting the forecast period](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_bandwidth_forecast_period.png)
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

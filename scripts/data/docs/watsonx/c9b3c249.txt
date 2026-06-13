@@ -1,0 +1,141 @@
+# Run a sample pipeline to compare models #
+
+Download a pre\-populated project with the assets you need to run a sample pipeline\. The pipeline compares two AutoAI experiments and compares the output, selecting the best model and deploying it as a Web service\.
+
+The *Train AutoAI and reference model* sample creates a pre\-populated project with the assets you need to run a pre\-built pipeline that trains models using a sample data set\. After performing some set up and configuration tasks, you can run the sample pipeline to automate the following sequence:
+
+<!-- <ul> -->
+
+ *  Copy sample assets into a space\.
+ *  Run a notebook and an AutoAI experiment simultaneously, on a common training data set\.
+ *  Run another notebook to compare the results from the previous nodes and select the best model, ranked for accuracy\.
+ *  Copy the winning model to a space and create a web service deployment for the selected model\.
+
+<!-- </ul> -->
+
+After the run completes, you can inspect the output in the pipeline editor and then switch to the associated deployment space to [view and test the resulting deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-sample2.html?context=cdpaas&locale=en#view-deploy)\.
+
+## Learning goals ##
+
+After running this sample you will know how to:
+
+<!-- <ul> -->
+
+ *  Configure a Watson Pipeline
+ *  Run a Watson Pipeline
+
+<!-- </ul> -->
+
+## Downloading the sample ##
+
+Follow these steps to create the sample project from the Samples so you can test the capabilities of IBM Watson Pipelines:
+
+<!-- <ol> -->
+
+1.  Open the [Train AutoAI and reference model sample](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/496c1220779cbe5cccc063534600789f) from the Samples\.
+2.  Click **Create project** to create the project\.
+3.  Open the project and follow the instructions on the Readme page to set up the pipeline assets\.
+
+<!-- </ol> -->
+
+## The sample pipeline components ##
+
+The sample project includes:
+
+<!-- <ul> -->
+
+ *  Pre\-built sample Watson Pipeline
+ *  Data set called german\_credit\_data\_biased\_training\.csv used for training a model to predict credit risk
+ *  Data set called german\_credit\_test\_data\.csv used to test the deployed model
+ *  Notebook called reference\-model\-training\-notebook that trains an AutoAI experiment and saves the best pipeline as a model
+ *  Notebook called select\-winning\-model that compares the models and chooses the best to save to the designated deployment space
+
+<!-- </ul> -->
+
+## Getting started with the sample ##
+
+To run the sample pipeline, you will need to perform some set\-up tasks:
+
+<!-- <ol> -->
+
+1.  Create a deployment space, for example, *dev\-space* which you'll need when you run the notebooks\. From the navigation menu, select **Deployments > View All Spaces > New deployment space**\. Fill in the required fields\.
+    
+    Note:Make sure you associate a Watson Machine Learning instance with the space or the pipeline run will fail.
+2.  From the Assets page of the sample project, open the reference\-model\-training\-notebook and follow the steps in the *Set up the environment* section to acquire and insert an api\_key variable as your credentials\.
+3.  After inserting your credentials, click **File > Save as version** to save the updated notebook to your project\.
+4.  Do the same for the select\-winning\-model notebook to add credentials and save the updated version of the notebook\.
+
+<!-- </ol> -->
+
+## Exploring the pipeline ##
+
+After you complete the set up tasks, open the sample pipeline *On\-boarding \- Train AutoAI and reference model and select the best* from the Assets page of the sample project\.
+
+You will see the sample pipeline:
+
+![Sample pipeline from Samples](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipeline-sample1.png)
+
+### Viewing node configuration ###
+
+As you explore the sample pipeline, double\-click on the various nodes to view their configuration\. For example, if you click on the first node for copying an asset, you will see this configuration:
+
+![Creating assets configuration](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipeline-sample1-config.png)
+
+Note that the node that will copy the data asset to a deployment space is configured using a pipeline parameter\. The pipeline parameter creates a placeholder for the space you created to use for this pipeline\. When you run the pipeline, you are prompted to choose the space\.
+
+### Running the pipeline ###
+
+When you are ready to run the pipeline, click the Run icon and choose **Trial job**\. You are prompted to choose the deployment space for the pipeline and create or supply an API key for the pipeline if one is not already available\.
+
+As the pipeline runs, you will see status notifications about the progress of the run\. Nodes that are processed successfully are marked with a checkmark\.
+
+![Running the pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipeline-sample1-run.png)
+
+### Viewing the output ###
+
+When the job completes, click **Pipeline output** for the run to see a summary of pipeline processes\. You can click to expand each section and view the details for each operation\.
+
+![Viewing the pipeline output](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipeline-sample1-output.png)
+
+## Viewing the deployment in your space ##
+
+After you are done exploring the pipeline and its output, you can view the assets that were created in the space you designated for the pipeline\.
+
+Open the space\. You can see that the models and training data were copied to the space\. The winning model is tagged as *selected\_model*\.
+
+![Viewing the associated space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipeline-sample1-space.png)
+
+### Viewing the deployment ###
+
+The last step of the pipeline created a web service deployment for the selected model\. Click the **Deployments** tab to view the deployment\.
+
+![Viewing the deployment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipeline-sample1-deploy1.png)
+
+### Testing the deployment ###
+
+You can test the deployment to see the predictions the model will generate\.
+
+<!-- <ol> -->
+
+1.  Click the deployment name to view the details\.
+2.  Click the **Test** tab\.
+3.  Enter this JSON data into the Input form\. The payload (input) must match the schema for the model but should not include the prediction column\.
+
+<!-- </ol> -->
+
+    {"input_data":[{
+            "fields": "CheckingStatus","LoanDuration","CreditHistory","LoanPurpose","LoanAmount","ExistingSavings","EmploymentDuration","InstallmentPercent","Sex","OthersOnLoan","CurrentResidenceDuration","OwnsProperty","Age","InstallmentPlans","Housing","ExistingCreditsCount","Job","Dependents","Telephone","ForeignWorker"],
+            "values": "no_checking",28,"outstanding_credit","appliances",5990,"500_to_1000","greater_7",5,"male","co-applicant",3,"car_other",55,"none","free",2,"skilled",2,"yes","yes"]]
+    }]}
+
+Clicking **Predict** returns this prediction, indicating a low credit risk for this customer\.
+
+![Viewing the prediction](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipeline-sample1-predict.png)
+
+## Next steps ##
+
+[Create a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-create.html) using your own assets\.
+
+**Parent topic:**[Watson Pipelines](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-overview.html)
+
+<!-- </article "role="article" "> -->

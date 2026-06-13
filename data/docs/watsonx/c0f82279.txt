@@ -1,0 +1,105 @@
+# Metadata: Information about data #
+
+Because nodes are connected together in a flow, information about the columns or fields that are available at each node is available\. For example, in the SPSS Modeler user interface, this allows you to select which fields to sort or aggregate by\. This information is called the data model\.
+
+Scripts can also access the data model by looking at the fields coming into or out of a node\. For some nodes, the input and output data models are the same (for example, a Sort node simply reorders the records but doesn't change the data model)\. Some, such as the Derive node, can add new fields\. Others, such as the Filter node, can rename or remove fields\.
+
+In the following example, the script takes a standard   IBM® SPSS® Modeler druglearn\.str flow, and for each field, builds a model with one of the input fields dropped\. It does this by:
+
+<!-- <ol> -->
+
+1.  Accessing the output data model from the Type node\.
+2.  Looping through each field in the output data model\.
+3.  Modifying the Filter node for each input field\.
+4.  Changing the name of the model being built\.
+5.  Running the model build node\.
+
+<!-- </ol> -->
+
+Note: Before running the script in the  druglean\.str flow, remember to set the scripting language to Python if the flow was created in an old version of   IBM SPSS Modeler desktop and its scripting language is set to Legacy)\.
+
+    import modeler.api
+    
+    stream = modeler.script.stream()
+    filternode = stream.findByType("filter", None)
+    typenode = stream.findByType("type", None)
+    c50node = stream.findByType("c50", None)
+    # Always use a custom model name
+    c50node.setPropertyValue("use_model_name", True)
+    
+    lastRemoved = None
+    fields = typenode.getOutputDataModel()
+    for field in fields:
+        # If this is the target field then ignore it
+        if field.getModelingRole() == modeler.api.ModelingRole.OUT:
+            continue
+    
+        # Re-enable the field that was most recently removed
+        if lastRemoved != None:
+            filternode.setKeyedPropertyValue("include", lastRemoved, True)
+    
+        # Remove the field
+        lastRemoved = field.getColumnName()
+        filternode.setKeyedPropertyValue("include", lastRemoved, False)
+    
+        # Set the name of the new model then run the build
+        c50node.setPropertyValue("model_name", "Exclude " + lastRemoved)
+        c50node.run([])
+
+The `DataModel` object provides a number of methods for accessing information about the fields or columns within the data model\. These methods are summarized in the following table\.
+
+<!-- <table "summary="DataModel object methods for accessing information about fields or columns" class="defaultstyle" "> -->
+
+DataModel object methods for accessing information about fields or columns  
+
+Table 1\. DataModel object methods for accessing information about fields or columns
+
+| Method                    | Return type | Description                                                                                                               |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `d.getColumnCount()`      | *int*       | Returns the number of columns in the data model\.                                                                         |
+| `d.columnIterator()`      | Iterator    | Returns an iterator that returns each column in the "natural" insert order\. The iterator returns instances of `Column`\. |
+| `d.nameIterator()`        | Iterator    | Returns an iterator that returns the name of each column in the "natural" insert order\.                                  |
+| `d.contains(name)`        | *Boolean*   | Returns `True` if a column with the supplied name exists in this DataModel, `False` otherwise\.                           |
+| `d.getColumn(name)`       | Column      | Returns the column with the specified name\.                                                                              |
+| `d.getColumnGroup(name)`  | ColumnGroup | Returns the named column group or `None` if no such column group exists\.                                                 |
+| `d.getColumnGroupCount()` | *int*       | Returns the number of column groups in this data model\.                                                                  |
+| `d.columnGroupIterator()` | Iterator    | Returns an iterator that returns each column group in turn\.                                                              |
+| `d.toArray()`             | Column\[\]  | Returns the data model as an array of columns\. The columns are ordered in their "natural" insert order\.                 |
+
+<!-- </table "summary="DataModel object methods for accessing information about fields or columns" class="defaultstyle" "> -->
+
+Each field (`Column` object) includes a number of methods for accessing information about the column\. The following table shows a selection of these\.
+
+<!-- <table "summary="Column object methods for accessing information about the column" class="defaultstyle" "> -->
+
+Column object methods for accessing information about the column  
+
+Table 2\. Column object methods for accessing information about the column
+
+| Method                    | Return type  | Description                                                                                                                              |
+| ------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `c.getColumnName()`       | *string*     | Returns the name of the column\.                                                                                                         |
+| `c.getColumnLabel()`      | *string*     | Returns the label of the column or an empty string if there is no label associated with the column\.                                     |
+| `c.getMeasureType()`      | MeasureType  | Returns the measure type for the column\.                                                                                                |
+| `c.getStorageType()`      | StorageType  | Returns the storage type for the column\.                                                                                                |
+| `c.isMeasureDiscrete()`   | *Boolean*    | Returns `True` if the column is discrete\. Columns that are either a set or a flag are considered discrete\.                             |
+| `c.isModelOutputColumn()` | *Boolean*    | Returns `True` if the column is a model output column\.                                                                                  |
+| `c.isStorageDatetime()`   | *Boolean*    | Returns `True` if the column's storage is a time, date or timestamp value\.                                                              |
+| `c.isStorageNumeric()`    | *Boolean*    | Returns `True` if the column's storage is an integer or a real number\.                                                                  |
+| `c.isValidValue(value)`   | *Boolean*    | Returns `True` if the specified value is valid for this storage, and `valid` when the valid column values are known\.                    |
+| `c.getModelingRole()`     | ModelingRole | Returns the modeling role for the column\.                                                                                               |
+| `c.getSetValues()`        | Object\[\]   | Returns an array of valid values for the column, or `None` if either the values are not known or the column is not a set\.               |
+| `c.getValueLabel(value)`  | *string*     | Returns the label for the value in the column, or an empty string if there is no label associated with the value\.                       |
+| `c.getFalseFlag()`        | Object       | Returns the "false" indicator value for the column, or `None` if either the value is not known or the column is not a flag\.             |
+| `c.getTrueFlag()`         | Object       | Returns the "true" indicator value for the column, or `None` if either the value is not known or the column is not a flag\.              |
+| `c.getLowerBound()`       | Object       | Returns the lower bound value for the values in the column, or `None` if either the value is not known or the column is not continuous\. |
+| `c.getUpperBound()`       | Object       | Returns the upper bound value for the values in the column, or `None` if either the value is not known or the column is not continuous\. |
+
+<!-- </table "summary="Column object methods for accessing information about the column" class="defaultstyle" "> -->
+
+Note that most of the methods that access information about a column have equivalent methods defined on the `DataModel` object itself\. For example, the two following statements are equivalent:
+
+    dataModel.getColumn("someName").getModelingRole()
+    dataModel.getModelingRole("someName")
+
+<!-- </article "role="article" "> -->

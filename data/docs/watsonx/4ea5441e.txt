@@ -1,0 +1,20 @@
+# Deploying foundation model assets #
+
+Deploy foundation model assets to test the assets, put them into production, and monitor them\.
+
+After you save a prompt template as a project asset, you can promote it to a deployment space\. A deployment space is used to organize the assets for deployments and to manage access to deployed assets\. Use a *Pre\-production* space to test and validate assets, and use a *Production* space for deploying assets for productive use\.
+
+For details, see [Deploying a prompt template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/prompt-template-deploy.html)\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Tracking prompt templates ](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/xgov-track-prompt-temp.html)
+ *  [Evaluating a prompt template in a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-eval-prompt-spaces.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Deploying and managing assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/wmls/wmls-deploy-overview.html)
+
+<!-- </article "role="article" "> -->

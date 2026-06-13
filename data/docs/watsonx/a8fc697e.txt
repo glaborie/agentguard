@@ -1,0 +1,8 @@
+# Time Plot node #
+
+Time Plot nodes allow you to view one or more time series plotted over time\. The series you plot must contain numeric values and are assumed to occur over a range of time in which the periods are uniform\.
+
+Figure 1\. Plotting sales of men's and women's clothing and jewelry over time
+
+![Plotting sales of men's and women's clothing and jewelry over time](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/graphs_timeseries_jewelry_sales.jpg)
+<!-- </article "role="article" "> -->

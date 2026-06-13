@@ -1,0 +1,84 @@
+# Starting the aggregator (Admin) #
+
+An administrator completes the following steps to start the experiment and train the global model\.
+
+<!-- <ul> -->
+
+ *  [Step 1: Set up the Federated Learning experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-agg.html?context=cdpaas&locale=en#fl-setup)
+ *  [Step 2: Create the remote training system](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-agg.html?context=cdpaas&locale=en#rts)
+ *  [Step 3: Start the experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-agg.html?context=cdpaas&locale=en#start)
+
+<!-- </ul> -->
+
+## Step 1: Set up the Federated Learning experiment ##
+
+Set up a Federated Learning experiment from a project\.
+
+<!-- <ol> -->
+
+1.  From the project, click **New asset > Federated Learning**\.
+2.  Name the experiment\.  
+    *Optional:* Add an optional description and tags.
+3.  [Add new collaborators](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/collaborate.html) to the project\.
+4.  In the **Configure** tab, choose the training framework and model type\. See [Frameworks, fusion methods, and Python versions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-frames.html) for a table listing supported frameworks, fusion methods, and their attributes\. *Optional:* You can choose to enable the homomorphic encryption feature\. For more details, see [Applying encryption](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-homo.html)\.
+5.  Click **Select** under **Model specification** and upload the `.zip` file that contains your initial model\.
+6.  In the **Define hyperparameters** tab, you can choose hyperparameter options available for your framework and fusion method to tune your model\.
+
+<!-- </ol> -->
+
+## Step 2: Create the Remote Training System ##
+
+Create Remote Training Systems (RTS) that authenticates the participating parties of the experiment\.
+
+<!-- <ol> -->
+
+1.  At **Select remote training system**, click **Add new systems**\.  
+    ![Screenshot of Remote Training System UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl-rts.png)
+2.  Configure the RTS\.
+    
+    \| Field name \| Definition \| Example \| \| -- \| -- \| -- \| \| Name \| A name to identify this RTS instance. \| `Canada Bank Model: Federated Learning Experiment` \| \| Description  
+    (Optional) \| Description of the training system. \| This Remote Training System is for a  
+    Federated Learning experiment to train a model for  
+    predicting credit card fraud with data from Canadian banks. \| \| System administrator  
+    (Optional) \| Specify a user with read-only access to this RTS. They can see system details, logs, and scripts, but not necessarily participate in the experiment. They should be contacted if issues occur when running the experiment. \| `Admin (admin@example.com)` \| \| Allowed identities \| List project collaborators who can participate in the Federated Learning experiment training. Multiple collaborators can be registered in this RTS, but only one can participate in the experiment. Multiple RTS's are needed to authenticate all participating collaborators. \| `John Doe (john.doe@example.com)`  
+    `Jane Doe (jane.doe@example.com)` \| \| Allowed IP addresses  
+    (Optional) \| Restrict individual parties from connecting to Federated Learning outside of a specified IP address.  
+      
+    1. To configure this, click **Configure**.  
+    2. For *Allowed identities*, select the user to place IP constraints on.  
+    3. For *Allowed IP addresses for user*, enter a comma seperated list of IPs and or CIDRs that can connect to the Remote Training System. Note: Both IPv4 and IPv6 are supported. \| John  
+    1234:5678:90ab:cdef:1234:5678:90ab:cdef: (John’s office IP), 123.123.123.123 (John’s home IP), 0987.6543.21ab.cdef (Remote VM IP)  
+    Jane  
+    123.123.123.0/16 (Jane's home IP), 0987.6543.21ab.cdef (Remote machine IP) \| \| Tags  
+    (Optional) \| Associate keywords with the Remote Training System to make it easier to find. \| `Canada`  
+    `Bank`  
+    `Model`  
+    `Credit`  
+    `Fraud` \|
+
+<!-- </ol> -->
+
+<!-- <ol> -->
+
+1.  Click **Add** to save the RTS instance\. If you are creating multiple remote training instances, you can repeat these steps\.
+2.  Click **Add systems** to save the RTS as an asset in the project\.
+    
+    Tip: You can use an RTS definition for future experiments. For example, in the **Select remote training system** tab, you can select any Remote Training System that you previously created.
+3.  Each RTS can only authenticate one of its allowed party identities\. Create an RTS for each new participating part(ies)\.
+
+<!-- </ol> -->
+
+## Step 3: Start the experiment ##
+
+Start the Federated Learning aggregator to initiate training of the global model\.
+
+<!-- <ol> -->
+
+1.  Click **Review and create** to view the settings of your current Federated Learning experiment\. Then, click **Create**\. ![Screenshot of Review and Create Experiment UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/fl-rev.png)
+2.  The Federated Learning experiment will be in `Pending` status while the aggregator is starting\. When the aggregator starts, the status will change to `Setup – Waiting for remote systems`\.
+
+<!-- </ol> -->
+
+**Parent topic:**[Creating a Federated Learning experiment](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fl-start.html)
+
+<!-- </article "role="article" "> -->

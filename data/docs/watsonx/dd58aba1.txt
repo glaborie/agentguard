@@ -1,0 +1,36 @@
+# distinctnode properties #
+
+![Distinct node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/distinctnodeicon.png) The Distinct node removes duplicate records, either by passing the first distinct record to the data flow or by discarding the first record and passing any duplicates to the data flow instead\.
+
+Example
+
+    node = stream.create("distinct", "My node")
+    node.setPropertyValue("mode", "Include")
+    node.setPropertyValue("fields", ["Age" "Sex"])
+    node.setPropertyValue("keys_pre_sorted", True)
+
+<!-- <table "summary="distinctnode properties" class="defaultstyle" "> -->
+
+distinctnode properties  
+
+Table 1\. distinctnode properties
+
+| `distinctnode` properties | Data type                     | Property description                                                                                                                                                                                                                                                                                                          |
+| ------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode`                    | `Include`  <br>`Discard`      | You can include the first distinct record in the data stream, or discard the first distinct record and pass any duplicate records to the data stream instead\.                                                                                                                                                                |
+| `composite_value`         | Structured slot               | See example below\.                                                                                                                                                                                                                                                                                                           |
+| `composite_values`        | Structured slot               | See example below\.                                                                                                                                                                                                                                                                                                           |
+| `inc_record_count`        | *flag*                        | Creates an extra field that specifies how many input records were aggregated to form each aggregate record\.                                                                                                                                                                                                                  |
+| `count_field`             | *string*                      | Specifies the name of the record count field\.                                                                                                                                                                                                                                                                                |
+| `default_ascending`       | *flag*                        |                                                                                                                                                                                                                                                                                                                               |
+| `low_distinct_key_count`  | *flag*                        | Specifies that you have only a small number of records and/or a small number of unique values of the key field(s)\.                                                                                                                                                                                                           |
+| `keys_pre_sorted`         | *flag*                        | Specifies that all records with the same key values are grouped together in the input\.                                                                                                                                                                                                                                       |
+| `disable_sql_generation`  | *flag*                        |                                                                                                                                                                                                                                                                                                                               |
+| `grouping_fields`         | *array*                       | Lists the field or fields used to determine whether records are identical\.                                                                                                                                                                                                                                                   |
+| `sort_keys`               | *array*                       | Lists the fields used to determine how records are sorted within each group of duplicates, and whether they're sorted in ascending or descending order\. You must specify a sort order if you've chosen to include or exclude the first record in each group, and if it matters to you which record is treated as the first\. |
+| `default_sort_order`      | `Ascending`  <br>`Descending` | Specify whether, by default, records are sorted in ascending or descending order of the sort key values\.                                                                                                                                                                                                                     |
+| `existing_sort_keys`      | *array*                       | Specify the existing sort order\.                                                                                                                                                                                                                                                                                             |
+
+<!-- </table "summary="distinctnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

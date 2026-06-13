@@ -1,0 +1,140 @@
+# Authenticating for programmatic access #
+
+To use Watson Machine Learning with the Python client library or the REST API, you must authenticate to secure your work\. Learn about the different ways to authenticate and how to apply them to the service of your choosing\.
+
+You use IBM Cloud® Identity and Access Management (IAM) to make authenticated requests to public IBM Watson™ services\. With IAM access policies, you can assign access to more than one resource from a single key\. In addition, a user, service ID, and service instance can hold multiple API keys\.
+
+## Security overview ##
+
+Refer to the section that describes your security needs\.
+
+<!-- <ul> -->
+
+ *  [Authentication credentials](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html?context=cdpaas&locale=en#terminology)
+ *  [Python client](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html?context=cdpaas&locale=en#python-client)
+ *  [Rest API](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html?context=cdpaas&locale=en#rest-api)
+
+<!-- </ul> -->
+
+## Authentication credentials ##
+
+These terms relate to the security requirements described in this topic\.
+
+<!-- <ul> -->
+
+ *  **API keys** allow you to easily authenticate when you are using the Python client or APIs and can be used across multiple services\. API Keys are considered confidential because they are used to grant access\. Treat all API keys as you would a password because anyone with your API key can access your service\.
+ *  An **IAM token** is an authentication token that is required to access IBM Cloud services\. You can generate a token by using your API key in the token request\. For details on using IAM tokens, refer to [Authenticating to Watson Machine Learning API](https://cloud.ibm.com/apidocs/machine-learning#authentication)\.
+
+<!-- </ul> -->
+
+To authenticate to a service through its API, pass your credentials to the API\. You can pass either a bearer token in an authorization header or an API key\.
+
+### Generating an API key ###
+
+To generate an API key from your IBM Cloud user account, go to [Manage access and users \- API Keys](https://cloud.ibm.com/iam/apikeys) and create or select an API key for your user account\.
+
+You can also generate and rotate API keys from **Profile and settings > User API key**\. For more information, see [Managing the user API key](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/admin-apikeys.html)\.
+
+### Authenticate with an IAM token ###
+
+IAM tokens are temporary security credentials that are valid for 60 minutes\. When a token expires, you generate a new one\. Tokens can be useful for temporary access to resources\. For more information, see [Generating an IBM Cloud IAM token by using an API key](https://cloud.ibm.com/docs/account?topic=account-iamtoken_from_apikey)\.
+
+### Getting a service\-level token ###
+
+You can also authenticate with a service\-level token\. To generate a service\-level token:
+
+<!-- <ol> -->
+
+1.  Refer to the IBM Cloud instructions for [creating a Service ID](https://cloud.ibm.com/iam/serviceids)\.
+2.  Generate an API key for that Service ID\.
+3.  Open the space where you plan to keep your deployable assets\.
+4.  On the **Access control** tab, add the Service ID and assign an access role of **Admin** or **Editor**\.
+
+<!-- </ol> -->
+
+You can use the service\-level token with your API scoring requests\.
+
+## Interfaces ##
+
+<!-- <ul> -->
+
+ *  [Python client](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html?context=cdpaas&locale=en#python)
+ *  [REST API](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html?context=cdpaas&locale=en#rest-api)
+
+<!-- </ul> -->
+
+### Python client ###
+
+Refer to: [Watson Machine Learning Python client ![external link](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/launch-glyph.png)](https://ibm.github.io/watson-machine-learning-sdk/)
+
+To create an instance of the Watson Machine Learning Python client object, you need to pass your credentials to Watson Machine Learning API client\.
+
+    wml_credentials = {
+                      "apikey":"123456789",
+                      "url": " https://HIJKL"
+    }
+    from ibm_watson_machine_learning import APIClient
+    wml_client = APIClient(wml_credentials)
+
+Note:Even though you do not explicitly provide an `instance_id`, it will be picked up from the associated space or project for billing purposes\. For details on plans and billing for Watson Machine Learning services, refer to [Watson Machine Learning plans and runtime usage](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/wml-plans.html)\.
+
+Refer to [sample notebooks](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-samples-overview.html) for examples of how to authenticate and then score a model by using the Python client\.
+
+### REST API ###
+
+Refer to: [Watson Machine Learning REST API ![external link](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/images/launch-glyph.png)](https://cloud.ibm.com/apidocs/machine-learning)
+
+To use the Watson Machine Learning REST API, you must obtain an IBM Cloud Identity and Access Management (IAM) token\. In this example, you would supply your API key in place of the example key\.
+
+#### cURL example ####
+
+    curl -k -X POST \
+    --header "Content-Type: application/x-www-form-urlencoded" \
+    --header "Accept: application/json" \
+    --data-urlencode "grant_type=urn:ibm:params:oauth:grant-type:apikey" \
+    --data-urlencode "apikey=123456789" \
+    "https://iam.cloud.ibm.com/identity/token"
+
+The obtained IAM token needs to be prefixed with the word `Bearer`, and passed in the Authorization header for API calls\.
+
+#### Python example ####
+
+    import requests
+    
+    # Paste your Watson Machine Learning service apikey here
+    
+    apikey = "123456789"
+    
+    # Get an IAM token from IBM Cloud
+    url     = "https://iam.cloud.ibm.com/identity/token"
+    headers = { "Content-Type" : "application/x-www-form-urlencoded" }
+    data    = "apikey=" + apikey + "&grant_type=urn:ibm:params:oauth:grant-type:apikey"
+    response  = requests.post( url, headers=headers, data=data, auth=( apikey )
+    iam_token = response.json()["access_token"]
+
+#### Node\.js example ####
+
+    var btoa    = require( "btoa" );
+    var request = require( 'request' );
+    
+    // Paste your Watson Machine Learning service apikey here
+    var apikey = "123456789";
+    
+    // Use this code as written to get an access token from IBM Cloud REST API
+    //
+    var IBM_Cloud_IAM_uid = "bx";
+    var IBM_Cloud_IAM_pwd = "bx";
+    
+    var options = { url     : "https://iam.cloud.ibm.com/identity/token",
+                    headers : { "Content-Type"  : "application/x-www-form-urlencoded",
+                                "Authorization" : "Basic " + btoa( IBM_Cloud_IAM_uid + ":" + IBM_Cloud_IAM_pwd ) },
+                    body    : "apikey=" + apikey + "&grant_type=urn:ibm:params:oauth:grant-type:apikey" };
+    
+    request.post( options, function( error, response, body )
+    {
+        var iam_token = JSON.parse( body )["access_token"];
+    } );
+
+**Parent topic:**[Managing predictive deployments](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-deploy-general.html)
+
+<!-- </article "role="article" "> -->

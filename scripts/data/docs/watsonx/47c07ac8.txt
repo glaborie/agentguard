@@ -1,0 +1,4 @@
+# 3D charts #
+
+3D charts are commonly used to represent multiple\-variable functions and include a z\-axis variable that is a function of both the x and y\-axis variables\.
+<!-- </article "role="article" "> -->

@@ -1,0 +1,18 @@
+# PCA/Factor node #
+
+The PCA/Factor node provides powerful data\-reduction techniques to reduce the complexity of your data\. Two similar but distinct approaches are provided\.
+
+<!-- <ul> -->
+
+ *  Principal components analysis (PCA) finds linear combinations of the input fields that do the best job of capturing the variance in the entire set of fields, where the components are orthogonal (perpendicular) to each other\. PCA focuses on all variance, including both shared and unique variance\.
+ *  Factor analysis attempts to identify underlying concepts, or factors, that explain the pattern of correlations within a set of observed fields\. Factor analysis focuses on shared variance only\. Variance that is unique to specific fields is not considered in estimating the model\. Several methods of factor analysis are provided by the Factor/PCA node\.
+
+<!-- </ul> -->
+
+For both approaches, the goal is to find a small number of derived fields that effectively summarize the information in the original set of fields\.
+
+Requirements\. Only numeric fields can be used in a PCA\-Factor model\. To estimate a factor analysis or PCA, you need one or more fields with the role set to `Input` fields\. Fields with the role set to `Target`, `Both`, or `None` are ignored, as are non\-numeric fields\.
+
+Strengths\. Factor analysis and PCA can effectively reduce the complexity of your data without sacrificing much of the information content\. These techniques can help you build more robust models that execute more quickly than would be possible with the raw input fields\.
+
+<!-- </article "role="article" "> -->

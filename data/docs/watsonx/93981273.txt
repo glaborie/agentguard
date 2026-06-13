@@ -1,0 +1,13 @@
+# Examining the data #
+
+The series shows a general upward trend; that is, the series values tend to increase over time\. The upward trend is seemingly constant, which indicates a linear trend\.
+
+Figure 1\. Actual sales of men's clothing
+
+![Actual sales of men's clothing](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_forecast_series.png)
+
+The series also has a distinct seasonal pattern with annual highs in December, as indicated by the vertical lines on the graph\. The seasonal variations appear to grow with the upward series trend, which suggests multiplicative rather than additive seasonality\.
+
+Now that you've identified the characteristics of the series, you're ready to try modeling it\. The exponential smoothing method is useful for forecasting series that exhibit trend, seasonality, or both\. As we've seen, this data exhibits both characteristics\.
+
+<!-- </article "role="article" "> -->

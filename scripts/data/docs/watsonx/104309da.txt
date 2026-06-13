@@ -1,0 +1,113 @@
+# IBM Cloud Object Storage (infrastructure) connection #
+
+To access your data in IBM Cloud Object Storage (infrastructure), create a connection asset for it\.
+
+The Cloud Object Storage (infrastructure) connection is for object storage that was formerly on SoftLayer\. SoftLayer was replaced by IBM Cloud\. You cannot provision a new instance for Cloud Object Storage (infrastructure)\. This connection is for users who set up an earlier instance on SoftLayer\.  
+
+## Create a connection to Cloud Object Storage (infrastructure) ##
+
+To create the connection asset, you need this information\.
+
+### Required connection values ###
+
+The **Login URL** is required, plus one of the following values for authentication:
+
+<!-- <ul> -->
+
+ *  **Access Key** and **Secret Key**
+ *  **Credentials** If you plan to use the S3 API, you must enter an **Access Key**\.  
+    
+<!-- </ul> -->
+
+### Connection values in the Cloud Object Storage Resource list ###
+
+The values for these fields are found in the Cloud Object Storage **Resource list**\.
+
+To find the **Login URL**:
+
+<!-- <ol> -->
+
+1.  Go to the Cloud Object Storage **Resource list** at [https://cloud\.ibm\.com/resources](https://cloud.ibm.com/resources)\.
+2.  Expand the **Storage** resource\.
+3.  Click the Cloud Object Storage service\. From the menu, select **Endpoints**\.
+4.  Copy the value of the public endpoint that is in the same region as the bucket that you want to use\.
+
+<!-- </ol> -->
+
+To find the values for **Access key** and the **Secret Key**:
+
+<!-- <ol> -->
+
+1.  Go to the Cloud Object Storage **Resource list** at [https://cloud\.ibm\.com/resources](https://cloud.ibm.com/resources)\.
+2.  Expand the **Storage** resource\.
+3.  Click the Cloud Object Storage service, and then click the **Service credentials** tab\.
+4.  Expand the Key name that you want to use\. Copy the values without the quotation marks:
+5.  **Access Key**: `access_key_id`
+6.  **Secret Key**: `secret_access_key`
+    
+    Note: Alternatively, you can use the contents of the JSON file in **Credentials** to copy the values for the **Access Key** and **Secret Key**.
+
+<!-- </ol> -->
+
+To find the **Credentials**:
+
+<!-- <ol> -->
+
+1.  Go to the Cloud Object Storage **Resource list** at [https://cloud\.ibm\.com/resources](https://cloud.ibm.com/resources)\.
+2.  Expand the **Storage** resource\.
+3.  Click the Cloud Object Storage service, and then click the **Service credentials** tab\.
+4.  Expand the Key name that you want to use\.
+5.  Copy the entire JSON file\. Include the opening and closing braces `{ }` symbols\.
+
+<!-- </ol> -->
+
+For **Certificates**  
+(Optional) Enter the self\-signed SSL certificate that was created by a tool such as OpenSSL\.
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Decision Optimization
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Supported file types ##
+
+The Cloud Object Storage (infrastructure) connection supports these file types: Avro, CSV, Delimited text, Excel, JSON, ORC, Parquet, SAS, SAV, SHP, and XML\.
+
+## Learn more ##
+
+Related connection: [IBM Cloud Object Storage connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cos.html)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

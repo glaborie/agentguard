@@ -1,0 +1,5 @@
+# Multiplot node #
+
+A multiplot is a special type of plot that displays multiple `Y` fields over a single `X` field\. The `Y` fields are plotted as colored lines and each is equivalent to a Plot node with Style set to  Line and X Mode set to  Sort\. Multiplots are useful when you have time sequence data and want to explore the fluctuation of several variables over time\.
+
+<!-- </article "role="article" "> -->

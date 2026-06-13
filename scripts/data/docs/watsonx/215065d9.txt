@@ -1,0 +1,702 @@
+## CLEANSE ##
+
+**Convert column type**  
+When you open a file in Data Refinery, the **Convert column type** operation is automatically applied as the first step if it detects any nonstring data types in the data\. Data types are automatically converted to inferred data types\. To change the automatic conversion for a selected column, click the overflow menu (![overflow menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/actions.png)) for the step and select **Edit**\. As with any other operation, you can undo the step\. The **Convert column type** operation is reapplied every time that you open the file in Data Refinery\. Automatic conversion is applied as needed for file\-based data sources only\. (It does not apply to a data source from a database connection\.)
+
+To confirm what data type each column's data was converted to, click **Edit** from the overflow menu (![overflow menu](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/images/actions.png)) to view the data types\. The information includes the format for date or timestamp data\.
+
+If the data is converted to an Integer or to a Decimal data type, you can specify the decimal symbol and the thousands grouping symbol for all applicable columns\. Strings that are converted to the Decimal data type use a dot for the decimal symbol and a comma for the thousands grouping symbol\. Alternatively, you can select comma for the decimal symbol and dot or a custom symbol for the thousands grouping symbol\. The decimal symbol and the thousands grouping symbol cannot be the same\.
+
+The source data is read from left to right until a terminator or an unrecognized character is encountered\. For example, if you are converting string data `12,834` to Decimal and you do not specify what to do with the comma (,), the data will be truncated to `12`\. Similarly, if the source data has multiple dots (\.), and you select dot for the decimal symbol, the first dot is used as the decimal separator and the digits following the second dot are truncated\. A source string of `1.834.230,000` is converted to a value of `1.834`\.
+
+The **Convert column type** operation automatically converts these date and timestamp formats:
+
+<!-- <ul> -->
+
+ *  Date: `ymd`, `ydm`
+ *  Timestamp: `ymdHMS`, `ymdHM`, `ydmHMS`, `ydmHM`
+
+<!-- </ul> -->
+
+Date and Timestamp strings must use four digits for the year\.
+
+You can manually apply the **Convert column type** operation to change the data type of a column at any point in the Data Refinery flow\. You can create a new column to hold the result of this operation or you can overwrite the existing column\.
+
+Tip: A column's data type determines the operations that you can use\. Changing the data type can affect which operations are relevant for that column\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Convert column type operation automatically converted the first column from String to Integer\. Let's change the data types of the other three columns\.
+2.  To change the data type of european column from string to decimal, select the column and then edit the Convert column type operation step\.
+3.  To change the data type of european column from string to decimal, select the column and then edit the Convert column type operation step\.
+4.  Select Decimal\.
+5.  The column uses the comma delimiter so select Comma (,) for the decimal symbol\.
+6.  Select the next column, DATETIME\. Select Timestamp and a format\.
+7.  Click Apply\.
+8.  The columns are now Integer, Decimal, Date, and Timestamp data types The Convert column type step in the Steps panel is updated\.
+
+<!-- </ol> -->
+
+**Convert column value to missing**  
+Convert values in the selected column to missing values if they match values in the specified column or they match a specified value\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Convert column value to missing operation converts the values in a selected column to missing values if they match the values in a specified column or if they match a specified value\.
+2.  A missing value is equivalent to an SQL NULL, which is a field with no value\. It is different from a zero value or a value that contains spaces\.
+3.  You can use the Convert column value to missing operation when you think that the data would be better represented as missing values\. For example, when you want to use missing values in a Replace missing values operation or in a Filter operation\.
+4.  Let's use the Convert column value to missing operation to change values to missing based on a matched value\.
+5.  Notice that the DESC column has many rows with the value CANCELLED ORDER\. Let's convert the CANCELLED ORDER strings to missing values\.
+6.  The Convert column value to missing operation is under the CLEANSE category\.
+7.  Type the string to replace with missing values\.
+8.  The values that were formerly CANCELLED ORDER are now missing values\.
+
+<!-- </ol> -->
+
+**Extract date or time value**  
+Extract a selected portion of a date or time value from a column with a date or timestamp data type\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Extract date or time value operation extracts a selected portion of a date or time value from a column that is a date or timestamp data type\.
+2.  The DATE column is a String data type\. First, let's use the Convert column type operation to convert it to the Date data type\.
+3.  Select the Convert column type operation from the DATE column's menu\. Select Date\.
+4.  Select a Date format\.
+5.  The DATE column is now a date data type\.
+6.  The ISO Date format is used when the String data type was converted to the Date data type\. For example, the string 01/08/2018 was converted to the date 2018\-01\-08\.
+7.  Now we can extract the year portion of the date into a new column\.
+8.  The Extract date or time value operation is under the CLEANSE category\.
+9.  Select Year for the portion of the date to extract, and type YEAR for the new column name\.
+10. The year portion of the DATE column is in the new column, YEAR\.
+11. The Steps panel displays the Extract date or time value operation\.
+
+<!-- </ol> -->
+
+**Filter**  
+Filter rows by the selected columns\. Keep rows with the selected column values; filter out all other rows\.
+
+For these string **Filter** operators, do not enclose the value in quotation marks\. If the value contains quotation marks, escape them with a slash character\. For example: `\"text\"`:
+
+<!-- <ul> -->
+
+ *  Contains
+ *  Does not contain
+ *  Starts with
+ *  Does not start with
+ *  End with
+ *  Does not end with
+
+<!-- </ul> -->
+
+Folowing are the operators for numeric, string, and Boolean (logical), and date and timestamp columns:
+
+<!-- <table> -->
+
+| Operator                    | Numeric | String | Boolean | Date and timestamp |
+| --------------------------- | ------- | ------ | ------- | ------------------ |
+| Contains                    |         | ✓      |         |                    |
+| Does not contain            |         | ✓      |         |                    |
+| Does not end with           |         | ✓      |         |                    |
+| Does not start with         |         | ✓      |         |                    |
+| Ends with                   |         | ✓      |         |                    |
+| Is between two numbers      | ✓       |        |         |                    |
+| Is empty                    |         | ✓      | ✓       | ✓                  |
+| Is equal to                 | ✓       | ✓      |         | ✓                  |
+| Is false                    |         |        | ✓       |                    |
+| Is greater than             | ✓       |        |         | ✓                  |
+| Is greater than or equal to | ✓       |        |         | ✓                  |
+| Is in                       | ✓       | ✓      |         |                    |
+| Is less than                | ✓       |        |         | ✓                  |
+| Is less than or equal to    | ✓       |        |         | ✓                  |
+| Is not empty                |         | ✓      | ✓       | ✓                  |
+| Is not equal to             | ✓       | ✓      |         | ✓                  |
+| Is not in                   | ✓       | ✓      |         |                    |
+| Is not null                 |         | ✓      |         |                    |
+| Is null                     | ✓       | ✓      |         |                    |
+| Is true                     |         |        | ✓       |                    |
+| Starts with                 |         | ✓      |         |
+
+<!-- </table ""> -->
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  Use the Filter operation to filter rows by the selected columns\. You can apply multiple conditions in one Filter operation\.
+2.  Use a regular expression to filter out all the rows except those where the string in the Emp ID column starts with 8\.
+3.  Filter the rows by two states abbreviations\.
+4.  Click Apply\. Only the rows where Emp ID starts with 8 and State is AR or TX are in the table\.
+5.  The rows are now filtered by AR and PA\. The Filter step in the Steps panel is updated\.
+
+<!-- </ol> -->
+
+**Remove column**  
+Remove the selected column\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  Use the Remove column operation to quickly remove a column from a data asset\.
+2.  The quickest way to remove a column is from the column's menu\.
+3.  The name of the removed column is in the Steps panel\.
+4.  Remove another column\.
+5.  The name of the removed column is in the Steps panel\.
+
+<!-- </ol> -->
+
+**Remove duplicates**  
+Remove rows with duplicate column values\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Remove duplicates operation removes rows that have duplicate column values\.
+2.  The data set has 43 rows\. Many of the rows in the APPLYCODE column have duplicate values\. We want to reduce the data set to the rows where each value in the APPLYCODE column occurs only once\.
+3.  Select the Remove duplicates operation from the APPLYCODE column's menu\.
+4.  The Remove duplicates operation removed each occurrence of a duplicate value starting from the top row\. The data set is now 4 rows\.
+
+<!-- </ol> -->
+
+**Remove empty rows**  
+Remove rows that have a blank or missing value for the selected column\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Remove empty rows operation removes rows that have a blank or missing value for the selected column\.
+2.  A missing value is equivalent to an SQL NULL, which is a field with no value\. It is different from a zero value or a value that contains spaces\.
+3.  The data set has 43 rows\. Many of the rows in the TRACK column have missing values\. We want to reduce the data set to the rows that have a value in the TRACK column\.
+4.  Select the Remove empty rows operation from the TRACK column's menu\.
+5.  The Remove empty rows operation removed each row that had a blank or missing value in the TRACK column\. The data set is now 21 rows\.
+
+<!-- </ol> -->
+
+**Replace missing values**  
+Replace missing values in the column with a specified value or with the value from a specified column in the same row\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Replace missing values operation replaces missing values in a column with a specified value or with the value from a specified column in the same row\.
+2.  The STATE column has many rows with empty values\. We want to replace those empty values with a string\.
+3.  The Replace missing values operation is under the CLEANSE category\.
+4.  For the State column, replace the missing values with the string Incomplete\.
+5.  The missing values now have the value Incomplete\.
+6.  The Steps panel displays the Replace missing values operation\.
+
+<!-- </ol> -->
+
+**Replace substring**  
+Replace the specified substring with the specified text\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Replace substring operation replaces a substring with text that you specify\.
+2.  The DECLINE column has many rows that include the string BANC\. We want to replace this string with BANK\.
+3.  The Replace substring operation is under the CLEANSE category\.
+4.  Type the string to replace and the replacement string\.
+5.  All occurrences of the string BANC have been replaced with BANK\.
+6.  The Steps panel displays the Replace substring operation\.
+
+<!-- </ol> -->
+
+**Substitute**  
+Obscure sensitive information from view by substituting a random string of characters for the actual data in the selected column\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Substitute operation obscures sensitive information by substituting a random string of characters for the data in the selected column\.
+2.  The quickest way to substitute the data in a column is to select Substitute from the column's menu\.
+3.  The Substitute operation shows in the Steps panel\.
+4.  Substitute values in another column\.
+5.  The second Substitute operation shows in the Steps panel\.
+
+<!-- </ol> -->
+
+### Text ###
+
+You can apply text operations only to string columns\. You can create a new column to hold the result of an operation or you can overwrite the existing column\.
+
+**Text > Collapse spaces**  
+Collapse multiple, consecutive spaces in the text to a single space\.
+
+**Text > Concatenate string**  
+Link together any string to the text\. You can prepend the string to the text, append the string to the text, or both\.
+
+**Text > Lowercase**  
+Convert the text to lowercase\.
+
+**Text > Number of characters**  
+Return the number of characters in the text\.
+
+**Text > Pad characters**  
+Pad the text with the specified string\. Specify whether to pad the text on the left, right, or both the left and right\.
+
+**Text > Substring**  
+Create substrings from the text that start at the specified position and have the specified length\.
+
+**Text > Title case**  
+Convert the text to title case\.
+
+**Text > Trim quotes**  
+Remove single or double quotation marks from the text\.
+
+**Text > Trim spaces**  
+Remove leading, trailing, and extra spaces from the text\.
+
+**Text > Uppercase**  
+Convert the text to uppercase\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  You can apply a Text operation to string columns\. Create a new column for the result or overwrite the existing column\.
+2.  First, concatenate a string to the values in the WORD column\.
+3.  Available Text operations\.
+4.  Concatenate the string to the right side, append with a space, and type up\.
+5.  The values in the WORD column are appended with a space and the word up\.
+6.  The Text operation displays in the Steps panel\.
+7.  Next, pad the values in the ANIMAL column with a string\.
+8.  Pad the values in the ANIMAL column with ampersand (&) symbols to the right for a minimum of 7 characters\.
+9.  The values in the ANIMAL column are padded with the & symbol so that each string is at least seven characters\.
+10. Notice that the opossum, pangolin, platypus, and hedgehog values do not have a padding character because those strings were already seven or more characters long\.
+11. Next, use Substring to remove the t character from the ID column\.
+12. Select Position 2 to start the new string at that position\. Select Length 4 for a four\-character length string\.
+13. The initial t character in the ID column is removed in the NEW\-ID column\.
+
+<!-- </ol> -->
+
+## COMPUTE ##
+
+**Calculate**  
+Perform a calculation with another column or with a specified value\. The operators are:
+
+<!-- <ul> -->
+
+ *  Addition
+ *  Division
+ *  Exponentiation
+ *  Is between two numbers
+ *  Is equal to
+ *  Is greater than
+ *  Is greater than or equal to
+ *  Is less than
+ *  Is less than or equal to
+ *  Is not equal to
+ *  Modulus
+ *  Multiplication
+ *  Subtraction
+
+<!-- </ul> -->
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Calculate operation performs a calculation, such as addition or subtraction, with another column or with a specified value\.
+2.  Select the column to begin\.
+3.  Available calculations
+4.  Now select the second column for the Addition calculation\.
+5.  And apply the change\.
+6.  The id column is updated, and the Steps panel shows the completed operation\.
+7.  You can also access the operations from the column's menu\.
+8.  This time, select Is between two numbers\. Specify the range, and create a new column for the results\.
+9.  The new column displays in the table and the new calculate operation displays in the Steps panel\.
+10. This time, select Is equal to to compare two columns, and create a new column for the results\.
+11. The new column displays in the table and the new calculate operation displays in the Steps panel\.
+
+<!-- </ol> -->
+
+### Math ###
+
+You can apply math operations only to numeric columns\. You can create a new column to hold the result of an operation or you can overwrite the existing column\.
+
+**Math > Absolute value**  
+Get the absolute value of a number\.  
+Example: The absolute value of both 4 and \-4 is 4\.
+
+**Math > Arc cosine**  
+Get the arc cosine of an angle\.
+
+**Math > Ceiling**  
+Get the nearest integer of greater value, also known as the ceiling of the number\.  
+Examples: The ceiling of 2\.31 is 3\. The ceiling of \-2\.31 is \-2\.
+
+**Math > Exponent**  
+Get a number raised to the power of the column value\.
+
+**Math > Floor**  
+Get the nearest integer of lesser value, also known as the floor of the number\.  
+Example: The floor of 2\.31 is 2\. The floor of \-2\.31 is \-3\.
+
+**Math > Round**  
+Get the whole number nearest to the column value\. If the column value is a whole number, return it\.
+
+**Math > Square root**  
+Get the square root of the column value\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  Apply a Math operation to the values in a column\. Create a new column for the results or overwrite the existing column\.
+2.  Available Math operations
+3.  Apply Absolute value to the column's values\.
+4.  Create new column for results\.
+5.  The new column is added to the table, and the Math operation displays in the Steps panel\.
+6.  You can also access the operation from the column's menu\.
+7.  Apply Round to the ANGLE column's values\.
+8.  Create a new column for results\.
+9.  The new column is added to the table, and the new Math operation displays in the Steps panel\.
+
+<!-- </ol> -->
+
+## ORGANIZE ##
+
+**Aggregate**  
+Apply summary calculations to the values of one or more columns\. Each aggregation creates a new column\. Optionally, select **Group by columns** to group the new column by another column that defines a characteristic of the group, for example, a department or an ID\. You can group by multiple columns\. You can combine multiple aggregations in a single operation\.
+
+The available aggregate operations depend on the data type\.  
+
+Numeric data:  
+
+<!-- <ul> -->
+
+ *  Count unique values
+ *  Minimum
+ *  Maximum
+ *  Sum
+ *  Standard deviation
+ *  Mean
+
+<!-- </ul> -->
+
+String data:  
+
+<!-- <ul> -->
+
+ *  Combine row values
+ *  Count unique values
+
+<!-- </ul> -->
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Aggregate operation applies summary calculations to the values of one or more columns\. Each aggregation creates a new column\.
+2.  Available aggregations depend on whether the data is numeric or string data\.
+3.  The available operators depend on the column's data type\. Available operators for numeric data\.
+4.  With the UniqueCarrier text column selected, you can see the available operators for string data\.
+5.  We will count how many unique values are in the UniqueCarrier column\. This aggregation will show how many airlines are in the data set\.
+6.  We have 22 airlines in the new Airlines column\. The other columns are deleted\.
+7.  The Aggregate operation displays in the Steps panel\.
+8.  Let's start over to show an aggregation on numeric data\.
+9.  Show the average (mean value) of the arrival delays\.
+10. The average value of all the arrival delays is in the new MeanArrDelay column\. The other columns are deleted\.
+11. You can also group the aggregated column by another column that defines a characteristic of the group\.
+12. Let's edit the Aggregate step by adding a Group by selection so we can see the average of arrival delays by airline\.
+13. Group the results by the UniqueCarrier column\.
+14. The average arrival delays are now grouped by airline\.
+15. The Steps panel displays the Aggregate operation\.
+
+<!-- </ol> -->
+
+**Concatenate**  
+Concatenate the values of two or more columns\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Concatenate operation concatenates the values of two or more columns\.
+2.  The Concatenate operation is under the ORGANIZE category\.
+3.  Select the columns to concatenate\.
+4.  Select a separator to use between the concatenated values\.
+5.  Type a name for the column for the concatenated values\.
+6.  The new column can display as the right\-most column in the data set, or next to the original column\.
+7.  Keep the original columns, and apply the changes\.
+8.  The new DATE column shows the concatenated values from the other three columns with a semicolon separator\.
+9.  The Concatenate operation displays in the Steps panel\.
+10. The DATE column is a String data type\. Let's use the Convert column type operation to convert it to the Date data type\.
+11. Select the Convert column type operation from the DATE column's menu\. Select Date\.
+12. Select a date format and create a new column for the result\.
+13. Place the new column next to the original column, and apply the changes\.
+14. The new column displays with the converted date format\.
+15. The Convert column type operation displays in the Steps panel\.
+16. The ISO Date format is used when the String data type was converted to the Date data type\. For example, the string 2004;2;3 was converted to the date 2004\-02\-03\.
+
+<!-- </ol> -->
+
+**Conditional replace**  
+Replace the values in a column based on conditions\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  Use the Conditional replace operation to replace the values in a column based on conditions\.
+2.  First, let's specify conditions to replace data in the CODE string column and create a new column for the results\.
+3.  Available condition operators for string data\.
+4.  Add the first condition \- CONDITION 1: CODE Is equal to value C replace with COMPLETE\.
+5.  Add a second condition \- CONDITION 2: CODE Is equal to value I replace with INCOMPLETE\.
+6.  Specify what to do with any values that do not meet the conditions\. Here we will enter two double quotation marks to indicate an empty string\.
+7.  Create a new column for the results\.
+8.  The new column, STATUS, shows the conditional replacements from the CODE column\.
+9.  The Conditional replace operation shows in the Steps panel\.
+10. Next, let's specify conditions to replace data in the INPUT integer column and create a new column for the results\.
+11. Available condition operators for numeric data\.
+12. Add the first condition \- CONDITION 1: INPUT Is less than or equal to value 3 replace with value LOW\.
+13. Add a second condition \- CONDITION 2: INPUT Is in values 4,5,6 replace with value MED\.
+14. Add a third condition \- CONDITION 3: INPUT Is greater than or equal to value 7 replace with value HIGH\.
+15. Specify what to do with any values that do not meet the conditions\.
+16. Create a new column for the results\.
+17. The new column, RATING, shows the conditional replacements from the INPUT column\.
+18. The Conditional replace operation shows in the Steps panel\.
+
+<!-- </ol> -->
+
+**Join**  
+Combine data from two data sets based on a comparison of the values in specified key columns\. Specify the type of join to perform, select the columns (join keys) in both data sets that you want to compare, and select the columns that you want in the resulting data set\.
+
+The join key columns in both data sets need to be compatible data types\. If the **Join** operation is the first step that you add, check whether the **Convert column type** operation automatically converted the data type of the join key columns in the first data set when you opened the file in Data Refinery\. Also, depending where the **Join** operation is in the Data Refinery flow, you can use the **Convert column type** operation to ensure that the join key columns' data types match\. Click a previous step in **Steps** panel to see the snapshot view of the step\.
+
+The join types include:
+
+<!-- <table> -->
+
+| Join type  | Description                                                                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Left join  | Returns all rows in the original data set and return only matching rows in the joining data set\. Returns one row in the original data set for each matching row in the joining data set\. |
+| Right join | Returns all rows in the joining data set and return only matching rows in the original data set\. Returns one row in the joining data set for each matching row in the original data set\. |
+| Inner join | Returns only the rows in each data set that match rows in the other data set\. Returns one row in the original data set for each matching row in the joining data set\.                    |
+| Full join  | Returns all rows in both data sets\. Blends rows in the original data set with matching rows in the joining data set\.                                                                     |
+| Semi join  | Returns only the rows in the original data set that match rows in the joining data set\. Returns one row in the original data set for all matching rows in the joining data set\.          |
+| Anti join  | Returns only the rows in the original data set that do not match rows in the joining data set\.                                                                                            |
+
+<!-- </table ""> -->
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The customers\.csv data set contains information about your company's customers, and the sales\.csv data set contains information about your company's sales representatives\.
+2.  The data sets share the SALESREP\_ID column\.
+3.  The customers\.csv data set is open in Data Refinery\.
+4.  The Join operation can combine the data from these two data sets based on a comparison of the values in the SALESREP\_ID column\.
+5.  You want to do an inner join to return only the rows in each data set that match in the other data set\.
+6.  You can add a custom suffix to append to columns that exist in both data sets to see the source data set for that column\.
+7.  Select the sales\.csv data set to join with the customers\.csv data set\.
+8.  For the join key, begin typing the column name to see a filtered list\. The SALESREP\_ID column links the two data sets\.
+9.  Next, select the columns to include\. Duplicate columns will display the suffix appended\.
+10. Now apply the changes\.
+11. The Join operation displays in the Steps panel\.
+12. Now, the data set is enriched with the columns from the customers\.csv and sales\.csv data sets\.
+
+<!-- </ol> -->
+
+**Rename column**  
+Rename the selected column\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  Use the Rename column operation to quickly rename a column\.
+2.  The fastest way to rename a column is to edit the column's name in the table\.
+3.  Edit the name and press Enter on your keyboard\.
+4.  The Rename column step shows the old name and the new name\.
+5.  Now rename another column\.
+6.  The Steps panel shows the BANKS column was renamed to DOGS\.
+7.  Now rename the last column\.
+8.  The Steps panel shows the RATIOS column was renamed to BIRDS\.
+
+<!-- </ol> -->
+
+**Sample**  
+Generate a subset of your data by using one of the following methods\. Sampling steps from UI operations apply only when the flow is run\.
+
+<!-- <ul> -->
+
+ *  Random sample: Each data record of the subset has an equal probability of being chosen\.
+ *  Stratified sample: Divide the data into one or more subgroups called *strata*\. Then generate one random sample that contains data from each subgroup\.
+
+<!-- </ul> -->
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Sample operation generates a subset of your data\.
+2.  Use the Sample operation when you have a large amount of data and you want to work on a representative sample for faster prototyping\.
+3.  The Sample operation is in the ORGANIZE category\.
+4.  Choose one of two methods to create a sample\.
+5.  With a random sample, each row has an equal probability to be included in the sample data\.
+6.  You can choose a random sample by number of rows or by percentage of data\.
+7.  A stratified sample builds on a random sample\. As with a random sample, you specify the amount of data in the sample (rows or percentage)\.
+8.  With a stratified sample, you divide the data into one or more subgroups called strata\. Then you generate one random sample that contains customized data from each subgroup\.
+9.  For Method, if you choose Auto, you select one column for the strata\.
+10. If you choose Manual, you specify one or more strata and for each strata you specify filter conditions that define the rows in each strata\.
+11. In this airline data example, we'll create two strata\. One strata defines 50% of the output to have New York City destination airports and the second the strata defines the remaining 50% to have a specified flight distance\.
+12. In Specify details for this strata box, enter the percentage of the sample that will represent the conditions that you will specify in this first strata\. The strata percentages must total 100%\.
+13. Available operators for string data\.
+14. 50% of the sample will have New York City area destination airports\.
+15. Click Save to save the first strata\.
+16. The first strata, identified as Strata0, has one condition\. In this strata, 50% of sample must meet the condition\.
+17. In Specify details for this strata box, enter the percentage of the sample that will represent the conditions that you will specify in the second strata\.
+18. Available operators for numeric data\.
+19. 50% of the sample will be for flights with a distance greater than 500\.
+20. Click Save to save the second strata\.
+21. The second strata, identified as Strata1, has one condition\. In this strata, 50% of the sample must meet the condition\.
+22. If you use multiple strata, the Sample operation internally applies a Filter operation with an OR condition on the strata\. Depending on the data, the conditions, and the size of the sample, the results of using one strata with multiple conditions might differ from using multiple strata\.
+23. Unlike the other Data Refinery operations, the Sample operation changes the data set only after you create and run a job for the Data Refinery flow\.
+24. The Sample step shows in the Steps panel\.
+25. The data set is over 10000 rows\.
+26. Save and create a job for the Data Refinery flow\.
+27. The new asset file is added to the project for the output of the Data Refinery flow\.
+28. View the output file\.
+29. There are 10 rows (50% of the sample) with New York City airports in the Dest column, but 17 rows in the Distance column with values greater than 500\.
+30. These results are because the strata were applied with an OR condition and there was overlapping data for the conditions specified in first strata where the rows that were filtered by Dest containing New York City airports had Distance values greater than 500\.
+31. The output file in Data Refinery shows the reduced size\.
+
+<!-- </ol> -->
+
+**Sort ascending**  
+Sort all the rows in the table by the selected column in ascending order\.
+
+**Sort descending**  
+Sort all the rows in the table by the selected column in descending order\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  Quickly sort all the rows in a data set by sorting the rows in a selected column\.
+2.  The fastest way to sort columns is from the column's menu\.
+3.  You can sort the rows in ascending or descending order\.
+4.  Sort ascending\.
+5.  The order of all the rows in the table is updated by the Sort operation of the first column\.
+6.  The Sort operation shows in the Steps panel\.
+7.  Sort descending\.
+8.  The order of all the rows in the table is changed by the Sort operation of the second column\.
+9.  The second Sort operation shows in the Steps panel\.
+10. Sort ascending\.
+11. The order of all the rows in the table is changed by the Sort operation of the third column\.
+12. The third Sort operation shows in the Steps panel\.
+
+<!-- </ol> -->
+
+**Split column**  
+Split the column by non\-alphanumeric characters, position, pattern, or text\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Split column operation splits one column into two or more columns based on non\-alphanumeric characters, text, pattern, or position\.
+2.  To begin, let's split the YMD column into YEAR, MONTH, and DAY columns\.
+3.  The Split column operation is in the ORGANIZE category\.
+4.  First, select the YMD column to split\.
+5.  The tabs offer four choices for ways to split the column\.
+6.  DEFAULT uses any non\-alphanumeric character that's in the column values to split the column\.
+7.  In TEXT, you select a character or enter text to split the column\.
+8.  In PATTERN, you enter a regular expression based on R syntax to determine where to split the column\.
+9.  In POSITION, you specify at what position to split the column\.
+10. We want to split the YMD column by the asterisk (\*), which is a non\-alphanumeric character, so we'll select the DEFAULT tab\.
+11. Split the YMD column into three new columns \- YEAR, MONTH, and DAY\.
+12. The three new columns, YEAR, MONTH, and DAY, are added to the data set\.
+13. The Split column operation shows in the Steps panel\.
+14. Next split the FLIGHT column into two columns \- One for the airline code and one for the flight number\. Because airline codes are two characters, we can split the column by position\.
+15. Click the POSITION tab, and then type 2 in the Positions box\.
+16. Split the FLIGHT column into two new columns \- AIRLINE and FLTNMBR\.
+17. The two new columns, AIRLINE and FLIGHTNBR, are added to the data set\.
+18. The Split column operation shows in the Steps panel\.
+
+<!-- </ol> -->
+
+**Union**  
+Combine the rows from two data sets that share the same schema and filter out the duplicates\. If you select **Allow a different number of columns and allow duplicate values**, the operation is a `UNION ALL` command\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Union operation combines the rows from two data sets that share the same schema\.
+2.  This data set has four columns and six rows\. The data types from left to right are String, String, Decimal, String\.
+3.  When the data set was loaded into Data Refinery, the AUTOMATIC Convert column type operation automatically converted the PRICE column to the Decimal data type\.
+4.  The columns in the second data set must be compatible to the data types in this data set\.
+5.  Select the data set to combine with the current data set\.
+6.  When you preview the new data set, you see that it also has four columns\. However, the PRICE column is a String data type\.
+7.  Before you apply the Union operation, you need to delete the AUTOMATIC Convert column type step so that the PRICE column is the same data type as the PRICE column in the new data set (String)\.
+8.  The PRICE column is now string data\.
+9.  Now repeat the union operation\.
+10. The new data set is added to the current data set\. The data set is increased to 12 rows\.
+11. The Union operation shows in the Steps panel\.
+12. Now add a data set that has a different number of columns\. The matching columns must still be compatible data types\.
+13. Select the data set to combine with the current data set\.
+14. When you preview the new data set, you see that it has one more column than the original data set\. The fifth column is TYPE\.
+15. Select Allow a different number of columns and allow duplicate values\.
+16. Apply the Union operation\.
+17. The new data set is added to the current data set\. The data set is increased to 18 rows\.
+18. The additional column, TYPE, is added to the data set\.
+19. The Union operation shows in the Steps panel\.
+
+<!-- </ol> -->
+
+Tip for the **Union** operation: If you receive an error about incompatible schemas, check if the automatic **Convert column type** operation changed the data types of the first data set\. Delete the **Convert column type** step and try again\.
+
+## NATURAL LANGUAGE ##
+
+**Remove stop words** Remove common words of the English language, such as “the” or “and\.” Stop words usually have little semantic value for text analytics algorithms and models\. Remove the stop words to reduce the data volume and to improve the quality of the data that you use to train machine learning models\.
+
+Optional: To confirm which words were removed, apply the **Tokenize** operation (by words) on the selected column, and then view the statistics for the words in the **Profile** tab\. You can undo the **Tokenize** step later in the Data Refinery flow\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Remove stop words operation removes common words of the English language from the data set\. Stop words usually have little semantic value for text analytics algorithms and models\. Remove the stop words to reduce the data volume and to improve the data quality\.
+2.  The Remove stop words operation removes these words: a, an, and, are, as, at, be, but, by, for, from, if, in, into, is, it, no, not, of, on, or, such, that, the, their, then, there, these, they, this, to, was, will, with\.
+3.  The Remove stop words operation is under the NATURAL LANGUAGE category\.
+4.  Select the STRING column\.
+5.  Click Apply to remove the stop words\.
+6.  The stop words are removed from the STRING column\.
+7.  The Remove stop words operation shows in the Steps panel\.
+
+<!-- </ol> -->
+
+**Tokenize**  
+Break up English text into words, sentences, paragraphs, lines, characters, or by regular expression\.
+
+**Video transcript**
+
+<!-- <ol> -->
+
+1.  The Tokenize operation breaks up English text into words, sentences, paragraphs, lines, characters, or by regular expression\.
+2.  The Tokenize operation is under the NATURAL LANGUAGE category\.
+3.  Select the STRING column\.
+4.  Available tokenize options\.
+5.  Create a new column with the name WORDS\.
+6.  The Tokenize operation has taken the words from the STRING column and created a new column, WORDS, with a row for each word\.
+7.  The Tokenize operation shows in the Steps panel\.
+
+<!-- </ol> -->
+
+**Parent topic:**[Refining data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+
+<!-- </article "role="article" "> -->

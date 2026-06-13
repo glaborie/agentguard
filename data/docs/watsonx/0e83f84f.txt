@@ -1,0 +1,25 @@
+# Data usage rights #
+
+![icon for intellectual property risk](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/images/risk-intellectual-property.svg)Risks associated with inputTraining and tuning phaseIntellectual propertyAmplified
+
+### Description ###
+
+Terms of service, copyright laws, or other rules restrict the ability to use certain data for building models\.
+
+### Why is data usage rights a concern for foundation models? ###
+
+Laws and regulations concerning the use of data to train AI are unsettled and can vary from country to country, which creates challenges in the development of models\. If data usage violates rules or restrictions, business entities might face fines, reputational harms, and other legal consequences\.
+
+Example
+
+#### Text Copyright Infringement Claims ####
+
+According to the source article, bestselling novelists Sarah Silverman, Richard Kadrey, and Christopher Golden have sued Meta and OpenAI for copyright infringement\. The article further stated that the authors had alleged the two tech companies had “ingested” text from their books into generative AI software (LLMs) and failed to give them credit or compensation\.
+
+Sources:
+
+[Los Angeles Times, July 2023](https://www.latimes.com/entertainment-arts/books/story/2023-07-10/sarah-silverman-authors-sue-meta-openai-chatgpt-copyright-infringement)
+
+**Parent topic:**[AI risk atlas](https://dataplatform.cloud.ibm.com/docs/content/wsj/ai-risk-atlas/ai-risk-atlas.html)
+
+<!-- </article "role="article" "> -->

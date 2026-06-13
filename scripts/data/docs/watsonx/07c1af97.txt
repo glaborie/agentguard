@@ -1,0 +1,34 @@
+# Managing your IBM Cloud account #
+
+You can manage your IBM Cloud account to view billing and usage, manage account users, and manage services\.
+
+**Required permissions** : You must be the IBM Cloud account owner or administrator\.
+
+To manage your IBM Cloud account, choose **Administration > Account and billing > Account > Manage in IBM Cloud** from IBM watsonx\. Then from the IBM Cloud console, choose an option from the **Manage** menu\.
+
+<!-- <ul> -->
+
+ *  Account: See [Adding orgs and spaces](https://cloud.ibm.com/docs/account?topic=account-orgsspacesusers#orgsspacesusers) and [Managing resource groups](https://cloud.ibm.com/docs/account?topic=account-rgs)\.
+ *  Billing and Usage: See [How you're charged](https://cloud.ibm.com/docs/billing-usage?topic=billing-usage-charges#charges)\.
+ *  Access (IAM): See [Inviting users](https://cloud.ibm.com/docs/account?topic=account-access-getstarted)\.
+
+<!-- </ul> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Activity Tracker events](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/at-events.html)
+ *  [Manage your settings](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/personal-settings.html)
+ *  [Set up IBM watsonx for your organization](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-platform.html)
+ *  [Manage users and access](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/setup-access.html)
+ *  [IBM Cloud SAML Federation Guide](https://www.ibm.com/cloud/blog/ibm-cloud-saml-federation-guide)
+ *  [Delete your IBM Cloud account](https://dataplatform.cloud.ibm.com/docs/content/wsj/console/wdp_admin_console.html#deletecloud)
+ *  [Check the status of IBM Cloud services](https://dataplatform.cloud.ibm.com/docs/content/wsj/troubleshoot/service-status.html)
+ *  [Configure private service endpoints](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/endpoints-vrf.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Administration](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/administer-accounts.html)
+
+<!-- </article "role="article" "> -->

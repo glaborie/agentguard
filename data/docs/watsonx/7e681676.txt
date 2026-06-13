@@ -1,0 +1,4 @@
+# Theme River charts #
+
+A theme river is a specialized flow graph that shows changes over time\.
+<!-- </article "role="article" "> -->

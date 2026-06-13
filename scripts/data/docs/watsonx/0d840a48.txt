@@ -1,0 +1,16 @@
+# Making offers to customers (self\-learning) #
+
+The Self\-Learning Response Model (SLRM) node generates and enables the updating of a model that allows you to predict which offers are most appropriate for customers and the probability of the offers being accepted\. These sorts of models are most beneficial in customer relationship management, such as marketing applications or call centers\.
+
+This example is based on a fictional banking company\. The marketing department wants to achieve more profitable results in future campaigns by matching the appropriate offer of financial services to each customer\. Specifically, the example uses a Self\-Learning Response model to identify the characteristics of customers who are most likely to respond favorably based on previous offers and responses and to promote the best current offer based on the results\.
+
+This example uses the flow named  Making Offers to Customers \- Self\-Learning, available in the example project \. The data files are  pm\_customer\_train1\.csv,  pm\_customer\_train2\.csv, and  pm\_customer\_train3\.csv\.
+
+<!-- <ol> -->
+
+1.  Open the  Example Project\.
+2.  Scroll down to the  Modeler flows section, click  View all, and select the  Making Offers to Customers \- Self\-Learning flow\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,7 @@
+# Jython code size limits #
+
+Jython compiles each script to Java bytecode, which the Java Virtual Machine (JVM) then runs\. However, Java imposes a limit on the size of a single bytecode file\. So when Jython attempts to load the bytecode, it can cause the JVM to crash\.  SPSS Modeler is unable to prevent this from happening\.
+
+Ensure that you write your Jython scripts using good coding practices (such as minimizing duplicated code by using variables or functions to compute common intermediate values)\. If necessary, you may need to split your code over several source files or define it using modules as these are compiled into separate bytecode files\.
+
+<!-- </article "role="article" "> -->

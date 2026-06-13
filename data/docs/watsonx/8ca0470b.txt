@@ -1,0 +1,149 @@
+# Quick start: Prompt a foundation model with the retrieval\-augmented generation pattern #
+
+Take this tutorial to learn how to use foundation models in IBM watsonx\.ai to generate factually accurate output grounded in information in a knowledge base by applying the retrieval\-augmented generation pattern\. Foundation models can generate output that is factually inaccurate for a variety of reasons\. One way to improve the accuracy of generated output is to provide the needed facts as context in your prompt text\. This tutorial uses a sample notebook using the retrieval\-augmented generation pattern method to improve the accuracy of the generated output\.
+
+**Required services** : Watson Studio : Watson Machine Learning
+
+Your basic workflow includes these tasks:
+
+<!-- <ol> -->
+
+1.  Open a project\. Projects are where you can collaborate with others to work with data\.
+2.  Add a notebook to your project\. You can create your own notebook, or add a [sample notebook](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=notebook) to your project\.
+3.  Add and edit code, then run the notebook\.
+4.  Review the notebook output\.
+
+<!-- </ol> -->
+
+## Read about retrieval\-augmented generation pattern ##
+
+You can scale out the technique of including context in your prompts by leveraging information in a knowledge base\. The retrieval\-augmented generation pattern involves three basic steps:
+
+<!-- <ul> -->
+
+ *  Search for relevant content in your knowledge base
+ *  Pull the most relevant content into your prompt as context
+ *  Send the combined prompt text to the model to generate output
+
+<!-- </ul> -->
+
+[Read more about the retrieval\-augmented generation pattern](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-rag.html?context=wx)
+
+## Watch a video about using the retrieval\-augmented generation pattern ##
+
+![Watch Video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) Watch this video to preview the steps in this tutorial\. There might be slight differences in the user interface shown in the video\. The video is intended to be a companion to the written tutorial\.
+
+This video provides a visual method to learn the concepts and tasks in this documentation\.
+
+## Try a tutorial to prompt a foundation model with the retrieval\-augmented generation pattern ##
+
+In this tutorial, you will complete these tasks:
+
+<!-- <ul> -->
+
+ *  [Task 1: Open a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#step01)
+ *  [Task 2: Add a sample notebook to your project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#step02)
+ *  [Task 3: Edit the notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#step03)
+ *  [Task 4: Run the notebook and review the output](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#step04)
+
+<!-- </ul> -->
+
+Expand all sections
+
+<!-- <ul> -->
+
+ *  Tips for completing this tutorial
+    
+    \#\#\# Use the video picture-in-picture Tip: Start the video, then as you scroll through the tutorial, the video moves to picture-in-picture mode. Close the video table of contents for the best experience with picture-in-picture. You can use picture-in-picture mode so you can follow the video as you complete the tasks in this tutorial. Click the timestamps for each task to follow along.The following animated image shows how to use the video picture-in-picture and table of contents features: ![How to use picture-in-picture and chapters](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/pip-and-chapters.gif)\{: width="560px" height="315px" data-tearsheet="this"\} \#\#\# Get help in the community If you need help with this tutorial, you can ask a question or find an answer in the [watsonx.ai Community discussion forum](https://community.ibm.com/community/user/watsonx/communities/community-home/digestviewer?communitykey=81927b7e-9a92-4236-a0e0-018a27c4ad6e)\{: new\_window\}. \#\#\# Set up your browser windows For the optimal experience completing this tutorial, open Cloud Pak for Data in one browser window, and keep this tutorial page open in another browser window to switch easily between the two applications. Consider arranging the two browser windows side-by-side to make it easier to follow along. ![Side-by-side tutorial and UI](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/tutorial-side-by-side-wx.png)\{: width="560px" height="315px" data-tearsheet="this"\} Tip: If you encounter a guided tour while completing this tutorial in the user interface, click **Maybe later**.  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 1: Open a project
+    
+    You need a project to store the sample notebook. Watch a video to see how to create a sandbox project and associate a service. Then follow the steps to verify that you have an existing project or create a sandbox project.
+    
+    This video provides a visual method to learn the concepts and tasks in this documentation.
+    
+    Follow the steps to verify that you have an existing project or create a project. 1. From the watsonx home screen, scroll to the *Projects* section. If you see any projects listed, then skip to [Associate the Watson Machine Learning service](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#associate). If you don't see any projects, then follow these steps to create a project. 1. Click **Create a sandbox project**. When the project is created, you will see the sandbox in the *Projects* section. 1. Open an existing project or the new sandbox project. \#\#\# Associate the Watson Machine Learning service with the project You will use Watson Machine Learning to prompt the foundation model, so follow these steps to associate your Watson Machine Learning service instance with your project. 1. In the project, click the **Manage** tab. 1. Click the **Services & Integrations** page. 1. Check if this project has an associated Watson Machine Learning service. If there is no associated service, then follow these steps: 1. Click **Associate service**. 1. Check the box next to your **Watson Machine Learning** service instance. 1. Click **Associate**. 1. If necessary, click **Cancel** to return to the *Services & Integrations* page. For more information or to watch a video, see [Creating a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html)\{: new\_window\}. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the *Manage* tab with the associated service. You are now ready to add the sample notebook to your project.  
+      
+    ![Manage tab in the project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-fm-associated-service.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 2: Add the sample notebook to your project
+    
+    The sample notebook uses a small knowledge base and a simple search component to demonstrate the basic pattern. The scenario used in this notebook is for a company that sells seeds for planting in a garden. The website for an online seed catalog has many articles to help customers plan their garden and ultimately select which seeds to purchase. The new widge is being added to the website to answer customer questions on the contents of the articles. Watch this video to see how to add a sample notebook to a project, and then follow the steps to add the notebook to your project.
+    
+    This video provides a visual method to learn the concepts and tasks in this documentation.
+    
+    1. Access the [Simple introduction to retrieval-augmented generation with watsonx.ai](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/fed7cf6b-1c48-4d71-8c04-0fce0e000d43)\{: new\_window\} in the *Samples*. 1. Click **Add to project**. 1. Select your project from the list, and click **Add**. 1. Type the notebook name and description (optional). 1. Select a runtime environment for this notebook. 1. Click **Create**. Wait for the notebook editor to load. 1. From the menu, click **Kernel > Restart & Clear Output**, then confirm by clicking **Restart and Clear All Outputs** to clear the output from the last saved run.  
+    For more information on associated services, see [Adding associated services](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/assoc-services.html)\{: new\_window\}. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the notebook open in Edit mode. Now you are ready to set up the prerequisites for running the notebook.  
+      
+    ![Notebook open in Edit mode](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-fm-notebook-begin.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 3: Edit the notebook
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 00:57. Before you can run the notebook, you need to set up the environment. Follow these steps to verify the notebook prerequisites: 1. Scroll to the *For IBM watsonx on IBM Cloud* section in the notebook to see the two prerequisites to run the notebook. 1. Under the *Create an IBM Cloud API key* section, you need to pass your credentials to the Watson Machine Learning API using an API key. If you don't already have a saved API key, then follow these steps to create an API key.  
+    1. Access the [IBM Cloud console API keys page](https://cloud.ibm.com/iam/apikeys)\{: new\_window\}. 1. Click **Create an IBM Cloud API key**. If you have any existing API keys, the button may be labelled **Create**. 1. Type a name and description. 1. Click **Create**. 1. **Copy** the API key. 1. Download the API key for future use. 1. Review the *Associate an instance of the Watson Machine Learning service with the current project* section. You completed this prerequisite in [Task 1](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#step01). 1. Scroll to the *Run the cell to provide the IBM Cloud API key* section: 1. Click the **Run** icon ![Run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook-run.png)\{: iih\} to run the cell. 1. Paste the API key, and press `Enter`. 1. Under *Run the cell to set the credentials for IBM watsonx on IBM Cloud*, click the **Run** icon ![Run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook-run.png)\{: iih\} to run the cell and set the credentials. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following images shows the notebook with the prerequisites completed. Now you are ready to run the notebook and review the output.  
+      
+    ![Notebook with the prerequisites completed](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-fm-notebook-apikey.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Task 4: Run the notebook and review the output
+    
+    ![preview tutorial video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) To preview this task, watch the video beginning at 01:03. The sample notebook includes information about the retrieval-augmented generation and how you can adapt the notebook for your specific use case. Follow these steps to run the notebook and review the output: 1. Scroll to the *Step 2: Create a Knowledge Base* section in the notebook: 1. Click the **Run** icon ![Run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook-run.png)\{: iih\} for each of the three cells in that section. 1. Review the output for the three cells in the section. The code in these cells sets up the knowledge base as a collection of two articles. These articles were written as samples for watsonx.ai, they are not real articles published anywhere else. The authors and publication dates are fictional. 1. Scroll to the *Step 3: Build a simple search component* section in the notebook: 1. Click the **Run** icon ![Run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook-run.png)\{: iih\} for each of the two cells in that section. 1. Review the output for the two cells in the section. The code in these cells builds a simple search component. Many articles that discuss retrieval-augmented generation assume the retrieval component uses a vector database. However, to perform the general retrieval-augmented generation pattern, any search-and-retrieve method that can reliably return relevant content from the knowledge base will do. In this notebook, the search component is a trivial search function that returns the index of one or the other of the two articles in the knowledge base, based on a simple regular expression match. 1. Scroll to the *Step 4: Craft prompt text* section in the notebook: 1. Click the **Run** icon ![Run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook-run.png)\{: iih\} for each of the two cells in that section. 1. Review the output for the two cells in the section. The code in these cells crafts the prompt text. There is no one, best prompt for any given task. However, models that have been instruction-tuned, such as bigscience/mt0-xxl-13b, google/flan-t5-xxl-11b, or google/flan-ul2-20b, can generally perform this task with a sample prompt. Conservative decoding methods tend towards succinct answers. In the prompt, notice two string placeholders (marked with %s) that will be replaced at generation time: - The first placeholder will be replaced with the text of the relevant article from the knowledge base - The second placeholder will be replaced with the question to be answered 1. Scroll to the *Step 5: Generate output using the foundation models Python library* section in the notebook: 1. Click the **Run** icon ![Run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook-run.png)\{: iih\} for each of the three cells in that section. 1. Review the output for the three cells in the section. The code in these cells generates output by using the Python library. You can prompt foundation models in watsonx.ai programmatically using the Python library. For more information about the library, see the following topics: - [Introduction to the foundation models Python library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-python-lib.html?context=wx)\{: new\_window\} - [Foundation models Python library reference](https://ibm.github.io/watson-machine-learning-sdk/foundation_models.html)\{: new\_window\} 1. Scroll to the *Step 6: Pull everything together to perform retrieval-augmented generation* section in the notebook: 1. Click the **Run** icon ![Run icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook-run.png)\{: iih\} for each of the two cells in that section. This code pulls everything together to perform retrieval-augmented generation. 1. Review the output for the first cell in the section. The code in this cell sets up the user input elements. 1. For the second cell in the section, type a question related to tomatoes or cucumbers to see the answer and the source. For example, `Do I use mulch with tomatoes?`. 1. Review the answer to your question. \#\#\# ![Checkpoint icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/checkmark--filled-blue.svg)\{: iih\} Check your progress The following image shows the completed notebook.  
+      
+    ![The completed notebook](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/wx-fm-notebook-complete.png)\{: width="100%" \}  
+    [Back to the top](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-fm-notebook.html?context=cdpaas&locale=en#video-preview)  
+    
+<!-- </ul> -->
+
+## Next steps ##
+
+<!-- <ul> -->
+
+ *  ![Watch Video](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/lc-video.png) Watch the video beginning at 02:55 to learn about considerations for applying the retrieval\-augmented generation pattern to a production solution\.
+ *  Try the [Prompt a foundation model](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/get-started-prompt-lab.html) tutorial using Prompt Lab\.
+
+<!-- </ul> -->
+
+## Additional resources ##
+
+<!-- <ul> -->
+
+ *  [Foundation models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html)
+ *  [Prompt Lab](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-prompt-lab.html)
+ *  [Python library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-python-lib.html)
+ *  View more [videos](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/videos-wx.html)\.
+ *  Find sample data sets, projects, models, prompts, and notebooks in the Samples to gain hands\-on experience:
+    
+    ![Notebook icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/notebook.svg)[Notebooks](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=notebook) that you can add to your project to get started analyzing data and building models.
+    
+    ![Project icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/ibm-cloud--projects.svg)[Projects](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=project-template) that you can import containing notebooks, data sets, prompts, and other assets.
+    
+    ![Data set icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/data--set.svg)[Data sets](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=dataset) that you can add to your project to refine, analyze, and build models.
+    
+    ![Prompt icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/prompt.svg)[Prompts](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=example-prompt) that you can use in the Prompt Lab to prompt a foundation model.
+    
+    ![Model icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/model.svg)[Foundation models](https://dataplatform.cloud.ibm.com/gallery?context=wx&format=foundation-model) that you can use in the Prompt Lab.
+
+<!-- </ul> -->
+
+**Parent topic:**[Quick start tutorials](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/quickstart-tutorials.html)
+
+<!-- </article "role="article" "> -->

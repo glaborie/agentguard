@@ -1,0 +1,53 @@
+# Introduction to modeling #
+
+A model is a set of rules, formulas, or equations that can be used to predict an outcome based on a set of input fields or variables\. For example, a financial institution might use a model to predict whether loan applicants are likely to be good or bad risks, based on information that is already known about past applicants\.
+
+Video disclaimer: Some minor steps and graphical elements in these videos might differ from your platform\.
+
+[https://video\.ibm\.com/embed/recorded/131116287](https://video.ibm.com/embed/recorded/131116287)
+
+The ability to predict an outcome is the central goal of predictive analytics, and understanding the modeling process is the key to using flows in  Watson Studio\.
+
+Figure 1\. A decision tree model
+
+![A decision tree model](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/spss-tree-diagram-Jun2023.png)
+
+This example uses a decision tree model, which classifies records (and predicts a response) using a series of decision rules\. For example:
+
+    IF income = Medium 
+    AND cards <5
+    THEN -> 'Good'
+
+While this example uses a CHAID (Chi\-squared Automatic Interaction Detection) model, it is intended as a general introduction, and most of the concepts apply broadly to other modeling types in  Watson Studio\.
+
+To understand any model, you first need to understand the data that goes into it\. The data in this example contains information about the customers of a bank\. The following fields are used:
+
+<!-- <table "summary="" class="defaultstyle" "> -->
+
+| Field name     | Description                                                   |
+| -------------- | ------------------------------------------------------------- |
+| Credit\_rating | Credit rating: 0=Bad, 1=Good, 9=missing values                |
+| Age            | Age in years                                                  |
+| Income         | Income level: 1=Low, 2=Medium, 3=High                         |
+| Credit\_cards  | Number of credit cards held: 1=Less than five, 2=Five or more |
+| Education      | Level of education: 1=High school, 2=College                  |
+| Car\_loans     | Number of car loans taken out: 1=None or one, 2=More than two |
+
+<!-- </table "summary="" class="defaultstyle" "> -->
+
+The bank maintains a database of historical information on customers who have taken out loans with the bank, including whether or not they repaid the loans (Credit rating = Good) or defaulted (Credit rating = Bad)\. Using this existing data, the bank wants to build a model that will enable them to predict how likely future loan applicants are to default on the loan\.
+
+Using a decision tree model, you can analyze the characteristics of the two groups of customers and predict the likelihood of loan defaults\.
+
+This example uses the flow named  Introduction to Modeling, available in the example project \. The data file is  tree\_credit\.csv\.
+
+Let's take a look at the flow\.
+
+<!-- <ol> -->
+
+1.  Open the  Example Project\.
+2.  Scroll down to the  Modeler flows section, click  View all, and select the  Introduction to Modeling flow\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

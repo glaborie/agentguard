@@ -1,0 +1,17 @@
+# kdeapply properties #
+
+You can use the KDE Modeling node to generate a KDE model nugget\. The scripting name of this model nugget is `kdeapply`\. For information on scripting the modeling node itself, see [kdemodel properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/kdemodelnodeslots.html#kdemodelnodeslots)\.
+
+<!-- <table "summary="kdeapply properties" id="kdenuggetnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+kdeapply properties  
+
+Table 1\. kdeapply properties
+
+| `kdeapply` properties | Data type | Property description                                                                                       |
+| --------------------- | --------- | ---------------------------------------------------------------------------------------------------------- |
+| `out_log_density`     | *boolean* | Specify `True` or `False` to include or exclude the log density value in the output\. Default is `False`\. |
+
+<!-- </table "summary="kdeapply properties" id="kdenuggetnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

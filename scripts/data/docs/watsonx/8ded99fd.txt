@@ -1,0 +1,5 @@
+# applykmeansnode properties #
+
+You can use K\-Means modeling nodes to generate a K\-Means model nugget\. The scripting name of this model nugget is *applykmeansnode*\. No other properties exist for this model nugget\. For more information on scripting the modeling node itself, see [kmeansnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/kmeansnodeslots.html#kmeansnodeslots)\.
+
+<!-- </article "role="article" "> -->

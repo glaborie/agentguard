@@ -1,0 +1,26 @@
+# Node and flow property examples #
+
+You can use node and flow properties in a variety of ways with SPSS Modeler\. They're most commonly used as part of a script: either a standalone script, used to automate multiple flows or operations, or a flow script, used to automate processes within a single flow\. You can also specify node parameters by using the node properties within the SuperNode\. At the most basic level, properties can also be used as a command line option for starting SPSS Modeler\. Using the `-p` argument as part of command line invocation, you can use a flow property to change a setting in the flow\.
+
+<!-- <table "summary="Node and flow property examples" class="defaultstyle" "> -->
+
+Node and flow property examples  
+
+Table 1\. Node and flow property examples
+
+| Property                | Meaning                                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `s.max_size`            | Refers to the property `max_size` of the node named `s`\.                                                       |
+| `s:samplenode.max_size` | Refers to the property `max_size` of the node named `s`, which must be a Sample node\.                          |
+| `:samplenode.max_size`  | Refers to the property `max_size` of the Sample node in the current flow (there must be only one Sample node)\. |
+| `s:sample.max_size`     | Refers to the property `max_size` of the node named `s`, which must be a Sample node\.                          |
+| `t.direction.Age`       | Refers to the role of the field `Age` in the Type node `t`\.                                                    |
+| `:.max_size`            | \*\*\* NOT LEGAL \*\*\* You must specify either the node name or the node type\.                                |
+
+<!-- </table "summary="Node and flow property examples" class="defaultstyle" "> -->
+
+The example `s:sample.max_size` illustrates that you don't need to spell out node types in full\.
+
+The example `t.direction.Age` illustrates that some slot names can themselves be structured—in cases where the attributes of a node are more complex than simply individual slots with individual values\. Such slots are called structured or complex properties\.
+
+<!-- </article "role="article" "> -->

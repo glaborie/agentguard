@@ -1,0 +1,34 @@
+# Text Link Analysis node #
+
+In some cases, you may not need to create a category model to score\. The Text Link Analysis (TLA) node adds a pattern\-matching technology to text mining's concept extraction\. This identifies relationships between the concepts in the text data based on known patterns\. These relationships can describe how a customer feels about a product, which companies are doing business together, or even the relationships between genes or pharmaceutical agents\.
+
+Figure 1\. Text Link Analysis node
+
+![Text Link Analysis node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel_tla.png)
+
+<!-- <ol> -->
+
+1.  Add a Text Link Analysis node to your canvas and connect it to the Data Asset node that points to  hotelSatisfaction\.csv\. Double\-click the node to open its properties\.
+2.  Select `id` for the  ID field and `Comments` for the  Text field\. Note that only the  Text field is required\.
+3.  For  Copy resources from, select the  Hotel Satisfaction (English) template\.
+    
+    Figure 2. Text Link Analysis node FIELD properties
+    
+    ![Text Link Analysis node FIELD properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel_tlaprops.png)
+4.  Under  Expert, select  Accommodate spelling for a minimum word character length of\.
+    
+    Figure 3. Text Link Analysis node Expert properties
+    
+    ![Text Link Analysis node Expert properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel_tlaexpert.png)The resulting output is a table (or the result of an Export node).
+    
+    Figure 4. Raw TLA output
+    
+    ![Raw TLA output](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel_tlaraw.png)
+    
+    Figure 5. Counting sentiments on a TLA node
+    
+    ![Counting sentiments on a TLA node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_ta_hotel_tlacount.png)
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

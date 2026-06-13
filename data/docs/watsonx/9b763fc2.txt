@@ -1,0 +1,24 @@
+# Selecting functions #
+
+The function list displays all available SPSS Modeler functions and operators\. Scroll to select a function from the list, or, for easier searching, use the drop\-down list to display a subset of functions or operators\. Available functions are grouped into categories for easier searching\.
+
+Most of these categories are described in the Reference section of the CLEM language description\. For more information, see [Functions reference](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/clem_reference/clem_function_ref.html#clem_function_ref)\.
+
+The other categories are as follows\.
+
+<!-- <ul> -->
+
+ *  General Functions\. Contains a selection of some of the most commonly\-used functions\.
+ *  Recently Used\. Contains a list of CLEM functions used within the current session\.
+ *  @ Functions\. Contains a list of all the special functions, which have their names preceded by an "@" sign\. Note: The `@DIFF1(FIELD1,FIELD2)` and `@DIFF2(FIELD1,FIELD2)` functions require that the two field types are the same (for example, both Integer or both Long or both Real)\.
+ *  Database Functions\. If the flow includes a database connection, this selection lists the functions available from within that database, including user\-defined functions (UDFs)\. For more information, see [Database functions](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/clem_reference/expressionbuild_database_functions.html#expressionbuild_database_functions)\.
+ *  Database Aggregates\. If the flow includes a database connection, this selection lists the aggregation options available from within that database\. These options are available in the Expression Builder of the Aggregate node\.
+ *  Built\-In Aggregates\. Contains a list of the possible modes of aggregation that can be used\.
+ *  Operators\. Lists all the operators you can use when building expressions\. Operators are also available from the buttons in the center of the dialog box\.
+ *  All Functions\. Contains a complete list of available CLEM functions\.
+
+<!-- </ul> -->
+
+Double\-click a function to insert it into the expression field at the position of the cursor\.
+
+<!-- </article "role="article" "> -->

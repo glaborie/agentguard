@@ -1,0 +1,56 @@
+# Watson Natural Language Processing task catalog #
+
+Watson Natural Language Processing encapsulates natural language functionality in standardized components called blocks or workflows\. Each block or workflow can be loaded and run in a notebook, some directly on input data, others in a given order\.
+
+This topic contains descriptions of the natural language processing tasks supported in the Watson Natural Language Processing library\. It lists the task names, the languages that are supported, dependencies to other blocks and includes sample code of how you use the natural language processing functionality in a Python notebook\.
+
+The following natural language processing tasks are supported as blocks or workflows in the Watson Natural Language Processing library:
+
+<!-- <ul> -->
+
+ *  [Language detection](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-language-detection.html)
+ *  [Syntax analysis](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-syntax.html)
+ *  [Noun phrase extraction](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-noun-phrase.html)
+ *  [Keyword extraction and ranking](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-keyword.html)
+ *  [Entity extraction](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-entity-enhanced.html)
+ *  [Sentiment classification](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-sentiment.html)
+ *  [Tone classification](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-tone.html)
+ *  [Emotion classification](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-emotion.html)
+ *  [Concepts extraction](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-concept-ext.html)
+ *  [Relations extraction](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-relation-extraction.html)
+ *  [Hierarchical text categorization](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-hierarchical-cat.html)
+
+<!-- </ul> -->
+
+## Language codes ##
+
+Many of the pre\-trained models are available in many languages\. The following table lists the language codes and the corresponding language\.
+
+<!-- <table> -->
+
+Language codes and their corresponding language equivalents
+
+| Language code | Corresponding language | Language code | Corresponding language |
+| ------------- | ---------------------- | ------------- | ---------------------- |
+| af            | Afrikaans              | ar            | Arabic                 |
+| bs            | Bosnian                | ca            | Catalan                |
+| cs            | Czech                  | da            | Danish                 |
+| de            | German                 | el            | Greek                  |
+| en            | English                | es            | Spanish                |
+| fi            | Finnish                | fr            | French                 |
+| he            | Hebrew                 | hi            | Hindi                  |
+| hr            | Croatian               | it            | Italian                |
+| ja            | Japanese               | ko            | Korean                 |
+| nb            | Norwegian Bokmål       | nl            | Dutch                  |
+| nn            | Norwegian Nynorsk      | pl            | Polish                 |
+| pt            | Portuguese             | ro            | Romanian               |
+| ru            | Russian                | sk            | Slovak                 |
+| sr            | Serbian                | sv            | Swedish                |
+| tr            | Turkish                | zh\_cn        | Chinese (Simplified)   |
+| zh\_tw        | Chinese (Traditional)  |
+
+<!-- </table ""> -->
+
+**Parent topic:**[Watson Natural language Processing library](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp.html)
+
+<!-- </article "role="article" "> -->

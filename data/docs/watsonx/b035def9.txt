@@ -1,0 +1,17 @@
+# applylinearasnode properties #
+
+You can use Linear\-AS modeling nodes to generate a Linear\-AS model nugget\. The scripting name of this model nugget is *applylinearasnode*\. For more information on scripting the modeling node itself, see [linearasnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/properties/linearASslots.html#linearASslots)\.
+
+<!-- <table "summary="applylinearasnode Properties" class="defaultstyle" "> -->
+
+applylinearasnode Properties  
+
+Table 1\. applylinearasnode Properties
+
+| `applylinearasnode` Property | Values          | Property description                                                                                                                             |
+| ---------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `enable_sql_generation`      | `false``native` | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applylinearasnode Properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

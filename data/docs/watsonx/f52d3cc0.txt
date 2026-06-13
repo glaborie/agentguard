@@ -1,0 +1,20 @@
+# Feedback logging in watsonx\.governance #
+
+You can enable feedback logging in watsonx\.governance to configure model evaluations\.
+
+To [manage feedback data](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-manage-feedback-data.html) for configuring quality and generative AI quality evaluations, watsonx\.governance must log your feedback data in the feedback logging table\.
+
+Generative AI quality evaluations use feedback data to generate results for the following task types when you evaluate prompt templates:
+
+<!-- <ul> -->
+
+ *  Text summarization
+ *  Content generation
+ *  Question answering
+ *  Entity extraction
+
+<!-- </ul> -->
+
+Quality evaluations use feedback data to generate results for text classification tasks\.
+
+<!-- </article "role="article" "> -->

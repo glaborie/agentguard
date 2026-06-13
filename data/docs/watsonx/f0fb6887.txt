@@ -1,0 +1,76 @@
+# Managing the user API key #
+
+Certain operations in IBM watsonx require an API key for secure authorization\. You can generate and rotate a user API key as needed to help ensure your operations run smoothly\.
+
+## User API key overview ##
+
+Operations running within services in IBM watsonx require credentials for secure authorization\. These operations use an API key for authorization\. A valid API key is required for many long\-running tasks, including the following:
+
+<!-- <ul> -->
+
+ *  Model training in Watson Machine Learning
+ *  Problem solving with Decision Optimization
+ *  Data transformation with DataStage flows
+ *  Other runtime services (for example, Data Refinery and Pipelines) that accept API key references
+
+<!-- </ul> -->
+
+Both scheduled and ad hoc jobs require an API key for authorization\. An API key is used for jobs when:
+
+<!-- <ul> -->
+
+ *  Creating a job schedule with a predefined key
+ *  Updating the API key for a scheduled job
+ *  Providing an API key for an ad hoc job
+
+<!-- </ul> -->
+
+User API keys give control to the account owner to secure and renew credentials, thus helping to ensure operations run without interruption\. Keys are unique to the IBMid and account\. If you change the account you are working in, you must generate a new key\.
+
+### Active and Phased out keys ###
+
+When you create an API key, it is placed in **Active** state\. The **Active key** is used for authorization for operations in IBM watsonx\.
+
+When you rotate a key, a new key is created in **Active** state and the existing key is changed to **Phased out** state\. A Phased out key is not used for authorization and can be deleted\.
+
+## Viewing the current API key ##
+
+Click your avatar and select **Profile and settings** to open your account profile\. Select **User API key** to view the **Active** and **Phased out** keys\.
+
+## Creating an API key ##
+
+If you do not have an API key, you can create a key by clicking **Create a key**\.
+
+A new key is created in **Active** state\. The key automatically authorizes operations that require a secure credential\. The key is stored in both IBM Cloud and IBM watsonx\. You can view the API keys for your IBM Cloud account at [API keys](https://cloud.ibm.com/iam/apikeys)\.
+
+User API Keys take the form **cpd\-apikey\-\{username\}\-\{timeStamp\}**, where username is the IBMid of the account owner and timestamp indicates when the key was created\.
+
+## Rotating an API key ##
+
+If the API key becomes stale or invalid, you can generate a new **Active** key for use by all operations\.
+
+To rotate a key, click **Rotate**\.
+
+A new key is created to replace the current key\. The rotated key is placed in **Phased out** status\. A **Phased out** key is not available for use\.
+
+## Deleting a phased out API key ##
+
+When you are certain the phased out key is no longer needed for operations, click the minus sign to delete it\. Deleting keys might cause running operations to fail\.
+
+## Deleting all API keys ##
+
+Delete all keys (both **Active** and **Phased out**) by clicking the trash can\. Deleting keys might cause running operations to fail\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Creating and managing jobs in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/jobs.html)
+ *  [Adding task credentials](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/task-credentials.html)
+ *  [Understanding API keys](https://cloud.ibm.com/docs/account?topic=account-manapikey&interface=ui)
+
+<!-- </ul> -->
+
+**Parent topic:**[Administering your accounts and services](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/administer-accounts.html)
+
+<!-- </article "role="article" "> -->

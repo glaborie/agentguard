@@ -1,0 +1,92 @@
+# Adding conditions to the pipeline #
+
+Add conditions to a pipeline to handle various scenarios\.
+
+## Configuring conditions for the pipeline ##
+
+As you create a pipeline, you can specify conditions that must be met before you run the pipeline\. For example, you can set a condition that the output from a node must satisfy a particular condition before you proceed with the pipeline execution\.
+
+To define a condition:
+
+<!-- <ol> -->
+
+1.  Hover over the link between two nodes\.
+2.  Click **Add condition**\.
+3.  Choose the type of condition:
+    
+    <!-- <ul> -->
+    
+     *  [Condition Response](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-conditions.html?context=cdpaas&locale=en#node) checks a condition on the status of the previous node.
+     *  [Simple condition](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-conditions.html?context=cdpaas&locale=en#simple) is a no-code condition in the form of an if-then statement.
+     *  [Advanced condition](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-conditions.html?context=cdpaas&locale=en#advanced) Advanced condition uses expression code, providing the most features and flexibility.
+    
+    <!-- </ul> -->
+    
+4.  Define and save your expression\.
+
+<!-- </ol> -->
+
+![Defining a condition](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/pipelines_adding_condition.gif)
+
+When you define your expression, a summary captures the condition and the expected result\. For example:
+
+If **Run AutoAI** is **Successful**, then **Create deployment node**\.
+
+When you return to the flow, you see an indicator that you defined a condition\. Hover over the icon to edit or delete the condition\.
+
+![Viewing a successful condition](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/oflow-condition1.png)
+
+## Configuring a condition based on node status ##
+
+If you select **Condition Response** as your condition type, the previous node status must satisfy at least one of these conditions to continue with the flow:
+
+<!-- <ul> -->
+
+ *  Completed \- the node activity is completed without error\.
+ *  Completed with warnings \- the node activity is completed but with warnings\.
+ *  Completed with errors \- the node activity is completed, but with errors\.
+ *  Failed \- the node activity failed to complete\.
+ *  Cancelled \- the previous action or activity was canceled\.
+
+<!-- </ul> -->
+
+## Configuring a simple condition ##
+
+To configure a simple condition, choose the condition that must be satisfied to continue with the flow\.
+
+<!-- <ol> -->
+
+1.  *Optional:* edit the default name\.
+2.  Depending on the node, choose a variable from the drop\-down options\. For example, if you are creating a condition based on a Run AutoAI node, you can choose Model metric as the variable to base your condition on\.
+3.  Based on the variable, choose an operator from: Equal to, Not equal to, Greater than, Less than, Greater than or equal to, Less than or equal to\.
+4.  Specify the required value\. For example, if you are basing a condition on an AutoAI metric, specify a list of values that consists of the available metrics\.
+5.  *Optional:* click the plus icon to add an **And** (all conditions must be met) or an **Or** (either condition must be met) to the expression to build a compound conditional statement\.
+6.  Review the summary and save the condition\.
+
+<!-- </ol> -->
+
+## Configuring an advanced condition ##
+
+Use coding constructs to build a more complex condition\. The next node runs when the condition is met\. You build the advanced condition by using the expression builder\.
+
+<!-- <ol> -->
+
+1.  *Optional:* edit the default name\.
+2.  Add items from the **Expression elements** panel to the **Expression** canvas to build your condition\. You can also type your conditions and the elements autocomplete\.
+3.  When your expression is complete, review the summary and save the condition\.
+
+<!-- </ol> -->
+
+### Learn more ###
+
+For more information on using the code editor to build an expression, see:
+
+<!-- <ul> -->
+
+ *  [Functions used in pipelines Expression Builder](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-expr-builder.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Creating a pipeline](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-orchestration-create.html)
+
+<!-- </article "role="article" "> -->

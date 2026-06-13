@@ -1,0 +1,29 @@
+# Building the flow #
+
+Figure 1\. Feature Selection example flow
+
+![Feature Selection example flow](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_screening.png)
+
+<!-- <ol> -->
+
+1.  Add a Data Asset node that points to  customer\_dbase\.csv\.
+2.  Add a Type node after the Data Asset node\.
+3.  Double\-click the Type node to open its properties, and change the role for `response_01` to  Target\. Change the role to  None for the other response fields (`response_02` and `response_03`) and for the customer ID (`custid`) field\. Leave the role set to  Input for all other fields\.
+    
+    Figure 2. Adding a Type node
+    
+    ![Adding a Type node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_screening_target.png)
+4.  Click  Read Values and then click  Save\.
+5.  Add a Feature Selection modeling node after the Type node\. In the node properties, the rules and criteria used for screening or disqualifying fields are defined\.
+    
+    Figure 3. Adding a Feature Selection node
+    
+    ![Adding a Feature Selection node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/tut_screening_criteria.png)
+6.  Run the flow to generate the Feature Selection model nugget\.
+7.  To look at the results, right\-click the model nugget and choose  View Model\. The results show the fields found to be useful in the prediction, ranked by importance\. By examining these fields, you can decide which ones to use in subsequent modeling sessions\.
+8.  To compare results without feature selection, you must add two CHAID modeling nodes to the flow: one that uses feature selection and one that doesn't\. Add two CHAID nodes, one connected to the Type node and the other connected to the Feature Selection model nugget, as shown in the example flow at the beginning of this section\.
+9.  Double\-click each CHAID node to open its properties\. Under  Objectives, make sure that  Build new model and  Create a standard model are selected\. Under , select  Custom and set it to 5\.
+
+<!-- </ol> -->
+
+<!-- </article "role="article" "> -->

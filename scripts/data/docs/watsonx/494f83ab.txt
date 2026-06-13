@@ -1,0 +1,38 @@
+# decisionlistnode properties #
+
+![Decision List node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/decisionlistnodeicon.png)The Decision List node identifies subgroups, or segments, that show a higher or lower likelihood of a given binary outcome relative to the overall population\. For example, you might look for customers who are unlikely to churn or are most likely to respond favorably to a campaign\. You can incorporate your business knowledge into the model by adding your own custom segments and previewing alternative models side by side to compare the results\. Decision List models consist of a list of rules in which each rule has a condition and an outcome\. Rules are applied in order, and the first rule that matches determines the outcome\.
+
+<!-- <table "summary="decisionlistnode properties" id="decisionlistnodeslots__table_e2q_jbj_cdb" class="defaultstyle" "> -->
+
+decisionlistnode properties  
+
+Table 1\. decisionlistnode properties
+
+| `decisionlistnode` Properties     | Values                      | Property description                                                                                                                                                             |
+| --------------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target`                          | *field*                     | Decision List models use a single target and one or more input fields\. A frequency field can also be specified\. See [Common modeling node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/modelingnodeslots_common.html#modelingnodeslots_common) for more information\. |
+| `model_output_type`               | `Model``InteractiveBuilder` |                                                                                                                                                                                  |
+| `search_direction`                | `Up``Down`                  | Relates to finding segments; where Up is the equivalent of High Probability, and Down is the equivalent of Low Probability\.                                                     |
+| `target_value`                    | *string*                    | If not specified, will assume true value for flags\.                                                                                                                             |
+| `max_rules`                       | *integer*                   | The maximum number of segments excluding the remainder\.                                                                                                                         |
+| `min_group_size`                  | *integer*                   | Minimum segment size\.                                                                                                                                                           |
+| `min_group_size_pct`              | *number*                    | Minimum segment size as a percentage\.                                                                                                                                           |
+| `confidence_level`                | *number*                    | Minimum threshold that an input field has to improve the likelihood of response (give lift), to make it worth adding to a segment definition\.                                   |
+| `max_segments_per_rule`           | *integer*                   |                                                                                                                                                                                  |
+| `mode`                            | `Simple``Expert`            |                                                                                                                                                                                  |
+| `bin_method`                      | `EqualWidth``EqualCount`    |                                                                                                                                                                                  |
+| `bin_count`                       | *number*                    |                                                                                                                                                                                  |
+| `max_models_per_cycle`            | *integer*                   | Search width for lists\.                                                                                                                                                         |
+| `max_rules_per_cycle`             | *integer*                   | Search width for segment rules\.                                                                                                                                                 |
+| `segment_growth`                  | *number*                    |                                                                                                                                                                                  |
+| `include_missing`                 | *flag*                      |                                                                                                                                                                                  |
+| `final_results_only`              | *flag*                      |                                                                                                                                                                                  |
+| `reuse_fields`                    | *flag*                      | Allows attributes (input fields which appear in rules) to be re\-used\.                                                                                                          |
+| `max_alternatives`                | *integer*                   |                                                                                                                                                                                  |
+| `calculate_raw_propensities`      | *flag*                      |                                                                                                                                                                                  |
+| `calculate_adjusted_propensities` | *flag*                      |                                                                                                                                                                                  |
+| `adjusted_propensity_partition`   | `Test``Validation`          |                                                                                                                                                                                  |
+
+<!-- </table "summary="decisionlistnode properties" id="decisionlistnodeslots__table_e2q_jbj_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

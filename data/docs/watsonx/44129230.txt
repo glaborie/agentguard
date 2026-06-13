@@ -1,0 +1,140 @@
+# Box connection #
+
+To access your data in Box, create a connection asset for it\.
+
+The Box platform is a cloud content management and file sharing service\.
+
+## Prerequisite: Create a custom app in Box ##
+
+Before you create a connection to Box, you create a custom app in the Box Developer Console\. You can create an app for application\-level access that users can use to share files, or you can create an app for enterprise\-wide access to all user accounts\. With enterprise\-wide access, users do not need to share files and folders with the application\.
+
+<!-- <ol> -->
+
+1.  Go to the [Box Developer Console](https://app.box.com/developers/console), and follow the wizard to create a **Custom App**\. For the **Authentication Method**, select `OAuth 2.0 with JWT (Server Authentication)`\.
+2.  Make the following selections in the **Configuration** page\. Otherwise, keep the default settings\.
+    
+    <!-- <ol> -->
+    
+    1.  Select one of two choices for **App Access Level**:
+        
+        <!-- <ul> -->
+        
+         *  Keep the default **App Access Only** selection to allow access where users share files.  
+            
+         *  Select **App \+ Enterprise Access** to create an app with enterprise-wide access to all user accounts.  
+            
+        <!-- </ul> -->
+        
+    2.  Under **Add and Manage Public Keys**, click **Generate a Public/Private Keypair**. This selection requires that two-factor authentication is enabled on the Box account, but you can disable it afterward. The generated key pair produces a config (`*_config.json`) file for you to download. You will need the information in this file to create the connection in your project.
+    
+    <!-- </ol> -->
+    
+3.  If you selected an **App \+ Enterprise Access**, under **Advanced Features**, select both of these check boxes:
+    
+    <!-- <ul> -->
+    
+     *  **Make API calls using the as-user header**
+     *  **Generate user access tokens**
+    
+    <!-- </ul> -->
+    
+4.  Submit the app client ID to the Box enterprise administrator for authorization: Go to your application in the [Box Developer Console](https://app.box.com/developers/console) and select the **General** link from the left sidebar in your application\. Scroll down to the **App Authorization** section\.
+
+<!-- </ol> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Create the Box connection ###
+
+Enter the values from the downloaded config file for these settings:
+
+<!-- <ul> -->
+
+ *  **Client ID**
+ *  **Client Secret**
+ *  **Enterprise ID**
+ *  **Private Key** (Replace each `\n` with a newline)
+ *  **Private Key Password** (The `passphrase` value in the config file)
+ *  **Public Key** (The `publicKeyID` value in the config file)
+
+<!-- </ul> -->
+
+### Enterprise\-wide app ###
+
+If you configured an enterprise\-wide access app, enter the username of the Box user account in the **Username** field\.
+
+### Application\-level app ###
+
+Users must explicitly share their files with the app's email address in order for the app to access the files\.
+
+<!-- <ol> -->
+
+1.  Make a REST call to the connection to find out the app email address\. For example:
+    
+    `PUT https://api.dataplatform.cloud.ibm.com/v2/connections/{connection_id}/actions/get_user_info?project_id={project_id}`
+    
+    Request body:
+    
+        {}
+    
+    Returns:
+    
+        {
+         "login_name": "AutomationUser_123467_aBcDEFg12h@boxdevedition.com"
+        }
+2.  Share the files and folders in Box that you want accessible from Watson Studio with the login name that was returned by the REST call\.
+
+<!-- </ol> -->
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use the Box connection in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Limitation ##
+
+If you have thousands of files in a Box folder, the connection might not be able to retrieve the files before a time\-out\. Jobs or profiling that use the Box files might not work\.
+
+**Workaround**: Reorganize the file hierarchy in Box so that there are fewer files in the same folder\.
+
+## Supported file types ##
+
+The Box connection supports these file types: Avro, CSV, Delimited text, Excel, JSON, ORC, Parquet, SAS, SAV, SHP, and XML\.
+
+## Learn more ##
+
+[Managing custom apps](https://support.box.com/hc/articles/360044196653-Managing-custom-apps)
+
+**Parent topic**: [Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,85 @@
+# Amazon RDS for Oracle connection #
+
+To access your data in Amazon RDS for Oracle, create a connection asset for it\.
+
+Amazon RDS for Oracle is an Oracle relational database that runs on the Amazon Relational Database Service (RDS)\.
+
+## Supported Oracle versions and editions ##
+
+<!-- <ul> -->
+
+ *  Oracle Database 19c (19\.0\.0\.0)
+ *  Oracle Database 12c Release 2 (12\.2\.0\.1)
+ *  Oracle Database 12c Release 1 (12\.1\.0\.2)
+
+<!-- </ul> -->
+
+## Create a connection to Amazon RDS for Oracle ##
+
+To create the connection asset, you'll need these connection details:
+
+<!-- <ul> -->
+
+ *  Either the Oracle Service name or the Oracle System ID (SID) for the database\.
+ *  Hostname or IP address of the database
+ *  Port number of the database\. (Default is `1521`)
+ *  SSL certificate (if required by the database server)
+
+<!-- </ul> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+**Projects**
+
+You can use Amazon RDS for Oracle connections in the following workspaces and tools:
+
+<!-- <ul> -->
+
+ *  Data Refinery
+ *  Decision Optimization
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Amazon RDS for Oracle setup ##
+
+To set up the Oracle database on Amazon, see these topics:
+
+<!-- <ul> -->
+
+ *  [Creating an Amazon RDS DB Instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateDBInstance.html)
+ *  [Creating an Oracle DB instance and connecting to a database on an Oracle DB instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.Oracle.html)
+ *  [Connecting to your Oracle DB instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ConnectToOracleInstance.html)
+
+<!-- </ul> -->
+
+## Learn more ##
+
+[Amazon RDS for Oracle](https://aws.amazon.com/rds/oracle/)
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

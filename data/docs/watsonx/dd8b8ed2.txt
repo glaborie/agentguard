@@ -1,0 +1,7 @@
+# Set to Flag node #
+
+Use the Set to Flag node to derive flag fields based on the categorical values defined for one or more nominal fields\.
+
+For example, your dataset might contain a nominal field, `BP` (blood pressure), with the values `High`, `Normal`, and `Low`\. For easier data manipulation, you might create a flag field for high blood pressure, which indicates whether or not the patient has high blood pressure\.
+
+<!-- </article "role="article" "> -->

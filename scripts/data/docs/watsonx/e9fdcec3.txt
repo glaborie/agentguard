@@ -1,0 +1,41 @@
+# Bayes Net node #
+
+The Bayesian Network node enables you to build a probability model by combining observed and recorded evidence with "common\-sense" real\-world knowledge to establish the likelihood of occurrences by using seemingly unlinked attributes\. The node focuses on Tree Augmented Naïve Bayes (TAN) and Markov Blanket networks that are primarily used for classification\.
+
+Bayesian networks are used for making predictions in many varied situations; some examples are:
+
+<!-- <ul> -->
+
+ *  Selecting loan opportunities with low default risk\.
+ *  Estimating when equipment will need service, parts, or replacement, based on sensor input and existing records\.
+ *  Resolving customer problems via online troubleshooting tools\.
+ *  Diagnosing and troubleshooting cellular telephone networks in real\-time\.
+ *  Assessing the potential risks and rewards of research\-and\-development projects in order to focus resources on the best opportunities\.
+
+<!-- </ul> -->
+
+A Bayesian network is a graphical model that displays variables (often referred to as **nodes**) in a dataset and the probabilistic, or conditional, independencies between them\. Causal relationships between nodes may be represented by a Bayesian network; however, the links in the network (also known as **arcs**) do not necessarily represent direct cause and effect\. For example, a Bayesian network can be used to calculate the probability of a patient having a specific disease, given the presence or absence of certain symptoms and other relevant data, if the probabilistic independencies between symptoms and disease as displayed on the graph hold true\. Networks are very robust where information is missing and make the best possible prediction using whatever information is present\.
+
+A common, basic, example of a Bayesian network was created by Lauritzen and Spiegelhalter (1988)\. It is often referred to as the "Asia" model and is a simplified version of a network that may be used to diagnose a doctor's new patients; the direction of the links roughly corresponding to causality\. Each node represents a facet that may relate to the patient's condition; for example, "Smoking" indicates that they are a confirmed smoker, and "VisitAsia" shows if they recently visited Asia\. Probability relationships are shown by the links between any nodes; for example, smoking increases the chances of the patient developing both bronchitis and lung cancer, whereas age only seems to be associated with the possibility of developing lung cancer\. In the same way, abnormalities on an x\-ray of the lungs may be caused by either tuberculosis or lung cancer, while the chances of a patient suffering from shortness of breath (dyspnea) are increased if they also suffer from either bronchitis or lung cancer\.
+
+Figure 1\. Lauritzen and Spegelhalter's Asia network example
+
+![Lauritzen and Spegelhalter's Asia network example](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/bn_asia.jpg)
+
+There are several reasons why you might decide to use a Bayesian network:
+
+<!-- <ul> -->
+
+ *  It helps you learn about causal relationships\. From this, it enables you to understand a problem area and to predict the consequences of any intervention\.
+ *  The network provides an efficient approach for avoiding the overfitting of data\.
+ *  A clear visualization of the relationships involved is easily observed\.
+
+<!-- </ul> -->
+
+Requirements\. Target fields must be categorical and can have a measurement level of *Nominal*, *Ordinal*, or *Flag*\. Inputs can be fields of any type\. Continuous (numeric range) input fields will be automatically binned; however, if the distribution is skewed, you may obtain better results by manually binning the fields using a Binning node before the Bayesian Network node\. For example, use Optimal Binning where the  Supervisor field is the same as the Bayesian Network node  Target field\.
+
+Example\. An analyst for a bank wants to be able to predict customers, or potential customers, who are likely to default on their loan repayments\. You can use a Bayesian network model to identify the characteristics of customers most likely to default, and build several different types of model to establish which is the best at predicting potential defaulters\.
+
+Example\. A telecommunications operator wants to reduce the number of customers who leave the business (known as "churn"), and update the model on a monthly basis using each preceding month's data\. You can use a Bayesian network model to identify the characteristics of customers most likely to churn, and continue training the model each month with the new data\.
+
+<!-- </article "role="article" "> -->

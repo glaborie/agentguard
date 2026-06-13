@@ -1,0 +1,20 @@
+# Expression Builder #
+
+You can type CLEM expressions manually or use the Expression Builder, which displays a complete list of CLEM functions and operators as well as data fields from the current flow, allowing you to quickly build expressions without memorizing the exact names of fields or functions\.
+
+The Expression Builder controls automatically add the proper quotes for fields and values, making it easier to create syntactically correct expressions\.
+
+Notes:
+
+<!-- <ul> -->
+
+ *  The Expression Builder is not supported in parameter settings\.
+ *  If you want to change your datasource, before changing the source you should check that the Expression Builder can still support the functions you have selected\. Because not all databases support all functions, you may encounter an error if you run against a new datasource\.
+ *  You can run an SPSS Modeler desktop stream file ( \.str) that contains database functions\. But they aren't yet available in the Expression Builder user interface\.
+
+<!-- </ul> -->
+
+Figure 1\. Expression Builder
+
+![Expression Builder](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/expressionbuilder_full.png)
+<!-- </article "role="article" "> -->

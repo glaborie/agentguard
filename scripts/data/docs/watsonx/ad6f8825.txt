@@ -1,0 +1,87 @@
+# Salesforce\.com connection #
+
+To access your data in Salesforce\.com, create a connection asset for it\.
+
+Salesforce\.com is a cloud\-based software company which provides customer relationship management (CRM)\. The Salesforce\.com connection supports the standard SQL query language to select, insert, update, and delete data from Salesforce\.com products and other supported products that use the Salesforce API\.
+
+## Other supported products that use the Salesforce API ##
+
+<!-- <ul> -->
+
+ *  Salesforce AppExchange
+ *  FinancialForce
+ *  Service Cloud
+ *  ServiceMax
+ *  Veeva CRM
+
+<!-- </ul> -->
+
+## Create a connection to Salesforce\.com ##
+
+To create the connection asset, you need these connection details:
+
+<!-- <ul> -->
+
+ *  The username to access the Salesforce\.com server\.
+ *  The password and security token to access the Salesforce\.com server\. In the **Password** field, append your security token to the end of your password\. For example, `MypasswordMyAccessToken`\. For information about access tokens, see [Reset Your Security Token](https://help.salesforce.com/articleView?id=sf.user_security_token.htm&type=5)\.
+ *  The Salesforce\.com server name\. The default is `login.salesforce.com`\.
+
+<!-- </ul> -->
+
+### Choose the method for creating a connection based on where you are in the platform ###
+
+**In a project** : Click **Assets > New asset > Connect to a data source**\. See [Adding a connection to a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/create-conn.html)\.
+
+**In a deployment space** : Click **Add to space > Connection**\. See [Adding connections to a deployment space](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-space-add-assets.html)\.
+
+**In the Platform assets catalog** : Click **New connection**\. See [Adding platform connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/platform-conn.html)\.
+
+### Next step: Add data assets from the connection ###
+
+<!-- <ul> -->
+
+ *  See [Add data from a connection in a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html)\.
+
+<!-- </ul> -->
+
+## Where you can use this connection ##
+
+You can use Salesforce\.com connections in the following workspaces and tools:
+
+**Projects**
+
+<!-- <ul> -->
+
+ *  SPSS Modeler
+ *  Synthetic Data Generator
+
+<!-- </ul> -->
+
+**Catalogs**
+
+<!-- <ul> -->
+
+ *  Platform assets catalog
+
+<!-- </ul> -->
+
+## Restriction ##
+
+You can only use this connection for source data\. You cannot write to data or export data with this connection\.
+
+## Known issue ##
+
+The following objects in the SFORCE schema are not supported: APPTABMEMBER, CONTENTDOCUMENTLINK, CONTENTFOLDERITEM, CONTENTFOLDERMEMBER, DATACLOUDADDRESS, DATACLOUDCOMPANY, DATACLOUDCONTACT, DATACLOUDANDBCOMPANY, DATASTATISTICS, ENTITYPARTICLE, EVENTBUSSUBSCRIBER, FIELDDEFINITION, FLEXQUEUEITEM, ICONDEFINITION, IDEACOMMENT, LISTVIEWCHARINSTANCE, LOGINEVENT, OUTGOINGEMAIL, OUTGOINGEMAILRELATION, OWNERCHANGEOPTIONINFO, PICKLISTVALUEINFO, PLATFORMACTION, RECORDACTIONHISTORY, RELATIONSHIPDOMAIN, RELATIONSHIPINFO, SEARCHLAYOUT, SITEDETAIL, USERAPPMENUITEM, USERENTITYACCESS, USERFIELDACCESS, USERRECORDACCESS, VOTE\.
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Get Started with Salesforce](https://help.salesforce.com/s/articleView?id=sf.basics_welcome_salesforce_users.htm&type=5)
+ *  [Salesforce editions with API access](https://help.salesforce.com/s/articleView?id=000326486&type=1)
+
+<!-- </ul> -->
+
+**Parent topic:**[Supported connections](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn_types.html)
+
+<!-- </article "role="article" "> -->

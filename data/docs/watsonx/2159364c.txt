@@ -1,0 +1,44 @@
+# Distinct node #
+
+Duplicate records in a data set must be removed before data mining can begin\. For example, in a marketing database, individuals may appear multiple times with different address or company information\. You can use the Distinct node to find or remove duplicate records in your data, or to create a single, composite record from a group of duplicate records\.
+
+To use the Distinct node, you must first define a set of key fields that determine when two records are considered to be duplicates\.
+
+If you do not pick all your fields as key fields, then two "duplicate" records may not be truly identical because they can still differ in the values of the remaining fields\. In this case, you can also define a sort order that is applied within each group of duplicate records\. This sort order gives you fine control over which record is treated as the first within a group\. Otherwise, all duplicates are considered to be interchangeable and any record might be selected\. The incoming order of the records is not taken into account, so it doesn't help to use an upstream Sort node (see "Sorting records within the Distinct node" on this page)\.
+
+Mode\. Specify whether to create a composite record, or to either include or exclude (discard) the first record\.
+
+<!-- <ul> -->
+
+ *  Create a composite record for each group\. Provides a way for you to aggregate non\-numeric fields\. Selecting this option makes the Composite tab available where you specify how to create the composite records\.
+ *  Include only the first record in each group\. Selects the first record from each group of duplicate records and discards the rest\. The first record is determined by the sort order defined under the setting  Within groups, sort records by, and not by the incoming order of the records\.
+ *  Discard only the first record in each group\. Discards the first record from each group of duplicate records and selects the remainder instead\. The first record is determined by the sort order defined under the setting  Within groups, sort records by, and not by the incoming order of the records\. This option is useful for finding duplicates in your data so that you can examine them later in the flow\.
+
+<!-- </ul> -->
+
+Key fields for grouping\. Lists the field or fields used to determine whether records are identical\. You can:
+
+<!-- <ul> -->
+
+ *  Add fields to this list using the field picker button\.
+ *  Delete fields from the list by using the red X (remove) button\.
+
+<!-- </ul> -->
+
+Within groups, sort records by\. Lists the fields used to determine how records are sorted within each group of duplicates, and whether they are sorted in ascending or descending order\. You can:
+
+<!-- <ul> -->
+
+ *  Add fields to this list using the field picker button\.
+ *  Delete fields from the list by using the red X (remove) button\.
+ *  Move fields using the up or down buttons, if you are sorting by more than one field\.
+
+<!-- </ul> -->
+
+You must specify a sort order if you have chosen to include or exclude the first record in each group, and it matters to you which record is treated as the first\.
+
+You may also want to specify a sort order if you have chosen to create a composite record, for certain options on the Composite tab\.
+
+Specify whether, by default, records are sorted in  Ascending or  Descending order of the sort key values\.
+
+<!-- </article "role="article" "> -->

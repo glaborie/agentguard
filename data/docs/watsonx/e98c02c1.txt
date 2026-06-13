@@ -1,0 +1,31 @@
+# Time #
+
+The CLEM language supports the time formats listed in this section\.
+
+<!-- <table "summary="CLEM language time formats" id="time_formats_clem_language__table_zbw_jyy_ddb" class="defaultstyle" "> -->
+
+CLEM language time formats  
+
+Table 1\. CLEM language time formats
+
+| Format           | Examples                       |
+| ---------------- | ------------------------------ |
+| `HHMMSS`         | `120112, 010101, 221212`       |
+| `HHMM`           | `1223, 0745, 2207`             |
+| `MMSS`           | `5558, 0100`                   |
+| `HH:MM:SS`       | `12:01:12, 01:01:01, 22:12:12` |
+| `HH:MM`          | `12:23, 07:45, 22:07`          |
+| `MM:SS`          | `55:58, 01:00`                 |
+| `(H)H:(M)M:(S)S` | `12:1:12, 1:1:1, 22:12:12`     |
+| `(H)H:(M)M`      | `12:23, 7:45, 22:7`            |
+| `(M)M:(S)S`      | `55:58, 1:0`                   |
+| `HH.MM.SS`       | `12.01.12, 01.01.01, 22.12.12` |
+| `HH.MM`          | `12.23, 07.45, 22.07`          |
+| `MM.SS`          | `55.58, 01.00`                 |
+| `(H)H.(M)M.(S)S` | `12.1.12, 1.1.1, 22.12.12`     |
+| `(H)H.(M)M`      | `12.23, 7.45, 22.7`            |
+| `(M)M.(S)S`      | `55.58, 1.0`                   |
+
+<!-- </table "summary="CLEM language time formats" id="time_formats_clem_language__table_zbw_jyy_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

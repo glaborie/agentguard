@@ -1,0 +1,61 @@
+# Condition monitoring #
+
+This example concerns monitoring status information from a machine and the problem of recognizing and predicting fault states\.
+
+The data is created from a fictitious simulation and consists of a number of concatenated series measured over time\. Each record is a snapshot report on the machine in terms of the following:
+
+<!-- <ul> -->
+
+ *  `Time`\. An integer\.
+ *  `Power`\. An integer\.
+ *  `Temperature`\. An integer\.
+ *  `Pressure`\. `0` if normal, `1` for a momentary pressure warning\.
+ *  `Uptime`\. Time since last serviced\.
+ *  `Status`\. Normally `0`, changes to an error code if an error occurs (`101`, `202`, or `303`)\.
+ *  `Outcome`\. The error code that appears in this time series, or `0` if no error occurs\. (These codes are available only with the benefit of hindsight\.)
+
+<!-- </ul> -->
+
+This example uses the flow named  Condition Monitoring, available in the example project \. The data files are  cond1n\.csv and  cond2n\.csv\.
+
+For each time series, there's a series of records from a period of normal operation followed by a period leading to the fault, as shown in the following table:
+
+<!-- <table "summary="" class="defaultstyle" "> -->
+
+| Time | Power | Temperature | Pressure | Uptime | Status | Outcome |
+| ---- | ----- | ----------- | -------- | ------ | ------ | ------- |
+| 0    | 1059  | 259         | 0        | 404    | 0      | 0       |
+| 1    | 1059  | 259         | 0        | 404    | 0      | 0       |
+|      |       |             | \.\.\.   |        |        |         |
+| 51   | 1059  | 259         | 0        | 404    | 0      | 0       |
+| 52   | 1059  | 259         | 0        | 404    | 0      | 0       |
+| 53   | 1007  | 259         | 0        | 404    | 0      | 303     |
+| 54   | 998   | 259         | 0        | 404    | 0      | 303     |
+|      |       |             | \.\.\.   |        |        |         |
+| 89   | 839   | 259         | 0        | 404    | 0      | 303     |
+| 90   | 834   | 259         | 0        | 404    | 303    | 303     |
+| 0    | 965   | 251         | 0        | 209    | 0      | 0       |
+| 1    | 965   | 251         | 0        | 209    | 0      | 0       |
+|      |       |             | \.\.\.   |        |        |         |
+| 51   | 965   | 251         | 0        | 209    | 0      | 0       |
+| 52   | 965   | 251         | 0        | 209    | 0      | 0       |
+| 53   | 938   | 251         | 0        | 209    | 0      | 101     |
+| 54   | 936   | 251         | 0        | 209    | 0      | 101     |
+|      |       |             | \.\.\.   |        |        |         |
+| 208  | 644   | 251         | 0        | 209    | 0      | 101     |
+| 209  | 640   | 251         | 0        | 209    | 101    | 101     |
+
+<!-- </table "summary="" class="defaultstyle" "> -->
+
+The following process is common to most data mining projects:
+
+<!-- <ul> -->
+
+ *  Examine the data to determine which attributes may be relevant to the prediction or recognition of the states of interest\.
+ *  Retain those attributes (if already present), or derive and add them to the data, if necessary\.
+ *  Use the resultant data to train rules and neural nets\.
+ *  Test the trained systems using independent test data\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

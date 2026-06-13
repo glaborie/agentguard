@@ -1,0 +1,32 @@
+# Adding associated services to a project #
+
+To run some tools, you must associate a Watson Machine Learning service instance with the project\.
+
+After you [create a project](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/projects.html), you can add an associated service to it at any time\.
+
+**Required permission** : You must have the **Admin** role in the project to add an associated service\.
+
+For some types of assets, you must associate the IBM Watson Machine Learning service with the project\. You are prompted to associate the IBM Watson Machine Learning the first time you open tools like Prompt Lab, AutoAI, SPSS Modeler, and Decision Optimization\.
+
+You can also add the Watson Machine Learning service to a project directly:
+
+<!-- <ol> -->
+
+1.  Go to the project's **Manage** tab and select the **Services and integrations** page\.
+2.  In the **IBM Services** section, click **Associate Service**\.
+3.  Select your IBM Watson Machine Learning service instance and click **Associate**\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+<!-- <ul> -->
+
+ *  [Creating and managing IBM Cloud services](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/create-services.html)
+ *  [IBM Cloud services for IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/svc-welcome/cloud-services.html)
+
+<!-- </ul> -->
+
+**Parent topic:**[Administering projects](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/admin-project.html)
+
+<!-- </article "role="article" "> -->

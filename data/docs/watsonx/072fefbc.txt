@@ -1,0 +1,33 @@
+# bayesnetnode properties #
+
+![Bayes Net node icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/images/bayesian_network_icon.png)With the Bayesian Network (Bayes Net) node, you can build a probability model by combining observed and recorded evidence with real\-world knowledge to establish the likelihood of occurrences\. The node focuses on Tree Augmented Naïve Bayes (TAN) and Markov Blanket networks that are primarily used for classification\.
+
+<!-- <table "summary="bayesnetnode properties" id="bayesnetnodeslots__table_mty_tj3_cdb" class="defaultstyle" "> -->
+
+bayesnetnode properties  
+
+Table 1\. bayesnetnode properties
+
+| `bayesnetnode` Properties          | Values                     | Property description                                                                                                                                                                                    |
+| ---------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `inputs`                           | *\[field1 \.\.\. fieldN\]* | Bayesian network models use a single target field, and one or more input fields\. Continuous fields are automatically binned\. See the topic [Common modeling node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/modelingnodeslots_common.html#modelingnodeslots_common) for more information\. |
+| `continue_training_existing_model` | *flag*                     |                                                                                                                                                                                                         |
+| `structure_type`                   | `TAN``MarkovBlanket`       | Select the structure to be used when building the Bayesian network\.                                                                                                                                    |
+| `use_feature_selection`            | *flag*                     |                                                                                                                                                                                                         |
+| `parameter_learning_method`        | `Likelihood``Bayes`        | Specifies the method used to estimate the conditional probability tables between nodes where the values of the parents are known\.                                                                      |
+| `mode`                             | `Expert``Simple`           |                                                                                                                                                                                                         |
+| `missing_values`                   | *flag*                     |                                                                                                                                                                                                         |
+| `all_probabilities`                | *flag*                     |                                                                                                                                                                                                         |
+| `independence`                     | `Likelihood``Pearson`      | Specifies the method used to determine whether paired observations on two variables are independent of each other\.                                                                                     |
+| `significance_level`               | *number*                   | Specifies the cutoff value for determining independence\.                                                                                                                                               |
+| `maximal_conditioning_set`         | *number*                   | Sets the maximal number of conditioning variables to be used for independence testing\.                                                                                                                 |
+| `inputs_always_selected`           | *\[field1 \.\.\. fieldN\]* | Specifies which fields from the dataset are always to be used when building the Bayesian network\.<br><br>Note: The target field is always selected\.                                                   |
+| `maximum_number_inputs`            | *number*                   | Specifies the maximum number of input fields to be used in building the Bayesian network\.                                                                                                              |
+| `calculate_variable_importance`    | *flag*                     |                                                                                                                                                                                                         |
+| `calculate_raw_propensities`       | *flag*                     |                                                                                                                                                                                                         |
+| `calculate_adjusted_propensities`  | *flag*                     |                                                                                                                                                                                                         |
+| `adjusted_propensity_partition`    | `Test``Validation`         |                                                                                                                                                                                                         |
+
+<!-- </table "summary="bayesnetnode properties" id="bayesnetnodeslots__table_mty_tj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

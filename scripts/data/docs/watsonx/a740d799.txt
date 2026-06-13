@@ -1,0 +1,5 @@
+# Summary #
+
+You've learned how to use the Expert Modeler to produce forecasts for multiple time series\. In a real\-world scenario, you could now transform nonstandard time series data into a format suitable for input to a Time Series node\.
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,14 @@
+# Filter node #
+
+You can rename or exclude fields at any point in a flow\. For example, as a medical researcher, you may not be concerned about the potassium level (field\-level data) of patients (record\-level data); therefore, you can filter out the `K` (potassium) field\. This can be done using a separate Filter node or using the Filter tab on an import or output node\. The functionality is the same regardless of which node it's accessed from\.
+
+<!-- <ul> -->
+
+ *  From import nodes, you can rename or filter fields as the data is read in\.
+ *  Using a Filter node, you can rename or filter fields at any point in the flow\.
+ *  You can use the Filter tab in various nodes to define or edit multiple response sets\.
+ *  Finally, you can use a Filter node to map fields from one import node to another\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

@@ -1,0 +1,25 @@
+# Collaborator security #
+
+IBM watsonx provides attribute\-based access control to protect workspaces such as projects and catalogs\. You control access to workspaces by assigning roles and by restricting collaborators\.
+
+<!-- <table> -->
+
+Table 1\. Collaborator security mechanisms for IBM watsonx
+
+| Mechanism              | Purpose                                      | Responsibility | Configured on |
+| ---------------------- | -------------------------------------------- | -------------- | ------------- |
+| [Collaborator roles](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-collab.html?context=cdpaas&locale=en#collaborator-roles) | Assign roles to control access to workspaces | Customer       | IBM watsonx   |
+
+<!-- </table ""> -->
+
+## Collaborator roles ##
+
+Everyone working in IBM watsonx is assigned a role that determines the workspaces that they can access and the tasks that they can perform\. Collaborator roles control access to projects, deployment spaces, and catalogs using permissions specific to the role\. Roles are assigned in IBM watsonx to provide **Admin**, **Editor**, or **Viewer** permissions\.
+
+Users also have an IAM Platform access role for the Cloud account and they may also have an IAM Service access role for workspaces\. To understand how the roles provide secure access, see [Roles in IBM watsonx](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/roles.html)\.
+
+To understand the permissions for each collaborator role, see [Project collaborator roles](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/collaborator-permissions.html)\.
+
+**Parent topic:**[Security](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/security-overview.html)
+
+<!-- </article "role="article" "> -->

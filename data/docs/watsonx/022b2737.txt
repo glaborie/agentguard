@@ -1,0 +1,124 @@
+# Activities for assets #
+
+For some asset types, you can see the activities of each asset in projects\. The activities graph shows the history of the events that are performed on the asset for some tools\. An event is an action that changes or copies the asset\. For example, editing the asset description is an event, but viewing the asset is not an event\.
+
+## Requirements and restrictions ##
+
+You can view the activities of assets under the following circumstances\.
+
+<!-- <ul> -->
+
+ *  **Workspaces**  
+    You can view the asset activities in projects.
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  **Limitations**  
+    Activities have the following limitations:
+    
+    <!-- <ul> -->
+    
+     *  Activities graphs are currently available only for Watson Machine Learning models and data assets.
+     *  Activities graphs do not appear in Microsoft Internet Explorer 11 browsers.
+    
+    <!-- </ul> -->
+    
+<!-- </ul> -->
+
+## Activities events ##
+
+To view activities for an asset in a project, click the asset name and click ![Activities icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/images/activities.svg)\. The activities panel shows a timeline of events\. Summary information about the asset shows where asset was created, what the last event for it was, and when the last event happened\. The first event for each asset is its creation\.
+
+Activities events can describe actions that are applicable to all asset types or actions that are specific to an asset type:
+
+<!-- <ul> -->
+
+ *  [General events](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/asset-activities.html?context=cdpaas&locale=en#general)
+ *  [Events specific to Watson Machine Learning models](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/asset-activities.html?context=cdpaas&locale=en#wml)
+ *  [Events specific to data assets from files and connected data assets](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/asset-activities.html?context=cdpaas&locale=en#data)
+
+<!-- </ul> -->
+
+You can see this type of information about each event:
+
+<!-- <ul> -->
+
+ *  **Where:** In which catalog or project the event occurred\.
+ *  **Who:** The name of the user who performed the action, unless the action was automated\. Automated actions generate events, but don't show usernames\.
+ *  **What:** A description of the action\. Some events show details about the original and updated values\.
+ *  **When:** The date and time of the event\.
+
+<!-- </ul> -->
+
+Activities also track relationships between assets\. In the activities panel, the creation of a new asset based on the original asset is shown at the top of the list\. Click **See details** to view asset details\.
+
+### General events ###
+
+You can see these general events:
+
+<!-- <ul> -->
+
+ *  Name updated
+ *  Description updated
+ *  Tags updated
+
+<!-- </ul> -->
+
+### Events specific to Watson Machine Learning models ###
+
+Activities tracking is available for all Watson Machine Learning service plans, however, you wouldn't see events for actions that are not available with your plan\.
+
+In addition to general events, you can see these events that are specific to models:
+
+<!-- <ul> -->
+
+ *  Model created
+ *  Model deployed
+ *  Model re\-evaluated
+ *  Model retrained
+ *  Set as active model
+
+<!-- </ul> -->
+
+A model asset shows this information in the **Created from** field, depending on how it was created:
+
+<!-- <ul> -->
+
+ *  The name of the associated data asset
+ *  The name of the associated connection asset
+ *  The project name where it was created
+
+<!-- </ul> -->
+
+### Events specific to data assets from files and connected data assets ###
+
+In addition to general events, you can see these events that are specific to data assets from files and connected data assets:
+
+<!-- <ul> -->
+
+ *  Added to project from a Data Refinery flow
+ *  Added to a project from a file
+ *  Data classes updated
+ *  Schema updated by a Data Refinery flow
+ *  Profile created
+ *  Profile updated
+ *  Profile deleted
+ *  Downloaded
+
+<!-- </ul> -->
+
+A data asset shows this information in the **Created from** field, depending on how it was created:
+
+<!-- <ul> -->
+
+ *  The name of the Data Refinery flow that created it
+ *  Its associated connection name
+ *  The project name where it was created or came from
+
+<!-- </ul> -->
+
+**Parent topic:**[Finding and viewing an asset in a catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/catalog/view-asset.html)
+
+<!-- </article "role="article" "> -->

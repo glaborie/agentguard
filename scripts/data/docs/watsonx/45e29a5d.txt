@@ -1,0 +1,9 @@
+# Balance node #
+
+You can use Balance nodes to correct imbalances in datasets so they conform to specified test criteria\.
+
+For example, suppose that a dataset has only two values\-\-`low` or `high`\-\-and that 90% of the cases are `low` while only 10% of the cases are `high`\. Many modeling techniques have trouble with such biased data because they will tend to learn only the *low* outcome and ignore the *high* one, since it is more rare\. If the data is well balanced with approximately equal numbers of `low` and `high` outcomes, models will have a better chance of finding patterns that distinguish the two groups\. In this case, a Balance node is useful for creating a balancing directive that reduces cases with a *low* outcome\.
+
+Balancing is carried out by duplicating and then discarding records based on the conditions you specify\. Records for which no condition holds are always passed through\. Because this process works by duplicating and/or discarding records, the original sequence of your data is lost in downstream operations\. Be sure to derive any sequence\-related values before adding a Balance node to the data stream\.
+
+<!-- </article "role="article" "> -->

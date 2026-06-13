@@ -1,0 +1,131 @@
+# Extracting targets sentiment with a custom transformer model #
+
+You can train your own models for targets sentiment extraction based on the Slate IBM Foundation model\. This pretrained model can be find\-tuned for your use case by training it on your specific input data\.
+
+The Slate IBM Foundation model is available only in Runtime 23\.1\.
+
+Note: Training transformer models is CPU and memory intensive\. Depending on the size of your training data, the environment might not be large enough to complete the training\. If you run into issues with the notebook kernel during training, create a custom notebook environment with a larger amount of CPU and memory, and use that to run your notebook\. Use a GPU\-based environment for training and also inference time, if it is available to you\. See [Creating your own environment template](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/create-customize-env-definition.html)\.
+
+<!-- <ul> -->
+
+ *  [Input data format for training](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-target-sentiment.html?context=cdpaas&locale=en#input)
+ *  [Loading the pretrained model resources](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-target-sentiment.html?context=cdpaas&locale=en#load)
+ *  [Training the model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-target-sentiment.html?context=cdpaas&locale=en#train)
+ *  [Applying the model on new data](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-target-sentiment.html?context=cdpaas&locale=en#apply)
+ *  [Storing and loading the model](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-target-sentiment.html?context=cdpaas&locale=en#store)
+
+<!-- </ul> -->
+
+## Input data format for training ##
+
+You must provide a training and development data set to the training function\. The development data is usually around 10% of the training data\. Each training or development sample is represented as a JSON object\. It must have a **text** and a **target\_mentions** field\. The **text** represents the training example text, and the **target\_mentions** field is an array, which contains an entry for each target mention with its **text**, **location**, and **sentiment**\.
+
+Consider using Watson Knowledge Studio to enable your domain subject matter experts to easily annotate text and create training data\.
+
+The following is an example of an array with sample training data:
+
+    [
+      {
+        "text": "Those waiters stare at you your entire meal, just waiting for you to put your fork down and they snatch the plate away in a second.",
+        "target_mentions": 
+          {
+            "text": "waiters",
+            "location": {
+              "begin": 6,
+              "end": 13
+            },
+            "sentiment": "negative"
+          }
+        ]
+      }
+    ]
+
+The training and development data sets are created as data streams from arrays of JSON objects\. To create the data streams, you may use the utility method `read_json_to_stream`\. It requires the syntax analysis model for the language of your input data\.
+
+Sample code:
+
+    import watson_nlp
+    from watson_nlp.toolkit.targeted_sentiment.training_data_reader import read_json_to_stream
+    
+    training_data_file = 'train_data.json'
+    dev_data_file = 'dev_data.json'
+    
+    # Load the syntax analysis model for the language of your input data
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    
+    # Prepare train and dev data streams
+    train_stream = read_json_to_stream(json_path=training_data_file, syntax_model=syntax_model)
+    dev_stream = read_json_to_stream(json_path=dev_data_file, syntax_model=syntax_model)
+
+## Loading the pretrained model resources ##
+
+The pretrained Slate IBM Foundation model needs to be loaded before passing it to the training algorithm\.
+
+To load the model:
+
+    # Load the pretrained Slate IBM Foundation model
+    pretrained_model_resource = watson_nlp.load('pretrained-model_slate.153m.distilled_many_transformer_multilingual_uncased')
+
+## Training the model ##
+
+For all options that are available for configuring sentiment transformer training, enter:
+
+    help(watson_nlp.blocks.targeted_sentiment.SequenceTransformerTSA.train)
+
+The `train` method will create a new targets sentiment block model\.
+
+The following is a sample call that uses the input data and pretrained model from the previous section (Training the model):
+
+    # Train the model
+    custom_tsa_model = watson_nlp.blocks.targeted_sentiment.SequenceTransformerTSA.train(
+        train_stream,
+        dev_stream,
+        pretrained_model_resource,
+        num_train_epochs=5
+    )
+
+## Applying the model on new data ##
+
+After you train the model on a data set, apply the model on new data by using the `run()` method, as you would use on any of the existing pre\-trained blocks\. Because the created custom model is a block model, you need to run syntax analysis on the input text and pass the results to the `run()` methods\.
+
+Sample code:
+
+    input_text = 'new input text'
+    
+    # Run syntax analysis first
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    syntax_analysis = syntax_model.run(input_text, parsers=('token',))
+    
+    # Apply the new model on top of the syntax predictions
+    tsa_predictions = custom_tsa_model.run(syntax_analysis)
+
+## Storing and loading the model ##
+
+The custom targets sentiment model can be stored as any other model as described in "Loading and storing models", using `ibm_watson_studio_lib`\.
+
+To load the custom targets sentiment model, additional steps are required:
+
+<!-- <ol> -->
+
+1.  Ensure that you have an access token on the **Access control** page on the **Manage** tab of your project\. Only project admins can create access tokens\. The access token can have **Viewer** or **Editor** access permissions\. Only editors can inject the token into a notebook\.
+2.  Add the project token to the notebook by clicking **More > Insert project token** from the notebook action bar\. Then run the cell\.
+    
+    By running the inserted hidden code cell, a `wslib` object is created that you can use for functions in the `ibm-watson-studio-lib` library. For information on the available `ibm-watson-studio-lib` functions, see [Using ibm-watson-studio-lib for Python](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ws-lib-python.html).
+3.  Download and extract the model to your local runtime environment:
+    
+        import zipfile
+         model_zip = 'custom_TSA_model_file'
+         model_folder = 'custom_TSA'
+         wslib.download_file('custom_TSA_model', file_name=model_zip)
+        
+         with zipfile.ZipFile(model_zip, 'r') as zip_ref:
+           zip_ref.extractall(model_folder)
+4.  Load the model from the extracted folder:
+    
+        custom_TSA_model = watson_nlp.load(model_folder)
+
+<!-- </ol> -->
+
+**Parent topic:**[Creating your own models](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-create-model_cloud.html)
+
+<!-- </article "role="article" "> -->

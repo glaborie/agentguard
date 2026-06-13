@@ -1,0 +1,20 @@
+# applysvmnode properties #
+
+You can use SVM modeling nodes to generate an SVM model nugget\. The scripting name of this model nugget is *applysvmnode*\. For more information on scripting the modeling node itself, see [svmnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/svmnodeslots.html#svmnodeslots)\.
+
+<!-- <table "summary="applysvmnode properties" id="svmnuggetnodeslots__table_ax1_hyy_ddb" class="defaultstyle" "> -->
+
+applysvmnode properties  
+
+Table 1\. applysvmnode properties
+
+| `applysvmnode` Properties         | Values                | Property description                                                                                                                             |
+| --------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `all_probabilities`               | *flag*                |                                                                                                                                                  |
+| `calculate_raw_propensities`      | *flag*                |                                                                                                                                                  |
+| `calculate_adjusted_propensities` | *flag*                |                                                                                                                                                  |
+| `enable_sql_generation`           | `false`  <br>`native` | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applysvmnode properties" id="svmnuggetnodeslots__table_ax1_hyy_ddb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

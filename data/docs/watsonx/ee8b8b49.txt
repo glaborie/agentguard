@@ -1,0 +1,65 @@
+# Supported data sources for Data Refinery #
+
+Data Refinery supports the following data sources in connections\.
+
+## IBM services ##
+
+<!-- <ul> -->
+
+ *  [IBM Cloud Data Engine](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-sqlquery.html)*(Supports source connections only)*
+ *  [IBM Cloud Databases for DataStax](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-datastax.html)
+ *  [IBM Cloud Databases for MongoDB](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-mongodb.html)*(Supports source connections only)*
+ *  [IBM Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cos.html)
+ *  [IBM Cloudant](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cloudant.html)
+ *  [IBM Cognos Analytics](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cognos.html)*(Supports source connections only)*
+ *  [IBM Data Virtualization Manager for z/OS](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-datavirt-z.html)
+ *  [IBM Db2](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-db2.html)
+ *  [IBM Db2 Big SQL](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-db2-bigsql.html)
+ *  [IBM Db2 on Cloud](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-db2-cloud.html)
+ *  [IBM Db2 Warehouse](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-db2-wh.html)
+ *  [IBM Planning Analytics](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-plananalytics.html)*(Supports source connections only)*
+ *  [IBM Watson Query](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-data-virtual.html)*(Supports source connections only)*
+
+<!-- </ul> -->
+
+## Third\-party services ##
+
+<!-- <ul> -->
+
+ *  [Amazon RDS for MySQL](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-azrds-mysql.html)
+ *  [Amazon RDS for Oracle](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-azrds-oracle.html)
+ *  [Amazon RDS for PostgreSQL](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-azrds-postresql.html)
+ *  [Amazon Redshift](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-redshift.html)
+ *  [Amazon S3](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-amazon-s3.html)
+ *  [Apache Cassandra](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cassandra.html)
+ *  [Apache Derby](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-derby.html)
+ *  [Apache HDFS](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-hdfs.html)
+ *  [Apache Hive](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-hive.html)*(Supports source connections only)*
+ *  [Box](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-box.html)
+ *  [Cloudera Impala](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cloudera.html)*(Supports source connections only)*
+ *  [Dremio](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-dremio.html)
+ *  [Dropbox](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-dropbox.html)
+ *  [Elasticsearch](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-elastic.html)
+ *  [FTP](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-ftp.html)
+ *  [Generic S3](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-generics3.html)
+ *  [Google BigQuery](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-bigquery.html)
+ *  [Google Cloud Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cloud-storage.html)
+ *  [HTTP](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-http.html)*(Supports source connections only)*
+ *  [MariaDB](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-mariadb.html)
+ *  [Microsoft Azure Blob Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-azureblob.html)
+ *  [Microsoft Azure Cosmos DB](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-cosmosdb.html)
+ *  [Microsoft SQL Server](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-sql-server.html)
+ *  [MongoDB](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-mongo.html)*(Supports source connections only)*
+ *  [OData](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-odata.html)*(Supports source connections only)*
+ *  [Oracle](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-oracle.html)
+ *  [PostgreSQL](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-postgresql.html)
+ *  [Presto](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-presto.html)*(Supports source connections only)*
+ *  [SAP OData](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-sapodata.html)*(Supports source connections only)*
+ *  [SingleStoreDB](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-singlestore.html)
+ *  [Snowflake](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/conn-snowflake.html)
+
+<!-- </ul> -->
+
+**Parent topic**: [Refining data](https://dataplatform.cloud.ibm.com/docs/content/wsj/refinery/refining_data.html)
+
+<!-- </article "role="article" "> -->

@@ -166,7 +166,7 @@ All containers have log rotation (`10m` max, 2 files). Memory-heavy services hav
 
 ### Environment
 
-- Python 3.11+
+- Python 3.13+
 - Windows 11 (port 6379 blocked by Hyper-V, so Redis maps to 6300)
 - `.env` is gitignored; copy from `.env.example`
 - `data/docs/` directory is gitignored for local markdown files used during ingestion

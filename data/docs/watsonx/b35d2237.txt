@@ -1,0 +1,20 @@
+# Training data #
+
+The data file includes a field named `taxable_value`, which is the target field, or value, that you want to predict\. The other fields contain information such as neighborhood, building type, and interior volume, and may be used as predictors\.
+
+<!-- <table "summary="" id="tut_autocont_train__table_yhn" class="defaultstyle" "> -->
+
+| Field name        | Label                                |
+| ----------------- | ------------------------------------ |
+| `property_id`     | Property ID                          |
+| `neighborhood`    | Area within the city                 |
+| `building_type`   | Type of building                     |
+| `year_built`      | Year built                           |
+| `volume_interior` | Volume of interior                   |
+| `volume_other`    | Volume of garage and extra buildings |
+| `lot_size`        | Lot size                             |
+| `taxable_value`   | Taxable value                        |
+
+<!-- </table "summary="" id="tut_autocont_train__table_yhn" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

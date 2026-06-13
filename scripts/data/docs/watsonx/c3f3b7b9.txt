@@ -1,0 +1,131 @@
+# Relations extraction #
+
+Watson Natural Language Processing Relations extraction encapsulates algorithms for extracting relations between two entity mentions\. For example, in the text *Lionel Messi plays for FC Barcelona\.* a relation extraction model may decide that the entities `Lionel Messi` and `F.C. Barcelona` are in a relationship with each other, and the relationship type is `works for`\.
+
+**Capabilities**
+
+Use this model to detect relations between discovered entities\.
+
+The following table lists common relations types that are available out\-of\-the\-box after you have run the entity models\.
+
+<!-- <table> -->
+
+Table 1\. Available common relation types between entities
+
+| Relation          | Description                                                                                                                                                                                                                                                 |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `affiliatedWith`  | Exists between two entities that have an affiliation or are similarly connected\.                                                                                                                                                                           |
+| `basedIn`         | Exists between an Organization and the place where it is mainly, only, or intrinsically located\.                                                                                                                                                           |
+| `bornAt`          | Exists between a Person and the place where they were born\.                                                                                                                                                                                                |
+| `bornOn`          | Exists between a Person and the Date or Time when they were born\.                                                                                                                                                                                          |
+| `clientOf`        | Exists between two entities when one is a direct business client of the other (that is, pays for certain services or products)\.                                                                                                                            |
+| `colleague`       | Exists between two Persons who are part of the same Organization\.                                                                                                                                                                                          |
+| `competitor`      | Exists between two Organizations that are engaged in economic competition\.                                                                                                                                                                                 |
+| `contactOf`       | Relates contact information with an entity\.                                                                                                                                                                                                                |
+| `diedAt`          | Exists between a Person and the place at which he, she, or it died\.                                                                                                                                                                                        |
+| `diedOn`          | Exists between a Person and the Date or Time on which he, she, or it died\.                                                                                                                                                                                 |
+| `dissolvedOn`     | Exists between an Organization or URL and the Date or Time when it was dissolved\.                                                                                                                                                                          |
+| `educatedAt`      | Exists between a Person and the Organization at which he or she is or was educated\.                                                                                                                                                                        |
+| `employedBy`      | Exists between two entities when one pays the other for certain work or services; monetary reward must be involved\. In many circumstances, marking this relation requires world knowledge\.                                                                |
+| `foundedOn`       | Exists between an Organization or URL and the Date or Time on which it was founded\.                                                                                                                                                                        |
+| `founderOf`       | Exists between a Person and a Facility, Organization, or URL that they founded\.                                                                                                                                                                            |
+| `locatedAt`       | Exists between an entity and its location\.                                                                                                                                                                                                                 |
+| `managerOf`       | Exists between a Person and another entity such as a Person or Organization that he or she manages as his or her job\.                                                                                                                                      |
+| `memberOf`        | Exists between an entity, such as a Person or Organization, and another entity to which he, she, or it belongs\.                                                                                                                                            |
+| `ownerOf`         | Exists between an entity, such as a Person or Organization, and an entity that he, she, or it owns\. The owner does not need to have permanent ownership of the entity for the relation to exist\.                                                          |
+| `parentOf`        | Exists between a Person and their children or stepchildren\.                                                                                                                                                                                                |
+| `partner`         | Exists between two Organizations that are engaged in economic cooperation\.                                                                                                                                                                                 |
+| `partOf`          | Exists between a smaller and a larger entity of the same type or related types in which the second entity subsumes the first\. If the entities are both events, the first must occur within the time span of the second for the relation to be recognized\. |
+| `partOfMany`      | Exists between smaller and larger entities of the same type or related types in which the second entity, which must be plural, includes the first, which can be singular or plural\.                                                                        |
+| `populationOf`    | Exists between a place and the number of people located there, or an organization and the number of members or employees it has\.                                                                                                                           |
+| `measureOf`       | This relation indicates the quantity of an entity or measure (height, weight, etc) of an entity\.                                                                                                                                                           |
+| `relative`        | Exists between two Persons who are relatives\. To identify parents, children, siblings, and spouses, use the `parentOf`, `siblingOf`, and `spouseOf` relations\.                                                                                            |
+| `residesIn`       | Exists between a Person and a place where they live or previously lived\.                                                                                                                                                                                   |
+| `shareholdersOf`  | Exists between a Person or Organization, and an Organization of which the first entity is a shareholder\.                                                                                                                                                   |
+| `siblingOf`       | Exists between a Person and their sibling or stepsibling\.                                                                                                                                                                                                  |
+| `spokespersonFor` | Exists between a Person and an Facility, Organization, or Person that he or she represents\.                                                                                                                                                                |
+| `spouseOf`        | Exists between two Persons that are spouses\.                                                                                                                                                                                                               |
+| `subsidiaryOf`    | Exists between two Organizations when the first is a subsidiary of the second\.                                                                                                                                                                             |
+
+<!-- </table ""> -->
+
+In [Runtime 22\.2](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-relation-extraction.html?context=cdpaas&locale=en#runtime-222), relation extraction is provided as an analysis block, which depends on the Syntax analysis block and a entity mention extraction block\. Starting with [Runtime 23\.1](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-relation-extraction.html?context=cdpaas&locale=en#runtime-231), relation extraction is provided as a workflow, which is directly run on the input text\.
+
+### Relation extraction in Runtime 23\.1 ###
+
+**Workflow name**
+
+`relations_transformer-workflow_multilingual_slate.153m.distilled`
+
+**Supported languages** The Relations Workflow is available for the following languages\. For a list of the language codes and the corresponding language, see [Language codes](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html#lang-codes)\.
+
+ar, de, en, es, fr, it, ja, ko, pt
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load the workflow model
+    relations_workflow = watson_nlp.load('relations_transformer-workflow_multilingual_slate.153m.distilled')
+    
+    # Run the relation extraction workflow on the input text
+    relations = relations_workflow.run('Anna Smith is an engineer. Anna works at IBM.', language_code="en")
+    print(relations.get_relation_pairs_by_type())
+
+**Output of the code sample**
+
+    {'employedBy': [(('Anna', 'Person'), ('IBM', 'Organization'))]}
+
+### Relation extraction in Runtime 22\.2 ###
+
+**Block name**
+
+`relations_transformer_en_stock`
+
+**Supported languages**
+
+The Relations extraction block is available for English only\.
+
+**Dependencies on other blocks**
+
+The following block must run before you can run the `relations_transformer_en_stock` block:
+
+<!-- <ul> -->
+
+ *  `syntax_izumo_en_stock`
+
+<!-- </ul> -->
+
+This must be followed by one of the following entity models on which the relations extraction block can build its results:
+
+<!-- <ul> -->
+
+ *  entity\-mentions\_rbr\_en\_stock
+ *  entity\-mentions\_bert\_multi\_stock
+
+<!-- </ul> -->
+
+**Code sample**
+
+    import watson_nlp
+    
+    # Load the models for English
+    syntax_model = watson_nlp.load('syntax_izumo_en_stock')
+    entity_mentions_model = watson_nlp.load('entity-mentions_bert_multi_stock')
+    relation_model = watson_nlp.load('relations_transformer_en_stock')
+    
+    # Run the prerequisite models
+    syntax_prediction = syntax_model.run('Anna Smith is an engineer. Anna works at IBM.')
+    entity_mentions = entity_mentions_model.run(syntax_prediction)
+    
+    # Run the relations model
+    relations_on_mentions = relation_model.run(syntax_prediction, mentions_prediction=entity_mentions)
+    print(relations_on_mentions.get_relation_pairs_by_type())
+
+Output of the code sample:
+
+    {'employedBy': [(('Anna', 'Person'), ('IBM', 'Organization'))]}
+
+**Parent topic:**[Watson Natural Language Processing task catalog](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/watson-nlp-block-catalog.html)
+
+<!-- </article "role="article" "> -->

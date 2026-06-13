@@ -1,0 +1,8 @@
+# Append node #
+
+You can use Append nodes to concatenate sets of records\. Unlike Merge nodes, which join records from different sources together, Append nodes read and pass downstream all of the records from one source until there are no more\. Then the records from the next source are read using the same data structure (number of records, number of fields, and so on) as the first, or primary, input\. When the primary source has more fields than another input source, the system null string ($null$) will be used for any incomplete values\.
+
+Append nodes are useful for combining datasets with similar structures but different data\. For example, you might have transaction data stored in different files for different time periods, such as a sales data file for March and a separate one for April\. Assuming that they have the same structure (the same fields in the same order), the Append node will join them together into one large file, which you can then analyze\.
+
+Note: To append files, the field measurement levels must be similar\. For example, a `Nominal` field cannot be appended with a field whose measurement level is `Continuous`\.
+<!-- </article "role="article" "> -->

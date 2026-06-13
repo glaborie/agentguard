@@ -1,0 +1,7 @@
+# Field Operations #
+
+After an initial data exploration, you will probably need to select, clean, or construct data in preparation for analysis\. The Field Operations palette contains many nodes useful for this transformation and preparation\.
+
+For example, using a Derive node, you might create an attribute that is not currently represented in the data\. Or you might use a Binning node to recode field values automatically for targeted analysis\. You will probably find yourself using a Type node frequently—it allows you to assign a measurement level, values, and a modeling role for each field in the dataset\. Its operations are useful for handling missing values and downstream modeling\.
+
+<!-- </article "role="article" "> -->

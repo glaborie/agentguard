@@ -1,0 +1,89 @@
+# Configuring environments and adding Python extensions #
+
+You can change your default environment for Python and CPLEX in the  experiment Overview\.
+
+## Procedure ##
+
+To change the default environment for  DOcplex and  Modeling Assistant models:
+
+<!-- <ol> -->
+
+1.  Open the   Overview, click ![information icon](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/infoicon.jpg) to open the  Information pane, and select the  Environments tab\. 
+    
+    ![Environment tab of information pane](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/overviewinfoenvirons.png)
+2.  Expand the environment section according to your model type\. For Python and Modeling Assistant models, expand  Python environment\. You can see the default Python environment (if one exists)\. To change the default environment for OPL, CPLEX, or CPO models, expand the appropriate environment section according to your model type and follow this same procedure\.
+3.  Expand the name of your environment, and select a different Python environment\.
+4.  Optional: **To create a new environment**:
+    
+    <!-- <ol> -->
+    
+    1.  Select  New environment for Python. A new window opens for you to define your new environment. ![New environment window showing empty fields](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/overviewinfonewenv1.png)
+    2.  Enter a  name, and select a  CPLEX version,  hardware specification,  copies (number of nodes),  Python version and (optionally) you can set  Associate a Python extension to  On to include any  Python libraries that you want to add. 
+    3.  Click  New Python extension.
+    4.  Enter a name for your extension in the new  Create a Python extension window that opens, and click  Create.
+    5.  In the new Configure Python extension window that opens, you can set  YAML code to  On and enter or edit the provided YAML code.For example, use the provided template to add the custom libraries:
+        
+            # Modify the following content to add a software customization to an environment.
+            # To remove an existing customization, delete the entire content and click Apply.
+            
+            # Add conda channels on a new line after defaults, indented by two spaces and a hyphen.
+            channels:
+              - defaults
+            
+            # To add packages through conda or pip, remove the comment on the following line.
+            # dependencies:
+            
+            # Add conda packages here, indented by two spaces and a hyphen.
+            # Remove the comment on the following line and replace sample package name with your package name:
+            #  - a_conda_package=1.0
+            
+            # Add pip packages here, indented by four spaces and a hyphen.
+            # Remove the comments on the following lines  and replace sample package name with your package name.
+            #  - pip:
+            #    - a_pip_package==1.0
+        
+        You can also click  Browse to add any Python libraries.
+        
+        For example, this image shows a dynamic programming Python library that is imported and  YAML code set to  On.![Configure Python extension window showing YAML code and a Dynamic Programming library included](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/PythonExtension.png)
+        
+        Click  Done.
+    6.  Click  Create in the  New environment window.
+    
+    <!-- </ol> -->
+    
+    Your chosen (or newly created) environment appears as ticked in the  Python environments drop-down list in the  Environments tab. The tick indicates that this is the default Python environment for all scenarios in your  experiment.
+5.  Select  Manage experiment environments to see a detailed list of all existing environments for your  experiment in the  Environments tab\.![Manage experiment environment with two environments and drop\-down menu\.](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/manageenvextn.png)
+    
+    You can use the options provided by clicking the three vertical dots next to an environment to  Edit,  Set as default,  Update in a deployment space or  Delete the environment. You can also create a  New environment from the  Manage experiment environments window, but creating a new environment from this window does not make it the default unless you explicitly set is as the default.
+    
+    Updating your environment for Python or CPLEX versions: Python versions are regularly updated. If however you have explicitly specified an older Python version in your model, you must update this version specification or your models will not work. You can either create a new Python environment, as described earlier, or edit one from Manage experiment environments. This is also useful if you want to select a different version of CPLEX for your default environment.
+6.  Click the  Python extensions tab\.
+    
+    ![Python extensions tab showing created extension](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/images/manageenvpyextn.png)
+    
+    Here you can view your Python extensions and see which environment it is used in. You can also create a  New Python extension or use the options to  Edit,  Download, and  Delete existing ones. If you edit a Python extension that is used by an experiment environment, the environment will be re-created.
+    
+    You can also view your Python environments in your deployment space assets and any Python extensions you have added will appear in the software specification.
+
+<!-- </ol> -->
+
+<!-- <article "class="topic task nested1" role="article" id="task_envscenario" "> -->
+
+## Selecting a different run environment for a particular scenario ##
+
+You can choose different environments for individual scenarios on the Environment tab of the Run configuration pane\.
+
+### Procedure ###
+
+<!-- <ol> -->
+
+1.  Open the   Scenario pane and select your scenario in the   Build model view\.
+2.  Click the  Configure run icon next to the  Run button to open the Run configuration pane and select the  Environment tab\.
+3.  Choose  Select run environment for this scenario, choose an environment from the drop\-down menu, and click  Run\.
+4.  Open the   Overview information pane\. You can now see that your scenario has your chosen environment, while other scenarios are not affected by this modification\.
+
+<!-- </ol> -->
+
+<!-- </article "class="topic task nested1" role="article" id="task_envscenario" "> -->
+
+<!-- </article "class="nested0" role="article" id="task_hwswconfig" "> -->

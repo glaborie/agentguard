@@ -1,0 +1,152 @@
+# Configuring drift v2 evaluations in watsonx\.governance #
+
+You can configure drift v2 evaluations with watsonx\.governance to measure changes in your data over time to ensure consistent outcomes for your model\. Use drift v2 evaluations to identify changes in your model output, the accuracy of your predictions, and the distribution of your input data\.
+
+The following sections describe the steps that you must complete to configure drift v2 evaluations with watsonx\.governance:
+
+## Set sample size ##
+
+watsonx\.governance uses sample sizes to understand how to process the number of transactions that are evaluated during evaluations\. You must set a minimum sample size to indicate the lowest number of transactions that you want watsonx\.governance to evaluate\. You can also set a maximum sample size to indicate the maximum number of transactions that you want watsonx\.governance to evaluate\.
+
+## Configure baseline data ##
+
+watsonx\.governance uses payload records to establish the baseline for drift v2 calculations\. You must configure the number of records that you want to calculate as your baseline data\.
+
+## Set drift thresholds ##
+
+You must set threshold values for each metric to enable watsonx\.governance to understand how to identify issues with your evaluation results\. The values that you set create alerts on the evaluation summary page that appear when metric scores violate your thresholds\. You must set the values between the range of 0 to 1\. The metric scores must be lower than the threshold values to avoid violations\.
+
+## Supported drift v2 metrics ##
+
+When you enable drift v2 evaluations, you can view a summary of evaluation results with metrics for the type of model that you're evaluating\.
+
+The following drift v2 metrics are supported by watsonx\.governance:
+
+<!-- <ul> -->
+
+ *  Output drift
+    
+    watsonx.governance calculates output drift by measuring the change in the model confidence distribution. - **How it works**:  
+    watsonx.governance measures how much your model output changes from the time that you train the model.  
+    To evaluate prompt templates, watsonx.governance calculates output drift by measuring the change in distribution of prediction probabilities. The prediction probability is calculated by aggregating the log probabilities of the tokens from the model output.  
+    When you upload payload data with CSV files, you must include `prediction_probability` values or output drift cannot be calculated.  
+    For regression models, watsonx.governance calculates output drift by measuring the change in distribution of predictions on the training and payload data.  
+    For classification models, watsonx.governance calculates output drift for each class probability by measuring the change in distribution for class probabilities on the training and payload data.  
+    For multi-classification models, watsonx.governance also aggregates output drift for each class probability by measuring a weighted average. - **Do the math**:  
+    watsonx.governance uses the following formulas to calculate output drift: - [Total variation distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#total-variation-distance) - [Overlap coefficient](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#overlap-coefficient) - **Applies to prompt template evaluations**: Yes - **Task types**: - Text summarization - Text classification - Content generation - Entity extraction - Question answering
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Model quality drift
+    
+    watsonx.governance calculates model quality drift by comparing the estimated runtime accuracy to the training accuracy to measure the drop in accuracy. - **How it works**:  
+    watsonx.governance builds its own drift detection model that processes your payload data when you configure drift v2 evaluations to predict whether your model generates accurate predictions without the ground truth. The drift detection model uses the input features and class probabilities from your model to create its own input features. - **Do the math**:  
+    watsonx.governance uses the following formula to calculate model quality drift: ![model quality score](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-model-quality-score.svg) watsonx.governance calculates the accuracy of your model as the `base_accuracy` by measuring the fraction of correctly predicted transactions in your training data. During evaluations, your transactions are scored against the drift detection model to measure the amount of transactions that are likely predicted correctly by your model. These transactions are compared to the total number of transactions that watsonx.governance processes to calculate the `predicted_accuracy`. If the `predicted_accuracy` is less than the `base_accuracy`, watsonx.governance generates a model quality drift score. - **Applies to prompt template evaluations**: No
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Feature drift
+    
+    watsonx.governance calculates feature drift by measuring the change in value distribution for important features. - **How it works**:  
+    watsonx.governance calculates drift for categorical and numeric features by measuring the probability distribution of continuous and discrete values. To identify discrete values for numeric features, watsonx.governance uses a binary logarithm to compare the number of distinct values of each feature to the total number of values of each feature. watsonx.governance uses the following binary logarithm formula to identify discrete numeric features: ![Binary logarithm formula is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-feature-drift-equation.svg) If the `distinct_values_count` is less than the binary logarithm of the `total_count`, the feature is identified as discrete. - **Do the math**:  
+    watsonx.governance uses the following formulas to calculate feature drift:  
+    - [Jensen Shannon distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#jensen-shannon-distance) - [Total variation distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#total-variation-distance) - [Overlap coefficient](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#overlap-coefficient) - **Applies to prompt template evaluations**: No
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Prediction drift
+    
+    Prediction drift measures the change in distribution of the LLM predicted classes. - **Do the math**:  
+    watsonx.governance uses the [Jensen Shannon distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#jensen-shannon-distance) formula to calculate prediction drift. - **Applies to prompt template evaluations**: Yes - **Task types**: Text classification
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Input metadata drift
+    
+    Input metadata drift measures the change in distribution of the LLM input text metadata. - **How it works**:  
+    watsonx.governance calculates the following metadata with the LLM input text:  
+    **Character count**: Total number of characters in the input text  
+    **Word count**: Total number of words in the input text  
+    **Sentence count**: Total number of sentences in the input text  
+    **Average word length**: Average length of words in the input text  
+    **Average sentence length**: Average length of the sentences in the input text  
+    watsonx.governance calculates input metadata drift by measuring the change in distribution of the metadata columns. The input token count column, if present in the payload, is also used to compute the input metadata drift. You can also choose to specify any meta fields while adding records to the payload table. These meta fields are also used to compute the input metadata drift. To identify discrete numeric input metadata columns, watsonx.governance uses the following binary logarithm formula: ![Binary logarithm formula is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-feature-drift-equation.svg) If the `distinct_values_count` is less than the binary logarithm of the `total_count`, the feature is identified as discrete. For discrete input metadata columns, watsonx.governance uses the [Jensen Shannon distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#jensen-shannon-distance) formula to calculate input metadata drift. For continuous input metadata columns, watsonx.governance uses the [total variation distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#total-variation-distance) and [overlap coefficient](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#overlap-coefficient) formulas to calculate input metadata drift. - **Applies to prompt template evaluations**: Yes - **Task types**: - Text summarization - Text classification - Content generation - Entity extraction - Question answering
+
+<!-- </ul> -->
+
+<!-- <ul> -->
+
+ *  Output metadata drift
+    
+    Output metadata drift measures the change in distribution of the LLM output text metadata. - **How it works**:  
+    watsonx.governance calculates the following metadata with the LLM output text:  
+    **Character count**: Total number of characters in the output text  
+    **Word count**: Total number of words in the output text  
+    **Sentence count**: Total number of sentences in the output text  
+    **Average word length**: Average length of words in the output text  
+    **Average sentence length**: Average length of the sentences in the output text  
+    watsonx.governance calculates output metadata drift by measuring the change in distribution of the metadata columns. The output token count column, if present in the payload, is also used to compute the output metadata drift. You can also choose to specify any meta fields while adding records to the payload table. These meta fields are also used to compute the output metadata drift. To identify discrete numeric output metadata columns, watsonx.governance uses the following binary logarithm formula: ![Binary logarithm formula is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-feature-drift-equation.svg) If the `distinct_values_count` is less than the binary logarithm of the `total_count`, the feature is identified as discrete. For discrete output metadata columns, watsonx.governance uses the [Jensen Shannon distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#jensen-shannon-distance) formula to calculate input metadata drift. For continuous output metadata columns, watsonx.governance uses the [total variation distance](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#total-variation-distance) and [overlap coefficient](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-driftv2-config.html?context=cdpaas&locale=en#overlap-coefficient) formulas to calculate output metadata drift: - **Applies to prompt template evaluations**: Yes - **Task types**: - Text summarization - Text classification - Content generation - Question answering
+
+<!-- </ul> -->
+
+watsonx\.governance uses the following formulas to calculate drift v2 evaluation metrics:
+
+### Total variation distance ###
+
+Total variation distance measures the maximum difference between the probabilities that two probability distributions, baseline (B) and production (P), assign to the same transaction as shown in the following formula:
+
+![Probability distribution formula is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-distance-0.svg)
+
+If the two distributions are equal, the total variation distance between them becomes 0\.
+
+watsonx\.governance uses the following formula to calculate total variation distance:
+
+![Total variation distance formula is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-distance.svg)
+
+<!-- <ul> -->
+
+ *  푥 is a series of equidistant samples that span the domain of ![circumflex f is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-f-symbol.svg) that range from the combined miniumum of the baseline and production data to the combined maximum of the baseline and production data\.
+ *  ![d(x) symbol is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-d-x.svg) is the difference between two consecutive 푥 samples\.
+ *  ![explanation of formula](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-formula-2.svg) is the value of the density function for production data at a 푥 sample\.
+ *  ![explanation of formula](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-formula-3.svg) is the value of the density function for baseline data for at a 푥 sample\.
+
+<!-- </ul> -->
+
+The ![explanation of formula](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-formula-4.svg) denominator represents the total area under the density function plots for production and baseline data\. These summations are an approximation of the integrations over the domain space and both these terms should be 1 and total should be 2\.
+
+### Overlap coefficient ###
+
+watsonx\.governance calculates the overlap coefficient by measuring the total area of the intersection between two probability distributions\. To measure dissimilarity between distributions, the intersection or the overlap area is subtracted from 1 to calculate the amount of drift\. watsonx\.governance uses the following formula to calculate the overlap coefficient:
+
+![Overlap coefficient formula is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-formula-5.svg)
+
+<!-- <ul> -->
+
+ *  푥 is a series of equidistant samples that span the domain of ![circumflex f is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-f-symbol.svg) that range from the combined miniumum of the baseline and production data to the combined maximum of the baseline and production data\.
+ *  ![d(x) symbol is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-d-x.svg) is the difference between two consecutive 푥 samples\.
+ *  ![explanation of formula](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-formula-2.svg) is the value of the density function for production data at a 푥 sample\.
+ *  ![explanation of formula](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-total-variation-formula-3.svg) is the value of the density function for baseline data for at a 푥 sample\.
+
+<!-- </ul> -->
+
+### Jensen Shannon distance ###
+
+Jensen Shannon Distance is the normalized form of Kullback\-Liebler (KL) Divergence that measures how much one probability distribution differs from the second probabillity distribution\. Jensen Shannon Distance is a symmetrical score and always has a finite value\.
+
+watsonx\.governance uses the following formula to calculate the Jensen Shannon distance for two probability distributions, baseline (B) and production (P):
+
+![Jensen Shannon distance formula is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-jensen-shannon-distance.svg)
+
+![KL Divergence is displayed](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/images/wos-KL-divergence.svg) is the KL Divergence\.
+
+**Parent topic:**[Configuring model evaluations](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-monitors-overview.html)
+
+<!-- </article "role="article" "> -->

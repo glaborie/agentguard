@@ -1,0 +1,20 @@
+# applyc50node properties #
+
+You can use C5\.0 modeling nodes to generate a C5\.0 model nugget\. The scripting name of this model nugget is *applyc50node*\. For more information on scripting the modeling node itself, see [c50node properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/c50nodeslots.html#c50nodeslots)\.
+
+<!-- <table "summary="applyc50node properties" id="c50nuggetnodeslots__table_xyy_xj3_cdb" class="defaultstyle" "> -->
+
+applyc50node properties  
+
+Table 1\. applyc50node properties
+
+| `applyc50node` Properties         | Values                        | Property description                                                                                             |
+| --------------------------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `sql_generate`                    | `udf``Never``NoMissingValues` | Used to set SQL generation options during rule set execution\. The default value is `udf`\.                      |
+| `calculate_conf`                  | *flag*                        | Available when SQL generation is enabled; this property includes confidence calculations in the generated tree\. |
+| `calculate_raw_propensities`      | *flag*                        |                                                                                                                  |
+| `calculate_adjusted_propensities` | *flag*                        |                                                                                                                  |
+
+<!-- </table "summary="applyc50node properties" id="c50nuggetnodeslots__table_xyy_xj3_cdb" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

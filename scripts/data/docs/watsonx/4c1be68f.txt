@@ -1,0 +1,18 @@
+# applylsvmnode properties #
+
+You can use LSVM modeling nodes to generate an LSVM model nugget\. The scripting name of this model nugget is *applylsvmnode*\. For more information on scripting the modeling node itself, see [lsvmnode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/lsvmnodeslots.html)\.
+
+<!-- <table "summary="applylsvmnode properties" class="defaultstyle" "> -->
+
+applylsvmnode properties  
+
+Table 1\. applylsvmnode properties
+
+| `applylsvmnode` Properties   | Values          | Property description                                                                                                                             |
+| ---------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `calculate_raw_propensities` | *flag*          | Specifies whether to calculate raw propensity scores\.                                                                                           |
+| `enable_sql_generation`      | `false``native` | When using data from a database, SQL code can be pushed back to the database for execution, providing superior performance for many operations\. |
+
+<!-- </table "summary="applylsvmnode properties" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

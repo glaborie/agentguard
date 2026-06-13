@@ -1,0 +1,13 @@
+# Types of scripts #
+
+SPSS Modeler uses three types of scripts:
+
+<!-- <ul> -->
+
+ *  Flow scripts are stored as a flow property and are therefore saved and loaded with a specific flow\. For example, you can write a flow script that automates the process of training and applying a model nugget\. You can also specify that whenever a particular flow runs, the script should be run instead of the flow's canvas content\.
+ *  Standalone scripts aren't associated with any particular flow and are saved in external text files\. You might use a standalone script, for example, to manipulate multiple flows together\.
+ *  SuperNode scripts are stored as a SuperNode flow property\. SuperNode scripts are only available in terminal SuperNodes\. You might use a SuperNode script to control the execution sequence of the SuperNode contents\. For nonterminal (import or process) SuperNodes, you can define properties for the SuperNode or the nodes it contains in your flow script directly\.
+
+<!-- </ul> -->
+
+<!-- </article "role="article" "> -->

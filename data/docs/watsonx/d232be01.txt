@@ -1,0 +1,18 @@
+# applyxgboosttreenode properties #
+
+You can use the XGBoost Tree node to generate an XGBoost Tree model nugget\. The scripting name of this model nugget is *applyxgboosttreenode*\. For more information on scripting the modeling node itself, see [xgboosttreenode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/xgboosttreenodeslots.html#xboosttreenodeslots)\.
+
+<!-- <table "summary="applyxgboosttreenode properties" id="kmeansnuggetnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+applyxgboosttreenode properties  
+
+Table 1\. applyxgboosttreenode properties
+
+| `applyxgboosttreenode` properties | Data type | Property description |
+| --------------------------------- | --------- | -------------------- |
+| `use_model_name`                  |           |                      |
+| `model_name`                      |           |                      |
+
+<!-- </table "summary="applyxgboosttreenode properties" id="kmeansnuggetnodeslots__table_r3k_5bw_tz" class="defaultstyle" "> -->
+
+<!-- </article "role="article" "> -->

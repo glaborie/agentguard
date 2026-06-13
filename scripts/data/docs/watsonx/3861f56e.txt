@@ -1,0 +1,25 @@
+# Firewall access for the platform #
+
+If a data source resides behind a firewall, then IBM watsonx requires inbound access through the firewall in order to make a connection\. Inbound firewall access is required whether the data source resides on a third\-party cloud provider or in an data center\. The method for configuring inbound access varies for different vendor's firewalls\. In general, you configure inbound access rules by entering the IP addresses for the IBM watsonx cluster to allow for access by IBM watsonx\.
+
+You can enter the IP addresses using the starting and ending addresses for a range or by using CIDR notation\. Classless Inter\-Domain Routing (CIDR) notation is a compact representation of an IP address and its associated network mask\. For start and end addresses, copy each address and enter them in the inbound rules for your firewall\. Alternately, copy the addresses in CIDR notation\.
+
+The IBM watsonx IP addresses vary by region\. The user interface lists the IP addresses for the current region\. The IP addresses apply to the base infrastructure for IBM watsonx\.
+
+Follow these steps to look up the IP addresses for IBM watsonx cluster:
+
+<!-- <ol> -->
+
+1.  Go to the **Administration > Cloud integrations** page\.
+2.  Click the **Firewall configuration** link to view the list of IP ranges used by IBM watsonx in your region\.
+3.  View the IP ranges for the IBM watsonx cluster in either CIDR notation or as Start and End addresses\.
+4.  Choose **Include private IPs** to view the private IP addresses\. The private IP addresses allow connections to IBM Cloud Object Storage buckets that are behind a firewall\. See [Firewall access for Cloud Object Storage](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall-cfg-private-cos.html)\.
+5.  Copy each of the IP ranges listed and paste them into the appropriate security configuration or inbound firewall rules area for your cloud provider\.
+
+<!-- </ol> -->
+
+For example, if your data source resides on AWS, open the **Create Security Group** dialog for your AWS Management Console\. Paste the IP ranges into the **Inbound** section for the security group rules\.
+
+**Parent topic:**[Configuring firewall access](https://dataplatform.cloud.ibm.com/docs/content/wsj/admin/firewall_ovrvw.html)
+
+<!-- </article "role="article" "> -->

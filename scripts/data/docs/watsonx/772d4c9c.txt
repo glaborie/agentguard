@@ -1,0 +1,31 @@
+# Deleting deployment spaces #
+
+Delete existing deployment spaces that you don't require anymore\.
+
+Important:Before you delete a deployment space, you must delete all the deployments that are associated with it\. Only a project admin can delete a deployment space\. For more information, see [Deployment space collaborator roles and permissions](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/collaborator-permissions-wml.html)\.
+
+To remove a deployment space, follow these steps:
+
+<!-- <ol> -->
+
+1.  From the navigation menu, click **Deployments**\.
+2.  In the deployments list, click the **Spaces** tab and find the deployment space that you want to delete\.
+3.  Hover over the deployment space, select the menu (![Menu icon](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/images/open-close-icon.png)) icon, and click **Delete**\.
+4.  In the confirmation dialog box, click **Delete**\.
+
+<!-- </ol> -->
+
+## Learn more ##
+
+To learn more about how to clean up a deployment space and delete it programmatically, refer to:
+
+<!-- <ul> -->
+
+ *  [Notebook on managing machine learning artifacts](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e5e78be14e2260ccb4bcf8181d093d7b)
+ *  [Notebook on managing spaces](https://dataplatform.cloud.ibm.com/exchange/public/entry/view/e5e78be14e2260ccb4bcf8181d0967e3)
+
+<!-- </ul> -->
+
+**Parent topic:**[Deployment spaces](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-spaces_local.html)
+
+<!-- </article "role="article" "> -->

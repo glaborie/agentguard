@@ -1,0 +1,9 @@
+# Selecting a Decision domain in the  Modeling Assistant #
+
+There are different  decision domains currently available in the  Modeling Assistant and you can be guided to choose the right  domain for your problem\.
+
+Once you have added and imported your data into your model, the  Modeling Assistant helps you to formulate your optimization model by offering you suggestions in natural language that you can edit\. In order to make intelligent suggestions using your data, and to ensure that the proposed model formulation is well suited to your problem, you are asked to start by selecting a  decision domain for your model\.
+
+If you need a  decision domain that is not currently supported by the  Modeling Assistant, you can still formulate your model as a Python  notebook or as an OPL model in the  experiment UI editor\.
+
+<!-- </article "role="article" "> -->
