@@ -38,6 +38,23 @@ source = ["app", "guardrails"]
 omit = [
     "*/test_*",
     "app/main.py",
+    # Integration-only: require live services (Qdrant, LLM, Redis, MCP, Langfuse)
+    "app/agent/mcp_client.py",
+    "app/agent/service.py",
+    "app/api/routes/retrieval.py",
+    "app/core/telemetry.py",
+    "app/eval/benchmark.py",
+    "app/eval/drift.py",
+    "app/eval/experiments.py",
+    "app/eval/ragas_metrics.py",
+    "app/rag/chain.py",
+    "guardrails/semantic_cache.py",
+    # CLI execution handlers that delegate to the above
+    "app/cli/commands/agent.py",
+    "app/cli/commands/benchmark.py",
+    "app/cli/commands/evaluate.py",
+    "app/cli/commands/experiment.py",
+    "app/cli/commands/retrieval_debug.py",
 ]
 
 [tool.coverage.report]
