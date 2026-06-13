@@ -27,7 +27,7 @@ class TestSettingsDefaults:
         assert s.default_model == "openrouter-gemini-flash"
         assert s.embedding_model == "nomic-embed-text"
         assert s.qdrant_url == "http://localhost:6333"
-        assert s.qdrant_collection == "northstar_crm"
+        assert s.qdrant_collection == "watsonx_docs"
 
     def test_env_override(self, monkeypatch):
         monkeypatch.setenv("DEFAULT_MODEL", "openrouter-mistral")
