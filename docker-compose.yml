@@ -74,13 +74,13 @@ services:
       TZ: UTC
       LANGFUSE_LOG_LEVEL: warn
       NEXTAUTH_URL: http://localhost:3200
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       TELEMETRY_ENABLED: "false"
       LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
-      CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:clickhouse@clickhouse:9000
+      CLICKHOUSE_MIGRATION_URL: clickhouse://${CLICKHOUSE_USER}:${CLICKHOUSE_PASSWORD}@clickhouse:9000
       CLICKHOUSE_URL: http://clickhouse:8123
       CLICKHOUSE_USER: clickhouse
-      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
       CLICKHOUSE_CLUSTER_ENABLED: "false"
       LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
       LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
@@ -101,17 +101,17 @@ services:
       LANGFUSE_USE_OCI_NATIVE_OBJECT_STORAGE: "false"
       REDIS_HOST: redis
       REDIS_PORT: "6379"
-      REDIS_AUTH: ${REDIS_PASSWORD:-redissecret}
+      REDIS_AUTH: ${REDIS_PASSWORD}
       REDIS_TLS_ENABLED: "false"
-      LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-my-org}
-      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-My Org}
-      LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-my-project}
-      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT_NAME:-AgentGuard}
-      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-pk-lf-dev}
-      LANGFUSE_INIT_PROJECT_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-sk-lf-dev}
-      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_USER_EMAIL:-admin@local.dev}
-      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME:-Admin}
-      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-admin123456}
+      LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID}
+      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME}
+      LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID}
+      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT_NAME}
+      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
+      LANGFUSE_INIT_PROJECT_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
+      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_USER_EMAIL}
+      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME}
+      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD}
     networks:
       - langfuse
 
@@ -272,7 +272,7 @@ services:
       --appendfsync everysec
       --tcp-keepalive 60
       --timeout 0
-      --requirepass ${REDIS_PASSWORD:-redissecret}
+      --requirepass ${REDIS_PASSWORD}
     environment:
       TZ: UTC
     # ports no longer needed - redis accessed internally only
@@ -281,7 +281,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD-SHELL", "redis-cli -a \"${REDIS_PASSWORD}\" ping | grep -q PONG"]
       interval: 3s
       timeout: 10s
       retries: 10
@@ -346,33 +346,33 @@ services:
       PYTHONPATH: /app
       LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY}
       LITELLM_ADMIN_KEY: ${LITELLM_ADMIN_KEY}
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/litellm
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/litellm
       STORE_MODEL_IN_DB: "True"
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-redissecret}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
       # disable prisma migrations on restart
       DISABLE_SCHEMA_UPDATE: "True"
       # Semantic injection second pass (LLM-judge classifier)
-      SEMANTIC_GUARD_ENABLED: "${SEMANTIC_GUARD_ENABLED:-false}"
-      SEMANTIC_GUARD_MODEL: "${SEMANTIC_GUARD_MODEL:-openrouter-gemini-flash}"
-      SEMANTIC_GUARD_TIMEOUT: "${SEMANTIC_GUARD_TIMEOUT:-8.0}"
+      SEMANTIC_GUARD_ENABLED: "${SEMANTIC_GUARD_ENABLED}"
+      SEMANTIC_GUARD_MODEL: "${SEMANTIC_GUARD_MODEL}"
+      SEMANTIC_GUARD_TIMEOUT: "${SEMANTIC_GUARD_TIMEOUT}"
       SEMANTIC_GUARD_PROXY_URL: "http://localhost:4000"
       # Toxicity detection (LLM-judge classifier)
-      TOXICITY_GUARD_ENABLED: "${TOXICITY_GUARD_ENABLED:-false}"
-      TOXICITY_GUARD_MODEL: "${TOXICITY_GUARD_MODEL:-openrouter-gemini-flash}"
-      TOXICITY_GUARD_TIMEOUT: "${TOXICITY_GUARD_TIMEOUT:-8.0}"
+      TOXICITY_GUARD_ENABLED: "${TOXICITY_GUARD_ENABLED}"
+      TOXICITY_GUARD_MODEL: "${TOXICITY_GUARD_MODEL}"
+      TOXICITY_GUARD_TIMEOUT: "${TOXICITY_GUARD_TIMEOUT}"
       TOXICITY_GUARD_PROXY_URL: "http://localhost:4000"
       # Semantic cache (Qdrant vectors + Redis responses)
-      SEMANTIC_CACHE_ENABLED: "${SEMANTIC_CACHE_ENABLED:-true}"
-      SEMANTIC_CACHE_THRESHOLD: "${SEMANTIC_CACHE_THRESHOLD:-0.85}"
-      SEMANTIC_CACHE_COLLECTION: "${SEMANTIC_CACHE_COLLECTION:-semantic-cache}"
-      SEMANTIC_CACHE_TTL: "${SEMANTIC_CACHE_TTL:-3600}"
+      SEMANTIC_CACHE_ENABLED: "${SEMANTIC_CACHE_ENABLED}"
+      SEMANTIC_CACHE_THRESHOLD: "${SEMANTIC_CACHE_THRESHOLD}"
+      SEMANTIC_CACHE_COLLECTION: "${SEMANTIC_CACHE_COLLECTION}"
+      SEMANTIC_CACHE_TTL: "${SEMANTIC_CACHE_TTL}"
       OLLAMA_URL: "http://ollama:11434"
       QDRANT_URL: "http://qdrant:6333"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
       ARIZE_SPACE_KEY: ${ARIZE_SPACE_KEY}
       ARIZE_API_KEY: ${ARIZE_API_KEY}
-      ARIZE_PROJECT_NAME: ${ARIZE_PROJECT_NAME:-agentguard}
+      ARIZE_PROJECT_NAME: ${ARIZE_PROJECT_NAME}
       ARIZE_HTTP_ENDPOINT: "https://otlp.eu-west-1a.arize.com/v1"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=4)"]
@@ -462,14 +462,14 @@ services:
     environment:
       ENABLE_OLLAMA_API: "false"
       OPENAI_API_BASE_URLS: "http://rag-api:8001/v1;http://litellm:4000/v1"
-      OPENAI_API_KEYS: "${LITELLM_MASTER_KEY:-sk-litellm-dev-key};${LITELLM_MASTER_KEY:-sk-litellm-dev-key}"
-      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-agentguard-secret-key}
+      OPENAI_API_KEYS: "${LITELLM_MASTER_KEY};${LITELLM_MASTER_KEY}"
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY}
       DEFAULT_MODELS: "agentguard-rag"
       # Prevent Open WebUI downloading sentence-transformer models from HF on startup.
       # We use our own RAG chain, so point its embedding engine at LiteLLM instead.
       RAG_EMBEDDING_ENGINE: "openai"
       RAG_OPENAI_API_BASE_URL: "http://litellm:4000/v1"
-      RAG_OPENAI_API_KEY: ${LITELLM_MASTER_KEY:-sk-litellm-dev-key}
+      RAG_OPENAI_API_KEY: ${LITELLM_MASTER_KEY}
       RAG_EMBEDDING_MODEL: "nomic-embed-text"
       TZ: UTC
     depends_on:
@@ -555,8 +555,8 @@ services:
       - openobserve_data:/data
     environment:
       ZO_DATA_DIR: /data
-      ZO_ROOT_USER_EMAIL: "${ZO_ROOT_USER_EMAIL:-root@example.com}"
-      ZO_ROOT_USER_PASSWORD: "${ZO_ROOT_USER_PASSWORD:-Complexpass#123}"
+      ZO_ROOT_USER_EMAIL: "${ZO_ROOT_USER_EMAIL}"
+      ZO_ROOT_USER_PASSWORD: "${ZO_ROOT_USER_PASSWORD}"
       TZ: UTC
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:5080/healthz || exit 1"]
@@ -576,7 +576,7 @@ services:
     ports:
       - "127.0.0.1:8091:8080"
     environment:
-      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_PERSONAL_ACCESS_TOKEN:-}"
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       TZ: UTC
     networks:
       - langfuse
