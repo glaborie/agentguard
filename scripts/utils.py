@@ -6,7 +6,7 @@ from pathlib import Path
 from app.config import settings
 
 # Shared HTTP timeout for all outbound calls to local Docker services.
-HTTP_TIMEOUT = 60
+HTTP_TIMEOUT = settings.http_timeout_seconds
 
 # Langfuse API page sizes.
 TRACE_PAGE_SIZE = 50

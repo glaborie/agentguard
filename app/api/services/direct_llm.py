@@ -25,7 +25,7 @@ async def call(
     as inline error strings so the caller always gets a string result.
     """
     try:
-        async with httpx.AsyncClient(timeout=120) as client:
+        async with httpx.AsyncClient(timeout=settings.litellm_timeout_seconds) as client:
             resp = await client.post(
                 f"{settings.litellm_base_url}/v1/chat/completions",
                 json={"model": litellm_model, "messages": messages},

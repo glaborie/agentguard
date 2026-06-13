@@ -34,6 +34,15 @@ class Settings(BaseSettings):
     # OpenRouter (optional)
     openrouter_api_key: str = ""
 
+    # API model catalog overrides (optional)
+    # JSON object: {"public-model-id": "litellm-model-id", ...}
+    api_models_json: str = ""
+    # JSON object: {"public-model-id": "description", ...}
+    api_model_descriptions_json: str = ""
+    # Comma-separated public model IDs that should be routed as direct or agent modes.
+    api_direct_models_csv: str = "agentguard-direct"
+    api_agent_models_csv: str = "agentguard-agent,agentguard-agent-claude-haiku"
+
     # GitHub MCP (optional — enables GitHub tools in agent)
     github_personal_access_token: str = ""
     # SSE URL of github-mcp sidecar (set automatically in Docker; leave empty for stdio on host)
@@ -56,6 +65,12 @@ class Settings(BaseSettings):
     # OpenTelemetry
     otel_enabled: bool = True
     otel_endpoint: str = "http://localhost:4318/v1/traces"
+
+    # HTTP timeouts (seconds)
+    # General outbound calls (Langfuse REST, workers, benchmark direct mode, etc.)
+    http_timeout_seconds: Annotated[int, Field(gt=0)] = 60
+    # Upstream model calls routed through LiteLLM can be slower under load.
+    litellm_timeout_seconds: Annotated[int, Field(gt=0)] = 120
 
     # CORS — comma-separated allowed origins; "*" allows all
     # Example: CORS_ORIGINS=http://localhost:3001,https://your-domain.com

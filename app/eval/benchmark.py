@@ -342,7 +342,7 @@ def _run_direct(question: str, model: str | None = None) -> tuple[str, list[str]
             ],
         },
         headers={"Authorization": f"Bearer {settings.litellm_master_key}"},
-        timeout=60,
+        timeout=settings.http_timeout_seconds,
     )
     resp.raise_for_status()
     return resp.json()["choices"][0]["message"]["content"], []

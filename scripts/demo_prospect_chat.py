@@ -6,8 +6,17 @@ retrieval, feature confirmation, trial policy, and discount approval tiers.
 Usage:
     python -m scripts.demo_prospect_chat                      # headed (watch it run)
     python -m scripts.demo_prospect_chat --headless           # CI / no window
+    python -m scripts.demo_prospect_chat --url http://localhost:3100 --model agentguard-rag
+    python -m scripts.demo_prospect_chat --email user@acme.com
     python -m scripts.demo_prospect_chat --screenshot-dir docs/assets/screenshots # save screenshots
     python -m scripts.demo_prospect_chat --slow 500           # slower for live demos
+
+Environment variable overrides:
+    OPENWEBUI_URL, OPENWEBUI_EMAIL, OPENWEBUI_PASSWORD, OPENWEBUI_MODEL
+
+Security note:
+    Prefer OPENWEBUI_PASSWORD env var (or interactive prompt) over --password
+    to avoid exposing credentials in shell history or process listings.
 
 Requirements:
     pip install playwright
@@ -15,15 +24,18 @@ Requirements:
 """
 
 import argparse
+import getpass
+import os
 import time
 from pathlib import Path
+from urllib.parse import urlparse
 
 from playwright.sync_api import Page, sync_playwright
 
-OPENWEBUI_URL = "http://localhost:3100"
-EMAIL = "playwright@local.dev"
-PASSWORD = "playwright"
-MODEL = "agentguard-rag"
+DEFAULT_OPENWEBUI_URL = os.getenv("OPENWEBUI_URL", "http://localhost:3100")
+DEFAULT_EMAIL = os.getenv("OPENWEBUI_EMAIL", "playwright@local.dev")
+DEFAULT_PASSWORD = os.getenv("OPENWEBUI_PASSWORD", "")
+DEFAULT_MODEL = os.getenv("OPENWEBUI_MODEL", "agentguard-rag")
 
 QUESTIONS = [
     (
@@ -45,21 +57,21 @@ QUESTIONS = [
 
 # ── Browser helpers ────────────────────────────────────────────────────────────
 
-def _login(page: Page) -> None:
-    page.goto(OPENWEBUI_URL)
+def _login(page: Page, openwebui_url: str, email: str, password: str) -> None:
+    page.goto(openwebui_url)
     page.wait_for_load_state("networkidle")
     if "/auth" not in page.url:
         print("  Already logged in.")
         return
-    page.locator('input[autocomplete="email"], input[type="email"]').fill(EMAIL)
-    page.locator('input[type="password"]').fill(PASSWORD)
+    page.locator('input[autocomplete="email"], input[type="email"]').fill(email)
+    page.locator('input[type="password"]').fill(password)
     page.locator('button[type="submit"]').click()
-    page.wait_for_url(f"{OPENWEBUI_URL}/**", timeout=15_000)
-    print(f"  Logged in as {EMAIL}.")
+    page.wait_for_url(f"{openwebui_url}/**", timeout=15_000)
+    print(f"  Logged in as {email}.")
 
 
-def _new_chat(page: Page) -> None:
-    page.goto(f"{OPENWEBUI_URL}/")
+def _new_chat(page: Page, openwebui_url: str) -> None:
+    page.goto(f"{openwebui_url}/")
     page.wait_for_load_state("networkidle")
     new_btn = page.locator('button:has-text("New Chat")').first
     if new_btn.is_visible():
@@ -67,10 +79,10 @@ def _new_chat(page: Page) -> None:
         page.wait_for_load_state("networkidle")
 
 
-def _select_model(page: Page) -> None:
+def _select_model(page: Page, model: str) -> None:
     # Already correct model?
-    if page.locator(f'button:has-text("{MODEL}")').is_visible():
-        print(f"  Model: {MODEL} (already selected).")
+    if page.locator(f'button:has-text("{model}")').is_visible():
+        print(f"  Model: {model} (already selected).")
         return
 
     # Open model picker — the button at the top of the chat area
@@ -83,13 +95,13 @@ def _select_model(page: Page) -> None:
     # Search box inside the dropdown
     search = page.locator('input[placeholder*="earch"]').first
     if search.is_visible(timeout=2_000):
-        search.fill(MODEL)
+        search.fill(model)
 
     # Click matching option
     page.locator(
-        f'[role="option"]:has-text("{MODEL}"), li:has-text("{MODEL}")'
+        f'[role="option"]:has-text("{model}"), li:has-text("{model}")'
     ).first.click()
-    print(f"  Model selected: {MODEL}.")
+    print(f"  Model selected: {model}.")
 
 
 def _send(page: Page, text: str) -> None:
@@ -136,6 +148,10 @@ def _wait_for_response(page: Page, timeout: int = 120) -> str:
 # ── Main demo ─────────────────────────────────────────────────────────────────
 
 def run_demo(
+    openwebui_url: str,
+    email: str,
+    password: str,
+    model: str,
     headed: bool = True,
     slow_mo: int = 150,
     screenshot_dir: Path | None = None,
@@ -146,13 +162,13 @@ def run_demo(
         page = ctx.new_page()
 
         print("\n── Login ─────────────────────────────")
-        _login(page)
+        _login(page, openwebui_url=openwebui_url, email=email, password=password)
 
         print("── New chat ──────────────────────────")
-        _new_chat(page)
+        _new_chat(page, openwebui_url=openwebui_url)
 
         print("── Select model ──────────────────────")
-        _select_model(page)
+        _select_model(page, model=model)
 
         for i, question in enumerate(QUESTIONS, 1):
             print(f"\n── Q{i} {'─'*40}")
@@ -160,7 +176,7 @@ def run_demo(
             _send(page, question)
             response = _wait_for_response(page)
             # Strip model-name header that Open WebUI prepends
-            clean = response.replace(MODEL, "").strip()
+            clean = response.replace(model, "").strip()
             print(f"  → {clean[:400]}")
 
             if screenshot_dir:
@@ -178,6 +194,14 @@ def run_demo(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Prospect demo in Open WebUI")
+    parser.add_argument("--url", default=DEFAULT_OPENWEBUI_URL,
+                        help=f"Open WebUI base URL (default: {DEFAULT_OPENWEBUI_URL})")
+    parser.add_argument("--email", default=DEFAULT_EMAIL,
+                        help=f"Open WebUI login email (default: {DEFAULT_EMAIL})")
+    parser.add_argument("--password", default=None,
+                        help="Open WebUI login password (prefer OPENWEBUI_PASSWORD env var)")
+    parser.add_argument("--model", default=DEFAULT_MODEL,
+                        help=f"Open WebUI model to select (default: {DEFAULT_MODEL})")
     parser.add_argument("--headless", action="store_true",
                         help="Run without a visible browser window")
     parser.add_argument("--slow", type=int, default=150,
@@ -186,11 +210,27 @@ def main() -> None:
                         help="Directory to save per-question screenshots")
     args = parser.parse_args()
 
+    parsed_url = urlparse(args.url)
+    if not parsed_url.scheme or not parsed_url.netloc:
+        parser.error(f"Invalid --url value: {args.url!r}. Expected absolute URL, e.g. http://localhost:3100")
+
+    password = args.password or DEFAULT_PASSWORD
+    if not password:
+        password = getpass.getpass("Open WebUI password: ")
+
     shot_dir = Path(args.screenshot_dir) if args.screenshot_dir else None
     if shot_dir:
         shot_dir.mkdir(parents=True, exist_ok=True)
 
-    run_demo(headed=not args.headless, slow_mo=args.slow, screenshot_dir=shot_dir)
+    run_demo(
+        openwebui_url=args.url,
+        email=args.email,
+        password=password,
+        model=args.model,
+        headed=not args.headless,
+        slow_mo=args.slow,
+        screenshot_dir=shot_dir,
+    )
 
 
 if __name__ == "__main__":

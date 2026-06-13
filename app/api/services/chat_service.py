@@ -6,6 +6,7 @@ from opentelemetry import trace as otel_trace
 from app.api.schemas import ChatRequest
 from app.api.services import agent_llm, direct_llm, rag_llm
 from app.api.services.models_service import AGENT_MODELS, DIRECT_MODELS, MODELS
+from app.core.config import settings
 from app.core.telemetry import get_otel_trace_id
 
 
@@ -36,7 +37,7 @@ async def complete(
     request_id: str,
 ) -> tuple[str, str]:
     """Orchestrate direct or RAG completion. Returns (result_text, completion_id)."""
-    litellm_model = MODELS.get(body.model, "openrouter-gemini-flash")
+    litellm_model = MODELS.get(body.model, settings.default_model)
     trace_metadata = build_trace_metadata(body, get_otel_trace_id())
     annotate_span(body, chat_id)
 
