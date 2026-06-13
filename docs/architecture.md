@@ -1,5 +1,7 @@
 # Architecture
 
+<!-- markdownlint-disable MD013 MD040 MD060 -->
+
 AgentGuard is a self-hosted AI reliability platform for RAG and agentic applications.
 
 It combines retrieval, model routing, protection, observability, evaluation, and user-facing interfaces into one stack for operating AI systems more safely.

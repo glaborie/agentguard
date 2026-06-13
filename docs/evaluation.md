@@ -1,5 +1,7 @@
 # Evaluation
 
+<!-- markdownlint-disable MD013 MD060 -->
+
 AgentGuard helps teams verify that an AI application still behaves correctly after changes to prompts, models, retrieval logic, or tools.
 
 Instead of waiting for users to discover regressions in production, teams can evaluate known high-risk scenarios in advance and track quality over time.
@@ -9,6 +11,7 @@ Instead of waiting for users to discover regressions in production, teams can ev
 A golden dataset is a curated collection of representative prompts and expected answers that defines what correct behavior looks like for your AI application.
 
 It works like a regression suite for an LLM system. For example, you can include high-risk scenarios such as:
+
 - pricing and discount questions
 - refund and policy questions
 - compliance-sensitive prompts

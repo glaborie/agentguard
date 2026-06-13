@@ -1,5 +1,7 @@
 # Project Filetree
 
+<!-- markdownlint-disable MD013 -->
+
 _Auto-maintained by `/filetree:update`. Each entry carries a content hash; mismatched hashes indicate stale summaries._
 
 ## (root)/

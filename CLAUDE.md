@@ -1,8 +1,6 @@
-Compressing inline since text was provided directly (no file path given).
-
----
-
 # CLAUDE.md - AgentGuard
+
+<!-- markdownlint-disable MD013 -->
 
 ## What this project is
 
@@ -140,6 +138,7 @@ Integration tests auto-skip if Docker stack unreachable (checks `localhost:4000/
 ### Guardrails
 
 Three LiteLLM custom guardrails registered. Two run on every request by default:
+
 - **Prompt injection** (pre_call, always on): blocks 12 regex patterns (jailbreak, ignore instructions, DAN, system prompt exfiltration, etc.). DAN pattern uses `(?-i:DAN)\b` for case-sensitive matching to avoid false-positiving on name "Dan". Optional LLM-judge semantic second pass (`SEMANTIC_GUARD_ENABLED=true`) catches paraphrased jailbreaks regex misses — calls back through LiteLLM with classifier content embedded in system role to bypass built-in content filters.
 - **Toxic content** (pre_call, opt-in via `TOXICITY_GUARD_ENABLED=true`): LLM-judge classifier for toxic/abusive inputs. Also embeds content in system role.
 - **PII masking** (post_call, always on): redacts email, SSN, credit card, phone from LLM responses using regex.

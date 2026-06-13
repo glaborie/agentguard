@@ -1,5 +1,7 @@
 # Roadmap
 
+<!-- markdownlint-disable MD013 -->
+
 AgentGuard is building a self-hosted AI reliability platform for RAG and agentic applications.
 
 The goal is to help teams detect, evaluate, and prevent costly AI incidents before they become customer-visible.

@@ -1,6 +1,9 @@
 # TODO — SOTA Gaps (SOTA scan 2026-06-02, updated 2026-06-04)
 
-All additive — no architectural change required. Independent, can be parallelized.
+<!-- markdownlint-disable MD013 MD060 -->
+
+All additive — no architectural change required. Independent, can be
+parallelized.
 
 ---
 
@@ -8,15 +11,20 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ### [done] #1 ML/semantic injection detection (~2d)
 
-**Why:** Regex fails on paraphrased jailbreaks ("Act as if you have no rules" bypasses most patterns). LLM Guard's deberta model catches semantic variants that the 12 regex patterns in `guardrails/custom_guardrails.py` miss.
+**Why:** Regex fails on paraphrased jailbreaks ("Act as if you have no rules"
+bypasses most patterns). LLM Guard's deberta model catches semantic variants
+that the 12 regex patterns in `guardrails/custom_guardrails.py` miss.
 
-**Reference:** `protectai/llm-guard` → PromptInjection scanner (uses `protectai/deberta-v3-base-prompt-injection-v2`)
+**Reference:** `protectai/llm-guard` → PromptInjection scanner (uses
+`protectai/deberta-v3-base-prompt-injection-v2`)
 
 ---
 
 ### [done] #2 CI/CD pipeline integration (~4h)
 
-**Why:** `scripts/regression_gate.py` already exits 0/1/2 correctly — but no `.github/workflows/` file ships with the repo. Teams cloning AgentGuard must hand-wire CI themselves.
+**Why:** `scripts/regression_gate.py` already exits 0/1/2 correctly — but no
+`.github/workflows/` file ships with the repo. Teams cloning AgentGuard must
+hand-wire CI themselves.
 
 **Reference:** `confident-ai/deepeval` → `.github/workflows/`
 
@@ -24,7 +32,9 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ### [done] #3 Toxic/harmful content detection (~1d)
 
-**Why:** Injection blocking + PII masking each guard one attack vector. Toxic/abusive inputs are a separate real-world failure mode not covered by either existing guard.
+**Why:** Injection blocking + PII masking each guard one attack vector.
+Toxic/abusive inputs are a separate real-world failure mode not covered by
+either existing guard.
 
 **Reference:** `protectai/llm-guard` → `llm_guard/input_scanners/toxicity.py`
 
@@ -32,18 +42,34 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ### [done] #8 Automated red teaming (~2d)
 
-**Why:** Safety platforms (promptfoo acquired by OpenAI, NeMo, giskard) all generate adversarial test suites automatically. Teams need OWASP LLM Top 10 coverage without writing 50 test cases by hand.
+**Why:** Safety platforms (promptfoo acquired by OpenAI, NeMo, giskard) all
+generate adversarial test suites automatically. Teams need OWASP LLM Top 10
+coverage without writing 50 test cases by hand.
 
-**Reference:** `promptfoo/promptfoo` → red team feature (50+ attack plugins, OWASP presets, MITRE ATLAS coverage)
+**Reference:** `promptfoo/promptfoo` → red team feature (50+ attack plugins,
+OWASP presets, MITRE ATLAS coverage)
 
-**Step 1:** Create `scripts/red_team.py` with `run_red_team(attack_types, n_variants, model)` that calls LiteLLM to generate adversarial variants of seed prompts, sends them through the guardrail stack, and reports pass/fail counts. Wire into CLI with `python -m app.main red-team --limit 20`. Exit 0/1/2 matching `regression_gate.py` so CI can call it.
+**Step 1:** Create `scripts/red_team.py` with
+`run_red_team(attack_types, n_variants, model)` that calls LiteLLM to generate
+adversarial variants of seed prompts, sends them through the guardrail stack,
+and reports pass/fail counts. Wire into CLI with
+`python -m app.main red-team --limit 20`. Exit 0/1/2 matching
+`regression_gate.py` so CI can call it.
 
 **Options:**
-- Option A: Build inline — LiteLLM generates variants via a red-team system prompt. No external dep, works offline, fits the existing LiteLLM proxy pattern.
-- Option B: Wrap promptfoo CLI (`promptfoo redteam run`) — richer attack coverage but adds Node.js dep and license risk post-OpenAI acquisition (verify first).
-- Option C: Use giskard's scan API (Python, Apache 2.0) — check if `giskard.scan(model, dataset)` supports LangChain LCEL chains.
 
-**Verify first:** Confirm promptfoo's current license status post-acquisition before taking a hard dependency. Confirm giskard scan supports LangChain LCEL chains.
+- Option A: Build inline — LiteLLM generates variants via a red-team system
+  prompt. No external dep, works offline, fits the existing LiteLLM proxy
+  pattern.
+- Option B: Wrap promptfoo CLI (`promptfoo redteam run`) — richer attack
+  coverage but adds Node.js dep and license risk post-OpenAI acquisition (verify
+  first).
+- Option C: Use giskard's scan API (Python, Apache 2.0) — check if
+  `giskard.scan(model, dataset)` supports LangChain LCEL chains.
+
+**Verify first:** Confirm promptfoo's current license status post-acquisition
+before taking a hard dependency. Confirm giskard scan supports LangChain LCEL
+chains.
 
 ---
 
@@ -51,13 +77,15 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ### [done] #4 Coverage reporting / badge (~2h)
 
-**Reference:** `confident-ai/deepeval` → `pyproject.toml` (coverage config + Codecov integration)
+**Reference:** `confident-ai/deepeval` → `pyproject.toml` (coverage config +
+Codecov integration)
 
 ---
 
 ### [done] #5 Type annotation completeness (~1d)
 
-**Reference:** `guardrails-ai/guardrails` → `pyproject.toml` (pyright strict mode)
+**Reference:** `guardrails-ai/guardrails` → `pyproject.toml` (pyright strict
+mode)
 
 ---
 
@@ -79,90 +107,153 @@ All additive — no architectural change required. Independent, can be paralleli
 
 ### [done] #9 Logs fan-out to OpenObserve (~1h)
 
-**Why:** Container logs currently go to Loki only. OpenObserve can ingest logs via Promtail, giving unified traces + logs in one UI — correlate a trace to container logs without switching tools.
+**Why:** Container logs currently go to Loki only. OpenObserve can ingest logs
+via Promtail, giving unified traces + logs in one UI — correlate a trace to
+container logs without switching tools.
 
-**Reference:** OpenObserve Promtail ingestion endpoint `/api/default/loki/api/v1/push` (Loki-compatible API).
+**Reference:** OpenObserve Promtail ingestion endpoint
+`/api/default/loki/api/v1/push` (Loki-compatible API).
 
 ---
 
 ### [done] #10 LLM observability dashboards (~2h)
 
-**Why:** Traces flow into OpenObserve but no dashboards exist. Teams need out-of-box visibility into latency, token counts, guardrail block rates, cache hit rates, and error rates.
+**Why:** Traces flow into OpenObserve but no dashboards exist. Teams need
+out-of-box visibility into latency, token counts, guardrail block rates, cache
+hit rates, and error rates.
 
-**Panels built:** Request rate, LLM latency p50/p95/p99 over time, latency by model, token usage (prompt + completion), error rate by service, guardrail block rate, request volume by model, semantic cache hits vs misses.
+**Panels built:** Request rate, LLM latency p50/p95/p99 over time, latency by
+model, token usage (prompt + completion), error rate by service, guardrail block
+rate, request volume by model, semantic cache hits vs misses.
 
-**Files:** `openobserve/dashboards/agentguard_llm.json` (import via UI or `./openobserve/import_dashboards.sh`).
+**Files:** `openobserve/dashboards/agentguard_llm.json` (import via UI or
+`./openobserve/import_dashboards.sh`).
 
 ---
 
 ### [done] #11 Alerts on trace data (~1h)
 
-**Why:** No proactive alerting exists. Guardrail block spikes (injection attack in progress), high latency, and elevated error rates need automated notification.
+**Why:** No proactive alerting exists. Guardrail block spikes (injection attack
+in progress), high latency, and elevated error rates need automated
+notification.
 
-**Alerts created:** `agentguard-error-rate-spike` (≥5 errors/5min), `agentguard-high-llm-latency` (avg>30s/10min), `agentguard-guardrail-block-spike` (≥3 RAG chain errors/5min).
+**Alerts created:** `agentguard-error-rate-spike` (≥5 errors/5min),
+`agentguard-high-llm-latency` (avg>30s/10min),
+`agentguard-guardrail-block-spike` (≥3 RAG chain errors/5min).
 
-**Setup:** `ALERT_WEBHOOK_URL=https://... ./openobserve/setup_alerts.sh` — idempotent, fires to any webhook (Slack, Discord, custom). Update URL in OO UI: Alerts → Destinations → agentguard-webhook.
+**Setup:** `ALERT_WEBHOOK_URL=https://... ./openobserve/setup_alerts.sh` —
+idempotent, fires to any webhook (Slack, Discord, custom). Update URL in OO UI:
+Alerts → Destinations → agentguard-webhook.
 
 ---
 
 ### [done] #12 Prometheus metrics ingestion (~1h)
 
-**Why:** rag-api exposes `/metrics` (prometheus_fastapi_instrumentator) and LiteLLM exposes Prometheus metrics. OpenObserve can scrape both, consolidating metrics + traces + logs in one platform.
+**Why:** rag-api exposes `/metrics` (prometheus_fastapi_instrumentator) and
+LiteLLM exposes Prometheus metrics. OpenObserve can scrape both, consolidating
+metrics + traces + logs in one platform.
 
-**How:** Added `remote_write` block to `prometheus.yml` pointing at OpenObserve's Prometheus ingestion endpoint (`/api/default/prometheus/api/v1/write`). Credentials read from `ZO_ROOT_USER_EMAIL`/`ZO_ROOT_USER_PASSWORD` env vars (already set in `.env`). Prometheus scrapes rag-api, litellm, and otel-collector every 15s and forwards all time-series to OpenObserve. Requires infra stack running (`docker compose -f docker-compose.infra.yml up -d`). In OpenObserve: Streams → `prometheus` stream type to query metrics.
+**How:** Added `remote_write` block to `prometheus.yml` pointing at
+OpenObserve's Prometheus ingestion endpoint
+(`/api/default/prometheus/api/v1/write`). Credentials read from
+`ZO_ROOT_USER_EMAIL`/`ZO_ROOT_USER_PASSWORD` env vars (already set in `.env`).
+Prometheus scrapes rag-api, litellm, and otel-collector every 15s and forwards
+all time-series to OpenObserve. Requires infra stack running
+(`docker compose -f docker-compose.infra.yml up -d`). In OpenObserve: Streams →
+`prometheus` stream type to query metrics.
 
 Here's a precise handover prompt for Claude Code:
 
 ---
 
-### [done] #13 Surface per-experiment cost in AgentGuard's experiment runner**
+### [done] #13 Surface per-experiment cost in AgentGuard's experiment runner\*\*
 
-In `app/eval/experiments.py`, the `run_experiment()` function compares multiple models against a Langfuse dataset. LiteLLM already returns token usage in its responses. The goal is to capture and surface cost per model per experiment run.
+In `app/eval/experiments.py`, the `run_experiment()` function compares multiple
+models against a Langfuse dataset. LiteLLM already returns token usage in its
+responses. The goal is to capture and surface cost per model per experiment run.
 
 **What to do:**
 
-1. In the experiment runner, capture `usage` (prompt_tokens, completion_tokens) from LiteLLM responses for each dataset item evaluated. LiteLLM exposes this on the response object as `response.usage` — it also has `response._hidden_params["response_cost"]` which is the pre-calculated USD cost per call.
+1. In the experiment runner, capture `usage` (prompt_tokens, completion_tokens)
+   from LiteLLM responses for each dataset item evaluated. LiteLLM exposes this
+   on the response object as `response.usage` — it also has
+   `response._hidden_params["response_cost"]` which is the pre-calculated USD
+   cost per call.
 
-2. Aggregate per model: total cost (USD), total prompt tokens, total completion tokens, cost per item (mean), and cost/quality ratio (cost divided by mean faithfulness score if available).
+2. Aggregate per model: total cost (USD), total prompt tokens, total completion
+   tokens, cost per item (mean), and cost/quality ratio (cost divided by mean
+   faithfulness score if available).
 
-3. Surface this in `print_results()` as an additional cost summary table alongside the existing quality metrics table.
+3. Surface this in `print_results()` as an additional cost summary table
+   alongside the existing quality metrics table.
 
-4. Also write the cost breakdown into the Langfuse experiment metadata so it's visible in the UI — use `langfuse.score()` or tag it on the dataset run object.
+4. Also write the cost breakdown into the Langfuse experiment metadata so it's
+   visible in the UI — use `langfuse.score()` or tag it on the dataset run
+   object.
 
-5. Add a `--cost-report` flag to the CLI (`app/main.py evaluate`) that prints the cost table even when running a single model (no comparison needed).
+5. Add a `--cost-report` flag to the CLI (`app/main.py evaluate`) that prints
+   the cost table even when running a single model (no comparison needed).
 
 **Constraints:**
+
 - LiteLLM proxy is the only LLM call path — do not add direct SDK calls
-- All models are defined in `litellm_config.yaml`; cost data comes from LiteLLM responses, not hardcoded pricing tables
-- Tests live in `tests/test_evaluators.py` and `tests/test_integration.py` — add unit tests for the cost aggregation logic, mock `response._hidden_params`
-- Keep backward compatibility: `run_experiment()` signature unchanged, cost data is additive
+- All models are defined in `litellm_config.yaml`; cost data comes from LiteLLM
+  responses, not hardcoded pricing tables
+- Tests live in `tests/test_evaluators.py` and `tests/test_integration.py` — add
+  unit tests for the cost aggregation logic, mock `response._hidden_params`
+- Keep backward compatibility: `run_experiment()` signature unchanged, cost data
+  is additive
 
-**Files to touch:** `app/eval/experiments.py`, `app/main.py`, `tests/test_evaluators.py` (or new `tests/test_experiments.py`)
+**Files to touch:** `app/eval/experiments.py`, `app/main.py`,
+`tests/test_evaluators.py` (or new `tests/test_experiments.py`)
 
+### [done] #14 Quality drift monitoring notebook for AgentGuard\*\*
 
-### [done] #14 Quality drift monitoring notebook for AgentGuard**
-
-Add `notebooks/quality_drift.ipynb` that pulls historical eval scores from Langfuse and surfaces metric trends with regression alerting.
+Add `notebooks/quality_drift.ipynb` that pulls historical eval scores from
+Langfuse and surfaces metric trends with regression alerting.
 
 **What to do:**
 
-1. **Fetch scores from Langfuse** using the Langfuse SDK (`langfuse.get_scores()` with pagination). Filter by score name: `faithfulness`, `answer_relevancy`, `contextual_relevancy`, `hallucination`. Return a flat DataFrame with columns: `timestamp`, `trace_id`, `metric`, `value`, `model`.
+1. **Fetch scores from Langfuse** using the Langfuse SDK
+   (`langfuse.get_scores()` with pagination). Filter by score name:
+   `faithfulness`, `answer_relevancy`, `contextual_relevancy`, `hallucination`.
+   Return a flat DataFrame with columns: `timestamp`, `trace_id`, `metric`,
+   `value`, `model`.
 
-2. **Trend plot** — one line per metric over time, x-axis is date bucketed by day. Use matplotlib or plotly (plotly preferred, already in the stack via Langfuse). Overlay a 7-day rolling mean. One subplot per metric, shared x-axis.
+2. **Trend plot** — one line per metric over time, x-axis is date bucketed by
+   day. Use matplotlib or plotly (plotly preferred, already in the stack via
+   Langfuse). Overlay a 7-day rolling mean. One subplot per metric, shared
+   x-axis.
 
-3. **Regression detection** — for each metric, compare the last 7-day window mean against the prior 7-day window mean. Flag as regression if delta exceeds a configurable threshold (default: -0.05 for faithfulness/relevancy, +0.05 for hallucination since higher = worse). Print a clear summary table: metric | baseline_mean | current_mean | delta | status (✅ / ⚠️ REGRESSION).
+3. **Regression detection** — for each metric, compare the last 7-day window
+   mean against the prior 7-day window mean. Flag as regression if delta exceeds
+   a configurable threshold (default: -0.05 for faithfulness/relevancy, +0.05
+   for hallucination since higher = worse). Print a clear summary table: metric
+   | baseline_mean | current_mean | delta | status (✅ / ⚠️ REGRESSION).
 
-4. **Alerting stub** — a `check_drift(threshold_overrides: dict) -> list[DriftAlert]` Python function at the bottom of the notebook, callable from CI or the CLI. Returns a list of dataclass objects so `app/main.py` can import and run it as `python -m app.main drift-check --fail-on-regression` (exit code 1 if any regression detected).
+4. **Alerting stub** — a
+   `check_drift(threshold_overrides: dict) -> list[DriftAlert]` Python function
+   at the bottom of the notebook, callable from CI or the CLI. Returns a list of
+   dataclass objects so `app/main.py` can import and run it as
+   `python -m app.main drift-check --fail-on-regression` (exit code 1 if any
+   regression detected).
 
-5. **Seed data** — if Langfuse has fewer than 14 days of scores (fresh install), generate synthetic score history so the notebook renders meaningfully. Gate behind a `USE_SYNTHETIC_DATA = True` flag at the top.
+5. **Seed data** — if Langfuse has fewer than 14 days of scores (fresh install),
+   generate synthetic score history so the notebook renders meaningfully. Gate
+   behind a `USE_SYNTHETIC_DATA = True` flag at the top.
 
 **Constraints:**
-- Langfuse connection via existing `app/tracing.py` and `app/config.py` — don't hardcode credentials
-- No new Python dependencies unless unavoidable; plotly is already present
-- The `check_drift()` function must be importable without running the full notebook (extract to `app/eval/drift.py`, import into notebook)
-- Add unit tests for `check_drift()` in `tests/test_drift.py` covering: no regression, single regression, threshold override, empty scores edge case
 
-**Files to create/touch:** `notebooks/quality_drift.ipynb`, `app/eval/drift.py`, `app/main.py` (add `drift-check` command), `tests/test_drift.py`
+- Langfuse connection via existing `app/tracing.py` and `app/config.py` — don't
+  hardcode credentials
+- No new Python dependencies unless unavoidable; plotly is already present
+- The `check_drift()` function must be importable without running the full
+  notebook (extract to `app/eval/drift.py`, import into notebook)
+- Add unit tests for `check_drift()` in `tests/test_drift.py` covering: no
+  regression, single regression, threshold override, empty scores edge case
+
+**Files to create/touch:** `notebooks/quality_drift.ipynb`, `app/eval/drift.py`,
+`app/main.py` (add `drift-check` command), `tests/test_drift.py`
 
 ---
 
@@ -170,25 +261,33 @@ Add `notebooks/quality_drift.ipynb` that pulls historical eval scores from Langf
 
 ### #15 Raise unit test coverage from 63% to 80% (~3h)
 
-**Why:** 63% barely clears the 60% CI floor. Industry standard is 80%. The gap is concentrated in a few eval modules that are easy to mock.
+**Why:** 63% barely clears the 60% CI floor. Industry standard is 80%. The gap
+is concentrated in a few eval modules that are easy to mock.
 
 **Current state (2026-06-12):** 2513 stmts, 934 missed, 63% total.
 
 **Priority files:**
 
-| File | Cover | Effort | What to add |
-|------|-------|--------|-------------|
-| `app/eval/service.py` | 0% | Low | Thin wrappers — mock `run_deepeval_evaluation`, `run_experiment`, `run_ragas_experiment`, `run_gate`; assert delegation |
-| `app/eval/deepeval_runner.py` | 0% | Medium | Mock `LiteLLMModel`, `DeepEvalDataset`, metric classes; test happy path + score push to Langfuse |
-| `app/eval/ragas_metrics.py` | 63% | Low | Cover `_build_llm`, `_build_embeddings`, `_get_metric_objects` (metric registry lookup + strictness cap) |
-| `app/utils.py` | 38% | Low | Cover uncovered utility branches |
-| `app/eval/experiments.py` | 42% | Medium | Cover `run_experiment` DeepEval path — mock `LiteLLMModel`, dataset items, score push |
-| `app/rag/chain.py` | 37% | Medium | Mock `langfuse.get_prompt`, `ChatOpenAI`, `QdrantVectorStore`; test `build_chain`, `query`, `get_retriever` |
+| File                          | Cover | Effort | What to add                                                                                                             |
+| ----------------------------- | ----- | ------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `app/eval/service.py`         | 0%    | Low    | Thin wrappers — mock `run_deepeval_evaluation`, `run_experiment`, `run_ragas_experiment`, `run_gate`; assert delegation |
+| `app/eval/deepeval_runner.py` | 0%    | Medium | Mock `LiteLLMModel`, `DeepEvalDataset`, metric classes; test happy path + score push to Langfuse                        |
+| `app/eval/ragas_metrics.py`   | 63%   | Low    | Cover `_build_llm`, `_build_embeddings`, `_get_metric_objects` (metric registry lookup + strictness cap)                |
+| `app/utils.py`                | 38%   | Low    | Cover uncovered utility branches                                                                                        |
+| `app/eval/experiments.py`     | 42%   | Medium | Cover `run_experiment` DeepEval path — mock `LiteLLMModel`, dataset items, score push                                   |
+| `app/rag/chain.py`            | 37%   | Medium | Mock `langfuse.get_prompt`, `ChatOpenAI`, `QdrantVectorStore`; test `build_chain`, `query`, `get_retriever`             |
 
 **Constraints:**
-- No integration tests — all unit, mock LLM/Langfuse/Qdrant at boundary
-- Existing test files: `tests/test_evaluators.py`, `tests/test_ragas_metrics.py`, `tests/test_api_routes.py`
-- New files OK: `tests/test_service.py`, `tests/test_deepeval_runner.py`, `tests/test_chain.py`
-- CI threshold in `pyproject.toml`: `fail_under = 60` — raise to `80` once gap closed
 
-**Files to touch:** `tests/test_service.py` (new), `tests/test_deepeval_runner.py` (new), `tests/test_chain.py` (new), `tests/test_ragas_metrics.py` (extend), `tests/test_evaluators.py` (extend), `pyproject.toml`
+- No integration tests — all unit, mock LLM/Langfuse/Qdrant at boundary
+- Existing test files: `tests/test_evaluators.py`,
+  `tests/test_ragas_metrics.py`, `tests/test_api_routes.py`
+- New files OK: `tests/test_service.py`, `tests/test_deepeval_runner.py`,
+  `tests/test_chain.py`
+- CI threshold in `pyproject.toml`: `fail_under = 60` — raise to `80` once gap
+  closed
+
+**Files to touch:** `tests/test_service.py` (new),
+`tests/test_deepeval_runner.py` (new), `tests/test_chain.py` (new),
+`tests/test_ragas_metrics.py` (extend), `tests/test_evaluators.py` (extend),
+`pyproject.toml`

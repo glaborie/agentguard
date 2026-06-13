@@ -1,5 +1,7 @@
 # Repository Conventions
 
+<!-- markdownlint-disable MD013 -->
+
 This document defines naming and location conventions to keep repository structure predictable and reduce documentation drift.
 
 ## Compose files

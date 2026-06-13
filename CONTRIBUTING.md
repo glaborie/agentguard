@@ -1,5 +1,7 @@
 # Contributing to AgentGuard
 
+<!-- markdownlint-disable MD013 -->
+
 Thanks for your interest in contributing to AgentGuard.
 
 AgentGuard is a self-hosted AI reliability platform for RAG and agentic applications, with a focus on observability, protection, evaluation, and operational confidence. We welcome contributions that improve the platform’s reliability, usability, developer experience, and production readiness.
@@ -102,6 +104,7 @@ Please aim for contributions that are:
 If your change affects behavior, add or update tests whenever practical.
 
 Examples:
+
 - bug fix -> add a regression test
 - new feature -> add happy-path and failure-path coverage
 - refactor -> preserve or improve existing coverage
@@ -131,6 +134,7 @@ When submitting a pull request:
 - include screenshots or logs when UI or operational behavior changes
 
 A good PR makes it easy to answer:
+
 - what changed?
 - why did it change?
 - how was it tested?

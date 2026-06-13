@@ -1,5 +1,7 @@
 # Agent workflow
 
+<!-- markdownlint-disable MD013 MD060 -->
+
 Beyond simple RAG, AgentGuard includes a LangGraph-powered agentic workflow that reasons about which tools to use.
 
 ## Available tools

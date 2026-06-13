@@ -1,5 +1,7 @@
 # Setup Post-Mortem: AgentGuard Docker Stack
 
+<!-- markdownlint-disable MD013 MD040 MD060 MD036 -->
+
 ## Overview
 
 Getting 9 Docker services (Langfuse v3, LiteLLM, Ollama, Qdrant, PostgreSQL, ClickHouse, Redis, MinIO) to work together on Windows 11 took several rounds of debugging. This document captures every issue encountered and how it was resolved, for anyone attempting a similar self-hosted AI observability stack.
@@ -48,6 +50,7 @@ LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio:9000    # internal
 ### 3. LiteLLM Requires a Database (`main-latest` image)
 
 **Symptom:** Every request to LiteLLM returned:
+
 ```json
 {"error": {"message": "No connected db.", "type": "no_db_connection"}}
 ```
@@ -76,6 +79,7 @@ docker compose exec postgres psql -U postgres -c "CREATE DATABASE litellm;"
 ### 4. LiteLLM Master Key Not Recognized After DB Migration
 
 **Symptom:** After connecting the database, health checks returned:
+
 ```json
 {"error": {"message": "Invalid proxy server token passed", "type": "token_not_found_in_db"}}
 ```
@@ -121,6 +125,7 @@ curl -H "Authorization: Bearer sk-litellm-dev-key" http://localhost:4000/health
 ### 6. Ollama `encoding_format: base64` Not Supported
 
 **Symptom:** Embedding calls through LiteLLM failed with:
+
 ```
 Setting {'encoding_format': 'base64'} is not supported by ollama
 ```
@@ -166,6 +171,7 @@ The `ollama_data` volume persists models across restarts. They only need to be p
 **Root cause:** Langfuse SDK v4 (4.6.x) restructured the module layout. The callback handler moved from `langfuse.callback` to `langfuse.langchain`.
 
 Additionally, the `CallbackHandler` constructor signature changed dramatically:
+
 - v2/v3: `CallbackHandler(public_key=..., secret_key=..., host=..., session_id=..., user_id=...)`
 - v4: `CallbackHandler(public_key=..., trace_context=...)` — requires a pre-initialized `Langfuse` client singleton
 
@@ -241,6 +247,7 @@ minio-init:
 **Root cause:** The `.env` file set `REDIS_PASSWORD=redissecret`, which got loaded into the Langfuse containers via `env_file:`. The Langfuse SDK tried to authenticate with this password, but the Redis container was started without `--requirepass` and had no password configured.
 
 **Fix:** Two changes:
+
 1. Configure Redis to require the password: `--requirepass ${REDIS_PASSWORD:-redissecret}` in the Redis command.
 2. Add `REDIS_AUTH: ${REDIS_PASSWORD:-redissecret}` to the Langfuse environment block (the env var Langfuse uses for Redis authentication).
 
@@ -281,6 +288,7 @@ LiteLLM depends on Ollama with `service_started` (not `service_healthy`) because
 **12a. `STORE_MODEL_IN_DB` not set**
 
 **Symptom:** `init_litellm.py` fails with:
+
 ```json
 {"error": "Set 'STORE_MODEL_IN_DB=True' in your env to enable this feature."}
 ```
@@ -296,6 +304,7 @@ LiteLLM depends on Ollama with `service_started` (not `service_healthy`) because
 **12b. Open WebUI downloads 30 HuggingFace files on startup**
 
 **Symptom:** Container starts but `curl http://localhost:3001` returns `Connection reset by peer`. Logs show:
+
 ```
 Fetching 30 files:   0%|          | 0/30 [00:00<?, ?it/s]
 WARNING: You are sending unauthenticated requests to the HF Hub.
@@ -304,6 +313,7 @@ WARNING: You are sending unauthenticated requests to the HF Hub.
 **Root cause:** Open WebUI downloads sentence-transformer embedding models from HuggingFace on first boot for its built-in RAG. The web server doesn't start until the download completes. Unauthenticated HF requests are rate-limited, making this take many minutes.
 
 **Fix:** Set `RAG_EMBEDDING_ENGINE: "openai"` to tell Open WebUI to use an external embedding API instead of a local model. Point it at LiteLLM:
+
 ```yaml
 RAG_EMBEDDING_ENGINE: "openai"
 RAG_OPENAI_API_BASE_URL: "http://litellm:4000/v1"
@@ -330,6 +340,7 @@ RAG_EMBEDDING_MODEL: "nomic-embed-text"
 **12d. Streaming response truncated (`TransferEncodingError`)**
 
 **Symptom:** Open WebUI shows no response and logs:
+
 ```
 Error processing chat payload: Response payload is not completed:
 <TransferEncodingError: 400, message='Not enough data to satisfy transfer length header.'>

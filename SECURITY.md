@@ -1,5 +1,7 @@
 # Security Policy
 
+<!-- markdownlint-disable MD013 -->
+
 ## Supported Versions
 
 AgentGuard is an early-stage project. Security fixes are generally applied to the `main` branch and included in future releases.
@@ -12,7 +14,7 @@ Please do **not** report security vulnerabilities through public GitHub issues, 
 
 Instead, use GitHub’s private vulnerability reporting feature in this repository’s Security tab:
 
-https://github.com/glaborie/agentguard/security
+<https://github.com/glaborie/agentguard/security>
 
 This is the preferred channel for reporting vulnerabilities in AgentGuard.
 
