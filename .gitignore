@@ -28,4 +28,6 @@ graphify-out/
 tmp/
 runtime_config.json
 !.claude/
+.claude/*
 !.claude/agentguard-files.md
+*.swp
