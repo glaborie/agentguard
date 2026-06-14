@@ -38,16 +38,21 @@ source = ["app", "guardrails"]
 omit = [
     "*/test_*",
     "app/main.py",
-    # Integration-only: require live services (Qdrant, LLM, Redis, MCP, Langfuse)
+    # Integration-dependent: require live services (Qdrant, LLM, Redis, MCP, Langfuse)
     "app/agent/mcp_client.py",
     "app/agent/service.py",
     "app/api/routes/retrieval.py",
     "app/core/telemetry.py",
-    "app/eval/benchmark.py",
+    "app/eval/benchmark/runner.py",
+    "app/eval/benchmark/judges.py",
+    # Presentation/reporting helpers with low risk business impact
+    "app/eval/benchmark/report.py",
     "app/eval/drift.py",
-    "app/eval/experiments.py",
+    "app/eval/experiments/runner.py",
+    "app/eval/experiments/report.py",
     "app/eval/ragas_metrics.py",
     "app/rag/chain.py",
+    "app/telemetry.py",
     "guardrails/semantic_cache.py",
     # CLI execution handlers that delegate to the above
     "app/cli/commands/agent.py",
