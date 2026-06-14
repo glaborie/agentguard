@@ -78,6 +78,49 @@ test-integration-end-to-end: ## Run end-to-end integration tests (requires Docke
 test-config: ## Run config tests
 	$(PYTEST) tests/test_config.py -v
 
+# ── app commands ─────────────────────────────────────────────────────────────
+PYTHON := python -m
+
+.PHONY: ingest
+ingest: ## Ingest docs into Qdrant  (CORPUS_DIR=path/to/docs)
+	$(PYTHON) app.main ingest $(if $(CORPUS_DIR),--corpus-dir $(CORPUS_DIR),)
+
+.PHONY: query
+query: ## Single RAG query  (Q="your question")
+	$(PYTHON) app.main query "$(Q)" $(if $(MODEL),--model $(MODEL),)
+
+.PHONY: agent
+agent: ## ReAct agent query  (Q="your question")
+	$(PYTHON) app.main agent "$(Q)" $(if $(MODEL),--model $(MODEL),)
+
+.PHONY: benchmark
+benchmark: ## Run NorthstarCRM benchmark  (MODE=full|no-guardrails|direct  LIMIT=N  COMPARE=1)
+	$(PYTHON) app.main benchmark \
+		$(if $(MODE),--mode $(MODE),) \
+		$(if $(LIMIT),--limit $(LIMIT),) \
+		$(if $(COMPARE),--compare,) \
+		$(if $(MODEL),--model $(MODEL),) \
+		$(if $(ITEM),--item $(ITEM),) \
+		$(if $(NO_LLM_JUDGE),--no-llm-judge,)
+
+.PHONY: evaluate
+evaluate: ## Run DeepEval metrics  (DATASET=name  MODEL=model  METRICS=m1,m2)
+	$(PYTHON) app.main evaluate --dataset $(DATASET) \
+		$(if $(METRICS),--metrics $(METRICS),) \
+		$(if $(MODEL),--model $(MODEL),)
+
+.PHONY: experiment
+experiment: ## Multi-model DeepEval experiment  (DATASET=name  MODELS=m1,m2)
+	$(PYTHON) app.main experiment --dataset $(DATASET) --models $(MODELS) \
+		$(if $(METRICS),--metrics $(METRICS),) \
+		$(if $(LIMIT),--limit $(LIMIT),)
+
+.PHONY: drift
+drift: ## Check quality drift from Langfuse scores  (DAYS=14  FAIL_ON_REGRESSION=1)
+	$(PYTHON) app.main drift-check \
+		$(if $(DAYS),--days $(DAYS),) \
+		$(if $(FAIL_ON_REGRESSION),--fail-on-regression,)
+
 # ── convenience ───────────────────────────────────────────────────────────────
 .PHONY: test-fast
 test-fast: ## Run unit tests in parallel with minimal output (requires pytest-xdist)

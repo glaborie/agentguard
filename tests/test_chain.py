@@ -132,7 +132,7 @@ class TestBuildRAGChain:
 
         result = build_rag_chain()
 
-        mock_get_retriever.assert_called_once_with(k=4)
+        mock_get_retriever.assert_called_once_with(k=10)
         mock_get_llm.assert_called_once_with(model=None, guardrails_enabled=True)
         mock_get_prompt.assert_called_once()
         assert result is not None

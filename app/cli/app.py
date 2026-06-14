@@ -22,8 +22,10 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     from app.core.logging import configure_logging
+    from app.core.telemetry import init_telemetry
 
     configure_logging()
+    init_telemetry()
     parser = _build_parser()
     args = parser.parse_args()
     if not args.command:

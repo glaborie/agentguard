@@ -2,6 +2,8 @@
 
 from argparse import Namespace
 
+from app.cli.common import cli_span
+
 
 def register(sub) -> None:
     p = sub.add_parser(
@@ -58,26 +60,32 @@ def cmd_benchmark(args: Namespace) -> None:
 
     modes = ["full", "no-guardrails", "direct"] if args.compare else [args.mode]
 
-    print(f"Loading benchmark items...")
-    items = load_benchmark_items()
-    labels = load_retrieval_labels()
-    if args.item:
-        if args.item not in items:
-            print(f"  ERROR: item '{args.item}' not found. Available: {', '.join(sorted(items))}")
-            return
-        items = {args.item: items[args.item]}
-    n = min(len(items), args.limit) if args.limit else len(items)
-    print(f"  {n} items  |  modes: {', '.join(modes)}")
-
-    print("Running benchmark...")
-    results = run_benchmark(
-        items=items,
-        retrieval_labels=labels,
-        modes=modes,
-        model=args.model,
+    with cli_span(
+        "benchmark",
+        modes=",".join(modes),
+        model=args.model or "default",
         llm_judge=not args.no_llm_judge,
-        limit=args.limit,
-        verbose=not args.quiet,
-    )
+    ):
+        print(f"Loading benchmark items...")
+        items = load_benchmark_items()
+        labels = load_retrieval_labels()
+        if args.item:
+            if args.item not in items:
+                print(f"  ERROR: item '{args.item}' not found. Available: {', '.join(sorted(items))}")
+                return
+            items = {args.item: items[args.item]}
+        n = min(len(items), args.limit) if args.limit else len(items)
+        print(f"  {n} items  |  modes: {', '.join(modes)}")
+
+        print("Running benchmark...")
+        results = run_benchmark(
+            items=items,
+            retrieval_labels=labels,
+            modes=modes,
+            model=args.model,
+            llm_judge=not args.no_llm_judge,
+            limit=args.limit,
+            verbose=not args.quiet,
+        )
 
     print_results(results, modes=modes, show_per_question=not args.quiet)

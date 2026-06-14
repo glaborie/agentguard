@@ -1,6 +1,8 @@
 import sys
 from argparse import Namespace
 
+from app.cli.common import cli_span
+
 
 def register(sub) -> None:
     p = sub.add_parser("evaluate", help="Run DeepEval metrics against a dataset")
@@ -31,7 +33,8 @@ def cmd_evaluate(args: Namespace) -> None:
     from app.eval.service import evaluate
 
     metrics = args.metrics.split(",") if args.metrics else None
-    evaluate(dataset_name=args.dataset, metric_names=metrics, model=args.model, cost_report=args.cost_report)
+    with cli_span("evaluate", dataset=args.dataset, model=args.model or "default"):
+        evaluate(dataset_name=args.dataset, metric_names=metrics, model=args.model, cost_report=args.cost_report)
 
 
 def cmd_ragas_experiment(args: Namespace) -> None:
@@ -40,14 +43,15 @@ def cmd_ragas_experiment(args: Namespace) -> None:
 
     models  = [m.strip() for m in args.models.split(",")]
     metrics = [m.strip() for m in args.metrics.split(",")] if args.metrics else None
-    results, run_names = ragas_experiment(
-        dataset_name=args.dataset,
-        models=models,
-        run_prefix=args.run_prefix,
-        metric_names=metrics,
-        judge_model=args.judge_model,
-        limit=args.limit,
-    )
+    with cli_span("ragas-experiment", dataset=args.dataset, models=",".join(models)):
+        results, run_names = ragas_experiment(
+            dataset_name=args.dataset,
+            models=models,
+            run_prefix=args.run_prefix,
+            metric_names=metrics,
+            judge_model=args.judge_model,
+            limit=args.limit,
+        )
     print_comparison_table(results, run_names, args.dataset)
 
 
