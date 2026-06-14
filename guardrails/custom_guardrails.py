@@ -28,7 +28,6 @@ def _get_tracer():
     if _otel_tracer is not None:
         return _otel_tracer
     try:
-        from opentelemetry import trace
         from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
         from opentelemetry.sdk.resources import SERVICE_NAME, Resource
         from opentelemetry.sdk.trace import TracerProvider
@@ -43,6 +42,19 @@ def _get_tracer():
         logging.getLogger(__name__).warning("OTel unavailable in guardrails: %s", exc)
         _otel_tracer = None
     return _otel_tracer
+
+
+def _remote_context(data: dict):
+    """Extract W3C trace context injected by the app into request metadata."""
+    try:
+        from opentelemetry.propagate import extract
+
+        traceparent = (data.get("metadata") or {}).get("traceparent")
+        if not traceparent:
+            return None
+        return extract({"traceparent": traceparent})
+    except Exception:
+        return None
 
 
 # ── Prompt Injection Detection (regex patterns) ────────────────────
@@ -234,6 +246,7 @@ class PromptInjectionGuard(CustomGuardrail):
 
         master_key = os.environ.get("LITELLM_MASTER_KEY", "")
         tracer = _get_tracer()
+        remote_ctx = _remote_context(data)
 
         for msg in data.get("messages", []):
             if msg.get("role") != "user":
@@ -243,7 +256,11 @@ class PromptInjectionGuard(CustomGuardrail):
                 continue
 
             # Pass 1: fast regex
-            ctx = tracer.start_as_current_span("guardrail.regex_injection_check") if tracer else None
+            ctx = (
+                tracer.start_as_current_span("guardrail.regex_injection_check", context=remote_ctx)
+                if tracer
+                else None
+            )
             span = ctx.__enter__() if ctx else None
             try:
                 blocked_by_regex = False
@@ -275,7 +292,7 @@ class PromptInjectionGuard(CustomGuardrail):
             # Pass 2: LLM-judge semantic classifier (runtime-togglable)
             cfg = _runtime_cfg()
             if cfg.get("semantic_guard_enabled", _RUNTIME_DEFAULTS["semantic_guard_enabled"]):
-                ctx2 = tracer.start_as_current_span("guardrail.semantic_injection_check") if tracer else None
+                ctx2 = tracer.start_as_current_span("guardrail.semantic_injection_check", context=remote_ctx) if tracer else None
                 span2 = ctx2.__enter__() if ctx2 else None
                 try:
                     model = cfg.get("semantic_guard_model", _RUNTIME_DEFAULTS["semantic_guard_model"])
@@ -382,6 +399,7 @@ class ToxicityGuard(CustomGuardrail):
 
         master_key = os.environ.get("LITELLM_MASTER_KEY", "")
         tracer = _get_tracer()
+        remote_ctx = _remote_context(data)
 
         for msg in data.get("messages", []):
             if msg.get("role") != "user":
@@ -390,7 +408,11 @@ class ToxicityGuard(CustomGuardrail):
             if not isinstance(content, str):
                 continue
 
-            ctx = tracer.start_as_current_span("guardrail.toxicity_check") if tracer else None
+            ctx = (
+                tracer.start_as_current_span("guardrail.toxicity_check", context=remote_ctx)
+                if tracer
+                else None
+            )
             span = ctx.__enter__() if ctx else None
             try:
                 model = cfg.get("toxicity_guard_model", _RUNTIME_DEFAULTS["toxicity_guard_model"])
