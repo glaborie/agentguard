@@ -2,6 +2,7 @@ from typing import Any
 
 from langfuse import propagate_attributes
 
+from app.core.pii import mask as mask_pii
 from app.rag.chain import build_rag_chain
 from app.rag.chain import query as _query
 from app.rag.ingest import ingest as _ingest
@@ -28,7 +29,7 @@ def query(
         user_id=user_id,
         tags=["rag", "cli"],
     ):
-        return _query(question=question, model=model, callbacks=callbacks)
+        return _query(question=mask_pii(question), model=model, callbacks=callbacks)
 
 
 def build_chain(model: str | None = None, k: int = 10) -> Any:
