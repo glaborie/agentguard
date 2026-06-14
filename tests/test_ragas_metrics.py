@@ -121,10 +121,10 @@ class TestRunRagasExperiment:
         item.id = f"item-{question[:4]}"
         return item
 
-    @patch("app.eval.experiments.get_langfuse_client")
-    @patch("app.eval.experiments.get_langfuse_handler")
-    @patch("app.eval.experiments.get_retriever")
-    @patch("app.eval.experiments.query_with_usage")
+    @patch("app.eval.experiments.runner.get_langfuse_client")
+    @patch("app.eval.experiments.runner.get_langfuse_handler")
+    @patch("app.eval.experiments.runner.get_retriever")
+    @patch("app.eval.experiments.runner.query_with_usage")
     @patch("app.eval.ragas_metrics.run_ragas_evaluation")
     @patch("app.eval.ragas_metrics.build_ragas_dataset")
     def test_returns_results_and_run_names(
@@ -167,10 +167,10 @@ class TestRunRagasExperiment:
         assert results[0].scores == {"faithfulness": 0.85}
         assert "openrouter-gemini-flash" in run_names
 
-    @patch("app.eval.experiments.get_langfuse_client")
-    @patch("app.eval.experiments.get_langfuse_handler")
-    @patch("app.eval.experiments.get_retriever")
-    @patch("app.eval.experiments.query_with_usage")
+    @patch("app.eval.experiments.runner.get_langfuse_client")
+    @patch("app.eval.experiments.runner.get_langfuse_handler")
+    @patch("app.eval.experiments.runner.get_retriever")
+    @patch("app.eval.experiments.runner.query_with_usage")
     @patch("app.eval.ragas_metrics.run_ragas_evaluation")
     @patch("app.eval.ragas_metrics.build_ragas_dataset")
     def test_none_scores_skipped(
