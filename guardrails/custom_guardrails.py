@@ -49,11 +49,16 @@ def _remote_context(data: dict):
     try:
         from opentelemetry.propagate import extract
 
-        traceparent = (data.get("metadata") or {}).get("traceparent")
+        metadata = data.get("metadata") or {}
+        # HTTPXClientInstrumentor auto-injects traceparent as HTTP header.
+        # LiteLLM preserves original request headers in requester_metadata["headers"].
+        req_headers = (metadata.get("requester_metadata") or {}).get("headers") or {}
+        traceparent = req_headers.get("traceparent")
         if not traceparent:
             return None
         return extract({"traceparent": traceparent})
-    except Exception:
+    except Exception as exc:
+        verbose_proxy_logger.warning("[agentguard] _remote_context error: %s", exc)
         return None
 
 

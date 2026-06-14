@@ -68,33 +68,18 @@ class ScoredRetriever(BaseRetriever):
         return docs
 
 
-def _current_traceparent() -> str | None:
-    """Return W3C traceparent for the active span, or None."""
-    from opentelemetry import trace
-    from opentelemetry.propagate import inject
-
-    ctx = trace.get_current_span().get_span_context()
-    if not ctx.is_valid:
-        return None
-    carrier: dict[str, str] = {}
-    inject(carrier)
-    return carrier.get("traceparent")
-
-
 def get_llm(
     model: str | None = None,
     temperature: float = 0.0,
     guardrails_enabled: bool = True,
 ) -> ChatOpenAI:
-    extra_body: dict = {}
-    if not guardrails_enabled:
-        extra_body["guardrails"] = []
+    extra_body: dict | None = {"guardrails": []} if not guardrails_enabled else None
     return ChatOpenAI(
         model=model or settings.default_model,
         base_url=f"{settings.litellm_base_url}/v1",
         api_key=settings.litellm_master_key,  # type: ignore[arg-type]
         temperature=temperature,
-        extra_body=extra_body or None,
+        **({"extra_body": extra_body} if extra_body is not None else {}),
     )
 
 
