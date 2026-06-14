@@ -89,9 +89,6 @@ def get_llm(
     extra_body: dict = {}
     if not guardrails_enabled:
         extra_body["guardrails"] = []
-    traceparent = _current_traceparent()
-    if traceparent:
-        extra_body.setdefault("metadata", {})["traceparent"] = traceparent
     return ChatOpenAI(
         model=model or settings.default_model,
         base_url=f"{settings.litellm_base_url}/v1",
@@ -99,6 +96,7 @@ def get_llm(
         temperature=temperature,
         extra_body=extra_body or None,
     )
+
 
 
 def get_retriever(k: int = 6) -> BaseRetriever:
