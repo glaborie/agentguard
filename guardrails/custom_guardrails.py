@@ -466,11 +466,38 @@ PII_RULES = [
 
 
 class PIIMaskingGuard(CustomGuardrail):
-    """Scans LLM output and replaces PII patterns with redaction tokens."""
+    """Redacts PII patterns from both user input (pre-call) and LLM output (post-call)."""
 
     def __init__(self, **kwargs) -> None:
         self._compiled = [(re.compile(p), repl) for p, repl in PII_RULES]
         super().__init__(**kwargs)
+
+    def _mask(self, text: str) -> tuple[str, bool]:
+        """Return (masked_text, changed)."""
+        result = text
+        for pattern, replacement in self._compiled:
+            result = pattern.sub(replacement, result)
+        return result, result != text
+
+    async def async_pre_call_hook(
+        self,
+        user_api_key_dict,
+        cache,
+        data: dict,
+        call_type: str,
+    ) -> Optional[dict]:
+        """Redact PII from user messages before forwarding to LLM."""
+        for msg in data.get("messages", []):
+            if msg.get("role") not in ("user", "system"):
+                continue
+            content = msg.get("content", "")
+            if not isinstance(content, str):
+                continue
+            masked, changed = self._mask(content)
+            if changed:
+                msg["content"] = masked
+                verbose_proxy_logger.info("PII masked in %s message", msg["role"])
+        return data
 
     async def async_post_call_success_hook(
         self,
@@ -478,16 +505,15 @@ class PIIMaskingGuard(CustomGuardrail):
         user_api_key_dict,
         response: Any,
     ) -> Any:
+        """Redact PII from LLM responses."""
         if not hasattr(response, "choices"):
             return response
         for choice in response.choices:
             content = getattr(getattr(choice, "message", None), "content", None)
             if not content:
                 continue
-            original = content
-            for pattern, replacement in self._compiled:
-                content = pattern.sub(replacement, content)
-            if content != original:
-                choice.message.content = content
+            masked, changed = self._mask(content)
+            if changed:
+                choice.message.content = masked
                 verbose_proxy_logger.info("PII masked in response")
         return response
