@@ -1,5 +1,7 @@
 from argparse import Namespace
 
+from app.cli.common import cli_span
+
 
 def register(sub) -> None:
     p = sub.add_parser("experiment", help="Compare multiple models against a dataset")
@@ -23,12 +25,13 @@ def cmd_experiment(args: Namespace) -> None:
     print(f"Metrics : {metric_names or 'all (faithfulness, answer_relevancy, contextual_relevancy, hallucination)'}")
     print(f"Judge   : {args.judge_model or 'default (deepeval_model setting)'}\n")
 
-    results, run_names = experiment(
-        dataset_name=args.dataset,
-        models=models,
-        run_prefix=args.run_prefix,
-        metric_names=metric_names,
-        judge_model=args.judge_model,
-        limit=args.limit,
-    )
+    with cli_span("experiment", dataset=args.dataset, models=",".join(models)):
+        results, run_names = experiment(
+            dataset_name=args.dataset,
+            models=models,
+            run_prefix=args.run_prefix,
+            metric_names=metric_names,
+            judge_model=args.judge_model,
+            limit=args.limit,
+        )
     show_experiment_table(results, run_names, args.dataset)
