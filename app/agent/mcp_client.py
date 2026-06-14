@@ -7,7 +7,7 @@ Docker usage: default http://github-mcp:8080/mcp resolves via bridge network.
 
 import logging
 
-from app.config import settings
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 

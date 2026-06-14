@@ -54,10 +54,10 @@ def run_gate(
     push_scores: bool = True,
 ) -> bool:
     """Evaluate the dataset and check thresholds. Returns True if all pass."""
-    from app.config import settings
+    from app.core.config import settings
     from app.eval.deepeval_metrics import get_metrics
     from app.rag.chain import get_retriever, query
-    from app.tracing import get_langfuse_client, get_langfuse_handler
+    from app.core.tracing import get_langfuse_client, get_langfuse_handler
 
     effective_thresholds = {**DEFAULT_THRESHOLDS, **(thresholds or {})}
     judge = judge_model or settings.deepeval_model or settings.default_model

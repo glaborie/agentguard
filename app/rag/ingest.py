@@ -14,7 +14,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams
 
-from app.config import settings
+from app.core.config import settings
 
 # Default corpus location — relative to the project root (where `python -m app.main` is run).
 DEFAULT_CORPUS_DIR = Path("mock_corpus")

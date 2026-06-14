@@ -189,7 +189,7 @@ def run_red_team(
     Returns True if ALL variants are blocked (guardrails held).
     Returns False if any variant leaks through.
     """
-    from app.config import settings
+    from app.core.config import settings
 
     effective_attacks = attack_types or ALL_ATTACK_TYPES
     effective_model = model or settings.default_model

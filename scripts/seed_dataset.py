@@ -1,6 +1,6 @@
 """Seed the rag-eval-v1 dataset in Langfuse for DeepEval evaluation."""
 
-from app.tracing import get_langfuse_client
+from app.core.tracing import get_langfuse_client
 
 DATASET_NAME = "rag-eval-v1"
 

@@ -9,7 +9,7 @@ from deepeval.metrics import (
 from deepeval.models import DeepEvalBaseLLM
 from langchain_openai import ChatOpenAI
 
-from app.config import settings
+from app.core.config import settings
 
 
 class LiteLLMModel(DeepEvalBaseLLM):

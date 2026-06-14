@@ -19,7 +19,7 @@ from app.agent.mcp_client import load_github_mcp_tools
 from app.agent.prompts import AGENT_SYSTEM_PROMPT
 from app.agent.tool_guard import ToolCallBlockedError, register_mcp_tools, validate_tool_call
 from app.agent.tools import ALL_TOOLS
-from app.config import settings
+from app.core.config import settings
 
 
 def _get_llm(model: str | None = None) -> ChatOpenAI:

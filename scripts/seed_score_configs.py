@@ -14,7 +14,7 @@ load_dotenv()
 
 from langfuse.api.commons.types.score_config_data_type import ScoreConfigDataType
 
-from app.tracing import get_langfuse_client
+from app.core.tracing import get_langfuse_client
 
 # All score configs used in this project.
 # (name, data_type, description)

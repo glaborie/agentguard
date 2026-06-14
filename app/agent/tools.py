@@ -14,7 +14,7 @@ from app.eval.evaluators import (
     is_within_length,
 )
 from app.rag.chain import format_docs, get_retriever
-from app.tracing import get_langfuse_client
+from app.core.tracing import get_langfuse_client
 from app.utils import truncate as _truncate
 
 

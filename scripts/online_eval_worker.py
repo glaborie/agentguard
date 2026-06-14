@@ -24,7 +24,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.config import settings
+from app.core.config import settings
 from app.utils import extract_trace_output, truncate
 from scripts.utils import HTTP_TIMEOUT, langfuse_basic_auth, load_state, save_state
 from app.eval.evaluators import (
@@ -32,7 +32,7 @@ from app.eval.evaluators import (
     has_source_citation,
     is_within_length,
 )
-from app.tracing import get_langfuse_client
+from app.core.tracing import get_langfuse_client
 from scripts.seed_score_configs import seed as seed_score_configs
 
 _AUTH = langfuse_basic_auth()

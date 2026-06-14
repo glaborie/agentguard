@@ -11,7 +11,8 @@ from app.eval.deepeval_metrics import get_metrics
 from app.rag.chain import get_retriever, query_with_usage
 from langfuse import propagate_attributes
 
-from app.tracing import get_langfuse_client, get_langfuse_handler
+from app.core.config import settings
+from app.core.tracing import get_langfuse_client, get_langfuse_handler
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +47,6 @@ def run_experiment(
     Returns:
         (results, run_names) — run_names maps model name → Langfuse run name.
     """
-    from app.config import settings
-
     judge = judge_model or settings.deepeval_model or settings.default_model
     timestamp = datetime.now().strftime("%Y%m%d-%H%M")
 
@@ -173,7 +172,6 @@ def run_ragas_experiment(
     per-item metric.measure()), so scores are collected after generation
     then pushed back to Langfuse.
     """
-    from app.config import settings
     from app.eval.ragas_metrics import ALL_METRICS, build_ragas_dataset, run_ragas_evaluation
 
     judge   = judge_model or settings.ragas_model or settings.default_model

@@ -18,7 +18,7 @@ class RetrievalDebugRequest(BaseModel):
 
 
 def _build_retrievers(k: int, mode: str) -> dict:
-    from app.config import settings
+    from app.core.config import settings
     from app.rag.bm25_index import build_or_load
     from app.rag.chain import ScoredRetriever
     from app.rag.hybrid_retriever import HybridRetriever

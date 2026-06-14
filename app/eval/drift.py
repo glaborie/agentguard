@@ -114,7 +114,7 @@ def fetch_scores_from_langfuse(days: int = 14) -> pd.DataFrame:
     Returns DataFrame with columns: timestamp, trace_id, metric, value, model.
     Requires LANGFUSE_* env vars to be set.
     """
-    from app.tracing import get_langfuse_client
+    from app.core.tracing import get_langfuse_client
 
     client = get_langfuse_client()
     score_names = ["faithfulness", "answer_relevancy", "contextual_relevancy", "hallucination"]

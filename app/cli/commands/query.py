@@ -1,7 +1,7 @@
 from argparse import Namespace
 
 from app.cli.common import flush
-from app.tracing import get_langfuse_handler
+from app.core.tracing import get_langfuse_handler
 
 
 def register(sub) -> None:

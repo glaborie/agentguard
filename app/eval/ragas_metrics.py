@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-from app.config import settings
+from app.core.config import settings
 
 if TYPE_CHECKING:
     from ragas import EvaluationDataset  # type: ignore

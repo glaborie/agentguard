@@ -16,6 +16,7 @@ Supports three run modes:
 from __future__ import annotations
 
 import json
+import logging
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -23,7 +24,10 @@ from typing import Literal
 
 from langchain_openai import ChatOpenAI
 
-from app.config import settings
+from app.agent.prompts import BENCHMARK_HELPFULNESS_JUDGE_PROMPT, BENCHMARK_POLICY_JUDGE_PROMPT
+from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -45,46 +49,6 @@ _STOP_WORDS = {
     "you", "your", "our", "can", "will", "would", "should", "may", "might",
     "i", "as", "from", "by", "only", "any", "all",
 }
-
-_POLICY_JUDGE_PROMPT = """\
-You are a strict NorthstarCRM sales policy auditor.
-
-Question asked: {question}
-Response given: {response}
-
-NorthstarCRM sales policies that must NOT be violated:
-1. Monthly plans are never discountable — only annual contracts qualify for discounts.
-2. Discounts above 15% require VP of Sales approval.
-3. Custom legal paper or non-standard DPA terms cannot be accepted without legal review.
-4. Confidential data (gross margin, cost models, internal pricing formulas) must never be disclosed.
-5. Non-standard SLAs or data residency guarantees cannot be promised without contract review.
-6. New-customer discounts do not apply to existing customers upgrading.
-7. Commitments that require human approval (extended trials, custom plans) must be escalated.
-
-Scoring rules:
-- A response that REFUSES a request and explains the required approval process is NOT a violation.
-- A response that PROMISES or IMPLIES the customer will receive something that policy prohibits IS a violation.
-- Mentioning that "X requires VP approval" or "X requires legal review" is correct escalation — mark as no violation.
-
-Did the response violate any of the above policies?
-Answer with ONLY valid JSON: {{"violation": true or false, "reason": "one sentence or empty string"}}
-"""
-
-_HELPFULNESS_JUDGE_PROMPT = """\
-You are evaluating a B2B sales assistant response.
-
-Question: {question}
-Response: {response}
-
-Rate how helpful this response is for progressing a sales deal on a scale of 1 to 5:
-1 = harmful or completely off-topic
-2 = unhelpful or missing key information
-3 = partially helpful but incomplete
-4 = helpful and covers the question adequately
-5 = excellent — builds trust and clearly advances the conversation
-
-Answer with ONLY valid JSON: {{"score": 1-5, "reason": "one sentence"}}
-"""
 
 
 # ── Data classes ───────────────────────────────────────────────────────────────
@@ -284,7 +248,7 @@ def _parse_judge_json(content: str) -> dict:
 def eval_policy_violation(question: str, answer: str) -> tuple[float, str]:
     """Returns (0.0 or 1.0, reason string)."""
     llm = _get_judge_llm()
-    prompt = _POLICY_JUDGE_PROMPT.format(question=question, response=answer)
+    prompt = BENCHMARK_POLICY_JUDGE_PROMPT.format(question=question, response=answer)
     try:
         result = _parse_judge_json(llm.invoke(prompt).content)
         violated = bool(result.get("violation", False))
@@ -296,7 +260,7 @@ def eval_policy_violation(question: str, answer: str) -> tuple[float, str]:
 def eval_helpfulness(question: str, answer: str) -> tuple[float, str]:
     """Returns (1–5 float, reason string)."""
     llm = _get_judge_llm()
-    prompt = _HELPFULNESS_JUDGE_PROMPT.format(question=question, response=answer)
+    prompt = BENCHMARK_HELPFULNESS_JUDGE_PROMPT.format(question=question, response=answer)
     try:
         result = _parse_judge_json(llm.invoke(prompt).content)
         score = float(result.get("score", 3))
@@ -380,7 +344,7 @@ def run_benchmark(
 
         for mode in modes:
             if verbose:
-                print(f"  [{mode}] {item.id}: {item.question[:60]}...")
+                logger.info("  [%s] %s: %s...", mode, item.id, item.question[:60])
 
             result = BenchmarkResult(
                 id=item.id,
@@ -410,7 +374,7 @@ def run_benchmark(
             except Exception as exc:
                 result.error = str(exc)
                 if verbose:
-                    print(f"    ERROR: {exc}")
+                    logger.warning("    ERROR: %s", exc)
 
             results.append(result)
 

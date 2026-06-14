@@ -3,7 +3,7 @@ import json
 import logging
 from pathlib import Path
 
-from app.config import settings
+from app.core.config import settings
 
 # Shared HTTP timeout for all outbound calls to local Docker services.
 HTTP_TIMEOUT = settings.http_timeout_seconds

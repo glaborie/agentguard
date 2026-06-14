@@ -30,7 +30,7 @@ from pathlib import Path
 import httpx
 from langfuse import Langfuse
 
-from app.config import settings
+from app.core.config import settings
 from scripts.utils import HTTP_TIMEOUT, TRACE_PAGE_SIZE, langfuse_basic_auth, load_state, save_state
 
 logging.basicConfig(

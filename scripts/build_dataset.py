@@ -32,8 +32,8 @@ load_dotenv()
 
 from langfuse.api.commons.types.score_data_type import ScoreDataType
 
-from app.config import settings
-from app.tracing import get_langfuse_client
+from app.core.config import settings
+from app.core.tracing import get_langfuse_client
 from scripts.utils import SCORE_PAGE_SIZE, load_state, save_state
 
 logging.basicConfig(

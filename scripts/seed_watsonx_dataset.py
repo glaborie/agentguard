@@ -84,7 +84,7 @@ def _pairs_from_file() -> list[dict]:
 
 
 def seed(pairs: list[dict], dry_run: bool, reset: bool) -> None:
-    from app.tracing import get_langfuse_client
+    from app.core.tracing import get_langfuse_client
 
     client = get_langfuse_client()
 

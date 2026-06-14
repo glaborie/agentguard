@@ -20,7 +20,7 @@ from pathlib import Path
 
 from langfuse import Langfuse
 
-from app.config import settings
+from app.core.config import settings
 
 logging.basicConfig(
     level=logging.INFO,

@@ -13,7 +13,7 @@ import sys
 
 from langfuse import Langfuse
 
-from app.config import settings
+from app.core.config import settings
 from app.rag.chain import LANGFUSE_PROMPT_MESSAGES
 
 PROMPT_NAME = "rag-system-prompt"

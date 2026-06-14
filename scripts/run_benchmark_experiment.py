@@ -29,10 +29,10 @@ import requests
 from deepeval.test_case import LLMTestCase
 from langfuse.experiment import Evaluation
 
-from app.config import settings
+from app.core.config import settings
 from app.eval.deepeval_metrics import get_metrics
 from app.rag.chain import get_retriever, query
-from app.tracing import get_langfuse_client
+from app.core.tracing import get_langfuse_client
 
 logging.basicConfig(
     level=logging.INFO,

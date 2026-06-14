@@ -14,9 +14,9 @@ from opentelemetry import trace as otel_trace
 from pydantic import ConfigDict
 from qdrant_client import QdrantClient
 
-from app.config import settings
+from app.core.config import settings
 from app.core.feature_flags import get_flags
-from app.tracing import get_langfuse_client
+from app.core.tracing import get_langfuse_client
 
 RAG_SYSTEM_PROMPT = """\
 You are a helpful technical assistant with expertise in IBM watsonx and related products. \

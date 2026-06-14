@@ -5,7 +5,7 @@ import re
 
 from langchain_openai import ChatOpenAI
 
-from app.config import settings
+from app.core.config import settings
 
 
 # ── Code-based evaluators ──────────────────────────────────────────

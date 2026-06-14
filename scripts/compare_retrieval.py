@@ -34,7 +34,7 @@ from app.eval.benchmark import (
 from app.rag.chain import ScoredRetriever, get_retriever
 from app.rag.hybrid_retriever import HybridRetriever
 from app.rag.bm25_index import build_or_load
-from app.config import settings
+from app.core.config import settings
 from qdrant_client import QdrantClient
 from langchain_openai import OpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore

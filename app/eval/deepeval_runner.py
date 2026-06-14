@@ -2,9 +2,10 @@
 
 from deepeval.test_case import LLMTestCase
 
+from app.core.config import settings
+from app.core.tracing import get_langfuse_client, get_langfuse_handler
 from app.eval.deepeval_metrics import get_metrics
 from app.rag.chain import get_retriever, query_with_usage
-from app.tracing import get_langfuse_client, get_langfuse_handler
 
 
 def run_deepeval_evaluation(
@@ -20,8 +21,6 @@ def run_deepeval_evaluation(
         metric_names: Which metrics to run (None = all).
         model: Override model for both generation and judge.
     """
-    from app.config import settings
-
     # Default to deepeval_model for both generation and judge so the evaluate
     # command doesn't fall back to the local Ollama default.
     model = model or settings.deepeval_model or settings.default_model

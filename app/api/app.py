@@ -9,7 +9,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.api.routes import chat, config, health, models, retrieval, webhook
 from app.core.config import settings
-from app.telemetry import init_telemetry
+from app.core.telemetry import init_telemetry
 
 logger = logging.getLogger(__name__)
 
