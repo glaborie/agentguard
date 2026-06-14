@@ -15,5 +15,6 @@
   "hybrid_search_enabled": true,
   "hybrid_search_vector_weight": 0.5,
   "hybrid_search_bm25_weight": 0.5,
-  "hybrid_search_rrf_c": 60
+  "hybrid_search_rrf_c": 60,
+  "pii_masking_enabled": true
 }

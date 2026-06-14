@@ -11,6 +11,9 @@ _RULES: list[tuple[re.Pattern, str]] = [
 
 
 def mask(text: str) -> str:
+    from app.core.feature_flags import get_flags
+    if not get_flags().get("pii_masking_enabled", True):
+        return text
     for pattern, replacement in _RULES:
         text = pattern.sub(replacement, text)
     return text
