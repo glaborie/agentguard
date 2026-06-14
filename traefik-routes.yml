@@ -24,6 +24,10 @@ http:
       rule: "Host(`jaeger.localhost`)"
       service: jaeger
       entryPoints: [web]
+    zipkin:
+      rule: "Host(`zipkin.localhost`)"
+      service: zipkin
+      entryPoints: [web]
     loki:
       rule: "Host(`loki.localhost`)"
       service: loki
@@ -54,6 +58,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://jaeger:16686"
+    zipkin:
+      loadBalancer:
+        servers:
+          - url: "http://zipkin:9411"
     loki:
       loadBalancer:
         servers:
