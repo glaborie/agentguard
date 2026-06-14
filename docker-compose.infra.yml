@@ -52,6 +52,25 @@ services:
     networks:
       - langfuse
 
+  zipkin:
+    image: openzipkin/zipkin:3.3.1
+    restart: always
+    logging: *default-logging
+    deploy: *deploy-jaeger
+    pull_policy: if_not_present
+    environment:
+      TZ: UTC
+    ports:
+      - "9411:9411"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9411/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - langfuse
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.114.0
     restart: always
@@ -72,6 +91,8 @@ services:
       - "4318:4318"
     depends_on:
       jaeger:
+        condition: service_started
+      zipkin:
         condition: service_started
     networks:
       - langfuse
@@ -118,7 +139,7 @@ services:
     deploy: *deploy-otel
     pull_policy: if_not_present
     ports:
-      - "3300:3000"
+      - "127.0.0.1:9999:3000"
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro

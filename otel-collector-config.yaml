@@ -25,6 +25,9 @@ exporters:
     endpoint: jaeger:4317
     tls:
       insecure: true
+  zipkin:
+    endpoint: http://zipkin:9411/api/v2/spans
+    format: json
   otlphttp/langfuse:
     # Langfuse v3 OTel ingestion endpoint; collector appends /v1/traces.
     endpoint: http://langfuse-web:3000/api/public/otel
@@ -45,4 +48,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [resource, batch]
-      exporters: [otlp/jaeger, otlphttp/langfuse, otlphttp/openobserve]
+      exporters: [otlp/jaeger, zipkin, otlphttp/langfuse, otlphttp/openobserve]
