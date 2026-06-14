@@ -5,7 +5,7 @@
   "toxicity_guard_enabled": false,
   "toxicity_guard_model": "openrouter-gemini-flash",
   "toxicity_guard_timeout": 8.0,
-  "semantic_cache_enabled": true,
+  "semantic_cache_enabled": false,
   "semantic_cache_threshold": 0.85,
   "semantic_cache_ttl": 3600,
   "langfuse_tracing_enabled": true,
