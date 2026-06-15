@@ -8,6 +8,7 @@ Semantic second pass and toxicity guard are runtime-togglable via runtime_config
 """
 
 import json
+import logging
 import os
 import re
 from pathlib import Path
@@ -17,6 +18,48 @@ import httpx
 from litellm._logging import verbose_proxy_logger
 from litellm.exceptions import BadRequestError
 from litellm.integrations.custom_guardrail import CustomGuardrail
+
+# ── OpenTelemetry (lazy init, runs inside LiteLLM container) ──────
+_otel_tracer = None
+
+
+def _get_tracer():
+    global _otel_tracer
+    if _otel_tracer is not None:
+        return _otel_tracer
+    try:
+        from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+        from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+        endpoint = os.environ.get("OTEL_ENDPOINT", "http://otel-collector:4318/v1/traces")
+        resource = Resource.create({SERVICE_NAME: "agentguard-guardrails"})
+        provider = TracerProvider(resource=resource)
+        provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter(endpoint=endpoint)))
+        _otel_tracer = provider.get_tracer("agentguard.guardrails")
+    except Exception as exc:
+        logging.getLogger(__name__).warning("OTel unavailable in guardrails: %s", exc)
+        _otel_tracer = None
+    return _otel_tracer
+
+
+def _remote_context(data: dict):
+    """Extract W3C trace context injected by the app into request metadata."""
+    try:
+        from opentelemetry.propagate import extract
+
+        metadata = data.get("metadata") or {}
+        # HTTPXClientInstrumentor auto-injects traceparent as HTTP header.
+        # LiteLLM preserves original request headers in requester_metadata["headers"].
+        req_headers = (metadata.get("requester_metadata") or {}).get("headers") or {}
+        traceparent = req_headers.get("traceparent")
+        if not traceparent:
+            return None
+        return extract({"traceparent": traceparent})
+    except Exception as exc:
+        verbose_proxy_logger.warning("[agentguard] _remote_context error: %s", exc)
+        return None
 
 
 # ── Prompt Injection Detection (regex patterns) ────────────────────
@@ -207,6 +250,8 @@ class PromptInjectionGuard(CustomGuardrail):
             return data
 
         master_key = os.environ.get("LITELLM_MASTER_KEY", "")
+        tracer = _get_tracer()
+        remote_ctx = _remote_context(data)
 
         for msg in data.get("messages", []):
             if msg.get("role") != "user":
@@ -216,31 +261,68 @@ class PromptInjectionGuard(CustomGuardrail):
                 continue
 
             # Pass 1: fast regex
-            for pattern in self._compiled:
-                match = pattern.search(content)
-                if match:
-                    verbose_proxy_logger.warning(
-                        "Prompt injection blocked: '%s'", match.group()
-                    )
-                    raise BadRequestError(
-                        message="Request blocked: potential prompt injection detected.",
-                        model=data.get("model", ""),
-                        llm_provider="custom_guardrail",
-                    )
+            ctx = (
+                tracer.start_as_current_span("guardrail.regex_injection_check", context=remote_ctx)
+                if tracer
+                else None
+            )
+            span = ctx.__enter__() if ctx else None
+            try:
+                blocked_by_regex = False
+                blocked_pattern = None
+                for pattern in self._compiled:
+                    match = pattern.search(content)
+                    if match:
+                        blocked_by_regex = True
+                        blocked_pattern = match.group()
+                        break
+                if span:
+                    span.set_attribute("guardrail.type", "prompt_injection")
+                    span.set_attribute("guardrail.pass", "regex")
+                    span.set_attribute("guardrail.blocked", blocked_by_regex)
+                    if blocked_pattern:
+                        span.set_attribute("guardrail.matched_pattern", blocked_pattern[:120])
+            finally:
+                if ctx:
+                    ctx.__exit__(None, None, None)
+
+            if blocked_by_regex:
+                verbose_proxy_logger.warning("Prompt injection blocked: '%s'", blocked_pattern)
+                raise BadRequestError(
+                    message="Request blocked: potential prompt injection detected.",
+                    model=data.get("model", ""),
+                    llm_provider="custom_guardrail",
+                )
 
             # Pass 2: LLM-judge semantic classifier (runtime-togglable)
-            if _runtime_cfg().get("semantic_guard_enabled", _RUNTIME_DEFAULTS["semantic_guard_enabled"]):
+            cfg = _runtime_cfg()
+            if cfg.get("semantic_guard_enabled", _RUNTIME_DEFAULTS["semantic_guard_enabled"]):
+                ctx2 = tracer.start_as_current_span("guardrail.semantic_injection_check", context=remote_ctx) if tracer else None
+                span2 = ctx2.__enter__() if ctx2 else None
                 try:
-                    blocked = await self._semantic_check(content, master_key)
-                except Exception as exc:
-                    verbose_proxy_logger.warning(
-                        "Semantic guard unexpected error (fail-open): %s", exc
-                    )
+                    model = cfg.get("semantic_guard_model", _RUNTIME_DEFAULTS["semantic_guard_model"])
                     blocked = False
+                    error = None
+                    try:
+                        blocked = await self._semantic_check(content, master_key)
+                    except Exception as exc:
+                        verbose_proxy_logger.warning(
+                            "Semantic guard unexpected error (fail-open): %s", exc
+                        )
+                        error = str(exc)
+                    if span2:
+                        span2.set_attribute("guardrail.type", "prompt_injection")
+                        span2.set_attribute("guardrail.pass", "semantic_llm")
+                        span2.set_attribute("guardrail.model", model)
+                        span2.set_attribute("guardrail.blocked", blocked)
+                        if error:
+                            span2.set_attribute("guardrail.error", error)
+                finally:
+                    if ctx2:
+                        ctx2.__exit__(None, None, None)
+
                 if blocked:
-                    verbose_proxy_logger.warning(
-                        "Prompt injection blocked by semantic classifier"
-                    )
+                    verbose_proxy_logger.warning("Prompt injection blocked by semantic classifier")
                     raise BadRequestError(
                         message="Request blocked: semantic injection classifier flagged this message.",
                         model=data.get("model", ""),
@@ -316,10 +398,13 @@ class ToxicityGuard(CustomGuardrail):
         if (data.get("metadata") or {}).get(SEMANTIC_INTERNAL_MARKER):
             return data
 
-        if not _runtime_cfg().get("toxicity_guard_enabled", _RUNTIME_DEFAULTS["toxicity_guard_enabled"]):
+        cfg = _runtime_cfg()
+        if not cfg.get("toxicity_guard_enabled", _RUNTIME_DEFAULTS["toxicity_guard_enabled"]):
             return data
 
         master_key = os.environ.get("LITELLM_MASTER_KEY", "")
+        tracer = _get_tracer()
+        remote_ctx = _remote_context(data)
 
         for msg in data.get("messages", []):
             if msg.get("role") != "user":
@@ -328,13 +413,32 @@ class ToxicityGuard(CustomGuardrail):
             if not isinstance(content, str):
                 continue
 
+            ctx = (
+                tracer.start_as_current_span("guardrail.toxicity_check", context=remote_ctx)
+                if tracer
+                else None
+            )
+            span = ctx.__enter__() if ctx else None
             try:
-                blocked = await self._toxicity_check(content, master_key)
-            except Exception as exc:
-                verbose_proxy_logger.warning(
-                    "Toxicity guard unexpected error (fail-open): %s", exc
-                )
+                model = cfg.get("toxicity_guard_model", _RUNTIME_DEFAULTS["toxicity_guard_model"])
                 blocked = False
+                error = None
+                try:
+                    blocked = await self._toxicity_check(content, master_key)
+                except Exception as exc:
+                    verbose_proxy_logger.warning(
+                        "Toxicity guard unexpected error (fail-open): %s", exc
+                    )
+                    error = str(exc)
+                if span:
+                    span.set_attribute("guardrail.type", "toxicity")
+                    span.set_attribute("guardrail.model", model)
+                    span.set_attribute("guardrail.blocked", blocked)
+                    if error:
+                        span.set_attribute("guardrail.error", error)
+            finally:
+                if ctx:
+                    ctx.__exit__(None, None, None)
 
             if blocked:
                 verbose_proxy_logger.warning("Toxic content blocked by classifier")
@@ -362,11 +466,38 @@ PII_RULES = [
 
 
 class PIIMaskingGuard(CustomGuardrail):
-    """Scans LLM output and replaces PII patterns with redaction tokens."""
+    """Redacts PII patterns from both user input (pre-call) and LLM output (post-call)."""
 
     def __init__(self, **kwargs) -> None:
         self._compiled = [(re.compile(p), repl) for p, repl in PII_RULES]
         super().__init__(**kwargs)
+
+    def _mask(self, text: str) -> tuple[str, bool]:
+        """Return (masked_text, changed)."""
+        result = text
+        for pattern, replacement in self._compiled:
+            result = pattern.sub(replacement, result)
+        return result, result != text
+
+    async def async_pre_call_hook(
+        self,
+        user_api_key_dict,
+        cache,
+        data: dict,
+        call_type: str,
+    ) -> Optional[dict]:
+        """Redact PII from user messages before forwarding to LLM."""
+        for msg in data.get("messages", []):
+            if msg.get("role") not in ("user", "system"):
+                continue
+            content = msg.get("content", "")
+            if not isinstance(content, str):
+                continue
+            masked, changed = self._mask(content)
+            if changed:
+                msg["content"] = masked
+                verbose_proxy_logger.info("PII masked in %s message", msg["role"])
+        return data
 
     async def async_post_call_success_hook(
         self,
@@ -374,16 +505,15 @@ class PIIMaskingGuard(CustomGuardrail):
         user_api_key_dict,
         response: Any,
     ) -> Any:
+        """Redact PII from LLM responses."""
         if not hasattr(response, "choices"):
             return response
         for choice in response.choices:
             content = getattr(getattr(choice, "message", None), "content", None)
             if not content:
                 continue
-            original = content
-            for pattern, replacement in self._compiled:
-                content = pattern.sub(replacement, content)
-            if content != original:
-                choice.message.content = content
+            masked, changed = self._mask(content)
+            if changed:
+                choice.message.content = masked
                 verbose_proxy_logger.info("PII masked in response")
         return response

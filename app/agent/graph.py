@@ -4,6 +4,8 @@ import asyncio
 import warnings
 from typing import Any
 
+from app.core.pii import mask as mask_pii
+
 warnings.filterwarnings(
     "ignore",
     message=r".*allowed_objects.*",
@@ -133,7 +135,7 @@ async def run_agent_async(
         config["configurable"] = {"thread_id": thread_id}
 
     result = await graph.ainvoke(
-        {"messages": [HumanMessage(content=question)]},
+        {"messages": [HumanMessage(content=mask_pii(question))]},
         config=config,
     )
 

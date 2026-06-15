@@ -77,10 +77,11 @@ def get_llm(
     return ChatOpenAI(
         model=model or settings.default_model,
         base_url=f"{settings.litellm_base_url}/v1",
-        api_key=settings.litellm_master_key,
+        api_key=settings.litellm_master_key,  # type: ignore[arg-type]
         temperature=temperature,
         **({"extra_body": extra_body} if extra_body is not None else {}),
     )
+
 
 
 def get_retriever(k: int = 6) -> BaseRetriever:

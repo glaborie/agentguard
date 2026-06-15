@@ -1,6 +1,6 @@
 from argparse import Namespace
 
-from app.cli.common import flush
+from app.cli.common import cli_span, flush
 from app.core.tracing import get_langfuse_handler
 
 
@@ -23,13 +23,14 @@ def cmd_query(args: Namespace) -> None:
     from app.rag.service import query
 
     handler = get_langfuse_handler()
-    answer = query(
-        question=args.question,
-        model=args.model,
-        callbacks=[handler],
-        session_id=args.session,
-        user_id=args.user,
-    )
+    with cli_span("cli.query", question=args.question[:120]):
+        answer = query(
+            question=args.question,
+            model=args.model,
+            callbacks=[handler],
+            session_id=args.session,
+            user_id=args.user,
+        )
     print(f"\n{answer}")
     flush()
 

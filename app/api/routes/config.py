@@ -86,8 +86,11 @@ _DASHBOARD_HTML = """<!DOCTYPE html>
         <span class="always-on">Always On</span>
       </div>
       <div class="row">
-        <div class="row-label">PII Masking<small>Post-call redaction (always active)</small></div>
-        <span class="always-on">Always On</span>
+        <div class="row-label">PII Masking<small>App-layer redaction before traces</small></div>
+        <label class="toggle">
+          <input type="checkbox" id="pii_masking_enabled" onchange="save('pii_masking_enabled', this.checked)">
+          <span class="slider"></span>
+        </label>
       </div>
       <div class="row">
         <div class="row-label">Semantic Guard<small>LLM-judge injection check</small></div>
@@ -237,7 +240,7 @@ _DASHBOARD_HTML = """<!DOCTYPE html>
 <div class="toast" id="toast"></div>
 
 <script>
-const BOOL_KEYS = ['semantic_guard_enabled','toxicity_guard_enabled','semantic_cache_enabled','otel_enabled','hybrid_search_enabled'];
+const BOOL_KEYS = ['semantic_guard_enabled','toxicity_guard_enabled','semantic_cache_enabled','otel_enabled','hybrid_search_enabled','pii_masking_enabled'];
 
 function showToast(msg, type='ok') {
   const t = document.getElementById('toast');

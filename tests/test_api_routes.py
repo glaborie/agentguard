@@ -17,7 +17,9 @@ from app.api.app import create_app  # noqa: E402
 
 @pytest.fixture
 def client():
-    return TestClient(create_app())
+    with patch("app.api.app.Instrumentator"):
+        app = create_app()
+    return TestClient(app)
 
 
 # ── probe helpers used to patch _probe ───────────────────────────────────────
