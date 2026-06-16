@@ -3,7 +3,7 @@
 from deepeval.test_case import LLMTestCase
 
 from app.core.config import settings
-from app.core.tracing import get_langfuse_client, get_langfuse_handler, get_opik_handler
+from app.core.tracing import get_callbacks, get_langfuse_client, get_langfuse_handler
 from app.eval.deepeval_metrics import get_metrics
 from app.rag.chain import get_retriever, query_with_usage
 
@@ -49,7 +49,7 @@ def run_deepeval_evaluation(
         print(f"[{i+1}/{len(dataset.items)}] {question[:80]}...")
 
         handler = get_langfuse_handler()
-        output, usage = query_with_usage(question=question, model=model, callbacks=[handler, get_opik_handler()])
+        output, usage = query_with_usage(question=question, model=model, callbacks=get_callbacks())
         total_prompt_tokens += int(usage.get("prompt_tokens", 0))
         total_completion_tokens += int(usage.get("completion_tokens", 0))
         total_cost_usd += float(usage.get("cost_usd", 0.0))

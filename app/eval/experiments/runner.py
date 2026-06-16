@@ -9,7 +9,7 @@ from deepeval.test_case import LLMTestCase
 from langfuse import propagate_attributes
 
 from app.core.config import settings
-from app.core.tracing import get_langfuse_client, get_langfuse_handler, get_opik_handler
+from app.core.tracing import get_callbacks, get_langfuse_client, get_langfuse_handler
 from app.eval.deepeval_metrics import get_metrics
 from app.eval.experiments.items import ItemResult
 from app.rag.chain import get_retriever, query_with_usage
@@ -71,7 +71,7 @@ def run_experiment(
             # ── Generate answer ───────────────────────────────────────────────
             handler = get_langfuse_handler()
             with propagate_attributes(trace_name="eval-experiment", tags=["eval", "experiment"]):
-                output, usage = query_with_usage(question=question, model=model_name, callbacks=[handler, get_opik_handler()])
+                output, usage = query_with_usage(question=question, model=model_name, callbacks=get_callbacks())
             trace_id = handler.last_trace_id
 
             # ── DeepEval metrics ──────────────────────────────────────────────
@@ -198,7 +198,7 @@ def run_ragas_experiment(
 
             handler = get_langfuse_handler()
             with propagate_attributes(trace_name="ragas-experiment", tags=["eval", "ragas"]):
-                output, usage = query_with_usage(question=question, model=model_name, callbacks=[handler, get_opik_handler()])
+                output, usage = query_with_usage(question=question, model=model_name, callbacks=get_callbacks())
 
             questions.append(question)
             generated.append(output)

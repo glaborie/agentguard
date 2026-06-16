@@ -45,7 +45,6 @@ logger = logging.getLogger(__name__)
 
 STATE_FILE = Path(".build_dataset_state.json")
 DEFAULT_DATASET = "rag-golden-set"
-SCORE_FETCH_LIMIT = 500
 
 
 def _load_seen() -> set[str]:
