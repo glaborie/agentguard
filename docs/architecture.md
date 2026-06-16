@@ -11,25 +11,25 @@ It combines retrieval, model routing, protection, observability, evaluation, and
 ```mermaid
 flowchart TD
     U[User]
-    CLI[CLI / Chat]
+    CLI[CLI]
     WEB[Open WebUI]
     API[rag-api]
 
-    U --> CLI
     U --> WEB
+    U --> CLI
+
     WEB --> API
     CLI --> RAG
     CLI --> AGENT
-    API --> RAG
 
-    subgraph App["Application Layer"]
-        RAG[RAG Chain]
-        AGENT[Agentic Workflow]
+    subgraph Runtime["Runtime + Orchestration Layer"]
+        API --> RAG[RAG Chain]
+        API --> AGENT[Agentic Workflow]
     end
 
     subgraph Knowledge["Knowledge + Tools"]
         Q[Qdrant Retriever]
-        TOOLS[Search / Trace / Scoring / Dataset Tools]
+        TOOLS[Search / Trace / Scoring / Dataset Tools / MCP]
     end
 
     subgraph Model["Model Routing + Protection"]
@@ -48,6 +48,7 @@ flowchart TD
 
     subgraph Infra["Infrastructure"]
         OLLAMA[Ollama<br/>Local LLM + Embeddings]
+        OPENROUTER[OpenRouter<br/>Hosted LLM Access]
         PG[Postgres]
         CH[ClickHouse]
         REDIS[Redis]
@@ -60,7 +61,8 @@ flowchart TD
     AGENT --> LLM
 
     LLM --> PROTECT
-    LLM --> OLLAMA
+    PROTECT --> OLLAMA
+    PROTECT --> OPENROUTER
     LLM --> CACHE
     CACHE -.-> REDIS
 
@@ -237,6 +239,6 @@ AgentGuard implements a closed-loop improvement cycle that connects production t
 
 1. **Trace** — Every LangChain call is automatically captured via the Langfuse `CallbackHandler`, recording inputs, outputs, latencies, token usage, and retrieval context.
 2. **Monitor** — The Langfuse dashboard provides real-time visibility into trace volumes, latency distributions, error rates, and cost tracking. Online evaluators run automatically on new traces.
-3. **Build datasets** — User feedback (thumbs-up/down via Open WebUI) is automatically synced and promoted into the `rag-golden-set` Langfuse dataset. Curated benchmark items live in `mock_corpus/07_benchmark/`.
+3. **Build datasets** — User feedback (thumbs-up/down via Open WebUI) is automatically synced and promoted into the `rag-golden-set` Langfuse dataset. Curated benchmark items live in `mock_corpus/07[...]`
 4. **Experiment** — The experiment runner (`app/eval/experiments.py`) systematically compares model variants against golden datasets, recording all results back to Langfuse.
-5. **Evaluate** — Code-based evaluators, DeepEval metrics, and the benchmark runner provide layered quality signals. The regression gate (`app/eval/service.py::regression_gate()`) enforces pass/fail thresholds for release decisions.
+5. **Evaluate** — Code-based evaluators, DeepEval metrics, and the benchmark runner provide layered quality signals. The regression gate (`app/eval/service.py::regression_gate()`) enforces pass/fail[...]
