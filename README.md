@@ -76,6 +76,8 @@ flowchart LR
     AG --> EVAL
 ```
 
+For a fast product-level summary, see [System overview](docs/system-overview.md).
+
 For the full system view, see [Architecture](docs/architecture.md).
 
 For Observability views, see [Screenshots](docs/screenshots.md).
@@ -157,6 +159,7 @@ python -m app.main debug-retrieval "discount approval policy" --mode hybrid --js
 
 ## Documentation
 
+- [System overview](docs/system-overview.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Architecture](docs/architecture.md)
 - [Local deployment](docs/deployment/local.md)
