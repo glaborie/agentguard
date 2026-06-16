@@ -62,6 +62,12 @@ class Settings(BaseSettings):
     openwebui_email: str = ""
     openwebui_password: str = ""
 
+    # Opik tracing (LangChain callback)
+    opik_tracing_enabled: bool = True
+    opik_url_override: str = "http://localhost:5173"
+    opik_project_name: str = "agentguard"
+    opik_workspace: str = "default"
+
     # OpenTelemetry
     otel_enabled: bool = True
     otel_endpoint: str = "http://localhost:4318/v1/traces"

@@ -1,3 +1,7 @@
+global:
+  checkNewVersion: true      # set to false to disable
+  sendAnonymousUsage: true  # set to false to disable
+
 http:
   routers:
     openwebui:
@@ -31,6 +35,10 @@ http:
     loki:
       rule: "Host(`loki.localhost`)"
       service: loki
+      entryPoints: [web]
+    traefik:
+      rule: "Host(`traefik.localhost`)"
+      service: traefik
       entryPoints: [web]
 
   services:
@@ -66,3 +74,7 @@ http:
       loadBalancer:
         servers:
           - url: "http://loki:3100"
+    traefik:
+      loadBalancer:
+        servers:
+          - url: "http://traefik:8080"

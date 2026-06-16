@@ -10,7 +10,7 @@ from app.api.services.guardrail_scoring import (
 )
 from app.core.ids import completion_id
 from app.core.pii import mask as mask_pii
-from app.core.tracing import get_langfuse_handler
+from app.core.tracing import get_langfuse_handler, get_opik_handler
 from app.rag.service import build_chain
 
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ async def call(
             metadata=trace_metadata,
             tags=["rag", "api"],
         ):
-            result = chain.invoke(mask_pii(query), config={"callbacks": [handler]})
+            result = chain.invoke(mask_pii(query), config={"callbacks": [handler, get_opik_handler()]})
     except httpx.TimeoutException as e:
         logger.error("[%s] RAG chain timed out calling LiteLLM: %s", request_id, e)
         result = f"[Error: upstream timeout] (request_id={request_id})"

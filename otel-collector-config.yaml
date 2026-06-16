@@ -38,6 +38,11 @@ exporters:
     endpoint: "${env:OPENOBSERVE_OTLP_ENDPOINT}"
     headers:
       Authorization: "${env:OPENOBSERVE_AUTH}"
+  otlphttp/opik:
+    # Opik self-hosted — collector appends /v1/traces; backend on port 8080 has no /api prefix.
+    endpoint: "http://opik-backend-1:8080/v1/private/otel"
+    headers:
+      projectName: "${env:OPIK_PROJECT_NAME}"
 
 service:
   telemetry:
@@ -48,4 +53,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [resource, batch]
-      exporters: [otlp/jaeger, zipkin, otlphttp/langfuse, otlphttp/openobserve]
+      exporters: [otlp/jaeger, zipkin, otlphttp/langfuse, otlphttp/openobserve, otlphttp/opik]

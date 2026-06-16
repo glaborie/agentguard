@@ -1,7 +1,7 @@
 from argparse import Namespace
 
 from app.cli.common import flush
-from app.core.tracing import get_langfuse_handler
+from app.core.tracing import get_callbacks
 
 
 def register(sub) -> None:
@@ -23,14 +23,13 @@ def register(sub) -> None:
 def cmd_agent(args: Namespace) -> None:
     from app.agent.service import run
 
-    handler = get_langfuse_handler()
     if args.verbose:
         print(f"[agent] Question: {args.question}")
         print(f"[agent] Model: {args.model or 'default'}\n")
     answer = run(
         question=args.question,
         model=args.model,
-        callbacks=[handler],
+        callbacks=get_callbacks(),
         session_id=args.session,
         user_id=args.user,
     )
@@ -41,7 +40,6 @@ def cmd_agent(args: Namespace) -> None:
 def cmd_agent_chat(args: Namespace) -> None:
     from app.agent.service import build_chat_session, respond
 
-    handler = get_langfuse_handler()
     graph, thread_id = build_chat_session(model=args.model, session_id=args.session)
 
     print(f"AgentGuard Chat (session: {thread_id})")
@@ -55,7 +53,7 @@ def cmd_agent_chat(args: Namespace) -> None:
         if not question or question.lower() in ("quit", "exit", "q"):
             break
         answer = respond(
-            graph, thread_id, question, callbacks=[handler], user_id=args.user
+            graph, thread_id, question, callbacks=get_callbacks(), user_id=args.user
         )
         print(f"\nAssistant: {answer}\n")
 

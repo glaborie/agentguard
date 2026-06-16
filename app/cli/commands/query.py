@@ -1,7 +1,7 @@
 from argparse import Namespace
 
 from app.cli.common import cli_span, flush
-from app.core.tracing import get_langfuse_handler
+from app.core.tracing import get_callbacks
 
 
 def register(sub) -> None:
@@ -22,12 +22,11 @@ def register(sub) -> None:
 def cmd_query(args: Namespace) -> None:
     from app.rag.service import query
 
-    handler = get_langfuse_handler()
     with cli_span("cli.query", question=args.question[:120]):
         answer = query(
             question=args.question,
             model=args.model,
-            callbacks=[handler],
+            callbacks=get_callbacks(),
             session_id=args.session,
             user_id=args.user,
         )
@@ -38,7 +37,6 @@ def cmd_query(args: Namespace) -> None:
 def cmd_chat(args: Namespace) -> None:
     from app.rag.service import query
 
-    handler = get_langfuse_handler()
     print("Langfuse RAG Chat (type 'quit' to exit)\n")
     while True:
         try:
@@ -50,7 +48,7 @@ def cmd_chat(args: Namespace) -> None:
         answer = query(
             question=question,
             model=args.model,
-            callbacks=[handler],
+            callbacks=get_callbacks(),
             session_id=args.session,
             user_id=args.user,
         )

@@ -85,6 +85,7 @@ services:
       # Auth = Basic base64(email:password). Default self-hosted: admin@example.com:admin123
       OPENOBSERVE_OTLP_ENDPOINT: "${OPENOBSERVE_OTLP_ENDPOINT:-http://openobserve:5080/api/default}"
       OPENOBSERVE_AUTH: "${OPENOBSERVE_AUTH:-Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4cGFzcyMxMjM=}"
+      OPIK_PROJECT_NAME: "${OPIK_PROJECT_NAME:-agentguard}"
       TZ: UTC
     ports:
       - "4317:4317"
@@ -96,6 +97,7 @@ services:
         condition: service_started
     networks:
       - langfuse
+      - opik_default
 
   portainer:
     image: portainer/portainer-ce@sha256:8d2f5c9fbc5b8490fb3a12efadbad74978e22991911e1db611d8a45871775112
@@ -268,3 +270,6 @@ networks:
   langfuse:
     external: true
     name: langfuse_poc_langfuse
+  opik_default:
+    external: true
+    name: opik_default
