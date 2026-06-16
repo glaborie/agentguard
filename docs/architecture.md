@@ -84,49 +84,77 @@ flowchart TD
 
 ## Message flow
 
-The diagram below shows how a user message moves through the main runtime paths for both retrieval-based and agentic interactions.
+The runtime has two primary interaction paths: a retrieval flow for grounded answering, and an agent flow for multi-step reasoning with tools.
+
+### RAG flow
+
+This diagram shows how a retrieval-based request moves through embedding, retrieval, generation, and observability.
 
 ```mermaid
 sequenceDiagram
     participant User
     participant OpenWebUI
     participant RAGAPI as rag-api
-    participant Runtime as Runtime Router
     participant LiteLLM
     participant Ollama
-    participant OpenRouter
     participant Qdrant
-    participant MCPTools as MCP / Tools
+    participant OpenRouter
     participant Langfuse
 
     User->>OpenWebUI: Send message
     OpenWebUI->>RAGAPI: OpenAI-compatible chat request
-    RAGAPI->>Runtime: Route request by mode
 
-    alt RAG flow
-        Runtime->>LiteLLM: Create embedding request
-        LiteLLM->>Ollama: Generate embedding
-        Ollama-->>LiteLLM: Embedding vector
-        LiteLLM-->>Runtime: Embedding response
+    RAGAPI->>LiteLLM: Create embedding request
+    LiteLLM->>Ollama: Generate embedding
+    Ollama-->>LiteLLM: Embedding vector
+    LiteLLM-->>RAGAPI: Embedding response
 
-        Runtime->>Qdrant: Similarity search with embedding
-        Qdrant-->>Runtime: Relevant document chunks
+    RAGAPI->>Qdrant: Similarity search with embedding
+    Qdrant-->>RAGAPI: Relevant document chunks
 
-        Runtime->>LiteLLM: Generate answer with retrieved context
-        LiteLLM->>OpenRouter: Run selected generation model
-        OpenRouter-->>LiteLLM: Final response
-    else Agent flow
-        Runtime->>MCPTools: Invoke tools / MCP servers
-        MCPTools-->>Runtime: Tool results
+    RAGAPI->>LiteLLM: Generate answer with retrieved context
+    LiteLLM->>OpenRouter: Run selected generation model
+    OpenRouter-->>LiteLLM: Final response
+    LiteLLM-->>RAGAPI: Final response
 
-        Runtime->>LiteLLM: Generate next agent step / final answer
-        LiteLLM->>OpenRouter: Run selected generation model
-        OpenRouter-->>LiteLLM: Model output
-    end
-
-    Runtime->>Langfuse: Send trace, metadata, scores, and execution context
+    RAGAPI->>Langfuse: Send trace, metadata, scores, retrieval context
     LiteLLM->>Langfuse: Log model calls and LLM metadata
 
+    RAGAPI-->>OpenWebUI: Final answer
+    OpenWebUI-->>User: Render response
+```
+
+### Agent flow
+
+This diagram shows how an agent request is routed through orchestration, tool or MCP execution, model reasoning, and observability.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant OpenWebUI
+    participant RAGAPI as rag-api
+    participant Agent as Agentic Workflow
+    participant MCPTools as MCP / Tools
+    participant LiteLLM
+    participant OpenRouter
+    participant Langfuse
+
+    User->>OpenWebUI: Send message
+    OpenWebUI->>RAGAPI: OpenAI-compatible chat request
+
+    RAGAPI->>Agent: Route to agent workflow
+    Agent->>MCPTools: Invoke tools / MCP servers
+    MCPTools-->>Agent: Tool results
+
+    Agent->>LiteLLM: Generate next step or final answer
+    LiteLLM->>OpenRouter: Run selected reasoning model
+    OpenRouter-->>LiteLLM: Model output
+    LiteLLM-->>Agent: Final response
+
+    Agent->>Langfuse: Send trace, tool usage, scores, and execution context
+    LiteLLM->>Langfuse: Log model calls and LLM metadata
+
+    Agent-->>RAGAPI: Final answer
     RAGAPI-->>OpenWebUI: Final answer
     OpenWebUI-->>User: Render response
 ```
