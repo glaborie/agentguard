@@ -84,33 +84,47 @@ flowchart TD
 
 ## Message flow
 
-The diagram below shows how a user message moves through the runtime path across the main application services.
+The diagram below shows how a user message moves through the main runtime paths for both retrieval-based and agentic interactions.
 
 ```mermaid
 sequenceDiagram
     participant User
     participant OpenWebUI
     participant RAGAPI as rag-api
+    participant Runtime as Runtime Router
     participant LiteLLM
     participant Ollama
+    participant OpenRouter
     participant Qdrant
+    participant MCPTools as MCP / Tools
     participant Langfuse
 
     User->>OpenWebUI: Send message
     OpenWebUI->>RAGAPI: OpenAI-compatible chat request
+    RAGAPI->>Runtime: Route request by mode
 
-    RAGAPI->>LiteLLM: Create embedding request
-    LiteLLM->>Ollama: Generate embedding
-    Ollama-->>LiteLLM: Embedding vector
-    LiteLLM-->>RAGAPI: Embedding response
+    alt RAG flow
+        Runtime->>LiteLLM: Create embedding request
+        LiteLLM->>Ollama: Generate embedding
+        Ollama-->>LiteLLM: Embedding vector
+        LiteLLM-->>Runtime: Embedding response
 
-    RAGAPI->>Qdrant: Similarity search with embedding
-    Qdrant-->>RAGAPI: Relevant document chunks
+        Runtime->>Qdrant: Similarity search with embedding
+        Qdrant-->>Runtime: Relevant document chunks
 
-    RAGAPI->>LiteLLM: Generate answer with retrieved context
-    LiteLLM-->>RAGAPI: Final response
+        Runtime->>LiteLLM: Generate answer with retrieved context
+        LiteLLM->>OpenRouter: Run selected generation model
+        OpenRouter-->>LiteLLM: Final response
+    else Agent flow
+        Runtime->>MCPTools: Invoke tools / MCP servers
+        MCPTools-->>Runtime: Tool results
 
-    RAGAPI->>Langfuse: Send trace, metadata, scores, retrieval context
+        Runtime->>LiteLLM: Generate next agent step / final answer
+        LiteLLM->>OpenRouter: Run selected generation model
+        OpenRouter-->>LiteLLM: Model output
+    end
+
+    Runtime->>Langfuse: Send trace, metadata, scores, and execution context
     LiteLLM->>Langfuse: Log model calls and LLM metadata
 
     RAGAPI-->>OpenWebUI: Final answer
