@@ -15,7 +15,7 @@ flowchart TD
     U[User]
     CLI[CLI]
     WEB[Open WebUI]
-    API[rag-api]
+    API[Orchestrator API]
 
     U --> WEB
     U --> CLI
@@ -96,7 +96,7 @@ This diagram shows how a retrieval-based request moves through embedding, retrie
 sequenceDiagram
     participant User
     participant OpenWebUI
-    participant RAGAPI as rag-api
+    participant OrchestratorAPI as Orchestrator API
     participant LiteLLM
     participant Ollama
     participant Qdrant
@@ -104,25 +104,25 @@ sequenceDiagram
     participant Langfuse
 
     User->>OpenWebUI: Send message
-    OpenWebUI->>RAGAPI: OpenAI-compatible chat request
+    OpenWebUI->>OrchestratorAPI: OpenAI-compatible chat request
 
-    RAGAPI->>LiteLLM: Create embedding request
+    OrchestratorAPI->>LiteLLM: Create embedding request
     LiteLLM->>Ollama: Generate embedding
     Ollama-->>LiteLLM: Embedding vector
-    LiteLLM-->>RAGAPI: Embedding response
+    LiteLLM-->>OrchestratorAPI: Embedding response
 
-    RAGAPI->>Qdrant: Similarity search with embedding
-    Qdrant-->>RAGAPI: Relevant document chunks
+    OrchestratorAPI->>Qdrant: Similarity search with embedding
+    Qdrant-->>OrchestratorAPI: Relevant document chunks
 
-    RAGAPI->>LiteLLM: Generate answer with retrieved context
+    OrchestratorAPI->>LiteLLM: Generate answer with retrieved context
     LiteLLM->>OpenRouter: Run selected generation model
     OpenRouter-->>LiteLLM: Final response
-    LiteLLM-->>RAGAPI: Final response
+    LiteLLM-->>OrchestratorAPI: Final response
 
-    RAGAPI->>Langfuse: Send trace, metadata, scores, retrieval context
+    OrchestratorAPI->>Langfuse: Send trace, metadata, scores, retrieval context
     LiteLLM->>Langfuse: Log model calls and LLM metadata
 
-    RAGAPI-->>OpenWebUI: Final answer
+    OrchestratorAPI-->>OpenWebUI: Final answer
     OpenWebUI-->>User: Render response
 ```
 
@@ -134,7 +134,7 @@ This diagram shows how an agent request is routed through orchestration, tool or
 sequenceDiagram
     participant User
     participant OpenWebUI
-    participant RAGAPI as rag-api
+    participant OrchestratorAPI as Orchestrator API
     participant Agent as Agentic Workflow
     participant MCPTools as MCP / Tools
     participant LiteLLM
@@ -142,9 +142,9 @@ sequenceDiagram
     participant Langfuse
 
     User->>OpenWebUI: Send message
-    OpenWebUI->>RAGAPI: OpenAI-compatible chat request
+    OpenWebUI->>OrchestratorAPI: OpenAI-compatible chat request
 
-    RAGAPI->>Agent: Route to agent workflow
+    OrchestratorAPI->>Agent: Route to agent workflow
     Agent->>MCPTools: Invoke tools / MCP servers
     MCPTools-->>Agent: Tool results
 
@@ -156,8 +156,8 @@ sequenceDiagram
     Agent->>Langfuse: Send trace, tool usage, scores, and execution context
     LiteLLM->>Langfuse: Log model calls and LLM metadata
 
-    Agent-->>RAGAPI: Final answer
-    RAGAPI-->>OpenWebUI: Final answer
+    Agent-->>OrchestratorAPI: Final answer
+    OrchestratorAPI-->>OpenWebUI: Final answer
     OpenWebUI-->>User: Render response
 ```
 
@@ -177,7 +177,7 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 | **openrouter** | external API | Hosted model provider for generation and reasoning through LiteLLM |
 | **litellm** | 4000 | OpenAI-compatible model gateway and protection enforcement layer |
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector store for retrieval |
-| **rag-api** | 8001 | OpenAI-compatible API surface and request orchestration layer for RAG and agent flows |
+| **orchestrator api (`rag-api`)** | 8001 | Shared API surface and request orchestration layer for both RAG and agent flows |
 | **openwebui** | 3100 -> 8080 (container) | End-user chat interface for interacting with the application |
 | **agentguard-worker** | internal only | Feedback sync, online eval, and dataset build background loops |
 | **openobserve** | 5080 | Log and trace analytics UI |
