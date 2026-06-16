@@ -12,8 +12,9 @@ def ingest(
     corpus_dir: str | None = None,
     chunk_size: int = 800,
     chunk_overlap: int = 200,
+    collection: str | None = None,
 ) -> None:
-    _ingest(corpus_dir=corpus_dir, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    _ingest(corpus_dir=corpus_dir, chunk_size=chunk_size, chunk_overlap=chunk_overlap, collection=collection)
 
 
 def query(

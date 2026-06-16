@@ -126,6 +126,7 @@ def ingest(
     corpus_dir: str | Path | None = None,
     chunk_size: int = 800,
     chunk_overlap: int = 200,
+    collection: str | None = None,
 ) -> QdrantVectorStore:
     """Load the corpus, embed, and store in Qdrant.
 
@@ -133,7 +134,10 @@ def ingest(
         corpus_dir: Path to the corpus directory. Defaults to mock_corpus/.
         chunk_size: Token target per chunk.
         chunk_overlap: Overlap between adjacent chunks.
+        collection: Target Qdrant collection. Defaults to settings.rag_collection.
     """
+    collection_name = collection or settings.rag_collection
+
     print("Loading documents...")
     docs = load_from_corpus(corpus_dir)
     print(f"  Loaded {len(docs)} documents from corpus")
@@ -149,14 +153,14 @@ def ingest(
     vector_size = len(test_vector)
 
     client = QdrantClient(url=settings.qdrant_url, timeout=120)
-    create_collection(client, settings.rag_collection, vector_size=vector_size)
+    create_collection(client, collection_name, vector_size=vector_size)
 
     print("Embedding and storing in Qdrant...")
     vector_store = QdrantVectorStore.from_documents(
         documents=chunks,
         embedding=embeddings,
         url=settings.qdrant_url,
-        collection_name=settings.rag_collection,
+        collection_name=collection_name,
         force_recreate=True,
         timeout=120,
     )

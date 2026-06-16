@@ -470,6 +470,9 @@ services:
       RAG_OPENAI_API_BASE_URL: "http://litellm:4000/v1"
       RAG_OPENAI_API_KEY: ${LITELLM_MASTER_KEY}
       RAG_EMBEDDING_MODEL: "nomic-embed-text"
+      # Open WebUI rephrases each message into a separate search query and embeds
+      # it independently of our app's RAG/agent pipeline. Disable — we do our own retrieval.
+      ENABLE_RETRIEVAL_QUERY_GENERATION: "false"
       TZ: UTC
     depends_on:
       rag-api:
