@@ -6,6 +6,8 @@ AgentGuard is a self-hosted AI reliability platform for RAG and agentic applicat
 
 It combines retrieval, model routing, protection, observability, evaluation, and user-facing interfaces into one stack for operating AI systems more safely.
 
+At runtime, users interact through Open WebUI or the CLI. Requests enter a shared orchestration layer, which routes them into either a retrieval flow for grounded answering or an agent flow for multi-step tool use. Both paths share the same model gateway, protection controls, and observability backbone.
+
 ## System architecture
 
 ```mermaid
@@ -172,9 +174,10 @@ AgentGuard runs as a self-hosted stack that combines observability, retrieval, m
 | **redis** | internal only (6379) | Cache and queue backend |
 | **minio** | 9299 -> 9000 (API), 9300 -> 9001 (console) | S3-compatible object storage |
 | **ollama** | 11434 | Local model runtime to support local LLMs and embeddings |
+| **openrouter** | external API | Hosted model provider for generation and reasoning through LiteLLM |
 | **litellm** | 4000 | OpenAI-compatible model gateway and protection enforcement layer |
 | **qdrant** | 6333 (HTTP), 6334 (gRPC, local only) | Vector store for retrieval |
-| **rag-api** | 8001 | OpenAI-compatible API surface for the RAG application |
+| **rag-api** | 8001 | OpenAI-compatible API surface and request orchestration layer for RAG and agent flows |
 | **openwebui** | 3100 -> 8080 (container) | End-user chat interface for interacting with the application |
 | **agentguard-worker** | internal only | Feedback sync, online eval, and dataset build background loops |
 | **openobserve** | 5080 | Log and trace analytics UI |
