@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  clickhouse:
+    extends:
+      service: clickhouse
+      file: /home/glaborie/opik/deployment/docker-compose/docker-compose.yaml
+    ports:
+      - "127.0.0.1:8124:8123"
+      - "127.0.0.1:9351:9000"
+
+  minio:
+    extends:
+      service: minio
+      file: /home/glaborie/opik/deployment/docker-compose/docker-compose.yaml
+    ports:
+      - "127.0.0.1:9091:9000"
+      - "127.0.0.1:9301:9001"
+
+  postgres:
+    extends:
+      service: postgres
+      file: /home/glaborie/opik/deployment/docker-compose/docker-compose.yaml
+    ports:
+      - "127.0.0.1:5501:5432"
+
+  redis:
+    extends:
+      service: redis
+      file: /home/glaborie/opik/deployment/docker-compose/docker-compose.yaml
+    ports:
+      - "127.0.0.1:6380:6379"
+
+  mysql:
+    extends:
+      service: mysql
+      file: /home/glaborie/opik/deployment/docker-compose/docker-compose.yaml
+    ports:
+      - "127.0.0.1:3307:3306"
+
+  backend:
+    extends:
+      service: backend
+      file: /home/glaborie/opik/deployment/docker-compose/docker-compose.yaml
+    environment:
+      REDIS_URL: redis://:opik@redis:6379/
+
+  python-backend:
+    extends:
+      service: python-backend
+      file: /home/glaborie/opik/deployment/docker-compose/docker-compose.yaml
+    environment:
+      REDIS_URL: redis://:opik@redis:6379/0
