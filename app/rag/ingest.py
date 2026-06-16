@@ -149,14 +149,14 @@ def ingest(
     vector_size = len(test_vector)
 
     client = QdrantClient(url=settings.qdrant_url, timeout=120)
-    create_collection(client, settings.qdrant_collection, vector_size=vector_size)
+    create_collection(client, settings.rag_collection, vector_size=vector_size)
 
     print("Embedding and storing in Qdrant...")
     vector_store = QdrantVectorStore.from_documents(
         documents=chunks,
         embedding=embeddings,
         url=settings.qdrant_url,
-        collection_name=settings.qdrant_collection,
+        collection_name=settings.rag_collection,
         force_recreate=True,
         timeout=120,
     )

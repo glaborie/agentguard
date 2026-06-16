@@ -34,7 +34,7 @@ def _build_retrievers(k: int, mode: str) -> dict:
     client = QdrantClient(url=settings.qdrant_url)
     vector_store = QdrantVectorStore(
         client=client,
-        collection_name=settings.qdrant_collection,
+        collection_name=settings.rag_collection,
         embedding=embeddings,
     )
     vector_ret = ScoredRetriever(vector_store=vector_store, k=k)
@@ -42,7 +42,7 @@ def _build_retrievers(k: int, mode: str) -> dict:
     if mode == "vector":
         return {"vector": vector_ret}
 
-    bm25 = build_or_load(client, settings.qdrant_collection)
+    bm25 = build_or_load(client, settings.rag_collection)
     bm25.k = max(k, 12)
     hybrid_ret = HybridRetriever(
         vector_retriever=vector_ret,

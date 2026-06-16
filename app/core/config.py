@@ -29,7 +29,8 @@ class Settings(BaseSettings):
 
     # Qdrant
     qdrant_url: str = "http://localhost:6333"
-    qdrant_collection: Annotated[str, Field(min_length=1)] = "watsonx_docs"
+    rag_collection: Annotated[str, Field(min_length=1)] = "northstar_crm"
+    agent_collection: Annotated[str, Field(min_length=1)] = "watsonx_docs"
 
     # OpenRouter (optional)
     openrouter_api_key: str = ""
@@ -53,9 +54,6 @@ class Settings(BaseSettings):
 
     # RAGAS judge model — leave empty to fall back to default_model
     ragas_model: str = ""
-
-    # Qdrant collection for watsonx corpus (separate from northstar_crm)
-    watsonx_collection: str = "watsonx_docs"
 
     # Open WebUI — used by sync_feedback worker
     openwebui_base_url: str = "http://localhost:3001"

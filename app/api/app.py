@@ -6,6 +6,16 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator
+import prometheus_fastapi_instrumentator.routing as _pfi_routing
+
+_orig_get_route_name = _pfi_routing._get_route_name
+
+
+def _safe_get_route_name(scope, routes, route_name=None):
+    return _orig_get_route_name(scope, [r for r in routes if hasattr(r, "path")], route_name)
+
+
+_pfi_routing._get_route_name = _safe_get_route_name
 
 from app.api.routes import chat, config, health, models, retrieval, webhook
 from app.core.config import settings
@@ -23,7 +33,7 @@ async def _warmup_bm25() -> None:
         from app.rag.bm25_index import build_or_load
         client = QdrantClient(url=settings.qdrant_url, timeout=30)
         await asyncio.get_event_loop().run_in_executor(
-            None, build_or_load, client, settings.qdrant_collection
+            None, build_or_load, client, settings.rag_collection
         )
         logger.info("BM25 index warm-up complete")
     except Exception as exc:

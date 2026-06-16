@@ -4,7 +4,7 @@
   python -m scripts.load_watsonx_corpus
 
   # 2. Ingest into Qdrant (uses watsonx_docs collection)
-  # Set QDRANT_COLLECTION=watsonx_docs in .env or override via CLI
+  # Set RAG_COLLECTION=northstar_crm in .env or override via CLI
 
   # 3. Seed eval dataset
   python -m scripts.seed_watsonx_dataset --limit 200

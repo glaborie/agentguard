@@ -192,8 +192,8 @@ services:
       CLICKHOUSE_DB: default
       CLICKHOUSE_USER: clickhouse
     ports:
-      - "127.0.0.1:8123:8123"
-      - "127.0.0.1:9350:9000"
+      - "8123:8123"
+      - "9350:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_logs:/var/log/clickhouse-server
@@ -228,8 +228,8 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       TZ: UTC
     ports:
-      - "127.0.0.1:9299:9000"
-      - "127.0.0.1:9300:9001"
+      - "127.0.0.1:9301:9000"
+      - "127.0.0.1:9302:9001"
     volumes:
       - minio_data:/data
     healthcheck:

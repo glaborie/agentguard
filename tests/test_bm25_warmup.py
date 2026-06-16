@@ -26,7 +26,7 @@ async def test_warmup_runs_when_hybrid_enabled():
         patch("app.rag.bm25_index.build_or_load", return_value=mock_retriever) as mock_build,
     ):
         mock_settings.qdrant_url = "http://localhost:6333"
-        mock_settings.qdrant_collection = "test_col"
+        mock_settings.rag_collection = "test_col"
         from app.api.app import _warmup_bm25
         await _warmup_bm25()
         mock_build.assert_called_once()
@@ -41,7 +41,7 @@ async def test_warmup_survives_qdrant_unreachable():
         patch("qdrant_client.QdrantClient", create=True, side_effect=ConnectionError("unreachable")),
     ):
         mock_settings.qdrant_url = "http://localhost:6333"
-        mock_settings.qdrant_collection = "test_col"
+        mock_settings.rag_collection = "test_col"
         from app.api.app import _warmup_bm25
         # Must not raise — startup must not be blocked
         await _warmup_bm25()
@@ -57,6 +57,6 @@ async def test_warmup_survives_empty_collection():
         patch("app.rag.bm25_index.build_or_load", side_effect=Exception("collection empty")),
     ):
         mock_settings.qdrant_url = "http://localhost:6333"
-        mock_settings.qdrant_collection = "test_col"
+        mock_settings.rag_collection = "test_col"
         from app.api.app import _warmup_bm25
         await _warmup_bm25()

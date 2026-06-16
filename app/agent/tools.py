@@ -20,16 +20,17 @@ from app.utils import truncate as _truncate
 
 @tool
 def search_docs(query: str) -> str:
-    """Search the NorthstarCRM knowledge base.
+    """Search the IBM watsonx documentation knowledge base.
 
-    Use this for questions about NorthstarCRM products, pricing, plans,
-    policies, sales processes, integrations, and support topics.
+    Use this for questions about IBM watsonx products, APIs, configuration,
+    features, and related technical topics.
 
     Args:
         query: The search query describing what you want to find.
     """
+    from app.core.config import settings as _settings
     logger.warning("agent_tool: search_docs query=%r", query[:80])
-    retriever = get_retriever(k=6)
+    retriever = get_retriever(k=6, collection=_settings.agent_collection)
     docs = retriever.invoke(query)
     if not docs:
         return "No relevant documents found for that query."
@@ -49,10 +50,24 @@ def list_traces(limit: int = 10) -> str:
     logger.warning("agent_tool: list_traces limit=%d", limit)
     limit = min(max(1, limit), 50)
     client = get_langfuse_client()
-    # Fetch a larger batch so filtering system calls doesn't shrink the result below limit
-    fetch_size = min(limit * 4, 100)
-    response = client.api.trace.list(limit=fetch_size)
-    traces = response.data
+    # Paginate until we collect enough user traces (health-check noise can bury them)
+    page_size = 100
+    max_pages = 50
+    traces = []
+    for page in range(1, max_pages + 1):
+        response = client.api.trace.list(limit=page_size, page=page)
+        if not response.data:
+            break
+        traces.extend(response.data)
+        user_count = sum(
+            1 for t in traces
+            if not str(t.input or "").startswith("### Task:")
+            and str(t.input or "") not in ("", "None", "{}")
+            and not (t.name or "").startswith("litellm-")
+            and (t.name or "") not in ("GET", "POST", "PUT", "DELETE", "HEAD", "PATCH")
+        )
+        if user_count >= limit:
+            break
 
     if not traces:
         return "No traces found."
@@ -62,13 +77,13 @@ def list_traces(limit: int = 10) -> str:
         if len(lines) >= limit:
             break
         input_str = str(t.input or "")
-        # Skip Open WebUI internal system calls
         if input_str.startswith("### Task:"):
             continue
-        # Skip infrastructure noise: health-check GETs and raw LiteLLM spans (no user input)
         if not input_str or input_str in ("None", "{}"):
             continue
         if (t.name or "").startswith("litellm-"):
+            continue
+        if (t.name or "") in ("GET", "POST", "PUT", "DELETE", "HEAD", "PATCH"):
             continue
         trace_id = t.id or "unknown"
         ts = t.timestamp.strftime("%Y-%m-%d %H:%M") if isinstance(t.timestamp, datetime) else str(t.timestamp or "")

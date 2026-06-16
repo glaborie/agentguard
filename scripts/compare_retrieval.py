@@ -52,7 +52,7 @@ def _build_vector_retriever(k: int) -> ScoredRetriever:
     client = QdrantClient(url=settings.qdrant_url)
     vector_store = QdrantVectorStore(
         client=client,
-        collection_name=settings.qdrant_collection,
+        collection_name=settings.rag_collection,
         embedding=embeddings,
     )
     return ScoredRetriever(vector_store=vector_store, k=k)
@@ -61,7 +61,7 @@ def _build_vector_retriever(k: int) -> ScoredRetriever:
 def _build_hybrid_retriever(k: int) -> HybridRetriever:
     client = QdrantClient(url=settings.qdrant_url)
     vector_retriever = _build_vector_retriever(k)
-    bm25 = build_or_load(client, settings.qdrant_collection)
+    bm25 = build_or_load(client, settings.rag_collection)
     bm25.k = max(k, 12)  # cast a wider net for RRF
     return HybridRetriever(
         vector_retriever=vector_retriever,

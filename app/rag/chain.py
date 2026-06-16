@@ -19,10 +19,10 @@ from app.core.feature_flags import get_flags
 from app.core.tracing import get_langfuse_client
 
 RAG_SYSTEM_PROMPT = """\
-You are a helpful technical assistant with expertise in IBM watsonx and related products. \
-Answer questions using ONLY the provided context from the watsonx documentation. \
+You are a helpful sales assistant for NorthstarCRM. \
+Answer questions using ONLY the provided context from the NorthstarCRM knowledge base. \
 If the context doesn't contain enough information to answer accurately, say so honestly. \
-Do not invent product features, API details, or configuration options not mentioned in the context.
+Do not invent pricing, policies, or product details not mentioned in the context.
 
 Context:
 {context}
@@ -84,7 +84,7 @@ def get_llm(
 
 
 
-def get_retriever(k: int = 6) -> BaseRetriever:
+def get_retriever(k: int = 6, collection: str | None = None) -> BaseRetriever:
     """Build the active retriever.
 
     Returns a ``HybridRetriever`` (vector + BM25 via RRF) when the
@@ -93,6 +93,7 @@ def get_retriever(k: int = 6) -> BaseRetriever:
     are unchanged; both retriever types emit ``Document`` objects with the same
     ``page_content`` / ``metadata`` shape.
     """
+    collection = collection or settings.rag_collection
     embeddings = OpenAIEmbeddings(
         model=settings.embedding_model,
         openai_api_base=f"{settings.litellm_base_url}/v1",
@@ -101,7 +102,7 @@ def get_retriever(k: int = 6) -> BaseRetriever:
     client = QdrantClient(url=settings.qdrant_url)
     vector_store = QdrantVectorStore(
         client=client,
-        collection_name=settings.qdrant_collection,
+        collection_name=collection,
         embedding=embeddings,
     )
     vector_retriever = ScoredRetriever(vector_store=vector_store, k=k)
@@ -114,7 +115,7 @@ def get_retriever(k: int = 6) -> BaseRetriever:
     from app.rag.bm25_index import build_or_load
     from app.rag.hybrid_retriever import HybridRetriever
 
-    bm25_retriever = build_or_load(client, settings.qdrant_collection)
+    bm25_retriever = build_or_load(client, collection)
     # Cast k up so each retriever returns enough candidates for RRF to be useful;
     # the ensemble's fused list is then sliced back to ``k`` by HybridRetriever.
     bm25_retriever.k = max(k, 12)
