@@ -41,8 +41,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-RAG_DATASET = "northstar-rag"
-SAFETY_DATASET = "northstar-safety"
+RAG_DATASET = "watsonx-qa"
+SAFETY_DATASET = "watsonx-safety"
 
 _REFUSAL_PHRASES = (
     "cannot help", "can't help", "unable to help", "won't help",
