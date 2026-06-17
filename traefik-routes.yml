@@ -4,44 +4,72 @@ global:
 
 http:
   routers:
+    authelia:
+      rule: "Host(`auth.localhost`)"
+      service: authelia
+      entryPoints: [web]
     openwebui:
       rule: "Host(`openwebui.localhost`)"
       service: openwebui
       entryPoints: [web]
+      middlewares: [authelia]
     langfuse:
       rule: "Host(`langfuse.localhost`)"
       service: langfuse
       entryPoints: [web]
+      middlewares: [authelia]
     litellm:
       rule: "Host(`litellm.localhost`)"
       service: litellm
       entryPoints: [web]
+      middlewares: [authelia]
     rag-api:
       rule: "Host(`rag-api.localhost`)"
       service: rag-api
       entryPoints: [web]
+      middlewares: [authelia]
     grafana:
       rule: "Host(`grafana.localhost`)"
       service: grafana
       entryPoints: [web]
+      middlewares: [authelia]
     jaeger:
       rule: "Host(`jaeger.localhost`)"
       service: jaeger
       entryPoints: [web]
+      middlewares: [authelia]
     zipkin:
       rule: "Host(`zipkin.localhost`)"
       service: zipkin
       entryPoints: [web]
+      middlewares: [authelia]
     loki:
       rule: "Host(`loki.localhost`)"
       service: loki
       entryPoints: [web]
+      middlewares: [authelia]
     traefik:
       rule: "Host(`traefik.localhost`)"
       service: traefik
       entryPoints: [web]
+      middlewares: [authelia]
+
+  middlewares:
+    authelia:
+      forwardAuth:
+        address: "http://authelia:9091/api/verify?rd=http://auth.localhost/"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - Remote-User
+          - Remote-Groups
+          - Remote-Name
+          - Remote-Email
 
   services:
+    authelia:
+      loadBalancer:
+        servers:
+          - url: "http://authelia:9091"
     openwebui:
       loadBalancer:
         servers:
