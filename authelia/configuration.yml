@@ -1,0 +1,39 @@
+theme: light
+
+server:
+  address: 'tcp://:9091'
+
+log:
+  level: info
+
+totp:
+  disable: true
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+    password:
+      algorithm: bcrypt
+      bcrypt:
+        cost: 12
+
+access_control:
+  default_policy: one_factor
+
+session:
+  name: authelia_session
+  domain: localhost
+  same_site: lax
+  expiration: 1h
+  inactivity: 15m
+  redis:
+    host: redis
+    port: 6379
+
+storage:
+  local:
+    path: /config/data/db.sqlite3
+
+notifier:
+  filesystem:
+    filename: /config/data/notification.txt

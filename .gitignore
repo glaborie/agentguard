@@ -1,4 +1,5 @@
 .env
+authelia/users_database.yml
 __pycache__/
 *.pyc
 .venv/

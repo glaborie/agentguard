@@ -1,0 +1,10 @@
+# Copy to authelia/users_database.yml and replace the hash.
+# Generate a hash with:
+#   docker run --rm authelia/authelia:4 authelia crypto hash generate bcrypt --password 'yourpassword'
+users:
+  admin:
+    displayname: "Admin"
+    password: "$2a$12$REPLACE_WITH_GENERATED_HASH"
+    email: admin@localhost
+    groups:
+      - admins
