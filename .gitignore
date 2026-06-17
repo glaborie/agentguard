@@ -32,3 +32,4 @@ runtime_config.json
 .claude/*
 !.claude/agentguard-files.md
 *.swp
+traefik/certs/

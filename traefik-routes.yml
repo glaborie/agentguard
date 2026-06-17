@@ -7,57 +7,67 @@ http:
     authelia:
       rule: "Host(`auth.localhost`)"
       service: authelia
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
     openwebui:
       rule: "Host(`openwebui.localhost`)"
       service: openwebui
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     langfuse:
       rule: "Host(`langfuse.localhost`)"
       service: langfuse
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     litellm:
       rule: "Host(`litellm.localhost`)"
       service: litellm
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     rag-api:
       rule: "Host(`rag-api.localhost`)"
       service: rag-api
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     grafana:
       rule: "Host(`grafana.localhost`)"
       service: grafana
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     jaeger:
       rule: "Host(`jaeger.localhost`)"
       service: jaeger
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     zipkin:
       rule: "Host(`zipkin.localhost`)"
       service: zipkin
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     loki:
       rule: "Host(`loki.localhost`)"
       service: loki
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
     traefik:
       rule: "Host(`traefik.localhost`)"
       service: traefik
-      entryPoints: [web]
+      entryPoints: [web, websecure]
+      tls: {}
       middlewares: [authelia]
 
   middlewares:
     authelia:
       forwardAuth:
-        address: "http://authelia:9091/api/verify?rd=http://auth.localhost/"
+        address: "http://authelia:9091/api/verify?rd=https://auth.localhost/"
         trustForwardHeader: true
         authResponseHeaders:
           - Remote-User

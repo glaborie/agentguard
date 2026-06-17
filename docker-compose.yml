@@ -593,13 +593,17 @@ services:
     command:
       - "--api.dashboard=true"
       - "--entrypoints.web.address=:80"
-      - "--providers.file.filename=/etc/traefik/routes.yml"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.file.directory=/etc/traefik/dynamic"
       - "--providers.file.watch=true"
       - "--log.level=INFO"
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - ./traefik-routes.yml:/etc/traefik/routes.yml:ro
+      - ./traefik-routes.yml:/etc/traefik/dynamic/routes.yml:ro
+      - ./traefik/dynamic-tls.yml:/etc/traefik/dynamic/dynamic-tls.yml:ro
+      - ./traefik/certs:/etc/traefik/certs:ro
     environment:
       TZ: UTC
     networks:

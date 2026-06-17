@@ -21,6 +21,8 @@ authentication_backend:
 access_control:
   default_policy: one_factor
 
+default_redirection_url: https://auth.localhost
+
 session:
   name: authelia_session
   domain: localhost
