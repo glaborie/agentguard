@@ -325,6 +325,14 @@ Open `http://openwebui.localhost/` in a browser. Expect redirect to Authelia log
 
 **Not verifiable from this non-interactive shell session — requires a human with a browser. Flagging for manual follow-up.**
 
+**POST-MERGE FOLLOW-UP (final whole-branch review, 2026-06-17): This step is still outstanding.** The curl-only checks in Step 5 substituted for this manual browser check, but real SSO behavior (login flow + cross-subdomain session sharing) has never actually been verified end-to-end. This is a recommended follow-up for a human to perform before fully trusting SSO is working:
+
+1. Open `http://openwebui.localhost/` in a browser.
+2. Expect redirect to Authelia login at `auth.localhost`. Log in with `admin` / `testpassword123` (or whatever credentials are configured in `users_database.yml`).
+3. Expect redirect back to `openwebui.localhost` with the app loading.
+4. In the **same browser session**, open `http://grafana.localhost/`.
+5. Confirm it loads **without requiring a second login** — this proves the Authelia session cookie is shared across `*.localhost` subdomains (SSO working as designed).
+
 - [x] **Step 7: Commit**
 
 ```bash
