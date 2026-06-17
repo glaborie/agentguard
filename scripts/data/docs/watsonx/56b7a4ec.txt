@@ -1,4 +1,0 @@
-# Pareto charts #
-
-Pareto charts contain both bars and a line graph\. The bars represent individual variable categories and the line graph represents the cumulative total\.
-<!-- </article "role="article" "> -->

@@ -1,5 +1,0 @@
-# Extension Export node #
-
-You can use the Extension Export node to run R scripts or Python for Spark scripts to export data\.
-
-<!-- </article "role="article" "> -->

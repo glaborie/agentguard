@@ -1,8 +1,0 @@
-# Sim Fit node #
-
-The Simulation Fitting node fits a set of candidate statistical distributions to each field in the data\. The fit of each distribution to a field is assessed using a goodness of fit criterion\. When a Simulation Fitting node runs, a Simulation Generate node is built (or an existing node is updated)\. Each field is assigned its best fitting distribution\. The Simulation Generate node can then be used to generate simulated data for each field\.
-
-Although the Simulation Fitting node is a terminal node, it does not add output to the Outputs panel, or export data\.
-
-Note: If the historical data is sparse (that is, there are many missing values), it may be difficult for the fitting component to find enough valid values to fit distributions to the data\. In cases where the data is sparse, before fitting you should either remove the sparse fields if they are not required, or impute the missing values\. Using the  QUALITY options in the Data Audit node, you can view the number of complete records, identify which fields are sparse, and select an imputation method\. If there are an insufficient number of records for distribution fitting, you can use a Balance node to increase the number of records\.
-<!-- </article "role="article" "> -->

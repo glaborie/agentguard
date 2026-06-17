@@ -1,9 +1,0 @@
-# Strings #
-
-A string is an immutable sequence of characters that's treated as a value\. Strings support all of the immutable sequence functions and operators that result in a new string\. For example, `"abcdef"[1:4]` results in the output `"bcd"`\.
-
-In Python, characters are represented by strings of length one\.
-
-Strings literals are defined by the use of single or triple quoting\. Strings that are defined using single quotes can't span lines, while strings that are defined using triple quotes can\. You can enclose a string in single quotes (`'`) or double quotes (`"`)\. A quoting character may contain the other quoting character un\-escaped or the quoting character escaped, that's preceded by the backslash (`\`) character\.
-
-<!-- </article "role="article" "> -->

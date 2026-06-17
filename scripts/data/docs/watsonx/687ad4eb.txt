@@ -1,5 +1,0 @@
-# Using the Text Analytics Workbench #
-
-The Text Analytics Workbench contains the extraction results and the category model contained in the text analytics package\.
-
-<!-- </article "role="article" "> -->

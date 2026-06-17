@@ -1,9 +1,0 @@
-# Viewing or selecting values #
-
-You can view field values from the Expression Builder\. Note that data must be fully instantiated in an Import or Type node to use this feature, so that storage, types, and values are known\.
-
-To view values for a field from the Expression Builder, select the required field and then use the  Value list or perform a search with the  Find in column Value field to find values for the selected field\. You can then double\-click a value to insert it into the current expression or list\.
-
-For flag and nominal fields, all defined values are listed\. For continuous (numeric range) fields, the minimum and maximum values are displayed\.
-
-<!-- </article "role="article" "> -->

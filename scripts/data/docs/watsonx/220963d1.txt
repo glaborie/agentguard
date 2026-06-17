@@ -1,7 +1,0 @@
-# Scripting with Python for Spark #
-
-SPSS Modeler can run Python scripts using the Apache Spark framework to process data\. This documentation provides the Python API description for the interfaces provided\.
-
-The  SPSS Modeler installation includes a Spark distribution\.
-
-<!-- </article "role="article" "> -->

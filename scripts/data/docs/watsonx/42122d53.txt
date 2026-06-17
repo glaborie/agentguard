@@ -1,8 +1,0 @@
-# SPSS algorithms #
-
-Many of the nodes available in  SPSS Modeler are based on statistical algorithms\.
-
-If you're interested in learning more about the underlying algorithms used in your flows, you can read the SPSS Modeler Algorithms Guide available in PDF format\. The guide is for advanced users, and the information is provided by a team of SPSS statisticians\.
-
-[Download the SPSS Modeler Algorithms Guide<br><br>![SPSS Modeler Algorithms Guide](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/spss_algorithms.png)](https://public.dhe.ibm.com/software/analytics/spss/documentation/modeler/new/AlgorithmsGuide.pdf)
-<!-- </article "role="article" "> -->

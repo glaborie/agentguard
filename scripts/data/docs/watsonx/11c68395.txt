@@ -1,5 +1,0 @@
-# Functions available for missing values #
-
-Different methods are available for dealing with missing values in your data\. You may choose to use functionality available in Data Refinery or in nodes\.
-
-<!-- </article "role="article" "> -->

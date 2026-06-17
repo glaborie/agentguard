@@ -1,9 +1,0 @@
-# Setting properties for flows #
-
-You can specify properties to apply to the current flow\.
-
-To set flow properties, click the  Flow Properties icon:![Flow properties icon](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/flow_properties.png)
-
-The following properties are available\.
-
-<!-- </article "role="article" "> -->

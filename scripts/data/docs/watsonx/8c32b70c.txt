@@ -1,5 +1,0 @@
-# R scripts #
-
-SPSS Modeler supports R scripts\.
-
-<!-- </article "role="article" "> -->

@@ -1,5 +1,0 @@
-# Import #
-
-Use Import nodes to import data stored in various formats, or to generate your own synthetic data\.
-
-<!-- </article "role="article" "> -->

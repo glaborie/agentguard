@@ -1,7 +1,0 @@
-# About text mining #
-
-Today, an increasing amount of information is being held in unstructured and semi\-structured formats, such as customer e\-mails, call center notes, open\-ended survey responses, news feeds, web forms, etc\. This abundance of information poses a problem to many organizations that ask themselves: How can we collect, explore, and leverage this information?
-
-Text mining is the process of analyzing collections of textual materials in order to capture key concepts and themes and uncover hidden relationships and trends without requiring that you know the precise words or terms that authors have used to express those concepts\. Although they are quite different, text mining is sometimes confused with information retrieval\. While the accurate retrieval and storage of information is an enormous challenge, the extraction and management of quality content, terminology, and relationships contained within the information are crucial and critical processes\.
-
-<!-- </article "role="article" "> -->

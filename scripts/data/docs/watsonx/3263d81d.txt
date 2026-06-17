@@ -1,9 +1,0 @@
-# Native Python APIs #
-
-You can invoke native Python APIs from your scripts to interact with  SPSS Modeler\.
-
-The following APIs are supported\.
-
-To see an example, you can download the sample stream [python\-extension\-str\.zip](https://github.com/IBMDataScience/ModelerFlowsExamples/blob/main/samples) and import it into  SPSS Modeler (from your project, click  New asset, select  SPSS Modeler, then select  Local file)\. Then open the Extension node properties in the flow to see example syntax\.
-
-<!-- </article "role="article" "> -->

@@ -1,7 +1,0 @@
-# Defining missing values #
-
-In the Type node settings, select the desired field in the table and then click the gear icon at the end of its row\. Missing values settings are available in the window that appears\.
-
-Select  Define missing values to define missing value handing for this field\. Here you can define explicit values to be considered as missing values for this field, or this can also be accomplished by means of a downstream Filler node\.
-
-<!-- </article "role="article" "> -->

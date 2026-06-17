@@ -1,4 +1,0 @@
-# Error bar charts #
-
-Error bar charts represent the variability of data and indicate the error (or uncertainty) in a reported measurement\. Error bars help determine whether differences are statistically significant\. Error bars can also suggest goodness of fit for a specific function\.
-<!-- </article "role="article" "> -->

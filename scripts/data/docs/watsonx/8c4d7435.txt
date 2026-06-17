@@ -1,9 +1,0 @@
-# Transform node #
-
-Normalizing input fields is an important step before using traditional scoring techniques such as regression, logistic regression, and discriminant analysis\. These techniques carry assumptions about normal distributions of data that may not be true for many raw data files\. One approach to dealing with real\-world data is to apply transformations that move a raw data element toward a more normal distribution\. In addition, normalized fields can easily be compared with each other—for example, income and age are on totally different scales in a raw data file but, when normalized, the relative impact of each can be easily interpreted\.
-
-The Transform node provides an output viewer that enables you to perform a rapid visual assessment of the best transformation to use\. You can see at a glance whether variables are normally distributed and, if necessary, choose the transformation you want and apply it\. You can pick multiple fields and perform one transformation per field\.
-
-After selecting the preferred transformations for the fields, you can generate Derive or Filler nodes that perform the transformations and attach these nodes to the flow\. The Derive node creates new fields, while the Filler node transforms the existing ones\.
-
-<!-- </article "role="article" "> -->

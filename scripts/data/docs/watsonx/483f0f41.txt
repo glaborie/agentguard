@@ -1,7 +1,0 @@
-# Summarizing multiple fields #
-
-The CLEM language includes a number of functions that return summary statistics across multiple fields\.
-
-These functions may be particularly useful in analyzing survey data, where multiple responses to a question may be stored in multiple fields\. See [Working with multiple\-response data](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/clem_reference/clem_overview_multiple_response_data.html#clem_overview_multiple_response_data) for more information\.
-
-<!-- </article "role="article" "> -->

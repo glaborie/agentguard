@@ -1,3 +1,0 @@
-# Watson Studio on  IBM watsonx #
-
-<!-- </article "role="article" "> -->

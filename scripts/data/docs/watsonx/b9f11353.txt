@@ -1,4 +1,0 @@
-# Sunburst charts #
-
-A sunburst chart is useful for visualizing hierarchical data structures\. A sunburst chart consists of an inner circle that is surrounded by rings of deeper hierarchy levels\. The angle of each segment proportional to either a value or divided equally under its inner segment\. The chart segments are colored based on the category or hierarchical level to which they belong\.
-<!-- </article "role="article" "> -->

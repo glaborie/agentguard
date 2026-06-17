@@ -1,5 +1,0 @@
-# Spark node properties #
-
-Refer to this section for a list of available properties for Spark nodes\.
-
-<!-- </article "role="article" "> -->

@@ -1,7 +1,0 @@
-<!-- <article "role="article" "> -->
-
-You may need to describe a flow to others in your organization\. To help you do this, you can attach explanatory comments to nodes, and model nuggets\.
-
-Others can then view these comments on\-screen, or you might even print out an image of the flow that includes the comments\. You can also add notes in the form of text annotations to nodes and model nuggets by means of the Annotations tab in a node's properties\. These annotations are visible only when the Annotations tab is open\.
-
-<!-- </article "role="article" "> -->

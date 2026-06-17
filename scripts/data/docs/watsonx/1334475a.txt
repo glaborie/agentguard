@@ -1,4 +1,0 @@
-# Multiple series charts #
-
-Multiple series charts are similar to line charts, with the exception that you can chart multiple variables on the Y\-axis\.
-<!-- </article "role="article" "> -->

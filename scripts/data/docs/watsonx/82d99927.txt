@@ -1,7 +1,0 @@
-# Strings #
-
-Generally, you should enclose strings in double quotation marks\. Examples of strings are `"c35product2"` and `"referrerID"`\.
-
-To indicate special characters in a string, use a backslash (for example, `"\$65443"`)\. (To indicate a backslash character, use a double backslash, `\\`\.) You can use single quotes around a string, but the result is indistinguishable from a quoted field (`'referrerID'`)\. See [String functions](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/clem_reference/clem_function_ref_string.html#clem_function_ref_string) for more information\.
-
-<!-- </article "role="article" "> -->

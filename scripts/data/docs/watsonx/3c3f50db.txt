@@ -1,7 +1,0 @@
-# Database functions #
-
-You can run an SPSS Modeler desktop stream file ( \.str) that contains database functions\.
-
-But database functions aren't available in the Expression Builder user interface, and you can't edit them\.
-
-<!-- </article "role="article" "> -->

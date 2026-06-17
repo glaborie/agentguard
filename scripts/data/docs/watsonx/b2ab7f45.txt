@@ -1,7 +1,0 @@
-# Set Globals node #
-
-The Set Globals node scans the data and computes summary values that can be used in CLEM expressions\.
-
-For example, you can use a Set Globals node to compute statistics for a field called `age` and then use the overall mean of `age` in CLEM expressions by inserting the function `@GLOBAL_MEAN(age)`\.
-
-<!-- </article "role="article" "> -->

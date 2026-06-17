@@ -1,7 +1,0 @@
-# Handling fields with missing values #
-
-If the majority of missing values are concentrated in a small number of fields, you can address them at the field level rather than at the record level\. This approach also allows you to experiment with the relative importance of particular fields before deciding on an approach for handling missing values\. If a field is unimportant in modeling, it probably isn't worth keeping, regardless of how many missing values it has\.
-
-For example, a market research company may collect data from a general questionnaire containing 50 questions\. Two of the questions address age and political persuasion, information that many people are reluctant to give\. In this case, `Age` and `Political_persuasion` have many missing values\.
-
-<!-- </article "role="article" "> -->

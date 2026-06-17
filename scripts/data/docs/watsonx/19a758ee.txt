@@ -1,5 +1,0 @@
-# Flows #
-
-A flow is the main   IBM® SPSS® Modeler document type\. It can be saved, loaded, edited and executed\. Flows can also have parameters, global values, a script, and other information associated with them\.
-
-<!-- </article "role="article" "> -->

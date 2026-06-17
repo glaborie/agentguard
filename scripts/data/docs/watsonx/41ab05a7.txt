@@ -1,9 +1,0 @@
-# Advanced linguistic settings #
-
-When you build categories, you can select from a number of advanced linguistic category building techniques such as concept inclusion and semantic networks (English text only)\. These techniques can be used individually or in combination with each other to create categories\.
-
-Keep in mind that because every dataset is unique, the number of methods and the order in which you apply them may change over time\. Since your text mining goals may be different from one set of data to the next, you may need to experiment with the different techniques to see which one produces the best results for the given text data\. None of the automatic techniques will perfectly categorize your data; therefore we recommend finding and applying one or more automatic techniques that work well with your data\.
-
-The following advanced settings are available for the  Use linguistic techniques to build categories option in the category settings\.
-
-<!-- </article "role="article" "> -->

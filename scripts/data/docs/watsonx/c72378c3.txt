@@ -1,4 +1,0 @@
-# Parallel charts #
-
-Parallel charts are useful for visualizing high dimensional geometry and for analyzing multivariate data\. Parallel charts resemble line charts for time\-series data, but the axes do not correspond to points in time (a natural order is not present)\.
-<!-- </article "role="article" "> -->

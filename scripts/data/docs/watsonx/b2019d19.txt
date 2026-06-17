@@ -1,8 +1,0 @@
-# Analysis node #
-
-With the Analysis node, you can evaluate the ability of a model to generate accurate predictions\. Analysis nodes perform various comparisons between predicted values and actual values (your target field) for one or more model nuggets\. You can also use Analysis nodes to compare predictive models to other predictive models\.
-
-When you execute an Analysis node, a summary of the analysis results is automatically added to the Analysis section on the Summary tab for each model nugget in the executed flow\. The detailed analysis results appear on the Outputs tab of the manager window or can be written directly to a file\.
-
-Note: Because Analysis nodes compare predicted values to actual values, they are only useful with supervised models (those that require a target field)\. For unsupervised models such as clustering algorithms, there are no actual results available to use as a basis for comparison\.
-<!-- </article "role="article" "> -->

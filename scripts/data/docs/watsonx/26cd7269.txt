@@ -1,5 +1,0 @@
-# Record Operations node properties #
-
-Refer to this section for a list of available properties for Record Operations nodes\.
-
-<!-- </article "role="article" "> -->

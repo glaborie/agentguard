@@ -1,7 +1,0 @@
-# Accessing the Expression Builder #
-
-The Expression Builder is available in all nodes where CLEM expressions are used, including Select, Balance, Derive, Filler, Analysis, Report, and Table nodes\.
-
-You can open it by double\-clicking the node to open its properties, then click the calculator button by the formula field\.
-
-<!-- </article "role="article" "> -->

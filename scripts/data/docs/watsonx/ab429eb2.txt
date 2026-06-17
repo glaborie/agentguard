@@ -1,5 +1,0 @@
-# Table content model #
-
-The table content model provides a simple model for accessing simple row and column data\. The values in a particular column must all have the same type of storage (for example, strings or integers)\.
-
-<!-- </article "role="article" "> -->

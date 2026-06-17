@@ -1,5 +1,0 @@
-# Text Mining model nuggets #
-
-You can run a Text Mining node to automatically generate a concept model nugget using the  Generate directly option in the node settings\. Or you can use a more hands\-on, exploratory approach using the  Build interactively mode to generate category model nuggets from within the Text Analytics Workbench\.
-
-<!-- </article "role="article" "> -->

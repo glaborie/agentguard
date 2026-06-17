@@ -1,5 +1,0 @@
-# Scripting tips #
-
-This section provides tips and techniques for using scripts, including modifying flow execution, and using an encoded password in a script\.
-
-<!-- </article "role="article" "> -->

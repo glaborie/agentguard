@@ -78,7 +78,7 @@ services:
     deploy: *deploy-otel
     pull_policy: if_not_present
     volumes:
-      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - ${PWD}/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
     environment:
       LANGFUSE_OTEL_AUTH: "${LANGFUSE_OTEL_AUTH:-Basic cGstbGYtZGV2OnNrLWxmLWRldg==}"
       # OpenObserve: endpoint uses host.docker.internal so collector reaches host port 5080.

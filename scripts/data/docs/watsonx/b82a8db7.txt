@@ -1,7 +1,0 @@
-# Summary #
-
-You've successfully modeled a complex time series, incorporating not only an upward trend but also seasonal and other variations\. You've also seen how, through trial and error, you can get closer and closer to an accurate model, which you can then use to forecast future sales\.
-
-In practice, you would need to reapply the model as your actual sales data are updated—for example, every month or every quarter—and produce updated forecasts\.
-
-<!-- </article "role="article" "> -->

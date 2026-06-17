@@ -1,9 +1,0 @@
-# Data Asset Export node #
-
-You can use the Data Asset Export node to write to remote data sources using connections or write data to a project (delimited or \. sav)\.
-
-Double\-click the node to open its properties\. Various options are available, described as follows\.
-
-After running the node, you can find the data at the export location you specified\.
-
-<!-- </article "role="article" "> -->

@@ -1,5 +1,0 @@
-# Creating expressions #
-
-The Expression Builder provides not only complete lists of fields, functions, and operators but also access to data values if your data is instantiated\.
-
-<!-- </article "role="article" "> -->

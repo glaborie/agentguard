@@ -1,6 +1,0 @@
-# Histogram node #
-
-Histogram nodes show the occurrence of values for numeric fields\. They are often used to explore the data before manipulations and model building\. Similar to the Distribution node, Histogram nodes are frequently used to reveal imbalances in the data\.
-
-Note: To show the occurrence of values for symbolic fields, you should use a Distribution node\.
-<!-- </article "role="article" "> -->

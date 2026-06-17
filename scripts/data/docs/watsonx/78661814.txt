@@ -1,7 +1,0 @@
-# Streaming TCM node #
-
-You can use this node to build and score temporal causal models in one step\.
-
-After adding a Streaming TCM node to your flow canvas, double\-click it to open the node properties\. To see information about the properties, hover over the tool\-tip icons\. For more information about temporal causal modeling, see [TCM node](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/tcm.html)\.
-
-<!-- </article "role="article" "> -->

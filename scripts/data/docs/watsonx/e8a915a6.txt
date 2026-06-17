@@ -1,9 +1,0 @@
-# Inheritance #
-
-The ability to inherit from classes is fundamental to object\-oriented programming\. Python supports both single and multiple inheritance\. Single inheritance means that there can be only one superclass\. Multiple inheritance means that there can be more than one superclass\.
-
-Inheritance is implemented by subclassing other classes\. Any number of Python classes can be superclasses\. In the Jython implementation of Python, only one Java class can be directly or indirectly inherited from\. It's not required for a superclass to be supplied\.
-
-Any attribute or method in a superclass is also in any subclass and can be used by the class itself, or by any client as long as the attribute or method isn't hidden\. Any instance of a subclass can be used wherever an instance of a superclass can be used; this is an example of polymorphism\. These features enable reuse and ease of extension\.
-
-<!-- </article "role="article" "> -->

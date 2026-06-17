@@ -1,4 +1,0 @@
-# Scatter matrix charts #
-
-Scatter plot matrices are a good way to determine whether linear correlations exist between multiple variables\.
-<!-- </article "role="article" "> -->

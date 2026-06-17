@@ -1,5 +1,0 @@
-# Export node properties #
-
-Refer to this section for a list of available properties for Export nodes\.
-
-<!-- </article "role="article" "> -->

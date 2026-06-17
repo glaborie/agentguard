@@ -1,5 +1,0 @@
-# Plot node #
-
-Plot nodes show the relationship between numeric fields\. You can create a plot using points (also known as a scatterplot), or you can use lines\. You can create three types of line plots by specifying an X Mode in the node properties\.
-
-<!-- </article "role="article" "> -->

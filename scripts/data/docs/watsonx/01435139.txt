@@ -1,5 +1,0 @@
-# Lists #
-
-Lists are sequences of elements\. A list can contain any number of elements, and the elements of the list can be any type of object\. Lists can also be thought of as arrays\. The number of elements in a list can increase or decrease as elements are added, removed, or replaced\.
-
-<!-- </article "role="article" "> -->

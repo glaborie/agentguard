@@ -1,7 +1,0 @@
-# Collection node #
-
-Collections are similar to histograms, but collections show the distribution of values for one numeric field relative to the values of another, rather than the occurrence of values for a single field\. A collection is useful for illustrating a variable or field whose values change over time\.
-
-Using 3\-D graphing, you can also include a symbolic axis displaying distributions by category\. Two\-dimensional collections are shown as stacked bar charts, with overlays where used\.
-
-<!-- </article "role="article" "> -->

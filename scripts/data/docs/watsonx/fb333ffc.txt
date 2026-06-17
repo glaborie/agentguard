@@ -1,4 +1,0 @@
-# Radar charts #
-
-Radar charts compare multiple quantitative variables and are useful for visualizing which variables have similar values, or if outliers exist among the variables\. Radar charts consists of a sequence of spokes, with each spoke representing a single variable\. Radar Charts are also useful for determining which variables are scoring high or low within a data set\.
-<!-- </article "role="article" "> -->

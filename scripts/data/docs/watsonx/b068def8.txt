@@ -1,7 +1,0 @@
-# Decision List node #
-
-Decision List models identify subgroups or segments that show a higher or lower likelihood of a binary (yes or no) outcome relative to the overall sample\.
-
-For example, you might look for customers who are least likely to churn or most likely to say yes to a particular offer or campaign\. The Decision List Viewer gives you complete control over the model, enabling you to edit segments, add your own business rules, specify how each segment is scored, and customize the model in a number of other ways to optimize the proportion of hits across all segments\. As such, it is particularly well\-suited for generating mailing lists or otherwise identifying which records to target for a particular campaign\. You can also use multiple mining tasks to combine modeling approaches—for example, by identifying high\- and low\-performing segments within the same model and including or excluding each in the scoring stage as appropriate\.
-
-<!-- </article "role="article" "> -->

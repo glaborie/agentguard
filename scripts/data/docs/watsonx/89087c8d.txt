@@ -1,5 +1,0 @@
-# Data Asset Import node properties #
-
-Refer to this section for a list of available properties for Import nodes\.
-
-<!-- </article "role="article" "> -->

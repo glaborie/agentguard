@@ -1,9 +1,0 @@
-# Reclassify node #
-
-The Reclassify node enables the transformation from one set of categorical values to another\. Reclassification is useful for collapsing categories or regrouping data for analysis\.
-
-For example, you could reclassify the values for `Product` into three groups, such as `Kitchenware`, `Bath and Linens`, and `Appliances`\.
-
-Reclassification can be performed for one or more symbolic fields\. You can also choose to substitute the new values for the existing field or generate a new field\.
-
-<!-- </article "role="article" "> -->

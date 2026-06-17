@@ -1,7 +1,0 @@
-# Decision Optimization #
-
-When you have created and solved your  Decision Optimization models, you can deploy them using  Watson Machine Learning\.
-
-See the [Decision Optimization experiment UI](https://dataplatform.cloud.ibm.com/docs/content/DO/DODS_Introduction/buildingmodels.html#topic_buildingmodels) for building and solving models\. The following sections describe how you can deploy your models\.
-
-<!-- </article "role="article" "> -->

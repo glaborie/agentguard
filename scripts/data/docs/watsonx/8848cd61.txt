@@ -1,7 +1,0 @@
-# Transpose node #
-
-By default, columns are fields and rows are records or observations\. If necessary, you can use a Transpose node to swap the data in rows and columns so that fields become records and records become fields\.
-
-For example, if you have time series data where each series is a row rather than a column, you can transpose the data prior to analysis\.
-
-<!-- </article "role="article" "> -->

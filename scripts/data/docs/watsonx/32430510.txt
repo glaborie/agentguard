@@ -1,3 +1,0 @@
-# watsonx\.governance on  IBM® watsonx #
-
-<!-- </article "role="article" "> -->

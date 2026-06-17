@@ -1,5 +1,0 @@
-# applyautoclusternode properties #
-
-You can use Auto Cluster modeling nodes to generate an Auto Cluster model nugget\. The scripting name of this model nugget is *applyautoclusternode*\. No other properties exist for this model nugget\. For more information on scripting the modeling node itself, see [autoclusternode properties](https://dataplatform.cloud.ibm.com/docs/content/wsd/nodes/scripting_guide/clementine/autoclusternodeslots.html#autoclusternodeslots)\.
-
-<!-- </article "role="article" "> -->

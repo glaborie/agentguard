@@ -1,3 +1,0 @@
-# Cloud Object Storage on  IBM® watsonx #
-
-<!-- </article "role="article" "> -->

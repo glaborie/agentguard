@@ -1,9 +1,0 @@
-# The scripting API #
-
-The Scripting API provides access to a wide range of SPSS Modeler functionality\. All the methods described so far are part of the API and can be accessed implicitly within the script without further imports\. However, if you want to reference the API classes, you must import the API explicitly with the following statement:
-
-    import modeler.api
-
-This import statement is required by many of the scripting API examples\.
-
-<!-- </article "role="article" "> -->

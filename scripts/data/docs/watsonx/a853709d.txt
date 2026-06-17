@@ -1,4 +1,0 @@
-# Word cloud charts #
-
-Word cloud charts present data as words, where the size and placement of any individual word is determined by how it is weighted\.
-<!-- </article "role="article" "> -->

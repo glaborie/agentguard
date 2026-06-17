@@ -1,4 +1,0 @@
-# Treemap charts #
-
-Treemap charts are an alternative method for visualizing the hierarchical structure of tree diagrams while also displaying quantities for each category\. Treemap charts are useful for identifying patterns in data\. Tree branches are represented by rectangles, with each sub branch represented by smaller rectangles\.
-<!-- </article "role="article" "> -->

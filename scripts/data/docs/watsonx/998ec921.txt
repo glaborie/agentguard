@@ -1,5 +1,0 @@
-# Node properties overview #
-
-Each type of node has its own set of legal properties, and each property has a type\. This type may be a general type—number, flag, or string—in which case settings for the property are coerced to the correct type\. An error is raised if they can't be coerced\. Alternatively, the property reference may specify the range of legal values, such as `Discard`, `PairAndDiscard`, and `IncludeAsText`, in which case an error is raised if any other value is used\. Flag properties should be read or set by using values of `true` and `false`\. (Variations including `Off`, `OFF`, `off`, `No`, `NO`, `no`, `n`, `N`, `f`, `F`, `false`, `False`, `FALSE`, or `0` are also recognized when setting values, but may cause errors when reading property values in some cases\. All other values are regarded as true\. Using `true` and `false` consistently will avoid any confusion\.) In this documentation's reference tables, the structured properties are indicated as such in the  Property description column, and their usage formats are provided\.
-
-<!-- </article "role="article" "> -->

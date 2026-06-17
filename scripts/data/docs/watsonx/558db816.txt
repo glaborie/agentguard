@@ -1,5 +1,0 @@
-# Statistics node #
-
-The Statistics node gives you basic summary information about numeric fields\. You can get summary statistics for individual fields and correlations between fields\.
-
-<!-- </article "role="article" "> -->

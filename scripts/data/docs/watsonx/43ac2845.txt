@@ -1,7 +1,0 @@
-# Summary #
-
-With this example  Automated Modeling for a Flag Target flow, you used the Auto Numeric node to compare a number of different models, selected the three most accurate models, and added them to the flow within an ensembled Auto Numeric model nugget\.
-
-The ensembled model showed performance that was better than two of the individual models and may perform better when applied to other datasets\. If your goal is to automate the process as much as possible, this approach allows you to obtain a robust model under most circumstances without having to dig deeply into the specifics of any one model\.
-
-<!-- </article "role="article" "> -->

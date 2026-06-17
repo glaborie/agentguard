@@ -1,4 +1,0 @@
-# Box plots #
-
-A box plot chart shows the five statistics (minimum, first quartile, median, third quartile, and maximum)\. It is useful for displaying the distribution of a scale variable and pinpointing outliers\.
-<!-- </article "role="article" "> -->

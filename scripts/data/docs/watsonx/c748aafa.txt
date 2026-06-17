@@ -1,7 +1,0 @@
-# Extension Import node #
-
-With the Extension Import node, you can run R scripts or Python for Spark scripts to import data\.
-
-After adding the node to your canvas, double\-click the node to open its properties\.
-
-<!-- </article "role="article" "> -->

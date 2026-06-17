@@ -1,4 +1,0 @@
-# Dual Y\-axes charts #
-
-A dual Y\-axes chart summarizes or plots two Y\-axes variables that have different domains\. For example, you can plot the number of cases on one axis and the mean salary on another\. This chart can also be a mix of different graphic elements so that the dual Y\-axes chart encompasses several of the different chart types\. Dual Y\-axes charts can display the counts as a line and the mean of each category as a bar\.
-<!-- </article "role="article" "> -->

@@ -1,4 +1,0 @@
-# Bar charts #
-
-Bar charts are useful for summarizing categorical variables\. For example, you can use a bar chart to show the number of men and the number of women who participated in a survey\. You can also use a bar chart to show the mean salary for men and the mean salary for women\.
-<!-- </article "role="article" "> -->

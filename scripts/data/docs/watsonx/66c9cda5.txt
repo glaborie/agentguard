@@ -1,4 +1,0 @@
-# Population pyramid charts #
-
-Population pyramid charts (also known as "age\-sex pyramids") are commonly used to present and analyze population information based on age and gender\.
-<!-- </article "role="article" "> -->

@@ -1,3 +1,0 @@
-# Databases for EDB on  IBM watsonx #
-
-<!-- </article "role="article" "> -->

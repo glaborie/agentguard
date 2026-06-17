@@ -1,7 +1,0 @@
-# History node #
-
-History nodes are most often used for sequential data, such as time series data\.
-
-They are used to create new fields containing data from fields in previous records\. When using a History node, you may want to use data that is presorted by a particular field\. You can use a Sort node to do this\.
-
-<!-- </article "role="article" "> -->

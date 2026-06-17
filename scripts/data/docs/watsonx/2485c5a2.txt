@@ -1,8 +1,0 @@
-# Restructure node #
-
-With the Restructure node, you can generate multiple fields based on the values of a nominal or flag field\. The newly generated fields can contain values from another field or numeric flags (0 and 1)\. The functionality of this node is similar to that of the Set to Flag node\. However, it offers more flexibility by allowing you to create fields of any type (including numeric flags), using the values from another field\. You can then perform aggregation or other manipulations with other nodes downstream\. (The Set to Flag node lets you aggregate fields in one step, which may be convenient if you are creating flag fields\.)
-
-Figure 1\. Restructure node
-
-![Restructure node](https://dataplatform.cloud.ibm.com/docs/content/wsd/images/restructure_node.png)
-<!-- </article "role="article" "> -->

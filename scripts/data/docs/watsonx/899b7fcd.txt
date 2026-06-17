@@ -1,5 +1,0 @@
-# Diagrams #
-
-The term diagram covers the functions that are supported by both normal flows and SuperNode flows, such as adding and removing nodes and modifying connections between the nodes\.
-
-<!-- </article "role="article" "> -->

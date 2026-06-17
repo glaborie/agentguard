@@ -1,5 +1,0 @@
-# Report node #
-
-You can use the Report node to create formatted reports containing fixed text, data, or other expressions derived from the data\. Specify the format of the report by using text templates to define the fixed text and the data output constructions\. You can provide custom text formatting using HTML tags in the template and by setting output options\. Data values and other conditional output are included in the report using CLEM expressions in the template\.
-
-<!-- </article "role="article" "> -->

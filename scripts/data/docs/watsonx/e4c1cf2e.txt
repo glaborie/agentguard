@@ -1,7 +1,0 @@
-# Output node properties #
-
-Refer to this section for a list of available properties for Output nodes\.
-
-Output node properties differ slightly from those of other node types\. Rather than referring to a particular node option, output node properties store a reference to the output object\. This can be useful in taking a value from a table and then setting it as a flow parameter\.
-
-<!-- </article "role="article" "> -->

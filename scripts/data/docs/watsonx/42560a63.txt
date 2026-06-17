@@ -1,7 +1,0 @@
-# Extension model nugget #
-
-The Extension model nugget is generated and placed on your flow canvas after running the Extension Model node, which contains your R script or Python for Spark script that defines the model building and model scoring\.
-
-By default, the Extension model nugget contains the script that's used for model scoring, options for reading the data, and any output from the R console or Python for Spark\. Optionally, the Extension model nugget can also contain various other forms of model output, such as graphs and text output\. After the Extension model nugget is generated and added to your flow canvas, an output node can be connected to it\. The output node is then used in the usual way within your flow to obtain information about the data and models, and for exporting data in various formats\.
-
-<!-- </article "role="article" "> -->
