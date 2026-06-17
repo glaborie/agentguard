@@ -1,7 +1,8 @@
 theme: light
 
 server:
-  address: 'tcp://:9091'
+  host: 0.0.0.0
+  port: 9091
 
 log:
   level: info
