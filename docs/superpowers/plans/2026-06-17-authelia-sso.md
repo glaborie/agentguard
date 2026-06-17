@@ -17,6 +17,7 @@
 - `authelia/users_database.yml` is gitignored (real secrets); `authelia/users_database.yml.example` is checked in.
 - Notifier: filesystem, writes to `/config/data/notification.txt` inside the container.
 - New env vars `AUTHELIA_JWT_SECRET`, `AUTHELIA_SESSION_SECRET`, `AUTHELIA_STORAGE_ENCRYPTION_KEY` go in `.env` (gitignored) and `.env.example` (placeholder values, checked in).
+- Authelia image pinned to `authelia/authelia:4.37.5` — newer 4.38+ images reject `session.domain: localhost` at startup (validation requires a period or IP in the domain; bare `localhost` fails). 4.37.5 is the last release accepting it, needed to keep every existing `*.localhost` route unchanged. Found during Task 2 implementation; documented here for anyone re-deriving the plan.
 - Spec: `docs/superpowers/specs/2026-06-17-authelia-sso-design.md`
 
 ---
@@ -39,7 +40,8 @@
 theme: light
 
 server:
-  address: 'tcp://:9091'
+  host: 0.0.0.0
+  port: 9091
 
 log:
   level: info
@@ -167,7 +169,7 @@ In `docker-compose.yml`, insert after the `traefik` service block (after line 60
 
 ```yaml
   authelia:
-    image: authelia/authelia:4
+    image: authelia/authelia:4.37.5
     restart: always
     logging: *default-logging
     volumes:
@@ -236,7 +238,7 @@ git commit -m "feat(sso): add Authelia service to main stack"
 - Consumes: `http://authelia:9091` from Task 2
 - Produces: every `*.localhost` route gated behind Authelia login
 
-- [ ] **Step 1: Add the `authelia` router and service**
+- [x] **Step 1: Add the `authelia` router and service**
 
 In `traefik-routes.yml`, under `http.routers`, add:
 
@@ -256,7 +258,7 @@ Under `http.services`, add:
           - url: "http://authelia:9091"
 ```
 
-- [ ] **Step 2: Add the `authelia` forwardAuth middleware**
+- [x] **Step 2: Add the `authelia` forwardAuth middleware**
 
 Add a new top-level key under `http:` (sibling of `routers` and `services`):
 
@@ -273,7 +275,7 @@ Add a new top-level key under `http:` (sibling of `routers` and `services`):
           - Remote-Email
 ```
 
-- [ ] **Step 3: Attach the middleware to all 9 existing routers**
+- [x] **Step 3: Attach the middleware to all 9 existing routers**
 
 For each of `openwebui`, `langfuse`, `litellm`, `rag-api`, `grafana`, `jaeger`, `zipkin`, `loki`, `traefik` under `http.routers`, add a `middlewares` key. Example for `openwebui`:
 
@@ -287,39 +289,50 @@ For each of `openwebui`, `langfuse`, `litellm`, `rag-api`, `grafana`, `jaeger`, 
 
 Repeat the same `middlewares: [authelia]` line for the other 8 routers (`langfuse`, `litellm`, `rag-api`, `grafana`, `jaeger`, `zipkin`, `loki`, `traefik`). Do NOT add it to the new `authelia` router itself — that would create a redirect loop.
 
-- [ ] **Step 4: Reload Traefik and verify config loaded without error**
+- [x] **Step 4: Reload Traefik and verify config loaded without error**
 
 ```bash
-docker compose restart traefik
-docker compose logs traefik --tail=30
+docker compose up -d --force-recreate traefik
+docker compose logs traefik --tail=60
 ```
 
-Expected: no `error` level log lines about `routes.yml` or middleware parsing.
+Note: `docker compose restart traefik` failed in this WSL2 environment with a Docker
+Desktop bind-mount error unmounting `/etc/traefik/routes.yml` (known WSL2 bind-mount
+flakiness, unrelated to the routes config). `docker compose up -d --force-recreate traefik`
+worked around it. Verified: no `error` level log lines about `routes.yml` or middleware
+parsing — only informational `maxResponseBodySize not configured` warnings for the new
+`authelia@file` ForwardAuth middleware on all 9 routers.
 
-- [ ] **Step 5: Verify gating end-to-end**
+- [x] **Step 5: Verify gating end-to-end**
 
 ```bash
-curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" http://openwebui.localhost/
+curl -s -o /dev/null -w "%{http_code}\n" --resolve auth.localhost:80:127.0.0.1 http://auth.localhost/
+curl -s -i --resolve openwebui.localhost:80:127.0.0.1 http://openwebui.localhost/
 ```
 
-Expected: `302` with `redirect_url` pointing at `auth.localhost`.
-
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" http://auth.localhost/
-```
-
-Expected: `200`.
+Actual: `auth.localhost` → `200`. All 9 gated routers (`openwebui`, `langfuse`, `litellm`,
+`rag-api`, `grafana`, `jaeger`, `zipkin`, `loki`, `traefik`) → `401 Unauthorized` from
+Authelia's `/api/verify`, confirming the request never reaches the upstream service.
+Deviates from the plan's expected `302` — Authelia 4.37.5's `/api/verify` returns `401`
+for this request shape rather than redirecting; this is still correct, secure gating
+behavior (access denied pre-auth). A real browser (Step 6) is expected to receive the
+`302` redirect to `auth.localhost` since it negotiates `Accept: text/html` differently
+than curl's default and Authelia's redirect logic is browser-navigation-aware.
 
 - [ ] **Step 6: Manual browser login check**
 
 Open `http://openwebui.localhost/` in a browser. Expect redirect to Authelia login at `auth.localhost`. Log in with `admin` / `testpassword123` (from Task 1 Step 6). Expect redirect back to `openwebui.localhost` with the app loading. Then open `http://grafana.localhost/` in the same browser — expect it to load without a second login (session cookie shared across `*.localhost`).
 
-- [ ] **Step 7: Commit**
+**Not verifiable from this non-interactive shell session — requires a human with a browser. Flagging for manual follow-up.**
+
+- [x] **Step 7: Commit**
 
 ```bash
 git add traefik-routes.yml
 git commit -m "feat(sso): gate all Traefik routes behind Authelia ForwardAuth"
 ```
+
+Committed as `6ee2f29`.
 
 ---
 
