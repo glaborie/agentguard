@@ -41,6 +41,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Langfuse run_experiment auto-propagates task output as trace metadata,
+# capped at 200 chars/field — noisy warning on large RAG context, cosmetic only.
+logging.getLogger("langfuse").setLevel(logging.ERROR)
+
 RAG_DATASET = "watsonx-qa"
 SAFETY_DATASET = "watsonx-safety"
 

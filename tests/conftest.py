@@ -1,9 +1,14 @@
 """Shared fixtures and markers for the test suite."""
 
+import os
 import warnings
 
 import pytest
 import requests
+
+# Disable OTel for tests — no need to export spans to collector during unit tests.
+# Must be set before any app modules are imported.
+os.environ.setdefault("OTEL_ENABLED", "false")
 
 try:
     from langchain_core._api.deprecation import LangChainPendingDeprecationWarning

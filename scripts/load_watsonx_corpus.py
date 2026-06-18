@@ -10,7 +10,6 @@ import argparse
 import hashlib
 import json
 import logging
-import re
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -32,12 +31,6 @@ def _detect_column(cols: list[str], candidates: tuple[str, ...]) -> str | None:
         if c in cols:
             return c
     return None
-
-
-def _slug(text: str, max_len: int = 80) -> str:
-    s = re.sub(r"[^\w\s-]", "", text.lower())
-    s = re.sub(r"[\s_-]+", "_", s).strip("_")
-    return s[:max_len]
 
 
 def _sha8(text: str) -> str:

@@ -1,0 +1,6 @@
+ruleDirs:
+- /mnt/h/Training/AI_Engineering/Langfuse/Langfuse_POC/rules
+testConfigs:
+- testDir: /mnt/h/Training/AI_Engineering/Langfuse/Langfuse_POC/rule-tests
+utilDirs:
+- /mnt/h/Training/AI_Engineering/Langfuse/Langfuse_POC/utils

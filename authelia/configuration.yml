@@ -1,42 +1,39 @@
 theme: light
 
 server:
-  host: 0.0.0.0
-  port: 9091
+  address: tcp://0.0.0.0:9091
 
 log:
   level: info
 
-totp:
-  disable: true
-
 authentication_backend:
   file:
     path: /config/users_database.yml
-    password:
-      algorithm: bcrypt
-      bcrypt:
-        cost: 12
 
 access_control:
   default_policy: one_factor
-
-default_redirection_url: https://auth.localhost
+  rules:
+    - domain: "*.local.host"
+      policy: one_factor
 
 session:
   name: authelia_session
-  domain: localhost
   same_site: lax
   expiration: 1h
   inactivity: 15m
+  # Redis configuration
   redis:
     host: redis
     port: 6379
+  cookies:
+    - domain: 'local.host'
+      authelia_url: 'https://auth.local.host'
+      default_redirection_url: 'https://openwebui.local.host'
 
 storage:
   local:
-    path: /config/data/db.sqlite3
+    path: /config/db.sqlite3
 
 notifier:
   filesystem:
-    filename: /config/data/notification.txt
+    filename: /config/notification.txt

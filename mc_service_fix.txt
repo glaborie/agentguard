@@ -1,0 +1,16 @@
+  mc:
+    image: minio/mc:RELEASE.2025-03-12T17-29-24Z
+    pull_policy: always
+    networks:
+      - langfuse_poc_langfuse
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set s3 http://minio:9000 ${MINIO_ROOT_USER:-THAAIOSFODNN7EXAMPLE} ${MINIO_ROOT_PASSWORD:-LESlrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY} --api S3v4 &&
+      /usr/bin/mc mb --ignore-existing s3/public &&
+      /usr/bin/mc anonymous set download s3/public/ ||
+      echo MinIO setup completed &&
+      sleep infinity
+      "
